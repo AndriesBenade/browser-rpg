@@ -1,0 +1,17 @@
+{
+  "id": "enc_example_mountain_lion",
+  "locationId": "loc_example_sanctuary",
+  "triggerCondition": { "flag": "approached_sacred_cleft", "expected": true },
+  "creatureId": "creature_cithaeron_wolf",
+  "introProse": "A predatory mountain beast prowls forth from the dense thicket, eyes locked upon your panoply as its claws score the limestone!",
+  "victoryOutcome": {
+    "text": "Your blade drives the beast back into the rocky fissures. The grove returns to tranquil peace.",
+    "setFlags": { "grove_predator_vanquished": true },
+    "giveItem": "item_dried_figs_bread",
+    "awardXP": 90,
+    "addJournalChronicle": {
+      "title": "Guardian of the Cleft",
+      "text": "Overcame a predatory beast stalking the perimeter of the sanctuary."
+    }
+  }
+}

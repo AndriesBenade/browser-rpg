@@ -1,0 +1,46 @@
+{
+  "dialogue_example_priestess": {
+    "greeting": "Hail, wanderer. You stand upon soil sacred to Zeus the Thunderer and mother Dione. What omens do you seek?",
+    "nodes": {
+      "root": {
+        "text": "The barefoot peleiade priestess tends a low brazier of dry oak leaves, her gaze distant and watchful.",
+        "choices": [
+          {
+            "label": "How do the priestesses divine the will of Zeus here?",
+            "target": "node_divination_lore"
+          },
+          {
+            "label": "I offer an aryballos of Pramnian wine to the sanctuary.",
+            "target": "node_wine_offering",
+            "condition": { "hasItem": "item_clay_aryballos_wine" }
+          },
+          {
+            "label": "May the immortals grant you clear omens. Farewell.",
+            "target": "exit"
+          }
+        ]
+      },
+      "node_divination_lore": {
+        "text": "We listen to the cooing of black doves, the rustling canopy of the Pelasgian oak, and the resonance of bronze tripods chiming in the wind.",
+        "setFlags": { "knows_dodona_rites": true },
+        "addJournalKnowledge": {
+          "title": "The Peleiades of Dodona",
+          "text": "Priestesses of Dodona interpret the murmurs of ancient oaks and ringing bronze cauldrons."
+        },
+        "choices": [
+          { "label": "Thank you for sharing this sacred lore.", "target": "root" }
+        ]
+      },
+      "node_wine_offering": {
+        "text": "A pious gift. The god receives your reverence with favor. Drink of the sacred spring water to clear your thoughts.",
+        "removeItem": "item_clay_aryballos_wine",
+        "giveItem": "item_castalian_water_phial",
+        "setFlags": { "honored_dodona_priestess": true },
+        "awardXP": 25,
+        "choices": [
+          { "label": "I am grateful, venerable priestess.", "target": "root" }
+        ]
+      }
+    }
+  }
+}

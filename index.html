@@ -2717,6 +2717,7 @@
             <button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="window.engine.openDevNotesModal()">📜 Developer & AI Notes</button>
             <button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="window.engine.startWalkthrough(true)">Relaunch Interface Guide</button>
             <button class="nav-btn" style="border-color: var(--terracotta); color: var(--terracotta-bright);" onclick="window.engine.restartAdventure()">Restart Tutorial</button>
+            <button class="nav-btn" style="border-color: #c94a4a; color: #ff7878; font-weight: bold;" onclick="window.engine.deleteAllSavedContent()">🗑️ Delete All Saved Content &amp; Reset Fresh</button>
           </div>
         </div>
       </div>
@@ -3995,6 +3996,52 @@
         }
       }
 
+      async deleteSaveSlot(slot) {
+        if (!confirm(`Delete all saved data in Slot ${slot}? This cannot be undone.`)) return;
+        if (this.db) {
+          try {
+            const tx = this.db.transaction("saves", "readwrite");
+            const store = tx.objectStore("saves");
+            store.delete(slot);
+          } catch (e) {
+            console.warn("Could not delete from IndexedDB:", e);
+          }
+        }
+        localStorage.removeItem(`gm_save_slot_${slot}`);
+        this.logTranscript("Storage", `Save Slot ${slot} has been deleted.`, "entry-discovery");
+        if (this.showToast) this.showToast(`Save Slot ${slot} deleted`, "bronze");
+        this.renderSaveSlots();
+      }
+
+      async deleteAllSavedContent() {
+        const confirmed = confirm(
+          "⚠️ DELETE ALL SAVED CONTENT?\n\nAre you sure you want to completely erase all saved characters, progress, and stored slots to start completely fresh?\n\nThis cannot be undone."
+        );
+        if (!confirmed) return;
+
+        if (this.db) {
+          try {
+            const tx = this.db.transaction("saves", "readwrite");
+            const store = tx.objectStore("saves");
+            store.clear();
+          } catch (e) {
+            console.warn("Could not clear IndexedDB saves:", e);
+          }
+        }
+
+        for (let i = 1; i <= 10; i++) {
+          localStorage.removeItem(`gm_save_slot_${i}`);
+        }
+
+        this.state = this.getInitialState();
+        this.startAdventure();
+        this.logTranscript("Storage", "All saved content has been erased. The game has been reset completely fresh.", "entry-consequence");
+        if (this.showToast) this.showToast("All save data deleted. Reset fresh.", "bronze");
+        
+        this.renderAll();
+        this.openCharacterCreationWizard();
+      }
+
       /* =========================================================================
          CONTENT LOADER (External JSONs with resilient embedded fallbacks)
          ========================================================================= */
@@ -4025,6 +4072,9 @@
 
         if (this.world.locations.length === 0) {
           this.loadEmbeddedFallbackContent();
+        }
+        if (!this.currentAdventure) {
+          this.currentAdventure = this.getEmbeddedFallbackAdventure();
         }
         if (this.glossary.length === 0) {
           this.registerGlossaryTerms(this.getFallbackGlossary());
@@ -4135,6 +4185,10 @@
           this.registerGlossaryTerms(this.getFallbackGlossary());
         }
         this.buildContentMaps();
+      }
+
+      getEmbeddedFallbackAdventure() {
+        return {"id":"adv_tutorial_cithaeron_001","title":"The Whispering Fissure of Mount Cithaeron","version":"1.0.0","engineVersion":">=0.1.0","author":"Greek Mythology Systems Architect","description":"Investigate the vanishing of a consecrated sacrificial ram on the slopes of Mount Cithaeron and uncover the ancient secrets of the Cadmean Threshold.","mythologicalSetting":{"region":"Boeotia / Attica Borderlands","historicalEpoch":"Archaic / Heroic Age","primarySources":[{"author":"Hesiod","work":"Theogony","passage":"lines 22-35","notes":"Hesiod's shepherd beginnings on the slopes of Mount Helicon and Cithaeron."},{"author":"Apollodorus","work":"Bibliotheca","passage":"Book 3, Chapter 4","notes":"The foundational myth of Cadmus, the Ismenian Drakon, and the Spartoi."},{"author":"Pausanias","work":"Description of Greece","passage":"Book 9.2-3 (Boeotia, Plataea, Mount Cithaeron)","notes":"Topography of Cithaeron, the cave sanctuaries, and the rustic cults of Hermes and the Nymphs."}]},"startingConditions":{"locationId":"loc_cithaeron_crossroads","time":{"hour":8,"minute":30,"day":12,"month":4,"year":1},"initialJournalEntries":[{"type":"chronicle","title":"Arrival at Mount Cithaeron","text":"Traveling north across the Boeotian border toward Plataea, you arrived at the windswept pass of Mount Cithaeron where the mountain trails divide."}],"initialQuests":["quest_tutorial_stolen_ram"]},"quests":[{"id":"quest_tutorial_stolen_ram","title":"The Consecrated Ram of Hermes","category":"Heroic Quest","summary":"Elder Daidalos' prize black ram, consecrated for the impending feast of Hermes Kriophoros, was seized from the pasture by an unnatural beast.","currentStage":"investigate_tracks","stages":{"investigate_tracks":{"description":"Examine the crossroads and speak with Daidalos to determine where the ram was dragged.","objectives":[{"id":"obj_speak_daidalos","text":"Speak with Daidalos the shepherd about the vanishing.","completed":false},{"id":"obj_find_tracks","text":"Search the scrubland for tracks of the beast.","completed":false},{"id":"obj_cairn_omen","text":"Examine the Hermaion cairn for an omen or blessing.","completed":false,"optional":true}]},"seek_fissure":{"description":"Follow the trail of broken limestone and tufts of black wool up the slopes toward the Whispering Fissure.","objectives":[{"id":"obj_reach_fissure","text":"Ascend the mountain path to the Whispering Fissure.","completed":false}]},"unseal_sanctuary":{"description":"A heavy stone slab inscribed with archaic Cadmean letters bars the cave entrance. Decipher the inscription to open it.","objectives":[{"id":"obj_solve_riddle","text":"Decipher the Cadmean Threshold riddle.","completed":false}]},"confront_beast":{"description":"Enter the subterranean grotto, confront the subterranean prowler, and rescue the sacred ram.","objectives":[{"id":"obj_defeat_beast","text":"Confront the cave beast in the cavern.","completed":false},{"id":"obj_recover_bell","text":"Retrieve the Archaic Bronze Bell of Hermes and the ram.","completed":false}]},"completed":{"description":"You returned the consecrated ram and its sacred bell to Daidalos, winning the favor of Hermes and the gratitude of Plataea.","objectives":[{"id":"obj_quest_done","text":"Return to Daidalos at the crossroads.","completed":true}]}},"rewards":{"experience":200,"drachmae":30,"items":["item_votive_bell_hermes"],"reputation":{"hermes":3,"plataea":15},"renown":20}}],"dialogues":{"dialogue_daidalos_shepherd":{"greeting":"Hail, traveler! By Zeus Xenios, keeper of strangers, hear an old man's grief. My prize black ram—reared since spring to be offered at the altar of Hermes Kriophoros—was dragged into the crags this very dawn! No ordinary wolf did this; I heard a hiss like escaping steam and deep, heavy footfalls.","nodes":{"root":{"text":"Daidalos clutches his olive-wood staff, staring up at the limestone cliffs with troubled eyes.","choices":[{"label":"Tell me what you saw of the creature.","target":"node_creature_details"},{"label":"Did you notice where the trail leads?","target":"node_trail_info"},{"label":"Who built the ancient cairn at this crossroads?","target":"node_cairn_lore"},{"label":"I will find your ram and bring it back, old shepherd.","target":"node_accept_quest","condition":{"flag":"cithaeron_accepted_quest","expected":false}},{"label":"I have recovered your ram and its sacred bronze bell!","target":"node_complete_quest","condition":{"flag":"cithaeron_beast_defeated","expected":true,"questNotDone":true}},{"label":"Farewell for now, Daidalos.","target":"exit"}]},"node_creature_details":{"text":"It moved before the sun broke the mist. It was as large as a yearling calf, with dark bristling hide and claws that scraped sparks against the limestone. In the old stories, they say strange brood of Echidna still slumber in the deep faults of Cithaeron. Be on your guard, warrior!","setFlags":{"knows_creature_nature":true},"addJournalKnowledge":{"title":"The Beast of the Fissure","text":"Elder Daidalos described the creature: larger than a wolf, with iron-hard claws and a low reptilian hiss, resembling the ancient chthonic brood of Echidna."},"choices":[{"label":"Where did its tracks lead?","target":"node_trail_info"},{"label":"Back to other questions.","target":"root"}]},"node_trail_info":{"text":"The beast dragged the ram through the thorny gorse bushes toward the eastern ridge. If you examine the thicket near the limestone outcrop, you will find where the fleece was caught. The ascent is treacherous, climbing straight to the Whispering Fissure.","setFlags":{"trail_hint_given":true},"choices":[{"label":"I will inspect those thorn bushes.","target":"root"},{"label":"Tell me about the creature again.","target":"node_creature_details"}]},"node_cairn_lore":{"text":"That is an hermaion—a mound consecrated to Hermes of the Way. Wayfarers who toss a stone or pour a few drops of wine upon it receive the god's swift speed on rugged roads. An old inscription at the bottom speaks of Cadmus, founder of Thebes, who walked these slopes long ago.","addJournalKnowledge":{"title":"The Hermaion of Cithaeron","text":"Daidalos confirmed the stone cairn is sacred to Hermes Enodios. Libations of wine or stones cast upon it invoke the god's divine protection over travelers."},"choices":[{"label":"What did Cadmus do on these slopes?","target":"node_cadmus_lore"},{"label":"Understood. Let's return to the matter of the ram.","target":"root"}]},"node_cadmus_lore":{"text":"They say Prince Cadmus sought his lost sister Europa, following a heifer until it collapsed here in Boeotia. Before he could build the Cadmeia, he had to slay the ferocious Drakon of Ares—a colossal serpent whose venomous teeth he sowed into the soil to bring forth warriors. If you encounter ancient stone carvings of a serpent and tripod up the mountain, remember the name of Ares' Drakon!","setFlags":{"knows_cadmus_drakon":true},"addJournalKnowledge":{"title":"Cadmus and the Ismenian Drakon","text":"Cadmus slew the sacred Serpent (Drakon) of Ares at the holy spring to found Thebes. The beast's title is etched into archaic Boeotian inscriptions."},"choices":[{"label":"A valuable piece of lore. Thank you, Daidalos.","target":"root"}]},"node_accept_quest":{"text":"May Hermes watch your steps and Athena guide your blade, noble friend! Take this small aryballos of Pramnian wine—if you reach the Herm shrine, pour it upon the altar; the god never turns away a pious heart.","setFlags":{"cithaeron_accepted_quest":true},"giveItem":"item_clay_aryballos_wine","updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_speak_daidalos","completed":true},"choices":[{"label":"I will return soon.","target":"root"}]},"node_complete_quest":{"text":"Praise be to the Olympian gods! You have brought back the black ram unharmed, and its archaic bronze bell rings once more! You have proven your arete, stranger. Take these silver drachmae and keep the consecrated bronze bell of Hermes as an amulet of safe travels!","completeQuest":"quest_tutorial_stolen_ram","setFlags":{"tutorial_quest_completed":true},"giveItem":"item_votive_bell_hermes","giveDrachmae":30,"awardXP":200,"addJournalChronicle":{"title":"Triumph at the Whispering Fissure","text":"Rescued Daidalos' sacrificial ram from the chthonic cave beast within Mount Cithaeron. Consecrated the archaic bell to Hermes and gained the enduring respect of the people of Plataea."},"choices":[{"label":"It was an honor, Daidalos. May the gods preserve your flocks.","target":"root"}]}}},"dialogue_timon_pilgrim":{"greeting":"Peace be with you, friend of the mountain roads. I am Timon, suppliant of Megara, journeying to Delphi to inquire of the Pythia. The silence of Hermes' grove restores weary limbs.","nodes":{"root":{"text":"Timon rests against the roots of a wild olive tree, cradling his woolen-bound suppliant's branch.","choices":[{"label":"What wisdom can you share of these mountain shrines?","target":"node_shrine_wisdom"},{"label":"Have you seen any strange creatures roaming the crags?","target":"node_creature_rumors"},{"label":"May your journey to Apollo's shrine be blessed, Timon.","target":"exit"}]},"node_shrine_wisdom":{"text":"Always look for the symbols carved on archaic lintels. In Boeotia, the old kings inscribed the guardian beasts of their bloodlines. If you encounter an unyielding door of stone, remember that the Greeks do not pray to deaf idols—they invoke the specific epithet and legend of the guardian.","addJournalKnowledge":{"title":"Timon's Counsel on Archaic Inscriptions","text":"Archaic Boeotian stone doors and seals respond to the ancient names of mythic guardians invoked in sacred hymns."},"choices":[{"label":"Thank you, wise pilgrim.","target":"root"}]},"node_creature_rumors":{"text":"At twilight yesterday, as the red sun sank behind Plataea, I heard baying from the Whispering Fissure. It was no jackal or sheepdog—the sound set the hair on my arms upright. Carry good bronze and a stout shield if you tread that upper path.","choices":[{"label":"I will heed your warning.","target":"root"}]}}}},"puzzles":[{"id":"puzzle_cadmean_threshold","locationId":"loc_cithaeron_fissure_cave","title":"The Cadmean Threshold","prompt":"Chiseled into the limestone archway above the sealed subterranean door is a relief of a crested coiled serpent coiled around a bronze tripod, flanked by archaic Phoenician-Greek letters. The carved inscription reads:\n\n'Speak the ancient name of the guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'","clueJournalIds":["lore_ismenian_dragon","knows_cadmus_drakon"],"acceptedKeywords":["drakon","dragon","serpent","ismenian drakon","drakon ismenios","snake of ares","serpent of ares"],"successOutcome":{"text":"As the sacred name rings out through the narrow gorge, counterweighted stones shift within the mountain with a deep grinding roar. The heavy limestone slab sinks into the cavern floor, revealing the torchlit inner grotto!","setFlags":{"cithaeron_cave_unsealed":true},"updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_solve_riddle","completed":true},"awardXP":100,"addJournalChronicle":{"title":"The Threshold Unsealed","text":"Spoke the ancient title of Ares' sacred Drakon, unlocking the hidden Cadmean sanctuary in the Whispering Fissure."}},"hint":"Elder Daidalos at the crossroads or lore in your journal describes the legendary serpent slain by Cadmus when founding Thebes."}],"encounters":[{"id":"enc_fissure_beast","locationId":"loc_cithaeron_fissure_cave","triggerCondition":{"flag":"cithaeron_cave_unsealed","expected":true,"beastNotDefeated":true},"creatureId":"creature_cithaeron_wolf","introProse":"As you step into the damp, echoing cave, twin amber eyes blaze in the gloom! A ferocious, grey-furred mountain wolf snarling with feral menace guards the frightened, tethered black ram! It lowers its snout and springs across the mossy floor!","victoryOutcome":{"text":"With a final decisive blow, the beast collapses against the limestone wall, whimpering into the shadows. Trembling in the corner of the cavern, the black ram bleats softly—uninjured! Tied to its horn is the sacred archaic bronze bell of Hermes.","setFlags":{"cithaeron_beast_defeated":true},"updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_defeat_beast","completed":true},"updateQuest2":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_recover_bell","completed":true},"giveItem":"item_votive_bell_hermes","awardXP":150,"addJournalChronicle":{"title":"Victory in the Grotto","text":"Vanquished the ferocious beast guarding the Whispering Fissure and secured the consecrated ram of Hermes."}}}],"contextActions":[{"id":"act_talk_daidalos","category":"Conversations & Inquiries","locationId":"loc_cithaeron_crossroads","title":"Speak with Elder Daidalos","desc":"Inquire about the vanishing of the sacrificial ram and learn of the mountain's perils.","badge":"Dialogue","type":"dialogue-action","handlerType":"dialogue","dialogueId":"dialogue_daidalos_shepherd"},{"id":"act_talk_timon","category":"Conversations & Inquiries","locationId":"loc_shrine_hermes_strophaios","title":"Speak with Timon the Suppliant","desc":"Ask the pilgrim resting by the olives about Boeotian legends and archaic stone door inscriptions.","badge":"Dialogue","type":"dialogue-action","handlerType":"dialogue","dialogueId":"dialogue_timon_pilgrim"},{"id":"act_hunt_stalk","category":"Exploration & Investigation","locationId":"loc_cithaeron_crossroads","title":"Stalk Mountain Game in the Gorse [Interactive Challenge]","desc":"Time your stride with Aegean mountain wind gusts to stalk wild game and gather trail provisions.","badge":"Hunting Minigame","type":"primary-quest-action","handlerType":"minigame","minigameType":"stalk","minigameConfig":{"targetName":"Cithaeronian Hare & Figs"}},{"id":"act_cast_astragaloi","category":"Exploration & Investigation","locationId":"loc_cithaeron_crossroads","title":"Cast the Astragaloi at the Herm [Interactive Challenge]","desc":"Cast authentic sheep knucklebones upon the stone altar slab to seek the legendary Venus omen.","badge":"Sacred Minigame","type":"sacred-action","handlerType":"minigame","minigameType":"astragaloi"},{"id":"act_examine_cairn","category":"Exploration & Investigation","locationId":"loc_cithaeron_crossroads","title":"Examine the Hermaion Stone Cairn","desc":"Inspect the ancient roadside cairn dedicated to Hermes for archaic inscriptions and traveler omens.","badge":"Lore Exploration","type":"primary-quest-action","requiresNotFlag":"examined_hermaion","handlerType":"skill_check","skillCheck":{"skill":"mythology_lore","attribute":"wisdom","dc":11,"name":"Mythology Lore","success":{"transcript":{"speaker":"Discovery","text":"You recognize the archaic mound as an *hermaion* raised by travelers adding stones in gratitude for safe passage. Carved beneath the capstone is an ancient dedication: 'To Hermes Enodios, Guide of Paths. Pour the sweet dark wine and receive the god's swift stride.'","style":"entry-discovery"},"addJournalKnowledge":{"title":"The Hermaion of Cithaeron","text":"Identified an archaic stone mound to Hermes. Offerings of wine invoke the god's protection over rugged paths."},"updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_cairn_omen","completed":true},"setFlags":{"examined_hermaion":true},"awardXP":25},"failure":{"transcript":{"speaker":"Narrator","text":"A weathered pile of limestone boulders marking the high pass. You notice dried wine stains upon the stones from past travelers.","style":"entry-prose"},"setFlags":{"examined_hermaion":true}}}},{"id":"act_search_tracks","category":"Exploration & Investigation","locationId":"loc_cithaeron_crossroads","title":"Search Scrubland for Ram Tracks","desc":"Search the scrubland for tufts of black wool, crushed briars, and predator tracks.","badge":"Search Tracks","type":"primary-quest-action","requiresNotFlag":"cithaeron_cave_path_known","handlerType":"skill_check","skillCheck":{"skill":"perception","attribute":"wisdom","dc":11,"name":"Perception & Tracking Check","success":{"transcript":{"speaker":"Investigation","text":"Kneeling beside the thorny gorse bushes, you find tufts of thick black fleece snagged on the brambles and heavy claw gouges in the loose limestone scree. The dragging tracks climb straight up the eastern crags toward the Whispering Fissure!","style":"entry-discovery"},"addJournalKnowledge":{"title":"Tracks of the Beast","text":"Discovered fleece and claw indentations leading up to the Whispering Fissure."},"updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_find_tracks","completed":true},"setFlags":{"cithaeron_cave_path_known":true},"discoverLocation":"loc_cithaeron_fissure_cave","awardXP":25},"failure":{"transcript":{"speaker":"Narrator","text":"The wind has scattered the loose dust across the road, but elder Daidalos points his crook toward the eastern limestone crags: 'There! See where the brambles are broken? That trail ascends straight to the Whispering Fissure!'","style":"entry-prose"},"updateQuest":{"questId":"quest_tutorial_stolen_ram","objectiveId":"obj_find_tracks","completed":true},"setFlags":{"cithaeron_cave_path_known":true},"discoverLocation":"loc_cithaeron_fissure_cave"}}},{"id":"act_pour_libation","category":"Sacred Rites & Offerings","locationId":"loc_cithaeron_crossroads","title":"Pour Wine Libation to Hermes Enodios","desc":"Uncork your aryballos and pour dark Pramnian wine upon the crest stone (+2 Piety, Restores Stamina).","badge":"Sacred Rite","type":"sacred-action","requiresFlag":"examined_hermaion","requiresNotFlag":"poured_libation_hermes","requiresItem":"item_clay_aryballos_wine","handlerType":"item_action","consumeItem":"item_clay_aryballos_wine","outcome":{"setFlags":{"poured_libation_hermes":true},"piety":{"hermes":2},"restoreStamina":6,"transcript":{"speaker":"Sacred Offering","text":"Uncorking the aryballos, you pour fragrant dark Pramnian wine over the crest stone of the cairn. A sudden warm gust of wind sweeps across the pass, carrying the scent of mountain thyme. Your weariness lifts—Hermes has received your pious offering!","style":"entry-discovery"},"addJournalChronicle":{"title":"Libation to Hermes","text":"Poured wine upon the Hermaion at Cithaeron pass; honored Hermes of the Way."},"awardXP":20}},{"id":"act_inspect_lintel","category":"Exploration & Investigation","locationId":"loc_cithaeron_fissure_cave","title":"Examine the Cadmean Inscription","desc":"Inspect the serpent relief and chiseled letters on the sealed stone portal to deduce the unlocking phrase.","badge":"Investigation","type":"primary-quest-action","requiresNotFlag":"cithaeron_cave_unsealed","handlerType":"skill_check","skillCheck":{"skill":"investigation","attribute":"intelligence","dc":11,"name":"Investigation Check","success":{"transcript":{"speaker":"Discovery","text":"The inscription reads: 'Speak the sacred name of the earth-born guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'","style":"entry-discovery"},"addJournalMysteries":{"title":"The Cadmean Threshold","text":"The stone door requires the ancient name of the guardian beast slain by Cadmus when founding Thebes (Drakon / Serpent of Ares)."},"awardXP":25},"failure":{"transcript":{"speaker":"Narrator","text":"Chiseled into the limestone lintel above the sealed stone portal are archaic letters and a bas-relief depicting a crested serpent wrapped around a tripod and a spring.","style":"entry-prose"}}}},{"id":"act_open_riddle","category":"Exploration & Investigation","locationId":"loc_cithaeron_fissure_cave","title":"Decipher the Cadmean Threshold","desc":"Speak the sacred title of Ares' earth-born guardian to open the subterranean door.","badge":"Riddle / Mystery","type":"primary-quest-action","requiresNotFlag":"cithaeron_cave_unsealed","handlerType":"puzzle","puzzleId":"puzzle_cadmean_threshold"},{"id":"act_enter_grotto","category":"Exploration & Investigation","locationId":"loc_cithaeron_fissure_cave","title":"Enter the Grotto & Slay the Beast","desc":"Step through the opened portal and confront the ferocious creature guarding the sacred ram.","badge":"Combat Encounter","type":"danger-action","requiresFlag":"cithaeron_cave_unsealed","requiresNotFlag":"cithaeron_beast_defeated","handlerType":"encounter","encounterId":"enc_fissure_beast"},{"id":"act_inspect_grotto_safe","category":"Exploration & Investigation","locationId":"loc_cithaeron_fissure_cave","title":"Inspect the Quiet Sanctuary Spring","desc":"The sacred cavern spring flows gently. The black ram is safe, grazing on wild ferns.","badge":"Observation","type":"sacred-action","requiresFlag":"cithaeron_beast_defeated","handlerType":"narrative","outcome":{"text":"The sacred mountain spring trickles peacefully over moss-covered limestone. The black ram is safe, grazing quietly on wild herbs near the entrance.","speaker":"Narrator","cssClass":"entry-prose"}}]};
       }
 
       getFallbackGlossary() {
@@ -4277,7 +4331,33 @@
          ADVENTURE & QUEST INITIALIZATION
          ========================================================================= */
       startAdventure() {
-        if (!this.state.worldState.quests["quest_tutorial_stolen_ram"]) {
+        // Data-driven quest initialization from active adventure pack
+        if (this.currentAdventure && Array.isArray(this.currentAdventure.quests) && this.currentAdventure.quests.length > 0) {
+          this.currentAdventure.quests.forEach(q => {
+            if (!this.state.worldState.quests[q.id]) {
+              const initialStageKey = q.currentStage || (q.stages ? Object.keys(q.stages)[0] : "stage_01");
+              const stageObj = q.stages && q.stages[initialStageKey] ? q.stages[initialStageKey] : null;
+              const objectivesMap = {};
+              
+              if (stageObj && Array.isArray(stageObj.objectives)) {
+                stageObj.objectives.forEach(obj => {
+                  objectivesMap[obj.id] = { text: obj.text, completed: false, optional: !!obj.optional };
+                });
+              } else if (q.objectives) {
+                Object.assign(objectivesMap, q.objectives);
+              }
+              
+              this.state.worldState.quests[q.id] = {
+                id: q.id,
+                title: q.title,
+                stage: initialStageKey,
+                objectives: objectivesMap,
+                completed: false,
+                category: q.category || "Heroic Quest"
+              };
+            }
+          });
+        } else if (!this.state.worldState.quests["quest_tutorial_stolen_ram"]) {
           this.state.worldState.quests["quest_tutorial_stolen_ram"] = {
             id: "quest_tutorial_stolen_ram",
             title: "The Consecrated Ram of Hermes",
@@ -4293,16 +4373,29 @@
           };
         }
 
+        // Data-driven initial journal chronicle entry
         if (this.state.worldState.journal.chronicle.length === 0) {
-          this.state.worldState.journal.chronicle.push({
-            id: "chron_01",
-            title: "Arrival at Mount Cithaeron",
-            text: "Traveled north along the boundary road between Attica and Boeotia. Arrived at the windswept mountain crossroad where Elder Daidalos was lamenting a lost sacrificial ram."
-          });
+          if (this.currentAdventure && this.currentAdventure.startingConditions && Array.isArray(this.currentAdventure.startingConditions.initialJournalEntries)) {
+            this.currentAdventure.startingConditions.initialJournalEntries.forEach((entry, idx) => {
+              this.state.worldState.journal.chronicle.push({
+                id: `chron_init_${idx + 1}`,
+                title: entry.title,
+                text: entry.text
+              });
+            });
+          } else {
+            this.state.worldState.journal.chronicle.push({
+              id: "chron_01",
+              title: "Arrival at Mount Cithaeron",
+              text: "Traveled north along the boundary road between Attica and Boeotia. Arrived at the windswept mountain crossroad where Elder Daidalos was lamenting a lost sacrificial ram."
+            });
+          }
         }
 
         const loc = this.getLocation(this.state.worldState.currentLocationId);
-        this.logTranscript("Narrator", loc.narrative.overview, "entry-prose");
+        if (loc && loc.narrative) {
+          this.logTranscript("Narrator", loc.narrative.overview, "entry-prose");
+        }
       }
 
       /* =========================================================================
@@ -4873,6 +4966,194 @@
       }
 
       /* =========================================================================
+         MODULAR ACTION ENGINE & DECLARATIVE EVENT EVALUATOR
+         ========================================================================= */
+      evaluateActionCondition(cond) {
+        if (!cond) return true;
+        const flags = this.state.worldState.flags;
+        if (cond.type === "flag" || cond.flag) {
+          const key = cond.key || cond.flag;
+          const expected = cond.expected !== undefined ? cond.expected : true;
+          return !!flags[key] === !!expected;
+        }
+        if (cond.type === "has_item" || cond.hasItem) {
+          const itemKey = cond.item || cond.hasItem;
+          return this.hasItem(itemKey);
+        }
+        if (cond.type === "quest_stage") {
+          const q = this.state.worldState.quests[cond.questId];
+          return q && q.stage === cond.stage;
+        }
+        if (cond.type === "quest_not_done") {
+          const q = this.state.worldState.quests[cond.questId];
+          return q && !q.completed;
+        }
+        if (cond.type === "quest_objective_not_done") {
+          const q = this.state.worldState.quests[cond.questId];
+          return q && q.objectives && q.objectives[cond.objectiveId] && !q.objectives[cond.objectiveId].completed;
+        }
+        if (cond.type === "min_level") {
+          return (this.state.player.level || 1) >= cond.level;
+        }
+        return true;
+      }
+
+      isActionAvailable(action, locId) {
+        if (action.locationId && action.locationId !== locId) return false;
+        if (Array.isArray(action.locationIds) && !action.locationIds.includes(locId)) return false;
+        
+        // Single flag shortcuts for easy authoring
+        if (action.requiresFlag && !this.state.worldState.flags[action.requiresFlag]) return false;
+        if (action.requiresNotFlag && this.state.worldState.flags[action.requiresNotFlag]) return false;
+        if (action.requiresItem && !this.hasItem(action.requiresItem)) return false;
+        
+        // Multi-condition array
+        if (Array.isArray(action.conditions)) {
+          for (const cond of action.conditions) {
+            if (!this.evaluateActionCondition(cond)) return false;
+          }
+        }
+        return true;
+      }
+
+      executeGenericAction(action) {
+        if (!action) return;
+
+        if (typeof action.handler === "function") {
+          return action.handler();
+        }
+
+        const hType = action.handlerType || "narrative";
+
+        if (hType === "dialogue") {
+          return this.openInpageDialogue(action.dialogueId);
+        }
+
+        if (hType === "minigame") {
+          return this.openMinigame(action.minigameType, action.minigameConfig || {});
+        }
+
+        if (hType === "puzzle" || hType === "riddle") {
+          return this.openPuzzle(action.puzzleId || "puzzle_cadmean_threshold");
+        }
+
+        if (hType === "encounter" || hType === "combat") {
+          return this.startCombatEncounter(action.encounterId || action.creatureId);
+        }
+
+        if (hType === "skill_check" && action.skillCheck) {
+          const sc = action.skillCheck;
+          const check = this.checkSkill(sc.skill, sc.attribute, sc.dc, sc.name || "Skill Check");
+          const outcome = check.success ? sc.success : sc.failure;
+          if (outcome) {
+            this.applyActionOutcome(outcome);
+          }
+          this.renderAll();
+          return;
+        }
+
+        if (hType === "item_action") {
+          if (action.consumeItem) {
+            this.removeItem(action.consumeItem, action.consumeCount || 1);
+          }
+          if (action.outcome) {
+            this.applyActionOutcome(action.outcome);
+          }
+          this.renderAll();
+          return;
+        }
+
+        if (action.outcome) {
+          this.applyActionOutcome(action.outcome);
+          this.renderAll();
+          return;
+        }
+      }
+
+      applyActionOutcome(outcome) {
+        if (!outcome) return;
+
+        if (outcome.transcript) {
+          const spk = outcome.transcript.speaker || "Discovery";
+          const txt = outcome.transcript.text;
+          const css = outcome.transcript.cssClass || (outcome.transcript.style || "entry-discovery");
+          this.logTranscript(spk, txt, css);
+        } else if (outcome.text) {
+          this.logTranscript(outcome.speaker || "Narrator", outcome.text, outcome.cssClass || "entry-prose");
+        }
+
+        if (outcome.setFlags && typeof outcome.setFlags === "object") {
+          Object.assign(this.state.worldState.flags, outcome.setFlags);
+        }
+
+        if (outcome.updateQuest) {
+          const uq = outcome.updateQuest;
+          this.updateQuestObjective(uq.questId, uq.objectiveId, uq.completed !== undefined ? uq.completed : true);
+        }
+        if (outcome.updateQuest2) {
+          const uq = outcome.updateQuest2;
+          this.updateQuestObjective(uq.questId, uq.objectiveId, uq.completed !== undefined ? uq.completed : true);
+        }
+        if (outcome.completeQuest) {
+          if (this.state.worldState.quests[outcome.completeQuest]) {
+            this.state.worldState.quests[outcome.completeQuest].completed = true;
+          }
+        }
+
+        if (outcome.addJournalKnowledge) {
+          this.addJournalEntry("knowledge", outcome.addJournalKnowledge.title, outcome.addJournalKnowledge.text);
+        }
+        if (outcome.addJournalChronicle) {
+          this.addJournalEntry("chronicle", outcome.addJournalChronicle.title, outcome.addJournalChronicle.text);
+        }
+        if (outcome.addJournalMysteries) {
+          this.addJournalEntry("mysteries", outcome.addJournalMysteries.title, outcome.addJournalMysteries.text);
+        }
+
+        if (outcome.giveItem) {
+          this.addItem(outcome.giveItem, outcome.giveItemCount || 1);
+        }
+        if (outcome.removeItem) {
+          this.removeItem(outcome.removeItem, outcome.removeItemCount || 1);
+        }
+        if (outcome.giveDrachmae) {
+          this.state.player.drachmae = (this.state.player.drachmae || 0) + outcome.giveDrachmae;
+          this.logTranscript("Reward", `Received ${outcome.giveDrachmae} silver drachmae.`, "entry-consequence");
+        }
+
+        if (outcome.awardXP) {
+          this.awardXP(outcome.awardXP, outcome.awardXPReason || "Action Completed");
+        }
+
+        if (outcome.restoreHealth) {
+          this.state.player.vitals.health = Math.min(this.state.player.vitals.maxHealth, this.state.player.vitals.health + outcome.restoreHealth);
+        }
+        if (outcome.restoreStamina) {
+          this.state.player.vitals.stamina = Math.min(this.state.player.vitals.maxStamina, this.state.player.vitals.stamina + outcome.restoreStamina);
+        }
+        if (outcome.staminaDamage) {
+          this.state.player.vitals.stamina = Math.max(0, this.state.player.vitals.stamina - outcome.staminaDamage);
+        }
+
+        if (outcome.discoverLocation && !this.state.worldState.discoveredLocations.includes(outcome.discoverLocation)) {
+          this.state.worldState.discoveredLocations.push(outcome.discoverLocation);
+        }
+        if (Array.isArray(outcome.discoverLocations)) {
+          outcome.discoverLocations.forEach(lid => {
+            if (!this.state.worldState.discoveredLocations.includes(lid)) {
+              this.state.worldState.discoveredLocations.push(lid);
+            }
+          });
+        }
+
+        if (outcome.piety && typeof outcome.piety === "object") {
+          for (const [deity, amount] of Object.entries(outcome.piety)) {
+            this.state.player.piety[deity] = (this.state.player.piety[deity] || 0) + amount;
+          }
+        }
+      }
+
+      /* =========================================================================
          SELECTABLE ACTION ENGINE (CARDS WITH DESCRIPTIONS)
          ========================================================================= */
       getContextualActionGroups() {
@@ -4880,6 +5161,39 @@
         const locId = this.state.worldState.currentLocationId;
         const flags = this.state.worldState.flags;
         const q = this.state.worldState.quests["quest_tutorial_stolen_ram"];
+
+        // Dynamic declarative actions defined in active adventure pack or location
+        const dynamicActions = [];
+        if (this.currentAdventure && Array.isArray(this.currentAdventure.contextActions)) {
+          this.currentAdventure.contextActions.forEach(act => {
+            if (this.isActionAvailable(act, locId)) dynamicActions.push(act);
+          });
+        }
+        const activeLocObj = this.getLocation(locId);
+        if (activeLocObj && Array.isArray(activeLocObj.actions)) {
+          activeLocObj.actions.forEach(act => {
+            if (this.isActionAvailable(act, locId)) dynamicActions.push(act);
+          });
+        }
+
+        const dynamicCategories = {};
+        dynamicActions.forEach(act => {
+          const cat = act.category || "Available Actions";
+          if (!dynamicCategories[cat]) dynamicCategories[cat] = [];
+          dynamicCategories[cat].push({
+            id: act.id,
+            title: act.title,
+            desc: act.desc,
+            badge: act.badge || "Action",
+            type: act.type || "primary-quest-action",
+            disabled: !!act.disabled,
+            handler: () => this.executeGenericAction(act)
+          });
+        });
+
+        for (const [catName, actList] of Object.entries(dynamicCategories)) {
+          groups.push({ category: catName, actions: actList });
+        }
 
         // 1. Dialogue Group
         const dialogueActions = [];
@@ -5112,16 +5426,42 @@
       /* =========================================================================
          IN-PAGE RIDDLE SOLVER (NO ALERT/PROMPT POPUPS)
          ========================================================================= */
-      openRiddleModal() {
+      openPuzzle(puzzleId) {
+        let puzzle = null;
+        if (this.currentAdventure && Array.isArray(this.currentAdventure.puzzles)) {
+          puzzle = this.currentAdventure.puzzles.find(p => p.id === puzzleId || p.locationId === this.state.worldState.currentLocationId);
+        }
+        if (!puzzle) {
+          puzzle = {
+            id: "puzzle_cadmean_threshold",
+            title: "The Cadmean Threshold",
+            prompt: "Chiseled into the limestone archway above the sealed subterranean door is a relief of a crested serpent coiled around a bronze tripod, flanked by archaic Phoenician-Greek letters. The carved inscription reads:\n\n'Speak the ancient name of the guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'",
+            clueJournalIds: ["lore_ismenian_dragon", "knows_cadmus_drakon"],
+            acceptedKeywords: ["drakon", "dragon", "serpent", "ismenian drakon", "drakon ismenios", "serpent of ares", "snake of ares"],
+            successOutcome: {
+              text: 'You speak the ancient name: "Drakon of Ares!" Counterweighted stones rumble deep within the cliff. The massive limestone slab sinks into the rock, revealing the torchlit cavern within!',
+              setFlags: { "cithaeron_cave_unsealed": true },
+              updateQuest: { questId: "quest_tutorial_stolen_ram", objectiveId: "obj_solve_riddle", completed: true },
+              addJournalChronicle: { title: "The Threshold Unsealed", text: "Spoke the name of Ares' sacred Drakon and opened the inner grotto." },
+              awardXP: 50,
+              awardXPReason: "Cadmean Gate Riddle Solved"
+            }
+          };
+        }
+
+        this._activePuzzle = puzzle;
         const modal = document.getElementById("riddle-modal");
         const container = document.getElementById("riddle-choices-container");
-        const knowsCadmus = this.hasJournalClue("Cadmus") || this.state.worldState.flags["knows_cadmus_drakon"];
+        const promptEl = document.getElementById("riddle-prompt-text");
+        if (promptEl && puzzle.prompt) promptEl.textContent = puzzle.prompt;
+
+        const knowsClue = (puzzle.clueJournalIds && puzzle.clueJournalIds.some(cid => this.hasJournalClue(cid) || this.state.worldState.flags[cid])) ||
+                          this.hasJournalClue("Cadmus") || this.state.worldState.flags["knows_cadmus_drakon"];
 
         let choicesHtml = "";
-
-        if (knowsCadmus) {
+        if (knowsClue) {
           choicesHtml += `
-            <button class="dialogue-choice-btn" style="border-left: 4px solid var(--bronze-bright);" onclick="window.engine.resolveRiddleChoice('drakon')">
+            <button class="dialogue-choice-btn" style="border-left: 4px solid var(--bronze-bright);" onclick="window.engine.resolveRiddleChoice('known_answer')">
               <strong>Invoke the Ismenian Drakon (Serpent of Ares)</strong>
               <div style="font-size: 0.8rem; color: var(--laurel-bright);">(Known from conversation with Daidalos & Journal Clue)</div>
             </button>
@@ -5143,6 +5483,10 @@
 
         container.innerHTML = choicesHtml;
         modal.style.display = "flex";
+      }
+
+      openRiddleModal() {
+        this.openPuzzle("puzzle_cadmean_threshold");
       }
 
       hasJournalClue(keyword) {
@@ -5428,6 +5772,18 @@
         this.updateCombatUI();
       }
 
+      startCombatEncounter(encounterId) {
+        const enc = this.currentAdventure && this.currentAdventure.encounters && this.currentAdventure.encounters.find(e => e.id === encounterId || e.creatureId === encounterId);
+        if (enc) {
+          this.startCombat(enc.creatureId, {
+            introProse: enc.introProse,
+            victoryOutcome: enc.victoryOutcome
+          });
+        } else {
+          this.startCombat(encounterId);
+        }
+      }
+
       startCaveCombat() {
         const enc = this.currentAdventure && this.currentAdventure.encounters && this.currentAdventure.encounters.find(e => e.id === "enc_fissure_beast");
         this.startCombat(enc ? enc.creatureId : "creature_cithaeron_wolf", {
@@ -5695,10 +6051,16 @@
       handleCombatVictory() {
         const c = this.combatSession;
         this.combatSession = null;
-        this.state.worldState.flags["cithaeron_beast_defeated"] = true;
-        this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_defeat_beast", true);
-        this.logTranscript("Triumph", "You vanquished the beast within the Whispering Fissure! The black ram is safe, and the archaic bronze bell around its horns rings with a pure resonance. Return to Daidalos at the crossroads!", "entry-discovery");
-        this.addJournalEntry("chronicle", "Victory in the Grotto", "Defeated the predator within the cave and secured the consecrated ram of Hermes.");
+        
+        if (this._activeEncounter && this._activeEncounter.victoryOutcome) {
+          this.applyActionOutcome(this._activeEncounter.victoryOutcome);
+          this._activeEncounter = null;
+        } else {
+          this.state.worldState.flags["cithaeron_beast_defeated"] = true;
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_defeat_beast", true);
+          this.logTranscript("Triumph", "You vanquished the beast within the Whispering Fissure! The black ram is safe, and the archaic bronze bell around its horns rings with a pure resonance. Return to Daidalos at the crossroads!", "entry-discovery");
+          this.addJournalEntry("chronicle", "Victory in the Grotto", "Defeated the predator within the cave and secured the consecrated ram of Hermes.");
+        }
         this.renderAll();
       }
 
@@ -7072,6 +7434,7 @@
             <div style="display: flex; gap: 0.35rem;">
               <button class="nav-btn" style="flex: 1;" onclick="window.engine.saveGame(${slot})">Save</button>
               <button class="nav-btn" style="flex: 1;" onclick="window.engine.loadGame(${slot})">Load</button>
+              <button class="nav-btn" style="color: var(--terracotta-bright); border-color: var(--terracotta);" onclick="window.engine.deleteSaveSlot(${slot})" title="Delete save data in Slot ${slot}">🗑️</button>
             </div>
           </div>
         `).join("");

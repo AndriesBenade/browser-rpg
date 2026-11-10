@@ -31,7 +31,13 @@
   },
   "startingConditions": {
     "locationId": "loc_cithaeron_crossroads",
-    "time": { "hour": 8, "minute": 30, "day": 12, "month": 4, "year": 1 },
+    "time": {
+      "hour": 8,
+      "minute": 30,
+      "day": 12,
+      "month": 4,
+      "year": 1
+    },
     "initialJournalEntries": [
       {
         "type": "chronicle",
@@ -39,7 +45,9 @@
         "text": "Traveling north across the Boeotian border toward Plataea, you arrived at the windswept pass of Mount Cithaeron where the mountain trails divide."
       }
     ],
-    "initialQuests": ["quest_tutorial_stolen_ram"]
+    "initialQuests": [
+      "quest_tutorial_stolen_ram"
+    ]
   },
   "quests": [
     {
@@ -52,42 +60,80 @@
         "investigate_tracks": {
           "description": "Examine the crossroads and speak with Daidalos to determine where the ram was dragged.",
           "objectives": [
-            { "id": "obj_speak_daidalos", "text": "Speak with Daidalos the shepherd about the vanishing.", "completed": false },
-            { "id": "obj_find_tracks", "text": "Search the scrubland for tracks of the beast.", "completed": false },
-            { "id": "obj_cairn_omen", "text": "Examine the Hermaion cairn for an omen or blessing.", "completed": false, "optional": true }
+            {
+              "id": "obj_speak_daidalos",
+              "text": "Speak with Daidalos the shepherd about the vanishing.",
+              "completed": false
+            },
+            {
+              "id": "obj_find_tracks",
+              "text": "Search the scrubland for tracks of the beast.",
+              "completed": false
+            },
+            {
+              "id": "obj_cairn_omen",
+              "text": "Examine the Hermaion cairn for an omen or blessing.",
+              "completed": false,
+              "optional": true
+            }
           ]
         },
         "seek_fissure": {
           "description": "Follow the trail of broken limestone and tufts of black wool up the slopes toward the Whispering Fissure.",
           "objectives": [
-            { "id": "obj_reach_fissure", "text": "Ascend the mountain path to the Whispering Fissure.", "completed": false }
+            {
+              "id": "obj_reach_fissure",
+              "text": "Ascend the mountain path to the Whispering Fissure.",
+              "completed": false
+            }
           ]
         },
         "unseal_sanctuary": {
           "description": "A heavy stone slab inscribed with archaic Cadmean letters bars the cave entrance. Decipher the inscription to open it.",
           "objectives": [
-            { "id": "obj_solve_riddle", "text": "Decipher the Cadmean Threshold riddle.", "completed": false }
+            {
+              "id": "obj_solve_riddle",
+              "text": "Decipher the Cadmean Threshold riddle.",
+              "completed": false
+            }
           ]
         },
         "confront_beast": {
           "description": "Enter the subterranean grotto, confront the subterranean prowler, and rescue the sacred ram.",
           "objectives": [
-            { "id": "obj_defeat_beast", "text": "Confront the cave beast in the cavern.", "completed": false },
-            { "id": "obj_recover_bell", "text": "Retrieve the Archaic Bronze Bell of Hermes and the ram.", "completed": false }
+            {
+              "id": "obj_defeat_beast",
+              "text": "Confront the cave beast in the cavern.",
+              "completed": false
+            },
+            {
+              "id": "obj_recover_bell",
+              "text": "Retrieve the Archaic Bronze Bell of Hermes and the ram.",
+              "completed": false
+            }
           ]
         },
         "completed": {
           "description": "You returned the consecrated ram and its sacred bell to Daidalos, winning the favor of Hermes and the gratitude of Plataea.",
           "objectives": [
-            { "id": "obj_quest_done", "text": "Return to Daidalos at the crossroads.", "completed": true }
+            {
+              "id": "obj_quest_done",
+              "text": "Return to Daidalos at the crossroads.",
+              "completed": true
+            }
           ]
         }
       },
       "rewards": {
         "experience": 200,
         "drachmae": 30,
-        "items": ["item_votive_bell_hermes"],
-        "reputation": { "hermes": 3, "plataea": 15 },
+        "items": [
+          "item_votive_bell_hermes"
+        ],
+        "reputation": {
+          "hermes": 3,
+          "plataea": 15
+        },
         "renown": 20
       }
     }
@@ -114,12 +160,19 @@
             {
               "label": "I will find your ram and bring it back, old shepherd.",
               "target": "node_accept_quest",
-              "condition": { "flag": "cithaeron_accepted_quest", "expected": false }
+              "condition": {
+                "flag": "cithaeron_accepted_quest",
+                "expected": false
+              }
             },
             {
               "label": "I have recovered your ram and its sacred bronze bell!",
               "target": "node_complete_quest",
-              "condition": { "flag": "cithaeron_beast_defeated", "expected": true, "questNotDone": true }
+              "condition": {
+                "flag": "cithaeron_beast_defeated",
+                "expected": true,
+                "questNotDone": true
+              }
             },
             {
               "label": "Farewell for now, Daidalos.",
@@ -129,22 +182,38 @@
         },
         "node_creature_details": {
           "text": "It moved before the sun broke the mist. It was as large as a yearling calf, with dark bristling hide and claws that scraped sparks against the limestone. In the old stories, they say strange brood of Echidna still slumber in the deep faults of Cithaeron. Be on your guard, warrior!",
-          "setFlags": { "knows_creature_nature": true },
+          "setFlags": {
+            "knows_creature_nature": true
+          },
           "addJournalKnowledge": {
             "title": "The Beast of the Fissure",
             "text": "Elder Daidalos described the creature: larger than a wolf, with iron-hard claws and a low reptilian hiss, resembling the ancient chthonic brood of Echidna."
           },
           "choices": [
-            { "label": "Where did its tracks lead?", "target": "node_trail_info" },
-            { "label": "Back to other questions.", "target": "root" }
+            {
+              "label": "Where did its tracks lead?",
+              "target": "node_trail_info"
+            },
+            {
+              "label": "Back to other questions.",
+              "target": "root"
+            }
           ]
         },
         "node_trail_info": {
           "text": "The beast dragged the ram through the thorny gorse bushes toward the eastern ridge. If you examine the thicket near the limestone outcrop, you will find where the fleece was caught. The ascent is treacherous, climbing straight to the Whispering Fissure.",
-          "setFlags": { "trail_hint_given": true },
+          "setFlags": {
+            "trail_hint_given": true
+          },
           "choices": [
-            { "label": "I will inspect those thorn bushes.", "target": "root" },
-            { "label": "Tell me about the creature again.", "target": "node_creature_details" }
+            {
+              "label": "I will inspect those thorn bushes.",
+              "target": "root"
+            },
+            {
+              "label": "Tell me about the creature again.",
+              "target": "node_creature_details"
+            }
           ]
         },
         "node_cairn_lore": {
@@ -154,34 +223,56 @@
             "text": "Daidalos confirmed the stone cairn is sacred to Hermes Enodios. Libations of wine or stones cast upon it invoke the god's divine protection over travelers."
           },
           "choices": [
-            { "label": "What did Cadmus do on these slopes?", "target": "node_cadmus_lore" },
-            { "label": "Understood. Let's return to the matter of the ram.", "target": "root" }
+            {
+              "label": "What did Cadmus do on these slopes?",
+              "target": "node_cadmus_lore"
+            },
+            {
+              "label": "Understood. Let's return to the matter of the ram.",
+              "target": "root"
+            }
           ]
         },
         "node_cadmus_lore": {
           "text": "They say Prince Cadmus sought his lost sister Europa, following a heifer until it collapsed here in Boeotia. Before he could build the Cadmeia, he had to slay the ferocious Drakon of Ares—a colossal serpent whose venomous teeth he sowed into the soil to bring forth warriors. If you encounter ancient stone carvings of a serpent and tripod up the mountain, remember the name of Ares' Drakon!",
-          "setFlags": { "knows_cadmus_drakon": true },
+          "setFlags": {
+            "knows_cadmus_drakon": true
+          },
           "addJournalKnowledge": {
             "title": "Cadmus and the Ismenian Drakon",
             "text": "Cadmus slew the sacred Serpent (Drakon) of Ares at the holy spring to found Thebes. The beast's title is etched into archaic Boeotian inscriptions."
           },
           "choices": [
-            { "label": "A valuable piece of lore. Thank you, Daidalos.", "target": "root" }
+            {
+              "label": "A valuable piece of lore. Thank you, Daidalos.",
+              "target": "root"
+            }
           ]
         },
         "node_accept_quest": {
           "text": "May Hermes watch your steps and Athena guide your blade, noble friend! Take this small aryballos of Pramnian wine—if you reach the Herm shrine, pour it upon the altar; the god never turns away a pious heart.",
-          "setFlags": { "cithaeron_accepted_quest": true },
+          "setFlags": {
+            "cithaeron_accepted_quest": true
+          },
           "giveItem": "item_clay_aryballos_wine",
-          "updateQuest": { "questId": "quest_tutorial_stolen_ram", "objectiveId": "obj_speak_daidalos", "completed": true },
+          "updateQuest": {
+            "questId": "quest_tutorial_stolen_ram",
+            "objectiveId": "obj_speak_daidalos",
+            "completed": true
+          },
           "choices": [
-            { "label": "I will return soon.", "target": "root" }
+            {
+              "label": "I will return soon.",
+              "target": "root"
+            }
           ]
         },
         "node_complete_quest": {
           "text": "Praise be to the Olympian gods! You have brought back the black ram unharmed, and its archaic bronze bell rings once more! You have proven your arete, stranger. Take these silver drachmae and keep the consecrated bronze bell of Hermes as an amulet of safe travels!",
           "completeQuest": "quest_tutorial_stolen_ram",
-          "setFlags": { "tutorial_quest_completed": true },
+          "setFlags": {
+            "tutorial_quest_completed": true
+          },
           "giveItem": "item_votive_bell_hermes",
           "giveDrachmae": 30,
           "awardXP": 200,
@@ -190,7 +281,10 @@
             "text": "Rescued Daidalos' sacrificial ram from the chthonic cave beast within Mount Cithaeron. Consecrated the archaic bell to Hermes and gained the enduring respect of the people of Plataea."
           },
           "choices": [
-            { "label": "It was an honor, Daidalos. May the gods preserve your flocks.", "target": "root" }
+            {
+              "label": "It was an honor, Daidalos. May the gods preserve your flocks.",
+              "target": "root"
+            }
           ]
         }
       }
@@ -222,13 +316,19 @@
             "text": "Archaic Boeotian stone doors and seals respond to the ancient names of mythic guardians invoked in sacred hymns."
           },
           "choices": [
-            { "label": "Thank you, wise pilgrim.", "target": "root" }
+            {
+              "label": "Thank you, wise pilgrim.",
+              "target": "root"
+            }
           ]
         },
         "node_creature_rumors": {
           "text": "At twilight yesterday, as the red sun sank behind Plataea, I heard baying from the Whispering Fissure. It was no jackal or sheepdog—the sound set the hair on my arms upright. Carry good bronze and a stout shield if you tread that upper path.",
           "choices": [
-            { "label": "I will heed your warning.", "target": "root" }
+            {
+              "label": "I will heed your warning.",
+              "target": "root"
+            }
           ]
         }
       }
@@ -240,12 +340,29 @@
       "locationId": "loc_cithaeron_fissure_cave",
       "title": "The Cadmean Threshold",
       "prompt": "Chiseled into the limestone archway above the sealed subterranean door is a relief of a crested coiled serpent coiled around a bronze tripod, flanked by archaic Phoenician-Greek letters. The carved inscription reads:\n\n'Speak the ancient name of the guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'",
-      "clueJournalIds": ["lore_ismenian_dragon", "knows_cadmus_drakon"],
-      "acceptedKeywords": ["drakon", "dragon", "serpent", "ismenian drakon", "drakon ismenios", "snake of ares", "serpent of ares"],
+      "clueJournalIds": [
+        "lore_ismenian_dragon",
+        "knows_cadmus_drakon"
+      ],
+      "acceptedKeywords": [
+        "drakon",
+        "dragon",
+        "serpent",
+        "ismenian drakon",
+        "drakon ismenios",
+        "snake of ares",
+        "serpent of ares"
+      ],
       "successOutcome": {
         "text": "As the sacred name rings out through the narrow gorge, counterweighted stones shift within the mountain with a deep grinding roar. The heavy limestone slab sinks into the cavern floor, revealing the torchlit inner grotto!",
-        "setFlags": { "cithaeron_cave_unsealed": true },
-        "updateQuest": { "questId": "quest_tutorial_stolen_ram", "objectiveId": "obj_solve_riddle", "completed": true },
+        "setFlags": {
+          "cithaeron_cave_unsealed": true
+        },
+        "updateQuest": {
+          "questId": "quest_tutorial_stolen_ram",
+          "objectiveId": "obj_solve_riddle",
+          "completed": true
+        },
         "awardXP": 100,
         "addJournalChronicle": {
           "title": "The Threshold Unsealed",
@@ -259,20 +376,294 @@
     {
       "id": "enc_fissure_beast",
       "locationId": "loc_cithaeron_fissure_cave",
-      "triggerCondition": { "flag": "cithaeron_cave_unsealed", "expected": true, "beastNotDefeated": true },
+      "triggerCondition": {
+        "flag": "cithaeron_cave_unsealed",
+        "expected": true,
+        "beastNotDefeated": true
+      },
       "creatureId": "creature_cithaeron_wolf",
       "introProse": "As you step into the damp, echoing cave, twin amber eyes blaze in the gloom! A ferocious, grey-furred mountain wolf snarling with feral menace guards the frightened, tethered black ram! It lowers its snout and springs across the mossy floor!",
       "victoryOutcome": {
         "text": "With a final decisive blow, the beast collapses against the limestone wall, whimpering into the shadows. Trembling in the corner of the cavern, the black ram bleats softly—uninjured! Tied to its horn is the sacred archaic bronze bell of Hermes.",
-        "setFlags": { "cithaeron_beast_defeated": true },
-        "updateQuest": { "questId": "quest_tutorial_stolen_ram", "objectiveId": "obj_defeat_beast", "completed": true },
-        "updateQuest2": { "questId": "quest_tutorial_stolen_ram", "objectiveId": "obj_recover_bell", "completed": true },
+        "setFlags": {
+          "cithaeron_beast_defeated": true
+        },
+        "updateQuest": {
+          "questId": "quest_tutorial_stolen_ram",
+          "objectiveId": "obj_defeat_beast",
+          "completed": true
+        },
+        "updateQuest2": {
+          "questId": "quest_tutorial_stolen_ram",
+          "objectiveId": "obj_recover_bell",
+          "completed": true
+        },
         "giveItem": "item_votive_bell_hermes",
         "awardXP": 150,
         "addJournalChronicle": {
           "title": "Victory in the Grotto",
           "text": "Vanquished the ferocious beast guarding the Whispering Fissure and secured the consecrated ram of Hermes."
         }
+      }
+    }
+  ],
+  "contextActions": [
+    {
+      "id": "act_talk_daidalos",
+      "category": "Conversations & Inquiries",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Speak with Elder Daidalos",
+      "desc": "Inquire about the vanishing of the sacrificial ram and learn of the mountain's perils.",
+      "badge": "Dialogue",
+      "type": "dialogue-action",
+      "handlerType": "dialogue",
+      "dialogueId": "dialogue_daidalos_shepherd"
+    },
+    {
+      "id": "act_talk_timon",
+      "category": "Conversations & Inquiries",
+      "locationId": "loc_shrine_hermes_strophaios",
+      "title": "Speak with Timon the Suppliant",
+      "desc": "Ask the pilgrim resting by the olives about Boeotian legends and archaic stone door inscriptions.",
+      "badge": "Dialogue",
+      "type": "dialogue-action",
+      "handlerType": "dialogue",
+      "dialogueId": "dialogue_timon_pilgrim"
+    },
+    {
+      "id": "act_hunt_stalk",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Stalk Mountain Game in the Gorse [Interactive Challenge]",
+      "desc": "Time your stride with Aegean mountain wind gusts to stalk wild game and gather trail provisions.",
+      "badge": "Hunting Minigame",
+      "type": "primary-quest-action",
+      "handlerType": "minigame",
+      "minigameType": "stalk",
+      "minigameConfig": {
+        "targetName": "Cithaeronian Hare & Figs"
+      }
+    },
+    {
+      "id": "act_cast_astragaloi",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Cast the Astragaloi at the Herm [Interactive Challenge]",
+      "desc": "Cast authentic sheep knucklebones upon the stone altar slab to seek the legendary Venus omen.",
+      "badge": "Sacred Minigame",
+      "type": "sacred-action",
+      "handlerType": "minigame",
+      "minigameType": "astragaloi"
+    },
+    {
+      "id": "act_examine_cairn",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Examine the Hermaion Stone Cairn",
+      "desc": "Inspect the ancient roadside cairn dedicated to Hermes for archaic inscriptions and traveler omens.",
+      "badge": "Lore Exploration",
+      "type": "primary-quest-action",
+      "requiresNotFlag": "examined_hermaion",
+      "handlerType": "skill_check",
+      "skillCheck": {
+        "skill": "mythology_lore",
+        "attribute": "wisdom",
+        "dc": 11,
+        "name": "Mythology Lore",
+        "success": {
+          "transcript": {
+            "speaker": "Discovery",
+            "text": "You recognize the archaic mound as an *hermaion* raised by travelers adding stones in gratitude for safe passage. Carved beneath the capstone is an ancient dedication: 'To Hermes Enodios, Guide of Paths. Pour the sweet dark wine and receive the god's swift stride.'",
+            "style": "entry-discovery"
+          },
+          "addJournalKnowledge": {
+            "title": "The Hermaion of Cithaeron",
+            "text": "Identified an archaic stone mound to Hermes. Offerings of wine invoke the god's protection over rugged paths."
+          },
+          "updateQuest": {
+            "questId": "quest_tutorial_stolen_ram",
+            "objectiveId": "obj_cairn_omen",
+            "completed": true
+          },
+          "setFlags": {
+            "examined_hermaion": true
+          },
+          "awardXP": 25
+        },
+        "failure": {
+          "transcript": {
+            "speaker": "Narrator",
+            "text": "A weathered pile of limestone boulders marking the high pass. You notice dried wine stains upon the stones from past travelers.",
+            "style": "entry-prose"
+          },
+          "setFlags": {
+            "examined_hermaion": true
+          }
+        }
+      }
+    },
+    {
+      "id": "act_search_tracks",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Search Scrubland for Ram Tracks",
+      "desc": "Search the scrubland for tufts of black wool, crushed briars, and predator tracks.",
+      "badge": "Search Tracks",
+      "type": "primary-quest-action",
+      "requiresNotFlag": "cithaeron_cave_path_known",
+      "handlerType": "skill_check",
+      "skillCheck": {
+        "skill": "perception",
+        "attribute": "wisdom",
+        "dc": 11,
+        "name": "Perception & Tracking Check",
+        "success": {
+          "transcript": {
+            "speaker": "Investigation",
+            "text": "Kneeling beside the thorny gorse bushes, you find tufts of thick black fleece snagged on the brambles and heavy claw gouges in the loose limestone scree. The dragging tracks climb straight up the eastern crags toward the Whispering Fissure!",
+            "style": "entry-discovery"
+          },
+          "addJournalKnowledge": {
+            "title": "Tracks of the Beast",
+            "text": "Discovered fleece and claw indentations leading up to the Whispering Fissure."
+          },
+          "updateQuest": {
+            "questId": "quest_tutorial_stolen_ram",
+            "objectiveId": "obj_find_tracks",
+            "completed": true
+          },
+          "setFlags": {
+            "cithaeron_cave_path_known": true
+          },
+          "discoverLocation": "loc_cithaeron_fissure_cave",
+          "awardXP": 25
+        },
+        "failure": {
+          "transcript": {
+            "speaker": "Narrator",
+            "text": "The wind has scattered the loose dust across the road, but elder Daidalos points his crook toward the eastern limestone crags: 'There! See where the brambles are broken? That trail ascends straight to the Whispering Fissure!'",
+            "style": "entry-prose"
+          },
+          "updateQuest": {
+            "questId": "quest_tutorial_stolen_ram",
+            "objectiveId": "obj_find_tracks",
+            "completed": true
+          },
+          "setFlags": {
+            "cithaeron_cave_path_known": true
+          },
+          "discoverLocation": "loc_cithaeron_fissure_cave"
+        }
+      }
+    },
+    {
+      "id": "act_pour_libation",
+      "category": "Sacred Rites & Offerings",
+      "locationId": "loc_cithaeron_crossroads",
+      "title": "Pour Wine Libation to Hermes Enodios",
+      "desc": "Uncork your aryballos and pour dark Pramnian wine upon the crest stone (+2 Piety, Restores Stamina).",
+      "badge": "Sacred Rite",
+      "type": "sacred-action",
+      "requiresFlag": "examined_hermaion",
+      "requiresNotFlag": "poured_libation_hermes",
+      "requiresItem": "item_clay_aryballos_wine",
+      "handlerType": "item_action",
+      "consumeItem": "item_clay_aryballos_wine",
+      "outcome": {
+        "setFlags": {
+          "poured_libation_hermes": true
+        },
+        "piety": {
+          "hermes": 2
+        },
+        "restoreStamina": 6,
+        "transcript": {
+          "speaker": "Sacred Offering",
+          "text": "Uncorking the aryballos, you pour fragrant dark Pramnian wine over the crest stone of the cairn. A sudden warm gust of wind sweeps across the pass, carrying the scent of mountain thyme. Your weariness lifts—Hermes has received your pious offering!",
+          "style": "entry-discovery"
+        },
+        "addJournalChronicle": {
+          "title": "Libation to Hermes",
+          "text": "Poured wine upon the Hermaion at Cithaeron pass; honored Hermes of the Way."
+        },
+        "awardXP": 20
+      }
+    },
+    {
+      "id": "act_inspect_lintel",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_fissure_cave",
+      "title": "Examine the Cadmean Inscription",
+      "desc": "Inspect the serpent relief and chiseled letters on the sealed stone portal to deduce the unlocking phrase.",
+      "badge": "Investigation",
+      "type": "primary-quest-action",
+      "requiresNotFlag": "cithaeron_cave_unsealed",
+      "handlerType": "skill_check",
+      "skillCheck": {
+        "skill": "investigation",
+        "attribute": "intelligence",
+        "dc": 11,
+        "name": "Investigation Check",
+        "success": {
+          "transcript": {
+            "speaker": "Discovery",
+            "text": "The inscription reads: 'Speak the sacred name of the earth-born guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'",
+            "style": "entry-discovery"
+          },
+          "addJournalMysteries": {
+            "title": "The Cadmean Threshold",
+            "text": "The stone door requires the ancient name of the guardian beast slain by Cadmus when founding Thebes (Drakon / Serpent of Ares)."
+          },
+          "awardXP": 25
+        },
+        "failure": {
+          "transcript": {
+            "speaker": "Narrator",
+            "text": "Chiseled into the limestone lintel above the sealed stone portal are archaic letters and a bas-relief depicting a crested serpent wrapped around a tripod and a spring.",
+            "style": "entry-prose"
+          }
+        }
+      }
+    },
+    {
+      "id": "act_open_riddle",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_fissure_cave",
+      "title": "Decipher the Cadmean Threshold",
+      "desc": "Speak the sacred title of Ares' earth-born guardian to open the subterranean door.",
+      "badge": "Riddle / Mystery",
+      "type": "primary-quest-action",
+      "requiresNotFlag": "cithaeron_cave_unsealed",
+      "handlerType": "puzzle",
+      "puzzleId": "puzzle_cadmean_threshold"
+    },
+    {
+      "id": "act_enter_grotto",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_fissure_cave",
+      "title": "Enter the Grotto & Slay the Beast",
+      "desc": "Step through the opened portal and confront the ferocious creature guarding the sacred ram.",
+      "badge": "Combat Encounter",
+      "type": "danger-action",
+      "requiresFlag": "cithaeron_cave_unsealed",
+      "requiresNotFlag": "cithaeron_beast_defeated",
+      "handlerType": "encounter",
+      "encounterId": "enc_fissure_beast"
+    },
+    {
+      "id": "act_inspect_grotto_safe",
+      "category": "Exploration & Investigation",
+      "locationId": "loc_cithaeron_fissure_cave",
+      "title": "Inspect the Quiet Sanctuary Spring",
+      "desc": "The sacred cavern spring flows gently. The black ram is safe, grazing on wild ferns.",
+      "badge": "Observation",
+      "type": "sacred-action",
+      "requiresFlag": "cithaeron_beast_defeated",
+      "handlerType": "narrative",
+      "outcome": {
+        "text": "The sacred mountain spring trickles peacefully over moss-covered limestone. The black ram is safe, grazing quietly on wild herbs near the entrance.",
+        "speaker": "Narrator",
+        "cssClass": "entry-prose"
       }
     }
   ]

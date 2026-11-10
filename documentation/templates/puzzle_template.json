@@ -1,0 +1,19 @@
+{
+  "id": "puzzle_example_bronze_tripod",
+  "locationId": "loc_example_sanctuary",
+  "title": "The Inscribed Bronze Tripod",
+  "prompt": "Chiseled into the rim of the ancient bronze tripod is an archaic dedication:\n\n'Name the celestial weapon forged by the elder Cyclopes for the King of the Heavens.'",
+  "clueJournalIds": ["lore_cyclopes_forge", "knows_zeus_weapon"],
+  "acceptedKeywords": ["thunderbolt", "lightning", "lightning bolt", "keraunos"],
+  "successOutcome": {
+    "text": "As you whisper 'The Keraunos (Thunderbolt)', a clear ringing vibration hums through the bronze cauldron, and a secret compartment clicks open!",
+    "setFlags": { "dodona_tripod_opened": true },
+    "giveItem": "item_omphalos_amulet",
+    "awardXP": 75,
+    "addJournalChronicle": {
+      "title": "The Tripod of Zeus",
+      "text": "Deciphered the riddle of the Cyclopean weapon and retrieved a consecrated amulet."
+    }
+  },
+  "hint": "The elder Cyclopes Brontes, Steropes, and Arges forged thunder and lightning for Zeus during the Titanomachy."
+}

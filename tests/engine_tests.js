@@ -1346,7 +1346,7 @@ runTest("Toast Notifications: Container, styling, and trigger wiring across key 
 // 24. Persistent Custom Action Bar Interface Architecture
 // -----------------------------------------------------------------------------
 runTest("Persistent Action Bar: Input is permanently docked at the base of the interface across all views", () => {
-  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8').replace(/\r\n/g, '\n');
 
   // Verify DOM structure
   assert.ok(html.includes('id="persistent-action-bar"'), "DOM must contain #persistent-action-bar");
@@ -1465,6 +1465,71 @@ runTest("Minigame Stat Integration: Character attributes directly scale challeng
   const chaMod = Math.floor((p.attributes.charisma - 10) / 2);
   const freeRerolls = Math.max(0, (chaMod >= 1 ? 1 : 0) + (p.piety.hermes >= 2 ? 1 : 0));
   assert.equal(freeRerolls, 2, "Charisma (14) + Hermes Piety (3) must grant 2 bone rerolls");
+});
+
+// -----------------------------------------------------------------------------
+// 27. Modular Action Engine & Declarative Conditions
+// -----------------------------------------------------------------------------
+runTest("Modular Action Engine: evaluateActionCondition and isActionAvailable correctly evaluate declarative conditions", () => {
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(html.includes("evaluateActionCondition(cond)"), "Engine must implement evaluateActionCondition");
+  assert.ok(html.includes("isActionAvailable(action, locId)"), "Engine must implement isActionAvailable");
+  assert.ok(html.includes("executeGenericAction(action)"), "Engine must implement executeGenericAction");
+  assert.ok(html.includes("applyActionOutcome(outcome)"), "Engine must implement applyActionOutcome");
+
+  // Verify tutorial.json contains declarative contextActions
+  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
+  assert.ok(Array.isArray(tutorial.contextActions), "tutorial.json must contain contextActions array");
+  assert.ok(tutorial.contextActions.length >= 8, "tutorial.json must define at least 8 declarative actions");
+  
+  const stalkAct = tutorial.contextActions.find(a => a.id === "act_hunt_stalk");
+  assert.ok(stalkAct && stalkAct.handlerType === "minigame", "act_hunt_stalk must be declared with handlerType minigame");
+  
+  const cairnAct = tutorial.contextActions.find(a => a.id === "act_examine_cairn");
+  assert.ok(cairnAct && cairnAct.handlerType === "skill_check" && cairnAct.skillCheck.dc === 11, "act_examine_cairn must declare skill_check with DC 11");
+});
+
+// -----------------------------------------------------------------------------
+// 28. Modular Puzzle Engine & Data-Driven Riddle Resolver
+// -----------------------------------------------------------------------------
+runTest("Modular Puzzle Engine: openPuzzle dynamically resolves keyword matching and outcome application", () => {
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(html.includes("openPuzzle(puzzleId)"), "Engine must implement openPuzzle");
+  assert.ok(html.includes("openRiddleModal()"), "Engine must retain backward-compatible openRiddleModal");
+  
+  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
+  assert.ok(Array.isArray(tutorial.puzzles), "tutorial.json must declare puzzles array");
+  const cadmean = tutorial.puzzles.find(p => p.id === "puzzle_cadmean_threshold");
+  assert.ok(cadmean, "Cadmean threshold puzzle must exist in tutorial.json");
+  assert.ok(cadmean.acceptedKeywords.includes("drakon"), "Cadmean threshold must accept 'drakon' keyword");
+  assert.ok(cadmean.successOutcome && cadmean.successOutcome.awardXP === 100, "Cadmean puzzle must declare successOutcome with XP reward");
+});
+
+// -----------------------------------------------------------------------------
+// 29. Modular Encounter Runner & Combat Rewards
+// -----------------------------------------------------------------------------
+runTest("Modular Encounter Runner: startCombatEncounter and handleCombatVictory dispatch dynamic rewards", () => {
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(html.includes("startCombatEncounter(encounterId)"), "Engine must implement startCombatEncounter");
+  assert.ok(html.includes("startCaveCombat()"), "Engine must retain backward-compatible startCaveCombat");
+
+  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
+  assert.ok(Array.isArray(tutorial.encounters), "tutorial.json must declare encounters array");
+  const enc = tutorial.encounters.find(e => e.id === "enc_fissure_beast");
+  assert.ok(enc, "fissure beast encounter must exist in tutorial.json");
+  assert.equal(enc.creatureId, "creature_cithaeron_wolf", "Encounter must reference creature_cithaeron_wolf");
+  assert.ok(enc.victoryOutcome && enc.victoryOutcome.giveItem === "item_votive_bell_hermes", "Encounter must reward item_votive_bell_hermes on victory");
+});
+
+// -----------------------------------------------------------------------------
+// 30. Storage Management & Fresh Reset Features
+// -----------------------------------------------------------------------------
+runTest("Storage Management: deleteSaveSlot and deleteAllSavedContent methods exist with UI buttons", () => {
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(html.includes("deleteSaveSlot(slot)"), "Engine must implement deleteSaveSlot");
+  assert.ok(html.includes("deleteAllSavedContent()"), "Engine must implement deleteAllSavedContent");
+  assert.ok(html.includes("Delete All Saved Content"), "Settings viewport must include Delete All Saved Content button");
+  assert.ok(html.includes("deleteSaveSlot"), "renderSaveSlots must render slot deletion button");
 });
 
 console.log("\n=================================================================");

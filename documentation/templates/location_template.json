@@ -1,0 +1,27 @@
+{
+  "$schema": "https://greek-mythology-rpg.org/schemas/v2/location.json",
+  "id": "loc_example_sanctuary",
+  "name": "Sacred Grove of Dodona",
+  "ancientName": "Hieron Dodones",
+  "region": "Epirus",
+  "recommendedLevel": 1,
+  "coordinates": { "x": 150, "y": 120 },
+  "terrain": "sacred_grove",
+  "connections": [
+    {
+      "targetLocationId": "loc_cithaeron_crossroads",
+      "name": "Northwestern Wayfarer Track",
+      "distanceKm": 18.0,
+      "travelHours": 4.5,
+      "staminaCost": 6,
+      "terrain": "mountain_trail",
+      "dangerRating": 1
+    }
+  ],
+  "narrative": {
+    "overview": "The ancient rustling oak trees of Zeus whisper with the murmurs of breeze-stirred bronze cauldrons.",
+    "shortDescription": "The archaic oracle sanctuary of Zeus and Dione surrounded by sacred oaks."
+  },
+  "presentNPCs": ["npc_example_priestess"],
+  "presentItems": ["item_clay_aryballos_wine"]
+}

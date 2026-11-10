@@ -1,0 +1,34 @@
+{
+  "id": "quest_example_pilgrimage",
+  "title": "The Pilgrimage of the Rustling Oaks",
+  "category": "Heroic Quest",
+  "summary": "Travel to the sacred oracle sanctuary to decipher the whispering omens of the Pelasgian oak.",
+  "currentStage": "approach_sanctuary",
+  "stages": {
+    "approach_sanctuary": {
+      "description": "Ascend the mountain path toward the sanctuary.",
+      "objectives": [
+        { "id": "obj_reach_sanctuary", "text": "Reach the ancient grove.", "completed": false }
+      ]
+    },
+    "seek_omens": {
+      "description": "Speak with the head priestess and interpret the sacred bronze cauldrons.",
+      "objectives": [
+        { "id": "obj_speak_priestess", "text": "Consult the peleiade priestess.", "completed": false },
+        { "id": "obj_solve_tripod", "text": "Decipher the inscription upon the tripod.", "completed": false }
+      ]
+    },
+    "completed": {
+      "description": "The sacred omens have been received and recorded in your journal.",
+      "objectives": [
+        { "id": "obj_quest_done", "text": "Complete the sacred inquiry.", "completed": true }
+      ]
+    }
+  },
+  "rewards": {
+    "experience": 150,
+    "drachmae": 25,
+    "items": ["item_omphalos_amulet"],
+    "renown": 20
+  }
+}

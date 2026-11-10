@@ -1,0 +1,37 @@
+{
+  "id": "act_example_investigate_grove",
+  "category": "Exploration & Investigation",
+  "locationId": "loc_example_sanctuary",
+  "title": "Listen to the Rustling Sacred Oaks",
+  "desc": "Quiet your breath and attempt to interpret the whispering leaves of Zeus' ancient oak.",
+  "badge": "Perception Check",
+  "type": "primary-quest-action",
+  "requiresNotFlag": "heard_dodona_prophecy",
+  "handlerType": "skill_check",
+  "skillCheck": {
+    "skill": "perception",
+    "attribute": "wisdom",
+    "dc": 12,
+    "name": "Prophetic Perception Check",
+    "success": {
+      "transcript": {
+        "speaker": "Prophecy",
+        "text": "Beneath the murmur of bronze cauldrons, the rustling foliage forms an ancient dactylic hexameter: 'Trust the aegis when the earth rumbles.'",
+        "style": "entry-discovery"
+      },
+      "setFlags": { "heard_dodona_prophecy": true },
+      "awardXP": 30,
+      "addJournalKnowledge": {
+        "title": "The Whisper of Dodona",
+        "text": "The sacred oak foretold of trusting the divine aegis during seismic tremors."
+      }
+    },
+    "failure": {
+      "transcript": {
+        "speaker": "Narrator",
+        "text": "The leaves whisper softly, but their meaning is lost in the gusting mountain wind.",
+        "style": "entry-prose"
+      }
+    }
+  }
+}
