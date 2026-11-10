@@ -1,0 +1,256 @@
+{
+  "glossary": [
+    {
+      "key": "hermaion",
+      "terms": ["hermaion", "hermaia"],
+      "name": "Hermaion (Stone Waymarker)",
+      "category": "Sacred Ritual & Trail Marker",
+      "simpleEnglish": "Sacred roadside stone cairn",
+      "explanation": "A traditional pile of roadside stones consecrated to Hermes, god of travelers. Ancient Greeks believed that adding a stone or pouring wine as you passed honored the god and secured safe travel across mountain passes.",
+      "significance": "Pausanias notes that travelers across Boeotia and Phocis never passed a hermaion without adding a pebble or offering a prayer for guidance."
+    },
+    {
+      "key": "aspis",
+      "terms": ["aspis", "aspides"],
+      "name": "Aspis (Hoplite Shield)",
+      "category": "Armament",
+      "simpleEnglish": "Large round bronze-faced wooden shield",
+      "explanation": "A heavy, bowl-shaped wooden shield faced with a thin layer of bronze. It was gripped by sliding the forearm through a central bronze band (porpax) and grasping a cord handle near the rim.",
+      "significance": "The primary defensive gear of Greek hoplites, used to form an unbreakable shield-wall in the phalanx."
+    },
+    {
+      "key": "dory",
+      "terms": ["dory", "doratia"],
+      "name": "Dory (Hoplite Spear)",
+      "category": "Armament",
+      "simpleEnglish": "Heavy ash-wood thrusting spear",
+      "explanation": "A six-to-nine-foot thrusting spear with a flexible ash-wood shaft, an iron leaf-shaped spearhead, and a bronze butt-spike (sauroter) used to anchor the spear in the earth or strike if the main tip broke.",
+      "significance": "The primary weapon of Greek heroes and infantry throughout the Classical and Mythological eras."
+    },
+    {
+      "key": "xiphos",
+      "terms": ["xiphos", "xiphe"],
+      "name": "Xiphos (Double-Edged Shortsword)",
+      "category": "Armament",
+      "simpleEnglish": "Straight double-edged secondary shortsword",
+      "explanation": "A straight, leaf-bladed shortsword designed for quick thrusting and cutting when spear ranks clashed in close quarters.",
+      "significance": "Carried across the chest on a baldric as a secondary weapon by Greek hoplites."
+    },
+    {
+      "key": "linothorax",
+      "terms": ["linothorax"],
+      "name": "Linothorax (Layered Torso Armor)",
+      "category": "Armament",
+      "simpleEnglish": "Layered linen body armor",
+      "explanation": "Body armor crafted from multiple laminated sheets of heavy linen glued together into a tough, flexible cuirass, sometimes reinforced with bronze scales.",
+      "significance": "Popular across ancient Greece because it was lighter and cooler under the hot Mediterranean sun than solid bronze."
+    },
+    {
+      "key": "aryballos",
+      "terms": ["aryballos", "aryballoi"],
+      "name": "Aryballos (Traveler's Flask)",
+      "category": "Classical Utensil",
+      "simpleEnglish": "Small round ceramic flask with a narrow neck",
+      "explanation": "A small, round terracotta flask with a narrow neck and wide mouth. Travelers and athletes tied it to their wrist or belt with a cord to carry olive oil, scented balms, or wine.",
+      "significance": "Frequently offered at Herm shrines or carried by athletes preparing for gymnasia."
+    },
+    {
+      "key": "libation",
+      "terms": ["libation", "libations"],
+      "name": "Libation (Sacred Drink Offering)",
+      "category": "Sacred Ritual",
+      "simpleEnglish": "Pouring wine onto the earth or altar as a gift to the gods",
+      "explanation": "A universal ancient religious rite where wine, milk, honey, or pure spring water was poured out onto an altar or the ground to share a drink with deities, ancestors, or chthonic spirits.",
+      "significance": "An everyday act of piety showing gratitude to the gods before meals, travel, or battles."
+    },
+    {
+      "key": "arete",
+      "terms": ["arete"],
+      "name": "Arete (Heroic Excellence)",
+      "category": "Philosophical Concept",
+      "simpleEnglish": "Heroic courage, virtue, and peak mortal potential",
+      "explanation": "The ancient Greek ideal of fulfilling one's utmost potential through bravery, physical prowess, wisdom, and moral nobility under pressure.",
+      "significance": "In gameplay, an Arete roll represents a Natural 20 critical triumph where a hero accomplishes a legendary feat."
+    },
+    {
+      "key": "ate",
+      "terms": ["ate"],
+      "name": "Ate (Rash Delusion & Folly)",
+      "category": "Philosophical Concept",
+      "simpleEnglish": "Sudden rash blindness leading to misfortune",
+      "explanation": "The mythological condition of sudden delusion or infatuation sent by the gods that leads a mortal to make a disastrous misstep or lose their footing.",
+      "significance": "In gameplay, an Ate roll represents a Natural 1 critical fumble where luck completely betrays the character."
+    },
+    {
+      "key": "kleos",
+      "terms": ["kleos"],
+      "name": "Kleos (Heroic Renown)",
+      "category": "Heroic Culture",
+      "simpleEnglish": "Glory and renown passed down through song and memory",
+      "explanation": "The fame and renown a warrior earned through great deeds that would be sung by bards across generations. To the ancient Greeks, kleos was the only true pathway to immortality for mortals.",
+      "significance": "In the game engine, Kleos represents your heroic Experience Points (XP)."
+    },
+    {
+      "key": "psychopompos",
+      "terms": ["psychopompos"],
+      "name": "Psychopompos (Guide of Souls)",
+      "category": "Divine Epithet",
+      "simpleEnglish": "Conductor of spirits to the afterlife",
+      "explanation": "An ancient sacred title of the god Hermes, celebrating his role as the gentle guide who escorts the spirits of deceased mortals across the threshold into the Underworld.",
+      "significance": "When heroes fall in battle, Hermes Psychopompos preserves them from the dark abyss."
+    },
+    {
+      "key": "omphalos",
+      "terms": ["omphalos"],
+      "name": "Omphalos (Navel of the World)",
+      "category": "Sacred Artifact",
+      "simpleEnglish": "The carved center-stone of the earth at Delphi",
+      "explanation": "A cone-shaped marble stone kept inside the Temple of Apollo at Delphi. According to myth, Zeus released two eagles from opposite ends of the earth, and they met at this exact spot, marking it as the center of the world.",
+      "significance": "Considered the spiritual core of classical Hellas and the fountainhead of prophecy."
+    },
+    {
+      "key": "pythia",
+      "terms": ["pythia"],
+      "name": "The Pythia (Oracle of Delphi)",
+      "category": "Historical Priesthood",
+      "simpleEnglish": "High priestess and prophetess of Apollo at Delphi",
+      "explanation": "The chosen priestess who channeled the enigmatic prophecies of Apollo. Pilgrims and kings from throughout the Mediterranean traveled to Delphi to seek her guidance before founding cities or marching to war.",
+      "significance": "Her oracular pronouncements guided Greek politics, wars, and mythology for over a thousand years."
+    },
+    {
+      "key": "abaton",
+      "terms": ["abaton"],
+      "name": "Abaton (Sacred Dormitory)",
+      "category": "Sacred Architecture",
+      "simpleEnglish": "Dream-incubation chamber in a healing temple",
+      "explanation": "The sacred portico or sleeping hall in a sanctuary of Asclepius. Sick pilgrims underwent ritual purification and slept on fleece bedrolls, hoping the god of healing would visit them in a dream (enkoimesis) with a miraculous cure.",
+      "significance": "The foundation of ancient holistic medicine and temple healing in classical Greece."
+    },
+    {
+      "key": "obol",
+      "terms": ["obol", "obols", "obolos"],
+      "name": "Obol (Bronze/Silver Coin)",
+      "category": "Currency & Custom",
+      "simpleEnglish": "Small silver Greek coin; also Charon's ferry fare",
+      "explanation": "A small Greek coin worth one-sixth of a silver drachma. In funerary rites, family members placed an obol under the tongue of the departed to pay Charon, the ferryman of the River Styx, for passage into Hades.",
+      "significance": "Without an obol, restless souls were believed to wander the desolate banks of the Styx for a hundred years."
+    },
+    {
+      "key": "drachma",
+      "terms": ["drachma", "drachmae", "drachmas"],
+      "name": "Drachma (Silver Coin)",
+      "category": "Currency",
+      "simpleEnglish": "Standard silver coin of ancient Greece",
+      "explanation": "The primary silver currency unit of the Greek city-states, originally meaning 'a handful' of iron roasting spits. One drachma was roughly a day's wage for an Athenian craftsman or hoplite mercenary.",
+      "significance": "Widely traded across the Mediterranean from Thebes to Syracuse."
+    },
+    {
+      "key": "hoplite",
+      "terms": ["hoplite", "hoplites"],
+      "name": "Hoplite (Heavy Citizen-Infantry)",
+      "category": "Military Culture",
+      "simpleEnglish": "Heavily armored Greek citizen-warrior",
+      "explanation": "Free citizens of Greek city-states who armed themselves with bronze armor, an aspis shield, a spear (dory), and a sword (xiphos) to defend their home polis in tight formations.",
+      "significance": "The tactical backbone of Greek armies from the Archaic age through the Persian Wars."
+    },
+    {
+      "key": "phalanx",
+      "terms": ["phalanx", "phalanges"],
+      "name": "Phalanx (Shield-Wall Formation)",
+      "category": "Military Tactics",
+      "simpleEnglish": "Dense tactical formation of hoplites with overlapping shields",
+      "explanation": "A tightly packed battle formation where hoplites stood shoulder-to-shoulder, each warrior's shield protecting his own left side and the unarmored right side of the man beside him, creating an iron-and-bronze wall.",
+      "significance": "Required deep discipline and mutual trust, emphasizing the collective over individual glory."
+    },
+    {
+      "key": "chlamys",
+      "terms": ["chlamys"],
+      "name": "Chlamys (Traveler's Cloak)",
+      "category": "Attire",
+      "simpleEnglish": "Short woolen travel cloak pinned at the shoulder",
+      "explanation": "A rectangular wool cloak pinned over the right shoulder with a brooch (fibula), leaving the weapon arm free while protecting against mountain winds and rain.",
+      "significance": "Standard outdoor garment for messengers, hunters, and horsemen across Hellas."
+    },
+    {
+      "key": "petasos",
+      "terms": ["petasos"],
+      "name": "Petasos (Sun Hat)",
+      "category": "Attire",
+      "simpleEnglish": "Wide-brimmed felt traveler's hat",
+      "explanation": "A wide-brimmed hat made of wool felt or straw, equipped with a chin-strap so it could hang down the back when not in use. Worn by shepherds, travelers, and the god Hermes.",
+      "significance": "A universal icon of wayfarers and messengers under the blazing sun."
+    },
+    {
+      "key": "kriophoros",
+      "terms": ["kriophoros"],
+      "name": "Kriophoros (The Ram-Bearer)",
+      "category": "Divine Epithet",
+      "simpleEnglish": "Hermes as the protector of flocks carrying a sacrificial ram",
+      "explanation": "An archaic cult title of Hermes. Legend in Tanagra held that Hermes averted a plague from the city by carrying a black ram on his shoulders around the city walls.",
+      "significance": "Emphasizes Hermes' gentle, pastoral domain over mountain herds and shepherds."
+    },
+    {
+      "key": "thyrsus",
+      "terms": ["thyrsus", "thyrsoi"],
+      "name": "Thyrsus (Sacred Staff of Dionysus)",
+      "category": "Sacred Artifact",
+      "simpleEnglish": "Fennel staff topped with a pine cone and wrapped in ivy",
+      "explanation": "A ceremonial wand made from a giant fennel stalk, crowned with a pine cone and wound with ivy leaves and ribbons. Carried by Dionysus, satyrs, and maenads during ecstatic rituals.",
+      "significance": "A symbol of nature's wild, intoxicating fertility that concealed a sharp point."
+    },
+    {
+      "key": "xenios",
+      "terms": ["xenios", "xenia"],
+      "name": "Xenios (Protector of Strangers)",
+      "category": "Divine Epithet & Law",
+      "simpleEnglish": "Zeus as the divine guardian of hospitality to strangers",
+      "explanation": "The ancient Greek sacred law of hospitality (xenia). Wayfarers were to be welcomed, fed, and sheltered before being asked their names, as any stranger might be a god in disguise.",
+      "significance": "Breaching xenia incurred the swift vengeance of Zeus Xenios."
+    },
+    {
+      "key": "hubris",
+      "terms": ["hubris", "hybris"],
+      "name": "Hubris (Excessive Pride)",
+      "category": "Moral & Mythological Concept",
+      "simpleEnglish": "Dangerous arrogance that insults the gods",
+      "explanation": "Overbearing pride, insolence, or boastfulness where a mortal forgets their limits and attempts to place themselves above the immortal gods or natural order.",
+      "significance": "Hubris inevitably invited the merciless retribution of the goddess Nemesis."
+    },
+    {
+      "key": "styx",
+      "terms": ["styx"],
+      "name": "River Styx (The River of Oaths)",
+      "category": "Mythological Geography",
+      "simpleEnglish": "The river dividing the mortal world from the realm of the dead",
+      "explanation": "The cold, dark river that forms the boundary between the living world and the Underworld. The gods swore their most binding oaths by the water of the Styx.",
+      "significance": "A soul could only cross if buried with an obol to pay the grim ferryman Charon."
+    },
+    {
+      "key": "ephebos",
+      "terms": ["ephebos", "epheboi", "ephebe"],
+      "name": "Ephebos (Youthful Initiate)",
+      "category": "Heroic Rank",
+      "simpleEnglish": "Young Greek youth undergoing military and civic training",
+      "explanation": "In ancient Greek city-states, an ephebe was a young man of eighteen who had completed boyhood and entered intensive martial training to become a full citizen-soldier.",
+      "significance": "In the game, represents Level 1 heroes beginning their mythic journey."
+    },
+    {
+      "key": "promachos",
+      "terms": ["promachos"],
+      "name": "Promachos (Vanguard Champion)",
+      "category": "Heroic Rank",
+      "simpleEnglish": "Warrior who fights in the very front line of battle",
+      "explanation": "A champion who stood in the first rank of the phalanx to face the brunt of the enemy charge with fearless courage, leading by personal example.",
+      "significance": "In the game, represents Level 3 seasoned heroes."
+    },
+    {
+      "key": "drakon",
+      "terms": ["drakon", "drakontes"],
+      "name": "Drakon (Mythic Giant Serpent)",
+      "category": "Mythological Creature",
+      "simpleEnglish": "Giant primordial serpent with deadly venom",
+      "explanation": "In classical Greek myth, a drakon was a massive, crested serpent possessing venomous fangs, bronze-hard scales, and blazing eyes, typically guarding sacred springs, gold, or shrines.",
+      "significance": "Unlike winged European dragons, Greek drakontes were subterranean serpent-terrors like the Ismenian Drakon of Ares."
+    }
+  ]
+}

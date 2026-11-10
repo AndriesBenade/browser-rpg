@@ -5,7 +5,8 @@
       "name": "Crossroads of Mount Cithaeron",
       "ancientName": "Kithairōn Triodos",
       "region": "Boeotia / Attica Border",
-      "coordinates": { "x": 380, "y": 420 },
+      "recommendedLevel": 1,
+      "coordinates": { "x": 380, "y": 350 },
       "terrain": "rocky_scrubland",
       "connections": [
         {
@@ -35,6 +36,15 @@
           "terrain": "mountain_trail",
           "dangerRating": 2,
           "requiresFlag": "cithaeron_cave_path_known"
+        },
+        {
+          "targetLocationId": "loc_thebes_seven_gates",
+          "name": "Theban Royal Highway",
+          "distanceKm": 12.0,
+          "travelHours": 3.5,
+          "staminaCost": 6,
+          "terrain": "paved_road",
+          "dangerRating": 1
         }
       ],
       "narrative": {
@@ -49,7 +59,8 @@
       "name": "Shrine of Hermes Strophaios",
       "ancientName": "Hieron Hermou",
       "region": "Boeotia",
-      "coordinates": { "x": 240, "y": 320 },
+      "recommendedLevel": 1,
+      "coordinates": { "x": 290, "y": 320 },
       "terrain": "sacred_grove",
       "connections": [
         {
@@ -83,7 +94,8 @@
       "name": "Pastures of Plataea",
       "ancientName": "Plataiai",
       "region": "Boeotia",
-      "coordinates": { "x": 200, "y": 550 },
+      "recommendedLevel": 1,
+      "coordinates": { "x": 340, "y": 440 },
       "terrain": "pasture",
       "connections": [
         {
@@ -94,6 +106,15 @@
           "staminaCost": 4,
           "terrain": "paved_road",
           "dangerRating": 0
+        },
+        {
+          "targetLocationId": "loc_mycenae_lion_gate",
+          "name": "Isthmian Highway to Argolis",
+          "distanceKm": 30.0,
+          "travelHours": 6.0,
+          "staminaCost": 8,
+          "terrain": "paved_road",
+          "dangerRating": 2
         }
       ],
       "narrative": {
@@ -108,7 +129,8 @@
       "name": "The Whispering Fissure",
       "ancientName": "Spelaion Kithaironos",
       "region": "Boeotia",
-      "coordinates": { "x": 520, "y": 260 },
+      "recommendedLevel": 1,
+      "coordinates": { "x": 480, "y": 310 },
       "terrain": "limestone_cave",
       "connections": [
         {
@@ -142,7 +164,8 @@
       "name": "The Lion's Crag Overlook",
       "ancientName": "Skopelos Leontos",
       "region": "Boeotia",
-      "coordinates": { "x": 420, "y": 180 },
+      "recommendedLevel": 1,
+      "coordinates": { "x": 420, "y": 260 },
       "terrain": "mountain_peak",
       "connections": [
         {
@@ -170,6 +193,514 @@
       },
       "presentNPCs": [],
       "presentItems": ["item_salve_asclepius"]
+    },
+    {
+      "id": "loc_thebes_seven_gates",
+      "name": "Thebes of the Seven Gates",
+      "ancientName": "Heptapylos Thebai (Kadmeia)",
+      "region": "Boeotia",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 460, "y": 200 },
+      "terrain": "city_acropolis",
+      "connections": [
+        {
+          "targetLocationId": "loc_cithaeron_crossroads",
+          "name": "Highway South to Mount Cithaeron",
+          "distanceKm": 12.0,
+          "travelHours": 3.5,
+          "staminaCost": 6,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_fountain_of_ares",
+          "name": "Ismenian Grove Path",
+          "distanceKm": 2.5,
+          "travelHours": 1.0,
+          "staminaCost": 2,
+          "terrain": "sacred_grove",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_mount_sphingion",
+          "name": "Phocian Road toward Mount Sphingion",
+          "distanceKm": 8.0,
+          "travelHours": 2.5,
+          "staminaCost": 5,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_lake_copais",
+          "name": "North Road to Lake Copais",
+          "distanceKm": 14.0,
+          "travelHours": 3.5,
+          "staminaCost": 5,
+          "terrain": "pasture",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "The ancient bronze-girded citadel founded by Phoenician prince Cadmus. Seven monolithic bronze gates pierce its mud-brick and ashlar walls, each guarded by spearmen wearing the Labdacid serpent crest. The city streets hum with nervous murmurs: the monster upon Mount Sphingion strangles every courier sent toward Delphi, and Regent Creon has promised the throne to any hero who can defeat her.",
+        "shortDescription": "The proud seven-gated acropolis of Cadmus, gripped by the terror of the Sphinx."
+      },
+      "presentNPCs": ["npc_teiresias_prophet", "npc_creon_regent"],
+      "presentItems": ["item_theban_bronze_cuirass"]
+    },
+    {
+      "id": "loc_mount_sphingion",
+      "name": "Mount Sphingion (The Sphinx's Perch)",
+      "ancientName": "Sphingion Oros (Phikion)",
+      "region": "Boeotia",
+      "recommendedLevel": 3,
+      "coordinates": { "x": 360, "y": 170 },
+      "terrain": "mountain_peak",
+      "connections": [
+        {
+          "targetLocationId": "loc_thebes_seven_gates",
+          "name": "Road Back East to Thebes",
+          "distanceKm": 8.0,
+          "travelHours": 2.5,
+          "staminaCost": 5,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_triple_way_phocis",
+          "name": "Gorgon Pass to the Triple Way",
+          "distanceKm": 10.0,
+          "travelHours": 3.0,
+          "staminaCost": 6,
+          "terrain": "mountain_trail",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "A sheer limestone precipice overlooking the narrow pass between Thebes and Delphi. Bleached bones and battered bronze shields litter the scree below. Perched high upon the jagged rock sits the Sphinx—daughter of Typhon and Echidna—her eagle wings half-spread, golden lion claws digging into the stone, staring with chilling human eyes at anyone who dares tread the pass.",
+        "shortDescription": "The chilling precipice where the riddle-demanding Sphinx perches above the road."
+      },
+      "presentNPCs": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_fountain_of_ares",
+      "name": "The Spring of Ares (Dirce)",
+      "ancientName": "Pege Areos",
+      "region": "Boeotia",
+      "recommendedLevel": 3,
+      "coordinates": { "x": 550, "y": 180 },
+      "terrain": "sacred_grove",
+      "connections": [
+        {
+          "targetLocationId": "loc_thebes_seven_gates",
+          "name": "West Gate to Thebes",
+          "distanceKm": 2.5,
+          "travelHours": 1.0,
+          "staminaCost": 2,
+          "terrain": "sacred_grove",
+          "dangerRating": 3
+        }
+      ],
+      "narrative": {
+        "overview": "A dark subterranean fountain bubbling into a mossy stone basin surrounded by ancient laurels and willows. The air smells sharply of sulfur and metallic blood. In the cavern depths behind the spring coiled the great Ismenian Dragon, offspring of Ares, whose teeth were sown by Cadmus to yield the Spartoi warriors.",
+        "shortDescription": "A moss-draped chthonic spring sacred to Ares, guarded by draconian brood."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_dragon_tooth_ares"]
+    },
+    {
+      "id": "loc_lake_copais",
+      "name": "The Reeds of Lake Copais",
+      "ancientName": "Kopais Limne",
+      "region": "Boeotia",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 430, "y": 110 },
+      "terrain": "wetlands",
+      "connections": [
+        {
+          "targetLocationId": "loc_thebes_seven_gates",
+          "name": "South Road to Thebes",
+          "distanceKm": 14.0,
+          "travelHours": 3.5,
+          "staminaCost": 5,
+          "terrain": "pasture",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_triple_way_phocis",
+          "name": "Western Fen Trail to Phocis",
+          "distanceKm": 16.0,
+          "travelHours": 4.5,
+          "staminaCost": 7,
+          "terrain": "wetlands",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "Vast, whispering expanses of towering green reeds and shallow silver water fed by the Cephissus river. Archaic Mycenaean cyclopean dikes and subterranean sinkholes (katavothres) drain the fen. Fishermen in wicker coracles caution wayfarers against the capricious water nymphs and wild boar hiding in the dense shallows.",
+        "shortDescription": "Expansive reed marshes dotted with archaic water channels and waterfowl."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_thyrsus_dionysus"]
+    },
+    {
+      "id": "loc_triple_way_phocis",
+      "name": "The Triple Way (Schiste Hodos)",
+      "ancientName": "Schiste Hodos",
+      "region": "Phocis",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 260, "y": 140 },
+      "terrain": "mountain_pass",
+      "connections": [
+        {
+          "targetLocationId": "loc_mount_sphingion",
+          "name": "Eastern Road to Mount Sphingion",
+          "distanceKm": 10.0,
+          "travelHours": 3.0,
+          "staminaCost": 6,
+          "terrain": "mountain_trail",
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_lake_copais",
+          "name": "Eastern Fen Trail to Lake Copais",
+          "distanceKm": 16.0,
+          "travelHours": 4.5,
+          "staminaCost": 7,
+          "terrain": "wetlands",
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_delphi_sanctuary",
+          "name": "Ascent of Mount Parnassus to Delphi",
+          "distanceKm": 12.0,
+          "travelHours": 3.5,
+          "staminaCost": 6,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "A fateful gorge cut through limestone where three mountain roads meet from Thebes, Daulis, and Delphi. Shaded by ancient plane trees and steep ravine cliffs, this is the very crossroads where King Laius of Thebes fell before Oedipus in fateful ignorance. The mountain wind here echoes with the inexorable doom of the Moirai.",
+        "shortDescription": "The tragic junction of three mountain roads beneath the shadow of Parnassus."
+      },
+      "presentNPCs": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_delphi_sanctuary",
+      "name": "Sanctuary of Delphi (Pytho)",
+      "ancientName": "Delphoi (Omphalos Ges)",
+      "region": "Phocis",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 180, "y": 110 },
+      "terrain": "sacred_temple",
+      "connections": [
+        {
+          "targetLocationId": "loc_triple_way_phocis",
+          "name": "Descent to the Triple Way",
+          "distanceKm": 12.0,
+          "travelHours": 3.5,
+          "staminaCost": 6,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_castalian_spring",
+          "name": "Pilgrim Path to the Castalian Spring",
+          "distanceKm": 1.5,
+          "travelHours": 0.5,
+          "staminaCost": 2,
+          "terrain": "mountain_trail",
+          "dangerRating": 0
+        },
+        {
+          "targetLocationId": "loc_corycian_cave",
+          "name": "Steep Ascent to the Corycian Cave",
+          "distanceKm": 7.0,
+          "travelHours": 2.5,
+          "staminaCost": 6,
+          "terrain": "mountain_peak",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "The Navel of the World (Omphalos) clinging to the monumental terraces of Mount Parnassus between the sheer cliffs of the Phaedriades. Doric columns of the Temple of Apollo gleam with Pentelic marble. Chthonic vapors rise from the adyton chasm beneath the golden tripod where the Pythia sits in divine trance, voicing the ambiguous prophecies of Apollo.",
+        "shortDescription": "The world-renowned panhellenic oracle of Apollo perched on Mount Parnassus."
+      },
+      "presentNPCs": ["npc_pythia_aristonike"],
+      "presentItems": ["item_omphalos_amulet"]
+    },
+    {
+      "id": "loc_castalian_spring",
+      "name": "The Castalian Spring",
+      "ancientName": "Kastalia Pege",
+      "region": "Phocis",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 140, "y": 80 },
+      "terrain": "sacred_grove",
+      "connections": [
+        {
+          "targetLocationId": "loc_delphi_sanctuary",
+          "name": "Stone Stairs to the Temple Terrace",
+          "distanceKm": 1.5,
+          "travelHours": 0.5,
+          "staminaCost": 2,
+          "terrain": "mountain_trail",
+          "dangerRating": 0
+        }
+      ],
+      "narrative": {
+        "overview": "A crystalline mountain spring rushing out of a narrow ravine between the Shining Rocks of Delphi. Pilgrims and suppliants immerse their heads in the stone basins to cleanse spiritual pollution (miasma) before daring to approach Apollo's temple. The cold water sparkles like liquid silver and smells of wild mint and mountain laurel.",
+        "shortDescription": "Sacred purification spring between the sheer cliffs of Delphi."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_castalian_water_phial", "item_delphic_laurel_wreath"]
+    },
+    {
+      "id": "loc_corycian_cave",
+      "name": "The Corycian Cave of the Nymphs",
+      "ancientName": "Korykion Antron",
+      "region": "Phocis",
+      "recommendedLevel": 3,
+      "coordinates": { "x": 200, "y": 50 },
+      "terrain": "limestone_cave",
+      "connections": [
+        {
+          "targetLocationId": "loc_delphi_sanctuary",
+          "name": "Descent to the Delphic Sanctuary",
+          "distanceKm": 7.0,
+          "travelHours": 2.5,
+          "staminaCost": 6,
+          "terrain": "mountain_peak",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "An immense subterranean cathedral high on the plateau of Parnassus, illuminated by soft shafts of daylight filtering through roof fissures. Massive stalactites resemble fluted temple pillars. Dedicated since the Bronze Age to goat-footed Pan and the Thyiad nymphs, the cavern rings with faint ghostly echoes of reed pipes and swirling revelry.",
+        "shortDescription": "Immense highland cave of stalactites sacred to Pan and the wild Thyiad nymphs."
+      },
+      "presentNPCs": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_mycenae_lion_gate",
+      "name": "Mycenae of the Gold (The Lion Gate)",
+      "ancientName": "Mykenai Polykhrysos",
+      "region": "Argolis",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 280, "y": 520 },
+      "terrain": "city_acropolis",
+      "connections": [
+        {
+          "targetLocationId": "loc_plataea_outskirts",
+          "name": "Isthmian Highway North to Boeotia",
+          "distanceKm": 30.0,
+          "travelHours": 6.0,
+          "staminaCost": 8,
+          "terrain": "paved_road",
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_nemean_valley",
+          "name": "Northwest Ridge Path to Nemea",
+          "distanceKm": 9.0,
+          "travelHours": 2.5,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_epidaurus_asclepeion",
+          "name": "Coastal Road East to Epidaurus",
+          "distanceKm": 24.0,
+          "travelHours": 5.0,
+          "staminaCost": 6,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_lernaean_swamp",
+          "name": "South Track toward the Gulf of Lerna",
+          "distanceKm": 16.0,
+          "travelHours": 4.0,
+          "staminaCost": 5,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 3
+        }
+      ],
+      "narrative": {
+        "overview": "The cyclopean stronghold of Perseus and Agamemnon, built of immense limestone boulders fitted without mortar. Above the monumental lintel of the main entrance, two rampant lionesses carved in relief flank a sacred pillar. Within the acropolis lie the royal shaft graves and beehive tholos tombs rich in gold funerary masks, bronze rapiers, and echoes of the Trojan expedition.",
+        "shortDescription": "The imposing cyclopean citadel of Agamemnon guarded by the monumental Lion Gate."
+      },
+      "presentNPCs": ["npc_herakles_traveler"],
+      "presentItems": ["item_cyclopean_bronze_spear"]
+    },
+    {
+      "id": "loc_nemean_valley",
+      "name": "The Valley of Nemea",
+      "ancientName": "Nemea",
+      "region": "Argolis",
+      "recommendedLevel": 3,
+      "coordinates": { "x": 220, "y": 490 },
+      "terrain": "rocky_scrubland",
+      "connections": [
+        {
+          "targetLocationId": "loc_mycenae_lion_gate",
+          "name": "Southeast Trail to Mycenae",
+          "distanceKm": 9.0,
+          "travelHours": 2.5,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_mount_lykaion",
+          "name": "Highland Road West to Mount Lykaion",
+          "distanceKm": 22.0,
+          "travelHours": 5.5,
+          "staminaCost": 7,
+          "terrain": "mountain_trail",
+          "dangerRating": 3
+        }
+      ],
+      "narrative": {
+        "overview": "A rugged inland valley framed by low oak-crested ridges. At its center stands the sanctuary of Nemean Zeus with its limestone columns. In the surrounding thorn thickets and limestone grottos of Mount Tretos dwelt the invulnerable Nemean Lion—spawn of Typhon and Echidna—whose golden pelt turned aside all bronze arrows and spears.",
+        "shortDescription": "Rugged oak valley sacred to Zeus, ancient stalking ground of the invulnerable Lion."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_nemean_pelt_fragment"]
+    },
+    {
+      "id": "loc_lernaean_swamp",
+      "name": "The Swamps of Lerna",
+      "ancientName": "Lerne (Alcyonia Limne)",
+      "region": "Argolis",
+      "recommendedLevel": 4,
+      "coordinates": { "x": 260, "y": 590 },
+      "terrain": "wetlands",
+      "connections": [
+        {
+          "targetLocationId": "loc_mycenae_lion_gate",
+          "name": "North Track to Mycenae",
+          "distanceKm": 16.0,
+          "travelHours": 4.0,
+          "staminaCost": 5,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_cape_taenarum",
+          "name": "South Track to Cape Taenarum",
+          "distanceKm": 35.0,
+          "travelHours": 7.5,
+          "staminaCost": 9,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        }
+      ],
+      "narrative": {
+        "overview": "A treacherous coastal fen fed by the fathomless Lake Alcyonia, through which Dionysus was said to have descended into the Underworld. Stagnant green water bubbles with foul miasma beneath sprawling plane trees. Here in the reed-choked mud lurks the Lernaean Hydra—the venomous nine-headed draconic terror whose breath wilts crops and rots mortal flesh.",
+        "shortDescription": "A foul sulfurous swamp reputed to hide an entrance to the Underworld and the multi-headed Hydra."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_hydra_bile_vial"]
+    },
+    {
+      "id": "loc_epidaurus_asclepeion",
+      "name": "Sanctuary of Asclepius at Epidaurus",
+      "ancientName": "Asklepieion Epidauroy",
+      "region": "Argolis",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 410, "y": 560 },
+      "terrain": "sacred_temple",
+      "connections": [
+        {
+          "targetLocationId": "loc_mycenae_lion_gate",
+          "name": "West Road toward Mycenae",
+          "distanceKm": 24.0,
+          "travelHours": 5.0,
+          "staminaCost": 6,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "A serene healing precinct set within an amphitheater of pine-covered hills. In the abaton dormitories, the sick sleep upon fleece blankets to receive healing visions from Asclepius in their dreams (enkoimesis). Harmless golden-yellow serpents glide peacefully across marble courtyards, sacred to the God of Medicine.",
+        "shortDescription": "The world-famous sanctuary of divine healing and sacred serpents of Asclepius."
+      },
+      "presentNPCs": ["npc_epidaurus_iatros"],
+      "presentItems": ["item_salve_asclepius"]
+    },
+    {
+      "id": "loc_mount_lykaion",
+      "name": "Mount Lykaion (The Arcadian Peak)",
+      "ancientName": "Lykaion Oros",
+      "region": "Arcadia",
+      "recommendedLevel": 3,
+      "coordinates": { "x": 140, "y": 540 },
+      "terrain": "mountain_peak",
+      "connections": [
+        {
+          "targetLocationId": "loc_nemean_valley",
+          "name": "Highland Trail East to Nemea",
+          "distanceKm": 22.0,
+          "travelHours": 5.5,
+          "staminaCost": 7,
+          "terrain": "mountain_trail",
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_cape_taenarum",
+          "name": "Laconian Trail South to Taenarum",
+          "distanceKm": 28.0,
+          "travelHours": 6.5,
+          "staminaCost": 8,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        }
+      ],
+      "narrative": {
+        "overview": "The mysterious, storm-battered mountain of Arcadia where Zeus Lykaios and Pan were worshipped with primal rites. Upon the ash altar at the summit, ancient tradition tells of King Lycaon serving human flesh to Zeus, transformed into a feral werewolf for his transgression. The surrounding mountain woods are roamed by savage wolves and rustic hunters.",
+        "shortDescription": "The wild, thunderous peak of Arcadia where ancient werewolf rites and Pan are venerated."
+      },
+      "presentNPCs": ["npc_atalanta_huntress"],
+      "presentItems": ["item_boar_tusk_helmet", "item_pan_syrinx_pipes"]
+    },
+    {
+      "id": "loc_cape_taenarum",
+      "name": "Cape Taenarum (Cave of Hades)",
+      "ancientName": "Tainaron",
+      "region": "Laconia",
+      "recommendedLevel": 4,
+      "coordinates": { "x": 200, "y": 620 },
+      "terrain": "limestone_cave",
+      "connections": [
+        {
+          "targetLocationId": "loc_mount_lykaion",
+          "name": "Highland Trail North to Arcadia",
+          "distanceKm": 28.0,
+          "travelHours": 6.5,
+          "staminaCost": 8,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_lernaean_swamp",
+          "name": "Coastal Trail North to Lerna",
+          "distanceKm": 35.0,
+          "travelHours": 7.5,
+          "staminaCost": 9,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        }
+      ],
+      "narrative": {
+        "overview": "The southernmost tip of the Peloponnese where the black rocks plunge violently into the wine-dark sea. In the sea cliffs opens a gloomy subterranean cavern—the gate through which Herakles dragged the three-headed hound Kerberos up into the sunlight. The air is icy cold and carries the solemn smell of asphodel and river mist from the Styx.",
+        "shortDescription": "The southernmost sea cliff cavern where an entrance descends directly to Hades."
+      },
+      "presentNPCs": ["npc_chiron_mentor", "npc_charon_ferryman_shade"],
+      "presentItems": ["item_charon_obol_token"]
     }
   ]
 }

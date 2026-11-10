@@ -67,6 +67,49 @@
       }
     },
     {
+      "id": "item_cyclopean_bronze_spear",
+      "name": "Cyclopean Heavy Dory",
+      "ancientGreek": "δόρυ Κυκλώπειον",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "exceptional",
+      "weightKg": 3.8,
+      "valueDrachmae": 65,
+      "stats": {
+        "damageMin": 7,
+        "damageMax": 14,
+        "damageType": "piercing",
+        "reachBonus": 2,
+        "attributeRequirement": { "strength": 15 }
+      },
+      "description": "A massive ash-wood spear forged with an archaic bronze blade as wide as a spade, recovered from the Mycenaean royal shaft graves.",
+      "mythologicalLore": {
+        "source": "Pausanias 2.16.5; Homer, Iliad 19.387",
+        "note": "The heavy spears of the Heroic Age, too ponderous for later generations of mortals to lift."
+      }
+    },
+    {
+      "id": "item_thyrsus_dionysus",
+      "name": "Fennel Thyrsus of the Maenads",
+      "ancientGreek": "θύρσος",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "consecrated",
+      "weightKg": 1.5,
+      "valueDrachmae": 50,
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 9,
+        "damageType": "bludgeoning",
+        "charmBonus": 2
+      },
+      "description": "A giant fennel wand spiraled with ivy and topped with an aromatic pinecone, capable of striking with supernatural Dionysian ecstasy.",
+      "mythologicalLore": {
+        "source": "Euripides, Bacchae 113-115; Ovid, Metamorphoses 3.667",
+        "note": "The sacred wand of the bacchants, dripping honey and striking with divine frenzy."
+      }
+    },
+    {
       "id": "item_aspis_shield_001",
       "name": "Argive Aspis Shield",
       "ancientGreek": "ἀσπίς",
@@ -80,7 +123,7 @@
         "blockChance": 0.25,
         "attributeRequirement": { "strength": 13 }
       },
-      "description": "A deep, bowl-shaped wooden shield faced with beaten bronze sheet. Fitted with a revolutionary central forearm porpax strap and antilabe handgrip.",
+      "description": "A deep, bowl-shaped wooden shield faced with beaten bronze sheet. Fitted with a central forearm porpax strap and antilabe handgrip.",
       "mythologicalLore": {
         "source": "Herodotus, Histories 1.171",
         "note": "The Carians invented shield grips and blazons, perfected by Argive armories."
@@ -103,6 +146,63 @@
       "mythologicalLore": {
         "source": "Homer, Iliad 2.529",
         "note": "Ajax son of Oileus fought renowned in a linen corslet rather than heavy bronze."
+      }
+    },
+    {
+      "id": "item_theban_bronze_cuirass",
+      "name": "Muscled Bronze Cuirass of Thebes",
+      "ancientGreek": "θώραξ στατός",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "exceptional",
+      "weightKg": 9.5,
+      "valueDrachmae": 85,
+      "stats": {
+        "defenseBonus": 5,
+        "speedPenalty": -1
+      },
+      "description": "Two interlocking plates of heavy bronze hammered to mimic an athletic heroic torso, bearing the embossed crest of the Kadmeian dragon.",
+      "mythologicalLore": {
+        "source": "Pausanias 9.17.2; Homer, Iliad 13.371",
+        "note": "The bell-shaped bronze corslet worn by the champions of Boeotia and Mycenae."
+      }
+    },
+    {
+      "id": "item_nemean_pelt_fragment",
+      "name": "Fragment of the Nemean Lion's Pelt",
+      "ancientGreek": "λεοντῆ",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "consecrated",
+      "weightKg": 3.0,
+      "valueDrachmae": 150,
+      "stats": {
+        "defenseBonus": 4,
+        "damageReduction": 2
+      },
+      "description": "A thick mantle fashioned from a flank of the Nemean Lion's golden hide. Bronze blades glide across its bristles without leaving a scratch.",
+      "mythologicalLore": {
+        "source": "Hesiod, Theogony 327; Apollodorus 2.5.1",
+        "note": "Herakles flayed the beast using its own razor talons, wearing the pelt as an impenetrable aegis."
+      }
+    },
+    {
+      "id": "item_boar_tusk_helmet",
+      "name": "Mycenaean Boar-Tusk Helmet",
+      "ancientGreek": "κυνέη",
+      "category": "armor",
+      "slot": "head",
+      "rarity": "exceptional",
+      "weightKg": 1.8,
+      "valueDrachmae": 55,
+      "stats": {
+        "defenseBonus": 3,
+        "moraleBonus": 2
+      },
+      "description": "A conical leather cap layered with dozens of split and polished wild boar tusks, lined with soft wool felt.",
+      "mythologicalLore": {
+        "source": "Homer, Iliad 10.261-265",
+        "note": "Autolycus stole this helmet from Amyntor; Odysseus wore it on the nocturnal reconnaissance of the Trojan camp."
       }
     },
     {
@@ -141,6 +241,139 @@
       "mythologicalLore": {
         "source": "Philostratus, Imagines 1.28",
         "note": "The cloak of Hermes and the Attic ephebes."
+      }
+    },
+    {
+      "id": "item_delphic_laurel_wreath",
+      "name": "Consecrated Laurel of Tempe",
+      "ancientGreek": "στέφανος δάφνης",
+      "category": "relic",
+      "slot": "head",
+      "rarity": "consecrated",
+      "weightKg": 0.2,
+      "valueDrachmae": 75,
+      "stats": {
+        "wisdomBonus": 1,
+        "miasmaResistance": 10
+      },
+      "description": "A woven crown of sacred laurel gathered from the Vale of Tempe where Apollo purified himself after slaying Python.",
+      "mythologicalLore": {
+        "source": "Pausanias 10.5.9; Callimachus, Hymn to Delos",
+        "note": "Worn by the victors of the Pythian Games, guarding the mind from hubris and madness."
+      }
+    },
+    {
+      "id": "item_omphalos_amulet",
+      "name": "Pendant of the Sacred Omphalos",
+      "ancientGreek": "ὀμφαλός",
+      "category": "relic",
+      "slot": "accessory",
+      "rarity": "consecrated",
+      "weightKg": 0.3,
+      "valueDrachmae": 80,
+      "stats": {
+        "favourApollo": 2,
+        "perceptionBonus": 1
+      },
+      "description": "A small carved marble pendant depicting the knotted woolen fillets (agrenon) binding the Navel of the Earth at Delphi.",
+      "mythologicalLore": {
+        "source": "Pausanias 10.16.3; Strabo 9.3.6",
+        "note": "The stone where the two eagles released by Zeus from the ends of the earth met in flight."
+      }
+    },
+    {
+      "id": "item_pan_syrinx_pipes",
+      "name": "Seven-Reed Syrinx of Pan",
+      "ancientGreek": "σῦριγξ",
+      "category": "relic",
+      "slot": "accessory",
+      "rarity": "consecrated",
+      "weightKg": 0.4,
+      "valueDrachmae": 90,
+      "stats": {
+        "panicEffect": true,
+        "charismaBonus": 1
+      },
+      "description": "A rustic shepherd's panpipe crafted from seven reeds of descending length joined with beeswax, capable of playing haunting melodies.",
+      "mythologicalLore": {
+        "source": "Ovid, Metamorphoses 1.689-712; Pausanias 8.36.8",
+        "note": "Pan formed the syrinx from the transformed water nymph Syrinx upon the river Ladon."
+      }
+    },
+    {
+      "id": "item_charon_obol_token",
+      "name": "Consecrated Silver Obol of the Styx",
+      "ancientGreek": "ὀβολὸς τοῦ Χάρωνος",
+      "category": "relic",
+      "slot": "accessory",
+      "rarity": "consecrated",
+      "weightKg": 0.1,
+      "valueDrachmae": 120,
+      "stats": {
+        "underworldImmunity": true,
+        "moraleBonus": 3
+      },
+      "description": "An archaic silver obol stamped with the Gorgoneion, blessed to pay passage across the River Acheron.",
+      "mythologicalLore": {
+        "source": "Lucian, On Mourning 10; Aristophanes, Frogs 140",
+        "note": "Placed in the mouth of deceased mortals so Charon would row them across the Underworld waters."
+      }
+    },
+    {
+      "id": "item_dragon_tooth_ares",
+      "name": "Dragon's Tooth of Ares",
+      "ancientGreek": "ὀδοὺς δράκοντος",
+      "category": "relic",
+      "slot": "inventory",
+      "rarity": "exceptional",
+      "weightKg": 0.5,
+      "valueDrachmae": 110,
+      "stats": {
+        "summonSpartoi": true
+      },
+      "description": "A serrated, fossilized ivory fang taken from the jaws of the Ismenian Dragon slain by Cadmus at the Spring of Ares.",
+      "mythologicalLore": {
+        "source": "Apollodorus 3.4.1; Euripides, Phoenissae 657",
+        "note": "Sown into freshly furrowed earth, it summons armed earth-born warriors (Spartoi) to fight alongside the bearer."
+      }
+    },
+    {
+      "id": "item_hydra_bile_vial",
+      "name": "Vial of Lernaean Hydra Venom",
+      "ancientGreek": "χολὴ Ὕδρας",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "exceptional",
+      "weightKg": 0.2,
+      "valueDrachmae": 95,
+      "stats": {
+        "weaponPoisonDamage": 6,
+        "poisonTurns": 3
+      },
+      "description": "An alabaster vial of thick, pitch-black venom scraped from the gall of the Lernaean Hydra, whose fumes are deadly to gods and men.",
+      "mythologicalLore": {
+        "source": "Apollodorus 2.5.2; Sophocles, Women of Trachis",
+        "note": "Herakles tipped his arrows with this venom; even Chiron could not heal its excruciating burning."
+      }
+    },
+    {
+      "id": "item_castalian_water_phial",
+      "name": "Phial of Castalian Spring Water",
+      "ancientGreek": "Καστάλιον ὕδωρ",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "consecrated",
+      "weightKg": 0.4,
+      "valueDrachmae": 25,
+      "stats": {
+        "restoreHealth": 10,
+        "restoreStamina": 10,
+        "purgeMiasma": true
+      },
+      "description": "Pure spring water gathered before sunrise from the sacred cleft between the Phaedriades rocks at Delphi.",
+      "mythologicalLore": {
+        "source": "Pausanias 10.8.9; Euripides, Ion 94",
+        "note": "Used by the Pythian priesthood to purify ritual impurity (miasma) and clear the prophetic mind."
       }
     },
     {

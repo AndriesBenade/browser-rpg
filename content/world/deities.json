@@ -56,6 +56,62 @@
         { "author": "Callimachus", "work": "Hymn to Artemis", "passage": "Hymn 3" }
       ],
       "description": "Twin sister of Apollo, Artemis roams the untamed ridges of Cithaeron and Taygetos with her silver bow and pack of swift hounds."
+    },
+    {
+      "id": "deity_poseidon",
+      "name": "Poseidon",
+      "ancientGreek": "Ποσειδῶν",
+      "epithets": ["Enosichthon (Earth-Shaker)", "Asphaleios (The Securer)", "Hippios (Lord of Horses)", "Pelagaios (Of the Open Sea)"],
+      "domain": "The oceans, storms, earthquakes, freshwater springs, horses",
+      "symbols": ["Bronze trident", "Horse", "Bull", "Dolphin"],
+      "sacredAnimals": ["Horse", "Black Bull", "Dolphin"],
+      "primarySources": [
+        { "author": "Homer", "work": "Iliad", "passage": "Book 13.10-38" },
+        { "author": "Hesiod", "work": "Theogony", "passage": "lines 456-457" }
+      ],
+      "description": "The formidable Earth-Shaker whose trident cleaves limestone to summon freshwater springs or shatter islands with tremors. Feared by seafarers and builders alike."
+    },
+    {
+      "id": "deity_dionysus",
+      "name": "Dionysus",
+      "ancientGreek": "Διόνυσος",
+      "epithets": ["Bromios (The Roaring)", "Zagreus (The Reborn)", "Eleuthereus (The Liberator)", "Lysios (Releaser from Care)"],
+      "domain": "Wine, ritual madness, religious ecstasy, theatre, rebirth",
+      "symbols": ["Thyrsus wand", "Drinking horn (Kantharos)", "Grapevine", "Ivy wreath"],
+      "sacredAnimals": ["Leopard", "Panther", "Serpent", "Bull"],
+      "primarySources": [
+        { "author": "Euripides", "work": "Bacchae", "passage": "lines 1-63" },
+        { "author": "Pausanias", "work": "Description of Greece", "passage": "Book 9.12.4" }
+      ],
+      "description": "Born at Thebes of mortal Semele and Zeus, Dionysus brings the divine madness of the vine, shattering mortal pride and releasing souls from dread."
+    },
+    {
+      "id": "deity_demeter",
+      "name": "Demeter",
+      "ancientGreek": "Δημήτηρ",
+      "epithets": ["Thesmophoros (Law-Bringer)", "Chthonia (Of the Earth)", "Anesidora (Sender of Gifts)", "Karpophoros (Bringer of Fruit)"],
+      "domain": "Agriculture, harvest, fertility of the earth, sacred law, Eleusinian mysteries",
+      "symbols": ["Ears of golden wheat", "Cornucopia", "Flaming torch", "Scepter"],
+      "sacredAnimals": ["Pig (Sacred offering)", "Serpent", "Gecko"],
+      "primarySources": [
+        { "author": "Homer", "work": "Homeric Hymn to Demeter", "passage": "Hymn 2" },
+        { "author": "Hesiod", "work": "Works and Days", "passage": "lines 465-467" }
+      ],
+      "description": "Goddess of the golden grain and the sacred Eleusinian rites, whose grief for her abducted daughter Persephone plunges the world into barren winter."
+    },
+    {
+      "id": "deity_hades",
+      "name": "Hades",
+      "ancientGreek": "Ἅιδης",
+      "epithets": ["Plouton (The Rich / Giver of Wealth)", "Polydegmon (The Host of Many)", "Aidelos (The Unseen)", "Klymenos (The Renowned)"],
+      "domain": "The Underworld, the realm of shades, subterranean mineral wealth, funeral rites",
+      "symbols": ["Cap of Invisibility (Helm of Hades)", "Two-pronged bident", "Keys of the Underworld", "Narcissus flower"],
+      "sacredAnimals": ["Cerberus", "Black Sheep", "Screech Owl"],
+      "primarySources": [
+        { "author": "Homer", "work": "Iliad", "passage": "Book 9.158" },
+        { "author": "Pausanias", "work": "Description of Greece", "passage": "Book 6.25.2 (Only temple of Hades at Elis)" }
+      ],
+      "description": "Ruler of the silent shores of Acheron and Tartarus. Unbending and inexorable, he is not evil, but the just sovereign who ensures no mortal escapes the boundaries of fate."
     }
   ]
 }

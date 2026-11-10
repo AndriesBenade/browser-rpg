@@ -2,8 +2,10 @@
   "creatures": [
     {
       "id": "creature_cithaeron_wolf",
-      "name": "Cithaeronian Wolf",
+      "name": "Cithaeronian Timber Wolf",
       "ancientGreek": "λύκος",
+      "tier": 1,
+      "xpReward": 40,
       "mythologicalSource": {
         "author": "Pausanias",
         "work": "Description of Greece",
@@ -47,6 +49,8 @@
       "id": "creature_shadow_prowler",
       "name": "Chthonic Cave Beast",
       "ancientGreek": "θὴρ χθόνιος",
+      "tier": 1,
+      "xpReward": 75,
       "mythologicalSource": {
         "author": "Hesiod",
         "work": "Theogony",
@@ -84,6 +88,480 @@
       ],
       "loot": [
         { "itemId": "item_salve_asclepius", "chance": 0.5 }
+      ]
+    },
+    {
+      "id": "creature_parnassian_satyr",
+      "name": "Wild Parnassian Satyr",
+      "ancientGreek": "σάτυρος",
+      "tier": 2,
+      "xpReward": 85,
+      "mythologicalSource": {
+        "author": "Strabo",
+        "work": "Geography",
+        "passage": "Book 10.3.11",
+        "notes": "Wild nature daimones with horse-tails or goat legs accompanying Dionysus through Parnassian forests."
+      },
+      "level": 2,
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "morale": 12
+      },
+      "attributes": {
+        "strength": 13,
+        "agility": 15,
+        "endurance": 13,
+        "perception": 14
+      },
+      "armorClass": 13,
+      "actions": [
+        {
+          "name": "Olive Crook Strike",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "bludgeoning",
+          "description": "Swings a heavy knotted olive-wood crook with frantic drunken vigor."
+        },
+        {
+          "name": "Hoof Kick",
+          "attackBonus": 5,
+          "damage": "1d4+3",
+          "damageType": "bludgeoning",
+          "description": "Spins on one cloven hoof and kicks backward with bone-cracking force."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_clay_aryballos_wine", "chance": 0.6 }
+      ]
+    },
+    {
+      "id": "creature_stymphalian_bird",
+      "name": "Stymphalian Razor-Bird",
+      "ancientGreek": "Στυμφαλὶς ὄρνις",
+      "tier": 2,
+      "xpReward": 90,
+      "mythologicalSource": {
+        "author": "Pausanias",
+        "work": "Description of Greece",
+        "passage": "Book 8.22.4",
+        "notes": "Man-eating raptors consecrated to Ares inhabiting the Arcadian marsh with bronze beaks and dart-like feathers."
+      },
+      "level": 2,
+      "vitals": {
+        "health": 22,
+        "maxHealth": 22,
+        "morale": 11
+      },
+      "attributes": {
+        "strength": 11,
+        "agility": 16,
+        "endurance": 12,
+        "perception": 16
+      },
+      "armorClass": 14,
+      "actions": [
+        {
+          "name": "Bronze Beak Pierce",
+          "attackBonus": 5,
+          "damage": "1d8+3",
+          "damageType": "piercing",
+          "description": "Dives from the grey sky, plunging its metallic beak straight through shield leather."
+        },
+        {
+          "name": "Feather Volley",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "piercing",
+          "description": "Snaps its wings, unleashing a fan of razor-edged bronze quills."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_bronze_dagger", "chance": 0.4 }
+      ]
+    },
+    {
+      "id": "creature_kabeiroi_thrall",
+      "name": "Kabeiroi Bronze Automaton",
+      "ancientGreek": "χάλκεος θεράπων",
+      "tier": 2,
+      "xpReward": 95,
+      "mythologicalSource": {
+        "author": "Pausanias",
+        "work": "Description of Greece",
+        "passage": "Book 9.25.5",
+        "notes": "The mysterious mystery sanctuary of the Kabeiroi near Thebes, renowned for metalcraft and subterranean fire."
+      },
+      "level": 3,
+      "vitals": {
+        "health": 32,
+        "maxHealth": 32,
+        "morale": 20
+      },
+      "attributes": {
+        "strength": 16,
+        "agility": 9,
+        "endurance": 16,
+        "perception": 10
+      },
+      "armorClass": 15,
+      "actions": [
+        {
+          "name": "Molten Hammer",
+          "attackBonus": 5,
+          "damage": "1d10+3",
+          "damageType": "bludgeoning",
+          "description": "Slams down a glowing bronze fist forged in sacred subterranean kilns."
+        },
+        {
+          "name": "Smoldering Steam Vent",
+          "attackBonus": 4,
+          "damage": "1d8+2",
+          "damageType": "fire",
+          "description": "Unleashes a scalding blast of forge steam from iron chest grates."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_theban_bronze_cuirass", "chance": 0.2 }
+      ]
+    },
+    {
+      "id": "creature_lykaion_werewolf",
+      "name": "The Lycanthrope of Mount Lykaion",
+      "ancientGreek": "λυκάνθρωπος",
+      "tier": 3,
+      "xpReward": 125,
+      "mythologicalSource": {
+        "author": "Plato",
+        "work": "Republic",
+        "passage": "Book 8.565d; Pausanias 8.38.1",
+        "notes": "Ancient Arcadian wolf-cult where men who tasted sacrificial flesh were transformed into wolves for nine years."
+      },
+      "level": 3,
+      "vitals": {
+        "health": 36,
+        "maxHealth": 36,
+        "morale": 16
+      },
+      "attributes": {
+        "strength": 16,
+        "agility": 15,
+        "endurance": 15,
+        "perception": 16
+      },
+      "armorClass": 14,
+      "actions": [
+        {
+          "name": "Feral Throat-Rip",
+          "attackBonus": 6,
+          "damage": "1d10+3",
+          "damageType": "slashing",
+          "description": "Leaps forward on two legs and claws at your helmet gorget with lupine frenzy."
+        },
+        {
+          "name": "Bloodcurdling Howl",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "psychic",
+          "description": "Unleashes the terrifying scream of a cursed king, shaking mortal resolve."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_salve_asclepius", "chance": 0.4 }
+      ]
+    },
+    {
+      "id": "creature_erymanthian_tusker",
+      "name": "Boar of Mount Erymanthos",
+      "ancientGreek": "Ἐρυμάνθιος κάπρος",
+      "tier": 3,
+      "xpReward": 130,
+      "mythologicalSource": {
+        "author": "Apollodorus",
+        "work": "Bibliotheca",
+        "passage": "Book 2.5.4",
+        "notes": "The colossal tusked boar that ravaged the highland fields of Psophis until Herakles drove it into deep snow."
+      },
+      "level": 3,
+      "vitals": {
+        "health": 40,
+        "maxHealth": 40,
+        "morale": 15
+      },
+      "attributes": {
+        "strength": 17,
+        "agility": 11,
+        "endurance": 17,
+        "perception": 12
+      },
+      "armorClass": 14,
+      "actions": [
+        {
+          "name": "Goring Tusk Thrust",
+          "attackBonus": 6,
+          "damage": "1d10+4",
+          "damageType": "piercing",
+          "description": "Lowers its snout and charges forward with curving ivory tusks capable of splitting oak."
+        },
+        {
+          "name": "Trampling Charge",
+          "attackBonus": 5,
+          "damage": "2d6+3",
+          "damageType": "bludgeoning",
+          "description": "Stamps into the dirt and crashes its massive bristling bulk directly into you."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_boar_tusk_helmet", "chance": 0.3 }
+      ]
+    },
+    {
+      "id": "creature_harpy_snatcher",
+      "name": "Harpy of the Whirlwind (Podarge)",
+      "ancientGreek": "Ἅρπυια",
+      "tier": 3,
+      "xpReward": 120,
+      "mythologicalSource": {
+        "author": "Hesiod",
+        "work": "Theogony",
+        "passage": "lines 267-269; Homer Odyssey 20.77",
+        "notes": "Winged daimones of sudden gusts and storms that snatch away food and souls with filthy talons."
+      },
+      "level": 3,
+      "vitals": {
+        "health": 28,
+        "maxHealth": 28,
+        "morale": 13
+      },
+      "attributes": {
+        "strength": 12,
+        "agility": 17,
+        "endurance": 13,
+        "perception": 15
+      },
+      "armorClass": 14,
+      "actions": [
+        {
+          "name": "Snatching Talons",
+          "attackBonus": 6,
+          "damage": "1d8+3",
+          "damageType": "slashing",
+          "description": "Swoops in screaming with vulture claws raking your shoulders and head."
+        },
+        {
+          "name": "Blinding Whirlwind",
+          "attackBonus": 5,
+          "damage": "1d6+2",
+          "damageType": "bludgeoning",
+          "description": "Beats its wings furiously, throwing dust and gravel into your eyes."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_dried_figs_bread", "chance": 0.5 }
+      ]
+    },
+    {
+      "id": "creature_empousa_chthonia",
+      "name": "Empousa the Blood-Drinker",
+      "ancientGreek": "Ἔμπουσα",
+      "tier": 3,
+      "xpReward": 140,
+      "mythologicalSource": {
+        "author": "Aristophanes",
+        "work": "Frogs",
+        "passage": "lines 285-305; Philostratus Life of Apollonius 4.25",
+        "notes": "Chthonic phantom attendant of Hecate with one bronze leg and one donkey leg, shape-shifting to devour wayfarers."
+      },
+      "level": 3,
+      "vitals": {
+        "health": 34,
+        "maxHealth": 34,
+        "morale": 16
+      },
+      "attributes": {
+        "strength": 14,
+        "agility": 16,
+        "endurance": 14,
+        "perception": 15
+      },
+      "armorClass": 14,
+      "actions": [
+        {
+          "name": "Bronze Leg Kick",
+          "attackBonus": 6,
+          "damage": "1d8+3",
+          "damageType": "bludgeoning",
+          "description": "Strikes out with its gleaming bronze leg with ringing metallic power."
+        },
+        {
+          "name": "Vampiric Drain",
+          "attackBonus": 5,
+          "damage": "1d8+2",
+          "damageType": "necrotic",
+          "description": "Sinks spectral fangs into flesh, draining life and healing itself."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_charon_obol_token", "chance": 0.4 }
+      ]
+    },
+    {
+      "id": "creature_sphinx_thebes",
+      "name": "The Sphinx of Thebes",
+      "ancientGreek": "Σφίγξ (Φίξ)",
+      "tier": 4,
+      "xpReward": 250,
+      "mythologicalSource": {
+        "author": "Hesiod",
+        "work": "Theogony",
+        "passage": "lines 326-327; Apollodorus 3.5.8",
+        "notes": "Spawn of Typhon and Echidna, with the face of a woman, body of a lion, serpent tail, and eagle wings, strangling those who cannot answer her riddle."
+      },
+      "level": 4,
+      "vitals": {
+        "health": 55,
+        "maxHealth": 55,
+        "morale": 20
+      },
+      "attributes": {
+        "strength": 18,
+        "agility": 16,
+        "endurance": 17,
+        "perception": 18
+      },
+      "armorClass": 16,
+      "actions": [
+        {
+          "name": "Strangling Lion Pounce",
+          "attackBonus": 7,
+          "damage": "2d8+4",
+          "damageType": "bludgeoning",
+          "description": "Leaps from the high limestone boulder, crushing down with the full weight of a golden lioness."
+        },
+        {
+          "name": "Eagle Talon Rake",
+          "attackBonus": 7,
+          "damage": "1d10+4",
+          "damageType": "slashing",
+          "description": "Rakes iron talons across the shield, shattering bronze rims."
+        },
+        {
+          "name": "Terrifying Enigma Gaze",
+          "attackBonus": 6,
+          "damage": "1d8+3",
+          "damageType": "psychic",
+          "description": "Her piercing amber human eyes paralyze your limbs with supernatural dread."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_theban_bronze_cuirass", "chance": 1.0 },
+        { "itemId": "item_salve_asclepius", "chance": 0.8 }
+      ]
+    },
+    {
+      "id": "creature_drakon_ares",
+      "name": "The Ismenian Dragon of Ares",
+      "ancientGreek": "Δράκων Ἰσμήνιος",
+      "tier": 4,
+      "xpReward": 280,
+      "mythologicalSource": {
+        "author": "Ovid",
+        "work": "Metamorphoses",
+        "passage": "Book 3.28-49; Euripides Phoenissae 657-675",
+        "notes": "The gigantic crested serpent guarding the spring of Ares at Thebes, possessing fire in its eyes and triple rows of venomous teeth."
+      },
+      "level": 4,
+      "vitals": {
+        "health": 60,
+        "maxHealth": 60,
+        "morale": 20
+      },
+      "attributes": {
+        "strength": 19,
+        "agility": 14,
+        "endurance": 18,
+        "perception": 16
+      },
+      "armorClass": 16,
+      "actions": [
+        {
+          "name": "Venomous Triple-Bite",
+          "attackBonus": 7,
+          "damage": "2d8+4",
+          "damageType": "piercing",
+          "description": "Strikes like a lightning bolt from the cavern, clamping triple rows of dripping fangs."
+        },
+        {
+          "name": "Serpentine Coils",
+          "attackBonus": 6,
+          "damage": "2d6+4",
+          "damageType": "bludgeoning",
+          "description": "Wraps massive bronze-scaled coils around your torso, squeezing breath from your lungs."
+        },
+        {
+          "name": "Miasmic Venom Breath",
+          "attackBonus": 6,
+          "damage": "1d10+3",
+          "damageType": "poison",
+          "description": "Exhales a hissing green cloud of toxic chthonic vapor."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_dragon_tooth_ares", "chance": 1.0 },
+        { "itemId": "item_salve_asclepius", "chance": 0.8 }
+      ]
+    },
+    {
+      "id": "creature_lernaean_hydra",
+      "name": "The Lernaean Hydra",
+      "ancientGreek": "Λερναία Ὕδρα",
+      "tier": 5,
+      "xpReward": 400,
+      "mythologicalSource": {
+        "author": "Hesiod",
+        "work": "Theogony",
+        "passage": "lines 313-318; Apollodorus 2.5.2",
+        "notes": "The multi-headed water serpent of Lerna reared by Hera to test Herakles; whenever one head was cut off, two grew in its place."
+      },
+      "level": 5,
+      "vitals": {
+        "health": 75,
+        "maxHealth": 75,
+        "morale": 20
+      },
+      "attributes": {
+        "strength": 20,
+        "agility": 14,
+        "endurance": 20,
+        "perception": 17
+      },
+      "armorClass": 17,
+      "actions": [
+        {
+          "name": "Multi-Headed Hydra Strike",
+          "attackBonus": 8,
+          "damage": "2d10+5",
+          "damageType": "piercing",
+          "description": "Multiple draconic heads strike simultaneously from all angles with dripping venom."
+        },
+        {
+          "name": "Toxic Acid Spurt",
+          "attackBonus": 7,
+          "damage": "2d6+4",
+          "damageType": "acid",
+          "description": "Spits black acidic bile that dissolves bronze armor and blisters skin."
+        },
+        {
+          "name": "Swamp Tail Sweep",
+          "attackBonus": 7,
+          "damage": "1d12+4",
+          "damageType": "bludgeoning",
+          "description": "Sweeps its massive reptilian tail through the marsh water, knocking you into the mud."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_hydra_bile_vial", "chance": 1.0 },
+        { "itemId": "item_nemean_pelt_fragment", "chance": 0.5 }
       ]
     }
   ]

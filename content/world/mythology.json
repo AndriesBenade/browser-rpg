@@ -15,6 +15,13 @@
       "text": "Before founding Thebes (the Cadmeia), the Phoenician prince Cadmus sent his companions to fetch water from the spring of Ares. A gigantic serpent with crested crest and fire in its eyes—the Ismenian Drakon, sacred offspring of Ares—slew his men. Cadmus crushed the monster with a mighty rock and, at Athena's command, sowed its venomous teeth into the furrowed earth, from which the armed Spartoi ('Sown Men') sprang forth."
     },
     {
+      "id": "lore_theban_sphinx",
+      "title": "The Riddle of the Sphinx of Thebes",
+      "category": "Monsters & Enigmas",
+      "primarySource": "Hesiod, Theogony 326; Apollodorus 3.5.8; Sophocles, Oedipus Tyrannus",
+      "text": "Sent by Hera to punish Thebes, the Sphinx perched upon Mount Sphingion asking every traveler: 'What creature walks on four legs in the morning, two at noon, and three in the evening?' Those who could not answer were strangled and devoured. When Oedipus answered 'Man' (who crawls as an infant, walks on two legs in youth, and leans on a staff in old age), the Sphinx hurled herself from the cliff in despair."
+    },
+    {
       "id": "lore_mount_cithaeron",
       "title": "Mount Cithaeron (Kithairōn)",
       "category": "Geography & Sacred Sites",
@@ -27,6 +34,55 @@
       "category": "Ritual Custom",
       "primarySource": "Homer, Iliad 9.500; Hesiod, Works and Days 724-726",
       "text": "Pouring wine, milk, honey, or pure spring water upon the earth or an altar was the universal gesture of communion and honor between mortals and immortals. Morning and evening libations turned away divine wrath and secured safe journey through desolate lands."
+    },
+    {
+      "id": "lore_omphalos_delphi",
+      "title": "The Omphalos: Navel of the World",
+      "category": "Sacred Geography",
+      "primarySource": "Pausanias 10.16.3; Pindar, Pythian Odes 4.74",
+      "text": "Zeus released two eagles from the opposite ends of the cosmos—one from the east and one from the west—and where they crossed paths at Delphi marked the exact center (omphalos) of the earth. The carved stone kept in Apollo's temple was bound with wool fillets (agrenon) and represented the sacred nexus between mortals, gods, and the Underworld."
+    },
+    {
+      "id": "lore_castalian_purification",
+      "title": "Miasma & Katharsis at the Castalian Spring",
+      "category": "Ritual Law",
+      "primarySource": "Euripides, Ion 94-101; Pausanias 10.8.9",
+      "text": "In Greek religion, shed blood, death, or moral transgression generated 'miasma' (ritual pollution) that blinded mortal insight and barred entry to temples. Pilgrims at Delphi bathed their hands and hair in the cold waters of the Castalian spring to achieve 'katharsis' (ritual cleansing) before consulting the Pythia."
+    },
+    {
+      "id": "lore_nemean_lion",
+      "title": "The Nemean Lion & Its Impenetrable Hide",
+      "category": "Heroic Myth",
+      "primarySource": "Hesiod, Theogony 327; Apollodorus 2.5.1",
+      "text": "The first Labor of Herakles was to slay the lion of Nemea, a monster born of Echidna whose tawny skin could not be pierced by stone, bronze, or iron. After his arrows bounced uselessly from its ribs, Herakles cornered the beast in its two-mouthed cavern and choked it to death with his bare arms, flaying the pelt using the beast's own razor claws to wear as armor."
+    },
+    {
+      "id": "lore_lernaean_hydra",
+      "title": "The Lernaean Hydra & The Burning Torch",
+      "category": "Heroic Myth",
+      "primarySource": "Hesiod, Theogony 313; Apollodorus 2.5.2",
+      "text": "Lurking in the bottomless marshes of Lerna, the Hydra was a multi-headed water serpent whose central head was immortal. Whenever Herakles severed a head with his blade, two sprouted in its place. With the aid of his nephew Iolaus, who cauterized the bloody necks with blazing pine torches, the monster was finally vanquished and its immortal head buried beneath a heavy boulder."
+    },
+    {
+      "id": "lore_lykaion_werewolf",
+      "title": "The Werewolf Rites of Mount Lykaion",
+      "category": "Arcadian Cult",
+      "primarySource": "Plato, Republic 8.565d; Pausanias 8.38.1; Pliny, Natural History 8.34",
+      "text": "Upon the wind-swept ash altar of Mount Lykaion, the Arcadians made secret sacrifices to Zeus Lykaios. Tradition held that whoever tasted human viscera mingled with animal flesh in the sacred banquet was instantly transformed into a wolf. If he abstained from human flesh for nine years, he would regain his human form upon swimming across a sacred lake."
+    },
+    {
+      "id": "lore_asclepian_incubation",
+      "title": "Enkoimesis: Sacred Healing Sleep at Epidaurus",
+      "category": "Ancient Medicine",
+      "primarySource": "Pausanias 2.27.1-3; Aristophanes, Plutus 653-747",
+      "text": "Suppliants seeking healing at Epidaurus purified themselves at the sacred well and lay down to sleep upon the fleece of a sacrificed ram in the abaton dormitory. During this 'enkoimesis' (incubation sleep), the god Asclepius or his sacred serpents were believed to appear in dreams to perform surgery or prescribe herbal remedies of dittany and honey."
+    },
+    {
+      "id": "lore_taenarum_underworld",
+      "title": "Cape Taenarum & The Chasm of Hades",
+      "category": "Underworld Lore",
+      "primarySource": "Pausanias 3.25.4-8; Strabo 8.5.1",
+      "text": "At the southernmost tip of the Peloponnese stands Cape Taenarum, where a dark cavern opens in the coastal cliffs. Revered as an entrance to the realm of Hades, it was here that Herakles descended to drag Cerberus into the light for his twelfth Labor, and where Orpheus descended to plead with Hades and Persephone for the return of Eurydice."
     }
   ]
 }

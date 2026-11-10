@@ -46,6 +46,197 @@
         "lore_sacred_libations",
         "lore_ismenian_dragon"
       ]
+    },
+    {
+      "id": "npc_teiresias_prophet",
+      "name": "Teiresias the Blind Seer",
+      "title": "Prophet of Apollo at Thebes",
+      "ancientGreek": "Τειρεσίας",
+      "region": "Boeotia",
+      "locationId": "loc_thebes_seven_gates",
+      "disposition": 15,
+      "attributes": {
+        "strength": 7,
+        "agility": 8,
+        "endurance": 14,
+        "intelligence": 18,
+        "wisdom": 20,
+        "charisma": 15
+      },
+      "dialogueTreeId": "dialogue_teiresias_seer",
+      "description": "The venerable blind prophet of Thebes, guided by a young boy. Though sightless in mortal eyes, the inner visions granted by Athena allow him to perceive the threads of fate, the omens of birds, and the tragic doom of the house of Cadmus.",
+      "knowledge": [
+        "lore_ismenian_dragon",
+        "clue_sphinx_enigma",
+        "prophecy_house_of_laius"
+      ]
+    },
+    {
+      "id": "npc_creon_regent",
+      "name": "Creon, Son of Menoeceus",
+      "title": "Regent of Seven-Gated Thebes",
+      "ancientGreek": "Κρέων",
+      "region": "Boeotia",
+      "locationId": "loc_thebes_seven_gates",
+      "disposition": 0,
+      "attributes": {
+        "strength": 14,
+        "agility": 11,
+        "endurance": 14,
+        "intelligence": 15,
+        "wisdom": 11,
+        "charisma": 16
+      },
+      "dialogueTreeId": "dialogue_creon_regent",
+      "description": "The austere ruler of Thebes clad in royal purple wool with a gold serpent torque. Burdened by the grief of his son Haemon's death and the stranglehold of the Sphinx, he has proclaimed that whoever slays or outwits the monster shall receive the crown and queen.",
+      "knowledge": [
+        "bounty_sphinx_defeat",
+        "theban_military_orders"
+      ]
+    },
+    {
+      "id": "npc_pythia_aristonike",
+      "name": "The Pythia Aristonike",
+      "title": "Prophetess of Apollo Pythios",
+      "ancientGreek": "Πυθία",
+      "region": "Phocis",
+      "locationId": "loc_delphi_sanctuary",
+      "disposition": 10,
+      "attributes": {
+        "strength": 8,
+        "agility": 9,
+        "endurance": 13,
+        "intelligence": 17,
+        "wisdom": 19,
+        "charisma": 17
+      },
+      "dialogueTreeId": "dialogue_pythia_delphi",
+      "description": "The consecrated prophetess sitting atop the golden bronze tripod inside Apollo's adyton chasm. Veiled in white linen and holding fresh bay laurel, she sways gently in the intoxicating chthonic vapors, uttering cryptic verses in dactylic hexameter.",
+      "knowledge": [
+        "delphic_oracle_heroic_path",
+        "lore_omphalos_stone",
+        "purification_from_miasma"
+      ]
+    },
+    {
+      "id": "npc_herakles_traveler",
+      "name": "Herakles (Alcides)",
+      "title": "Wandering Champion of Zeus",
+      "ancientGreek": "Ἡρακλῆς",
+      "region": "Argolis",
+      "locationId": "loc_mycenae_lion_gate",
+      "disposition": 15,
+      "attributes": {
+        "strength": 22,
+        "agility": 14,
+        "endurance": 22,
+        "intelligence": 13,
+        "wisdom": 13,
+        "charisma": 16
+      },
+      "dialogueTreeId": "dialogue_herakles_champion",
+      "description": "The colossal demigod son of Zeus, leaning on a massive wild-olive club and draped in the tawny pelt of the Nemean Lion. His scarred face reflects both superhuman might and the melancholic burden of King Eurystheus's twelve impossible Labors.",
+      "knowledge": [
+        "tactics_nemean_lion",
+        "tactics_hydra_cauterization",
+        "labor_at_cithaeron"
+      ]
+    },
+    {
+      "id": "npc_epidaurus_iatros",
+      "name": "Sostratos the Epidaurian",
+      "title": "Priest-Physician of Asclepius",
+      "ancientGreek": "Σώστρατος ἰατρός",
+      "region": "Argolis",
+      "locationId": "loc_epidaurus_asclepeion",
+      "disposition": 12,
+      "attributes": {
+        "strength": 10,
+        "agility": 12,
+        "endurance": 12,
+        "intelligence": 16,
+        "wisdom": 17,
+        "charisma": 13
+      },
+      "dialogueTreeId": "dialogue_epidaurus_iatros",
+      "description": "A calm, white-robed healer carrying an alabaster box of herbal salves and surgical bronze probes. A tame sacred Aesculapian serpent coils gently about his forearm, unbothered by mortals.",
+      "knowledge": [
+        "lore_dittany_healing",
+        "incubation_dream_interpretation",
+        "herbal_antidote_secrets"
+      ]
+    },
+    {
+      "id": "npc_atalanta_huntress",
+      "name": "Atalanta of Arcadia",
+      "title": "Virgin Huntress of Artemis",
+      "ancientGreek": "Ἀταλάντη",
+      "region": "Arcadia",
+      "locationId": "loc_mount_lykaion",
+      "disposition": 8,
+      "attributes": {
+        "strength": 15,
+        "agility": 20,
+        "endurance": 16,
+        "intelligence": 13,
+        "wisdom": 16,
+        "charisma": 14
+      },
+      "dialogueTreeId": "dialogue_atalanta_huntress",
+      "description": "A swift-footed Arcadian huntress armed with an ash-wood hunting bow and a bronze boar spear. Her hair is bound in a huntress knot with leather cord; she moves through the pine scrub without snapping a single needle.",
+      "knowledge": [
+        "hunting_erymanthian_boar",
+        "wilderness_survival_lore",
+        "sacred_rites_of_artemis"
+      ]
+    },
+    {
+      "id": "npc_chiron_mentor",
+      "name": "Chiron the Centaur",
+      "title": "Tutor of Heroes and Physicians",
+      "ancientGreek": "Χείρων",
+      "region": "Laconia / Cape Taenarum",
+      "locationId": "loc_cape_taenarum",
+      "disposition": 20,
+      "attributes": {
+        "strength": 17,
+        "agility": 15,
+        "endurance": 18,
+        "intelligence": 19,
+        "wisdom": 20,
+        "charisma": 18
+      },
+      "dialogueTreeId": "dialogue_chiron_mentor",
+      "description": "The eldest and wisest of all centaurs, son of Cronus and the nymph Philyra. Unlike the savage mountain centaurs, Chiron possesses sublime gentleness, teaching heroes the arts of medicine, music, heroic virtue (arete), and stellar divination.",
+      "knowledge": [
+        "heroic_arete_philosophy",
+        "secrets_of_the_underworld_threshold",
+        "legend_of_the_golden_bough"
+      ]
+    },
+    {
+      "id": "npc_charon_ferryman_shade",
+      "name": "Apparition of Charon",
+      "title": "Ferryman of Acheron and Styx",
+      "ancientGreek": "Χάρων",
+      "region": "Underworld / Cape Taenarum",
+      "locationId": "loc_cape_taenarum",
+      "disposition": 0,
+      "attributes": {
+        "strength": 16,
+        "agility": 10,
+        "endurance": 20,
+        "intelligence": 14,
+        "wisdom": 18,
+        "charisma": 10
+      },
+      "dialogueTreeId": "dialogue_charon_ferryman",
+      "description": "A grim, skeletal figure shrouded in ragged rust-colored sailcloth standing in the stern of a pitch-black skiff. His unblinking eyes burn with ember-like fire; he extends a withered grey palm, awaiting the coin of the deceased.",
+      "knowledge": [
+        "passage_across_acheron",
+        "law_of_the_underworld_obol",
+        "the_hound_of_hades"
+      ]
     }
   ]
 }
