@@ -1,0 +1,4422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Greek Mythology RPG — Tabletop Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================================
+       THEME & COLOR TOKENS: Neoclassical Archaic Greek Aesthetic
+       ========================================================================= */
+    :root {
+      --bg-void: #0d0d0f;
+      --bg-surface: #171619;
+      --bg-card: #201e24;
+      --bg-card-hover: #29272e;
+      --parchment: #f2ebd9;
+      --parchment-dark: #ded3b8;
+      --parchment-text: #2c251e;
+      --bronze: #b38b3c;
+      --bronze-bright: #d9ad52;
+      --bronze-dark: #664d1f;
+      --terracotta: #b34224;
+      --terracotta-bright: #d9532e;
+      --lapis: #204e78;
+      --lapis-bright: #3275b3;
+      --laurel: #2c5e3b;
+      --laurel-bright: #3f8554;
+      --marble-light: #e6e3dd;
+      --marble-dim: #99958d;
+      --border-meander: #453a29;
+      --font-heading: 'Cinzel', 'Georgia', serif;
+      --font-body: 'Cardo', 'Georgia', serif;
+      --shadow-depth: 0 8px 24px rgba(0, 0, 0, 0.7);
+      --shadow-gold: 0 0 15px rgba(217, 173, 82, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--bronze-dark) #111014;
+    }
+
+    /* Custom Hellenic Bronze Scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111014;
+      border: 1px solid #221f26;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #7a5e2c 0%, #4a3818 100%);
+      border: 1px solid var(--bronze);
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, var(--bronze-bright) 0%, #8c6d3b 100%);
+      box-shadow: 0 0 6px rgba(217, 173, 82, 0.5);
+    }
+    ::-webkit-scrollbar-corner {
+      background: #111014;
+    }
+
+    html, body {
+      height: 100vh;
+      max-height: 100vh;
+      width: 100vw;
+      overflow: hidden; /* Zero page-level scrolling! */
+      background-color: var(--bg-void);
+      color: var(--marble-light);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(179, 139, 60, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(32, 78, 120, 0.05) 0%, transparent 40%);
+    }
+
+    /* Classical Meander Greek Fret Border */
+    .meander-border-top {
+      border-top: 3px double var(--bronze);
+      position: relative;
+    }
+    .meander-border-top::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: repeating-linear-gradient(90deg, var(--bronze) 0, var(--bronze) 8px, transparent 8px, transparent 16px);
+    }
+
+    /* =========================================================================
+       HEADER & PRIMARY NAVIGATION
+       ========================================================================= */
+    header {
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #1f1d24 0%, #131216 100%);
+      border-bottom: 2px solid var(--bronze-dark);
+      padding: 0.55rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--marble-dim);
+      border-left: 1px solid var(--border-meander);
+      padding-left: 0.65rem;
+    }
+
+    nav.main-nav {
+      display: flex;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--marble-dim);
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .nav-btn:hover {
+      color: var(--bronze-bright);
+      border-color: var(--bronze-dark);
+      background: rgba(179, 139, 60, 0.08);
+    }
+
+    .nav-btn.active {
+      color: var(--parchment);
+      background: linear-gradient(180deg, var(--bronze-dark) 0%, #3d2f13 100%);
+      border-color: var(--bronze-bright);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .nav-btn.special-btn {
+      border-color: var(--bronze);
+      color: var(--bronze-bright);
+      background: rgba(179, 139, 60, 0.12);
+    }
+
+    .nav-btn.special-btn:hover {
+      background: rgba(179, 139, 60, 0.25);
+    }
+
+    .nav-badge {
+      background: var(--terracotta);
+      color: white;
+      font-size: 0.65rem;
+      padding: 0.08rem 0.35rem;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    /* Status Bar Quick Info */
+    .top-status-bar {
+      flex-shrink: 0;
+      background: #111014;
+      border-bottom: 1px solid #2a251e;
+      padding: 0.35rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--marble-dim);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .status-group {
+      display: flex;
+      gap: 1.15rem;
+      align-items: center;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-pill strong {
+      color: var(--marble-light);
+    }
+
+    .status-vitals {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .vital-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .bar-track {
+      width: 65px;
+      height: 7px;
+      background: #25222b;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #3d3845;
+    }
+
+    .bar-fill-health { background: var(--terracotta-bright); height: 100%; transition: width 0.3s; }
+    .bar-fill-stamina { background: var(--laurel-bright); height: 100%; transition: width 0.3s; }
+    .bar-fill-morale { background: var(--lapis-bright); height: 100%; transition: width 0.3s; }
+
+    /* =========================================================================
+       LAYOUT & VIEWPORTS (SINGLE VIEWPORT CONSTRAINED)
+       ========================================================================= */
+    main.engine-container {
+      flex: 1 1 0;
+      min-height: 0; /* Prevents overflow pushing outside screen! */
+      display: flex;
+      position: relative;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      overflow: hidden;
+    }
+
+    .viewport {
+      display: none;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .viewport.active-view {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(2px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card Viewport Wrapper */
+    .view-card-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 1.25rem;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-depth);
+    }
+
+    .view-card-header {
+      flex-shrink: 0;
+      border-bottom: 2px solid var(--bronze-dark);
+      padding-bottom: 0.65rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .view-card-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+
+    .view-scrollable-body {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 0.4rem;
+    }
+
+    /* =========================================================================
+       STORY / NARRATIVE VIEWPORT (PRIMARY GAMEPLAY)
+       ========================================================================= */
+    .story-layout {
+      display: grid;
+      grid-template-columns: 1fr 310px;
+      gap: 1rem;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .story-layout {
+        grid-template-columns: 1fr;
+      }
+      .story-sidebar {
+        display: none !important;
+      }
+    }
+
+    .narrative-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow-depth);
+    }
+
+    .location-header-banner {
+      flex-shrink: 0;
+      background: linear-gradient(90deg, #2b251a 0%, #1b1921 100%);
+      border-bottom: 2px solid var(--bronze-dark);
+      padding: 0.65rem 1.15rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .location-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+    }
+
+    .location-region {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--marble-dim);
+    }
+
+    /* Narrative Feed & Transcript */
+    .narrative-transcript {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scroll-behavior: smooth;
+      background: radial-gradient(circle at 50% 50%, rgba(32, 30, 36, 0.4) 0%, rgba(18, 17, 21, 0.8) 100%);
+    }
+
+    .transcript-entry {
+      line-height: 1.65;
+      animation: fadeIn 0.25s ease;
+      position: relative;
+    }
+
+    .entry-prose {
+      color: #dfdbd2;
+      font-size: 1rem;
+    }
+
+    .entry-prose p {
+      margin-bottom: 0.65rem;
+    }
+
+    .entry-dialogue {
+      background: rgba(30, 27, 21, 0.6);
+      border-left: 3px solid var(--bronze);
+      padding: 0.75rem 1rem;
+      margin: 0.35rem 0;
+      border-radius: 0 4px 4px 0;
+      color: var(--parchment);
+    }
+
+    .speaker-tag {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .entry-roll {
+      background: #181921;
+      border: 1px solid #363a4d;
+      border-radius: 4px;
+      padding: 0.45rem 0.75rem;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      color: var(--marble-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.25rem 0;
+    }
+
+    .roll-success { border-color: var(--laurel-bright); color: #85e39d; }
+    .roll-failure { border-color: var(--terracotta-bright); color: #f0896e; }
+    .roll-arete { border-color: var(--bronze-bright); color: #ffe680; box-shadow: var(--shadow-gold); }
+    .roll-ate { border-color: #8c1d1d; color: #ff6666; }
+
+    .entry-discovery {
+      background: linear-gradient(90deg, rgba(179, 139, 60, 0.15) 0%, transparent 100%);
+      border-left: 3px solid var(--bronze-bright);
+      padding: 0.65rem 0.95rem;
+      color: #f7ecd2;
+    }
+
+    .entry-consequence {
+      background: rgba(44, 94, 59, 0.15);
+      border-left: 3px solid var(--laurel-bright);
+      padding: 0.55rem 0.85rem;
+      font-style: italic;
+      color: #bde8c7;
+      font-size: 0.9rem;
+    }
+
+    /* =========================================================================
+       ACTION DECK: SELECTABLE UI CARDS & BUTTONS
+       ========================================================================= */
+    .action-control-deck {
+      flex-shrink: 0;
+      max-height: 40%;
+      min-height: 140px;
+      background: #141318;
+      border-top: 1px solid var(--border-meander);
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      overflow-y: auto;
+    }
+
+    .action-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .context-actions-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+    }
+
+    .actions-grid-grouped {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .action-category-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .action-category-title {
+      font-size: 0.7rem;
+      font-family: var(--font-heading);
+      letter-spacing: 0.08em;
+      color: var(--marble-dim);
+      text-transform: uppercase;
+    }
+
+    .action-cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.45rem;
+    }
+
+    .action-card-btn {
+      background: linear-gradient(180deg, #24222b 0%, #1a1921 100%);
+      border: 1px solid #3c3426;
+      border-radius: 4px;
+      padding: 0.55rem 0.75rem;
+      color: var(--parchment);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .action-card-btn:hover:not(:disabled) {
+      border-color: var(--bronze-bright);
+      background: linear-gradient(180deg, #383020 0%, #242016 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .action-card-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      border-color: #2b2830;
+      background: #141318;
+    }
+
+    .action-card-btn.primary-quest-action { border-left: 3px solid var(--bronze-bright); }
+    .action-card-btn.dialogue-action { border-left: 3px solid var(--lapis-bright); }
+    .action-card-btn.sacred-action { border-left: 3px solid var(--laurel-bright); }
+    .action-card-btn.danger-action { border-left: 3px solid var(--terracotta-bright); }
+
+    .action-card-title {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-card-badge {
+      font-size: 0.65rem;
+      padding: 0.08rem 0.3rem;
+      border-radius: 3px;
+      background: rgba(179, 139, 60, 0.2);
+      color: var(--bronze-bright);
+      border: 1px solid var(--bronze-dark);
+    }
+
+    .action-card-desc {
+      font-size: 0.8rem;
+      color: var(--marble-dim);
+      line-height: 1.35;
+    }
+
+    /* Optional Custom Action Bar */
+    .custom-action-collapsible {
+      border-top: 1px dashed #2a251c;
+      padding-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .custom-action-bar {
+      display: flex;
+      gap: 0.5rem;
+      background: #0d0c10;
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 0.25rem 0.45rem;
+    }
+
+    .custom-action-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--marble-light);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 0.25rem 0.45rem;
+      outline: none;
+    }
+
+    .custom-action-input::placeholder {
+      color: #6d6878;
+      font-style: italic;
+    }
+
+    .btn-submit-action {
+      background: linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%);
+      border: 1px solid var(--bronze-bright);
+      color: #1a160d;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-submit-action:hover {
+      filter: brightness(1.2);
+    }
+
+    /* Story Sidebar */
+    .story-sidebar {
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow-y: auto;
+    }
+
+    .side-widget {
+      flex-shrink: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 0.85rem;
+      box-shadow: var(--shadow-depth);
+    }
+
+    .widget-title {
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+      border-bottom: 1px solid #2d2820;
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.55rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mini-quest-item {
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .mini-quest-title {
+      color: var(--parchment);
+      font-weight: bold;
+    }
+
+    .mini-quest-obj {
+      color: var(--marble-dim);
+      padding-left: 0.65rem;
+      font-size: 0.8rem;
+      border-left: 2px solid var(--bronze-dark);
+      margin-top: 0.2rem;
+    }
+
+    /* =========================================================================
+       WORLD MAP VIEWPORT (VECTOR SVG CAMPAIGN CARTOGRAPHY)
+       ========================================================================= */
+    .map-container {
+      background: #0f1114;
+      border: 2px solid var(--bronze-dark);
+      border-radius: 4px;
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-header-bar {
+      flex-shrink: 0;
+      background: #1a1820;
+      border-bottom: 1px solid var(--border-meander);
+      padding: 0.65rem 1.15rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .map-canvas-wrapper {
+      flex: 1 1 0;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+      background: #14171c;
+    }
+
+    #world-map-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-edge {
+      stroke: #453c2b;
+      stroke-width: 2.5;
+      stroke-dasharray: 4, 4;
+      transition: stroke 0.2s;
+    }
+
+    .map-edge.connected-active {
+      stroke: var(--bronze);
+      stroke-width: 3;
+      stroke-dasharray: none;
+    }
+
+    .map-node {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .map-node:hover {
+      filter: drop-shadow(0 0 8px rgba(217, 173, 82, 0.8));
+    }
+
+    .map-node-marker {
+      fill: #222026;
+      stroke: var(--bronze);
+      stroke-width: 2;
+      transition: all 0.2s;
+    }
+
+    .map-node.active .map-node-marker {
+      fill: var(--terracotta);
+      stroke: #ff9d82;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 10px rgba(217, 83, 46, 0.9));
+    }
+
+    .map-node-label {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      fill: var(--parchment);
+      text-anchor: middle;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+
+    .travel-modal {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 340px;
+      background: rgba(23, 22, 27, 0.96);
+      border: 1px solid var(--bronze);
+      border-radius: 4px;
+      padding: 1.15rem;
+      box-shadow: var(--shadow-depth);
+      backdrop-filter: blur(6px);
+      z-index: 20;
+      display: none;
+    }
+
+    /* =========================================================================
+       INVENTORY VIEWPORT & FLOATING TOOLTIPS
+       ========================================================================= */
+    .inventory-layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 1rem;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
+    }
+
+    @media (max-width: 850px) {
+      .inventory-layout {
+        grid-template-columns: 1fr;
+      }
+      .equipment-paper-doll {
+        display: none !important;
+      }
+    }
+
+    .equipment-paper-doll {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 1rem;
+      height: 100%;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .equip-slot {
+      background: #141318;
+      border: 1px solid #352e24;
+      border-radius: 4px;
+      padding: 0.55rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .equip-slot:hover {
+      border-color: var(--bronze-bright);
+      background: #1c1a21;
+    }
+
+    .slot-label {
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+    }
+
+    .slot-item-name {
+      color: var(--parchment);
+      font-size: 0.9rem;
+    }
+
+    .inventory-knapsack-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 1rem;
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .inventory-filter-bar {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #2d261e;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .inventory-grid {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+      align-content: start;
+      padding-right: 0.35rem;
+    }
+
+    .item-card {
+      background: #18171f;
+      border: 1px solid #332d24;
+      border-radius: 4px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .item-card:hover {
+      border-color: var(--bronze-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      background: #201e28;
+    }
+
+    .item-name {
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      color: var(--parchment);
+    }
+
+    .item-meta {
+      font-size: 0.75rem;
+      color: var(--marble-dim);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .empty-inventory-notice {
+      grid-column: 1 / -1;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: var(--marble-dim);
+      font-style: italic;
+      background: rgba(18, 17, 22, 0.4);
+      border: 1px dashed #332d24;
+      border-radius: 4px;
+    }
+
+    /* Floating Item Tooltip Popover */
+    .item-floating-tooltip {
+      position: fixed;
+      z-index: 1000;
+      pointer-events: none;
+      max-width: 320px;
+      width: max-content;
+      background: linear-gradient(180deg, #24222b 0%, #151419 100%);
+      border: 2px solid var(--bronze);
+      border-radius: 5px;
+      padding: 0.95rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      color: var(--parchment);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .tooltip-header {
+      border-bottom: 1px solid #3a3225;
+      padding-bottom: 0.35rem;
+    }
+
+    .tooltip-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .tooltip-subtitle {
+      font-size: 0.75rem;
+      color: var(--marble-dim);
+      font-style: italic;
+    }
+
+    .tooltip-rarity {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      padding: 0.08rem 0.35rem;
+      border-radius: 3px;
+      background: rgba(179, 139, 60, 0.2);
+      color: var(--bronze-bright);
+      border: 1px solid var(--bronze-dark);
+      margin-top: 0.2rem;
+    }
+
+    .tooltip-stats-block {
+      background: #111014;
+      border: 1px solid #2b261f;
+      border-radius: 3px;
+      padding: 0.4rem 0.55rem;
+      font-size: 0.78rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .tooltip-lore-block {
+      font-size: 0.78rem;
+      color: #ded7c8;
+      border-left: 2px solid var(--bronze);
+      padding-left: 0.45rem;
+      margin-top: 0.2rem;
+    }
+
+    /* =========================================================================
+       CHARACTER CREATION WIZARD & SHEET (SINGLE VIEWPORT)
+       ========================================================================= */
+    .creation-wizard-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      max-width: 1050px;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      margin: 0 auto;
+      padding: 1.25rem 1.75rem;
+      box-shadow: var(--shadow-depth);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .wizard-steps-indicator {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-meander);
+      padding-bottom: 0.65rem;
+    }
+
+    .wizard-step-node {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      color: var(--marble-dim);
+    }
+
+    .wizard-step-node.active-step {
+      color: var(--bronze-bright);
+      font-weight: bold;
+    }
+
+    .wizard-step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .wizard-pane {
+      display: none;
+      flex: 1 1 0;
+      min-height: 0;
+      overflow-y: auto;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding-right: 0.35rem;
+    }
+
+    .wizard-pane.active-pane {
+      display: flex;
+    }
+
+    .cards-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .selectable-choice-card {
+      background: #17161c;
+      border: 1px solid #332d24;
+      border-radius: 4px;
+      padding: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .selectable-choice-card:hover {
+      border-color: var(--bronze);
+      transform: translateY(-1px);
+    }
+
+    .selectable-choice-card.selected {
+      border-color: var(--bronze-bright);
+      background: linear-gradient(180deg, #2a2418 0%, #17161c 100%);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .choice-card-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 0.95rem;
+    }
+
+    .choice-card-desc {
+      font-size: 0.8rem;
+      color: var(--marble-light);
+      line-height: 1.4;
+    }
+
+    .choice-card-perks {
+      font-size: 0.75rem;
+      color: var(--laurel-bright);
+      border-top: 1px dotted #383025;
+      padding-top: 0.3rem;
+    }
+
+    .point-buy-header {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #131216;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+    }
+
+    .attr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .attr-card {
+      background: #19181e;
+      border: 1px solid #332d24;
+      border-radius: 4px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .attr-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .attr-name {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      color: var(--parchment);
+    }
+
+    .attr-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .attr-btn {
+      background: #2a261f;
+      border: 1px solid var(--bronze-dark);
+      color: var(--bronze-bright);
+      width: 24px;
+      height: 24px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .attr-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .attr-val {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--bronze-bright);
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .attr-desc-text {
+      font-size: 0.75rem;
+      color: var(--marble-dim);
+    }
+
+    .wizard-nav-btns {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.85rem;
+      border-top: 1px solid var(--border-meander);
+      padding-top: 0.75rem;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+      margin-bottom: 0.3rem;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: #151418;
+      border: 1px solid var(--border-meander);
+      border-radius: 3px;
+      color: var(--marble-light);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0.45rem 0.65rem;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--bronze-bright);
+    }
+
+    /* =========================================================================
+       JOURNAL VIEWPORT (SINGLE VIEWPORT CONSTRAINED)
+       ========================================================================= */
+    .journal-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      padding: 1.15rem;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
+    }
+
+    @media (max-width: 800px) {
+      .journal-layout {
+        grid-template-columns: 1fr;
+      }
+      .journal-nav {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+    }
+
+    .journal-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      border-right: 1px solid var(--border-meander);
+      padding-right: 0.75rem;
+      height: 100%;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .journal-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--marble-dim);
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .journal-tab-btn:hover {
+      color: var(--bronze-bright);
+      background: rgba(179, 139, 60, 0.08);
+    }
+
+    .journal-tab-btn.active {
+      color: var(--parchment);
+      background: #2b251c;
+      border-color: var(--bronze-dark);
+    }
+
+    .journal-content-pane {
+      height: 100%;
+      min-height: 0;
+      overflow-y: auto;
+      padding-left: 0.4rem;
+      padding-right: 0.4rem;
+    }
+
+    .journal-card {
+      background: #19181e;
+      border-left: 3px solid var(--bronze);
+      padding: 0.85rem 1.15rem;
+      margin-bottom: 0.85rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .journal-card h4 {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* =========================================================================
+       ONBOARDING WALKTHROUGH OVERLAY
+       ========================================================================= */
+    .walkthrough-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(8, 7, 10, 0.78);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      padding: 1rem;
+    }
+
+    .walkthrough-card {
+      background: #1a1921;
+      border: 2px solid var(--bronze);
+      border-radius: 6px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      box-shadow: 0 0 35px rgba(217, 173, 82, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .walkthrough-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-meander);
+      padding-bottom: 0.65rem;
+    }
+
+    .walkthrough-step-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1.15rem;
+    }
+
+    .walkthrough-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--parchment);
+    }
+
+    .walkthrough-highlight-box {
+      background: rgba(179, 139, 60, 0.1);
+      border-left: 3px solid var(--bronze-bright);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.9rem;
+      color: #ded7c6;
+    }
+
+    .walkthrough-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.35rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* =========================================================================
+       IN-PAGE MODALS (DIALOGUE, RIDDLES, VICTORY, COMBAT)
+       ========================================================================= */
+    .inpage-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(8, 7, 10, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 250;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .inpage-dialogue-box {
+      background: #18171f;
+      border: 2px solid var(--bronze);
+      border-radius: 6px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-depth);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inpage-dialogue-header {
+      background: linear-gradient(90deg, #2b2316 0%, #16151c 100%);
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--bronze-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .inpage-dialogue-speaker {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1.15rem;
+    }
+
+    .inpage-dialogue-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+
+    .inpage-dialogue-text {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--parchment);
+      background: #111014;
+      border-left: 3px solid var(--bronze);
+      padding: 0.85rem 1.15rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .inpage-dialogue-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .dialogue-choice-btn {
+      background: #201e26;
+      border: 1px solid #3d3527;
+      color: var(--parchment);
+      padding: 0.65rem 0.85rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .dialogue-choice-btn:hover {
+      background: #332918;
+      border-color: var(--bronze-bright);
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .riddle-choice-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Tutorial Victory Banner */
+    .victory-modal-card {
+      background: #18171f;
+      border: 2px solid var(--bronze-bright);
+      border-radius: 6px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      box-shadow: 0 0 40px rgba(217, 173, 82, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .victory-crown-icon {
+      font-size: 2.2rem;
+      color: var(--bronze-bright);
+    }
+
+    .victory-title {
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Combat Modal */
+    .combat-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(8, 7, 10, 0.88);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .combat-arena {
+      background: #19181f;
+      border: 2px solid var(--terracotta);
+      border-radius: 6px;
+      max-width: 850px;
+      width: 100%;
+      max-height: 90vh;
+      box-shadow: 0 0 35px rgba(179, 66, 36, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .combat-header {
+      flex-shrink: 0;
+      background: linear-gradient(90deg, #3d1b14 0%, #1c1822 100%);
+      border-bottom: 2px solid var(--terracotta);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .combat-title {
+      font-family: var(--font-heading);
+      color: #ff9d82;
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .combat-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 700px) {
+      .combat-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .combatant-box {
+      background: #131216;
+      border: 1px solid #332f3d;
+      border-radius: 4px;
+      padding: 0.85rem;
+    }
+
+    .combat-log-pane {
+      grid-column: 1 / -1;
+      height: 160px;
+      background: #0f0e13;
+      border: 1px solid #2b2836;
+      border-radius: 4px;
+      padding: 0.75rem;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .combat-actions-bar {
+      flex-shrink: 0;
+      background: #121116;
+      border-top: 1px solid #2d2a36;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-combat {
+      background: linear-gradient(180deg, #382c20 0%, #201a13 100%);
+      border: 1px solid var(--bronze);
+      color: var(--parchment);
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-combat:hover {
+      border-color: var(--bronze-bright);
+      background: linear-gradient(180deg, var(--bronze-dark) 0%, #3a2b12 100%);
+      color: #fff;
+    }
+
+    .btn-combat.attack-btn {
+      border-color: var(--terracotta-bright);
+      background: linear-gradient(180deg, #4d1c13 0%, #29100b 100%);
+    }
+
+    .btn-combat.attack-btn:hover {
+      background: linear-gradient(180deg, #6e271a 0%, #3b160f 100%);
+    }
+
+    /* Classical buttons */
+    .btn-classical {
+      background: linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%);
+      border: 1px solid var(--bronze-bright);
+      color: #17140e;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.15rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-classical:hover {
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       HEADER & NAVIGATION BAR
+       ========================================================================= -->
+  <header class="meander-border-top">
+    <div class="brand-group">
+      <div class="brand-title">Mythos &bull; Hellas</div>
+      <div class="brand-subtitle">Text-Driven Tabletop RPG Engine</div>
+    </div>
+    <nav class="main-nav" id="main-nav">
+      <button class="nav-btn active" data-view="view-story">Story</button>
+      <button class="nav-btn" data-view="view-map">World Map</button>
+      <button class="nav-btn" data-view="view-character">Character</button>
+      <button class="nav-btn" data-view="view-inventory">Inventory</button>
+      <button class="nav-btn" data-view="view-quests">Quests <span class="nav-badge" id="nav-badge-quests">1</span></button>
+      <button class="nav-btn" data-view="view-journal">Journal</button>
+      <button class="nav-btn" data-view="view-codex">Codex & Lore</button>
+      <button class="nav-btn" data-view="view-gods">Pantheon</button>
+      <button class="nav-btn" data-view="view-settings">Settings</button>
+      <button class="nav-btn special-btn" onclick="window.engine.startWalkthrough(true)">Guide & Help</button>
+      <button class="nav-btn special-btn" onclick="window.engine.openCharacterCreationWizard()">New Hero</button>
+    </nav>
+  </header>
+
+  <!-- Top Status Bar -->
+  <div class="top-status-bar" id="top-status-bar">
+    <div class="status-group">
+      <div class="status-pill">
+        <span>Hero:</span> <strong id="hud-hero-name">Hero</strong>
+      </div>
+      <div class="status-pill">
+        <span>Origin:</span> <strong id="hud-hero-origin" style="color: var(--marble-dim);">Boeotian</strong>
+      </div>
+      <div class="status-pill">
+        <span>Location:</span> <strong id="hud-location-name">Crossroads of Cithaeron</strong>
+      </div>
+      <div class="status-pill">
+        <span>Time:</span> <strong id="hud-time-display">Day 12, 08:30 (Morning)</strong>
+      </div>
+    </div>
+    <div class="status-group">
+      <div class="status-vitals">
+        <div class="vital-bar" title="Health">
+          <span>HP</span>
+          <div class="bar-track"><div class="bar-fill-health" id="bar-health" style="width: 100%;"></div></div>
+          <span id="txt-health">24/24</span>
+        </div>
+        <div class="vital-bar" title="Stamina">
+          <span>STM</span>
+          <div class="bar-track"><div class="bar-fill-stamina" id="bar-stamina" style="width: 100%;"></div></div>
+          <span id="txt-stamina">18/18</span>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span>Drachmae:</span> <strong id="hud-drachmae" style="color: var(--bronze-bright);">45</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN VIEWPORT CONTAINER (ZERO WHOLE-PAGE SCROLL)
+       ========================================================================= -->
+  <main class="engine-container">
+
+    <!-- 0. CHARACTER CREATION WIZARD VIEWPORT -->
+    <div class="viewport" id="view-char-creation">
+      <div class="creation-wizard-container">
+        <div class="wizard-steps-indicator">
+          <div class="wizard-step-node active-step" id="step-node-1"><span class="wizard-step-num">1</span> Identity & Origin</div>
+          <div class="wizard-step-node" id="step-node-2"><span class="wizard-step-num">2</span> Heroic Calling</div>
+          <div class="wizard-step-node" id="step-node-3"><span class="wizard-step-num">3</span> Attributes</div>
+          <div class="wizard-step-node" id="step-node-4"><span class="wizard-step-num">4</span> Personality Trait</div>
+          <div class="wizard-step-node" id="step-node-5"><span class="wizard-step-num">5</span> Confirmation</div>
+        </div>
+
+        <!-- Step 1: Identity & Origin -->
+        <div class="wizard-pane active-pane" id="wizard-pane-1">
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 1: Your Name & Homeland</h2>
+          <p style="color: var(--marble-dim); font-size: 0.9rem;">Every legend begins with a name sung by the bards and a sacred soil of origin.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label class="form-label">Hero's Name</label>
+              <input type="text" id="wiz-name-input" class="form-input" value="Alkaios" placeholder="Enter hero name...">
+            </div>
+            <div>
+              <label class="form-label">Gender</label>
+              <select id="wiz-gender-select" class="form-select">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="nonbinary">Non-binary</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label" style="margin-top: 0.4rem;">Select Your Homeland (Origin)</label>
+            <div class="cards-selection-grid" id="origin-cards-grid"></div>
+          </div>
+
+          <div class="wizard-nav-btns">
+            <div></div>
+            <button class="btn-classical" onclick="window.engine.wizardNext(1)">Next: Calling &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Heroic Background -->
+        <div class="wizard-pane" id="wizard-pane-2">
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 2: Your Calling & Panoply</h2>
+          <p style="color: var(--marble-dim); font-size: 0.9rem;">What discipline forged your martial skills before the gods called you to Mount Cithaeron?</p>
+          <div class="cards-selection-grid" id="background-cards-grid"></div>
+          <div class="wizard-nav-btns">
+            <button class="nav-btn" onclick="window.engine.wizardBack(2)">&larr; Back</button>
+            <button class="btn-classical" onclick="window.engine.wizardNext(2)">Next: Attributes &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Attributes -->
+        <div class="wizard-pane" id="wizard-pane-3">
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 3: Core Attributes</h2>
+          <div class="point-buy-header">
+            <div>Available Character Points: <strong id="wiz-points-left" style="color: var(--bronze-bright); font-size: 1.15rem;">5</strong></div>
+            <div style="font-size: 0.8rem; color: var(--marble-dim);">Base score 10 = (+0 Mod) &bull; Maximum attribute 18</div>
+          </div>
+          <div class="attr-grid" id="wiz-attr-grid"></div>
+          <div class="wizard-nav-btns">
+            <button class="nav-btn" onclick="window.engine.wizardBack(3)">&larr; Back</button>
+            <button class="btn-classical" onclick="window.engine.wizardNext(3)">Next: Personality &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Personality Traits -->
+        <div class="wizard-pane" id="wizard-pane-4">
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 4: Defining Ethos & Trait</h2>
+          <p style="color: var(--marble-dim); font-size: 0.9rem;">Ancient Greek heroes were celebrated for distinct moral virtues and temperament.</p>
+          <div class="cards-selection-grid" id="trait-cards-grid"></div>
+          <div class="wizard-nav-btns">
+            <button class="nav-btn" onclick="window.engine.wizardBack(4)">&larr; Back</button>
+            <button class="btn-classical" onclick="window.engine.wizardNext(4)">Next: Review Hero &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Confirmation -->
+        <div class="wizard-pane" id="wizard-pane-5">
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 5: Review & Swear Your Heroic Oath</h2>
+          <div id="wiz-summary-card" style="background: #141318; border: 1px solid var(--border-meander); border-radius: 4px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;"></div>
+          <div class="wizard-nav-btns">
+            <button class="nav-btn" onclick="window.engine.wizardBack(5)">&larr; Edit Details</button>
+            <button class="btn-classical" onclick="window.engine.confirmHeroCreation()" style="background: linear-gradient(180deg, var(--laurel) 0%, #173620 100%); border-color: var(--laurel-bright); color: #fff;">
+              Confirm Hero & Begin Adventure &rarr;
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 1. STORY / NARRATIVE VIEWPORT (PRIMARY GAMEPLAY) -->
+    <div class="viewport active-view" id="view-story">
+      <div class="story-layout">
+        <div class="narrative-panel" id="narrative-panel">
+          <div class="location-header-banner">
+            <div>
+              <div class="location-title" id="story-location-title">Crossroads of Mount Cithaeron</div>
+              <div class="location-region" id="story-location-region">Boeotia / Attica Borderlands</div>
+            </div>
+            <div id="story-location-weather" style="font-size: 0.8rem; color: var(--bronze-bright); font-style: italic;">
+              Fair Sky &bull; Sharp Pine Breeze
+            </div>
+          </div>
+
+          <!-- Live Transcript Log (Internally Scrollable) -->
+          <div class="narrative-transcript" id="narrative-transcript"></div>
+
+          <!-- Action Tray & Command Deck -->
+          <div class="action-control-deck" id="action-control-deck">
+            <div class="action-deck-header">
+              <div class="context-actions-label">Selectable Actions in this Situation</div>
+              <div style="font-size: 0.75rem; color: var(--marble-dim);">Click any card to act</div>
+            </div>
+
+            <!-- Grouped Clickable Action Cards -->
+            <div class="actions-grid-grouped" id="context-actions-container"></div>
+
+            <!-- Optional Custom Command Input -->
+            <div class="custom-action-collapsible">
+              <div style="font-size: 0.7rem; color: var(--marble-dim); font-style: italic;">
+                Optional: You may also describe an unlisted creative action:
+              </div>
+              <form id="custom-action-form" class="custom-action-bar" onsubmit="event.preventDefault(); window.engine.handleCustomAction();">
+                <input type="text" id="custom-action-input" class="custom-action-input" 
+                       placeholder="Describe a custom action (e.g. examine stones, offer wine, search bushes...)" autocomplete="off">
+                <button type="submit" class="btn-submit-action">Attempt</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story Viewport Sidebar (Internally Scrollable) -->
+        <div class="story-sidebar">
+          <div class="side-widget" id="side-widget-quest">
+            <div class="widget-title">
+              <span>Active Objective</span>
+              <span style="color: var(--bronze); font-size: 0.7rem;">HEROIC QUEST</span>
+            </div>
+            <div id="side-quest-preview"></div>
+          </div>
+
+          <div class="side-widget" id="side-widget-presence">
+            <div class="widget-title">
+              <span>Nearby Presence</span>
+            </div>
+            <div id="side-presence-list" style="font-size: 0.85rem; line-height: 1.45; color: var(--marble-dim);"></div>
+          </div>
+
+          <div class="side-widget" id="side-widget-crossroads">
+            <div class="widget-title">
+              <span>Travel Pathways</span>
+            </div>
+            <div id="side-travel-links" style="display: flex; flex-direction: column; gap: 0.35rem;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. WORLD MAP VIEWPORT (VECTOR SVG CARTOGRAPHY) -->
+    <div class="viewport" id="view-map">
+      <div class="map-container">
+        <div class="map-header-bar">
+          <div>
+            <span style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--bronze-bright);">Campaign Map of Boeotia & Attica</span>
+            <span style="color: var(--marble-dim); font-size: 0.8rem; margin-left: 0.65rem;">Mount Cithaeron Sector</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--marble-dim);">
+            Click any discovered location node to inspect or travel
+          </div>
+        </div>
+        <div class="map-canvas-wrapper" id="map-canvas-wrapper">
+          <svg id="world-map-svg" viewBox="0 0 800 650">
+            <defs>
+              <radialGradient id="map-vignette" cx="50%" cy="50%" r="50%">
+                <stop offset="60%" stop-color="#14171d"/>
+                <stop offset="100%" stop-color="#0a0b0e"/>
+              </radialGradient>
+            </defs>
+
+            <rect width="800" height="650" fill="url(#map-vignette)"/>
+            <rect x="15" y="15" width="770" height="620" fill="none" stroke="#3d3323" stroke-width="2"/>
+            <rect x="20" y="20" width="760" height="610" fill="none" stroke="#26221c" stroke-width="1" stroke-dasharray="8, 4"/>
+
+            <path d="M 120 180 Q 300 120 540 160 T 720 280" fill="none" stroke="#25242e" stroke-width="12" stroke-linecap="round"/>
+            <path d="M 280 220 Q 420 170 600 240" fill="none" stroke="#201f26" stroke-width="8" stroke-linecap="round"/>
+            <text x="460" y="140" fill="#3a3745" font-family="'Cinzel', serif" font-size="14" letter-spacing="4">KITHAIRON OROS</text>
+            <text x="180" y="580" fill="#33313d" font-family="'Cinzel', serif" font-size="12" letter-spacing="2">PLATAIAI PLAINS</text>
+
+            <g id="svg-edges-group"></g>
+            <g id="svg-nodes-group"></g>
+          </svg>
+
+          <!-- Travel Destination Confirmation Card -->
+          <div class="travel-modal" id="map-travel-modal">
+            <h4 id="modal-dest-name" style="font-family: var(--font-heading); color: var(--bronze-bright); margin-bottom: 0.35rem;">Location</h4>
+            <p id="modal-dest-desc" style="font-size: 0.85rem; color: var(--marble-light); margin-bottom: 0.65rem;">Description</p>
+            <div style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.85rem; border-top: 1px solid #332d24; padding-top: 0.4rem;" id="modal-travel-stats"></div>
+            <div style="display: flex; gap: 0.45rem; justify-content: flex-end;">
+              <button class="nav-btn" onclick="document.getElementById('map-travel-modal').style.display='none'">Cancel</button>
+              <button class="btn-classical" id="btn-confirm-travel">Depart On Journey</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CHARACTER SHEET VIEWPORT -->
+    <div class="viewport" id="view-character">
+      <div class="view-card-wrapper" style="max-width: 1050px; margin: 0 auto; width: 100%;">
+        <div class="view-card-header">
+          <div>
+            <h2 id="sheet-hero-name" style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.3rem;">Hero Name</h2>
+            <div id="sheet-hero-origin" style="color: var(--marble-dim); font-style: italic; font-size: 0.85rem;">Origin &bull; Background</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.8rem; color: var(--marble-dim);">Renown (Kleos)</div>
+            <div style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--bronze-bright);" id="sheet-hero-renown">10</div>
+          </div>
+        </div>
+
+        <div class="view-scrollable-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div>
+            <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Core Attributes</h3>
+            <div class="attr-grid" id="sheet-attributes-grid"></div>
+
+            <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Heroic Traits & Vows</h3>
+            <div id="sheet-traits-list" style="font-size: 0.9rem; color: var(--marble-light); line-height: 1.55;"></div>
+          </div>
+
+          <div>
+            <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Trained Skills</h3>
+            <div id="sheet-skills-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;"></div>
+
+            <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Divine Standing (Piety)</h3>
+            <div id="sheet-piety-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. INVENTORY & EQUIPMENT VIEWPORT -->
+    <div class="viewport" id="view-inventory">
+      <div class="inventory-layout">
+        <!-- Equipped Slots Paper Doll -->
+        <div class="equipment-paper-doll">
+          <div style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--bronze-bright); border-bottom: 1px solid var(--border-meander); padding-bottom: 0.35rem;">
+            Panoply of War
+          </div>
+          
+          <div class="equip-slot" data-slot="main_hand" id="slot-main_hand">
+            <div>
+              <div class="slot-label">Main Hand</div>
+              <div class="slot-item-name" id="eq-main-hand">Ash-Wood Hoplite Dory</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="off_hand" id="slot-off_hand">
+            <div>
+              <div class="slot-label">Off Hand</div>
+              <div class="slot-item-name" id="eq-off-hand">Argive Aspis Shield</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="body" id="slot-body">
+            <div>
+              <div class="slot-label">Body Cuirass</div>
+              <div class="slot-item-name" id="eq-body">Layered Linothorax</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="head" id="slot-head">
+            <div>
+              <div class="slot-label">Helmet</div>
+              <div class="slot-item-name" id="eq-head">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="accessory" id="slot-accessory">
+            <div>
+              <div class="slot-label">Relic / Amulet</div>
+              <div class="slot-item-name" id="eq-accessory">None</div>
+            </div>
+          </div>
+
+          <div style="margin-top: auto; font-size: 0.8rem; color: var(--marble-dim); border-top: 1px solid #2d261e; padding-top: 0.45rem;">
+            Total Panoply Weight: <strong id="inv-total-weight" style="color: var(--parchment);">13.7 kg</strong>
+          </div>
+        </div>
+
+        <!-- Inventory Knapsack Matrix -->
+        <div class="inventory-knapsack-panel">
+          <div class="inventory-filter-bar">
+            <div style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem;">Carried Possessions</div>
+            <div style="display: flex; gap: 0.4rem;" id="inv-category-filters">
+              <button class="nav-btn active" data-filter="all">All</button>
+              <button class="nav-btn" data-filter="weapon">Weapons</button>
+              <button class="nav-btn" data-filter="armor">Armor & Shields</button>
+              <button class="nav-btn" data-filter="consumable">Consumables</button>
+              <button class="nav-btn" data-filter="relic">Relics & Quest</button>
+            </div>
+          </div>
+
+          <div class="inventory-grid" id="inventory-items-container">
+            <!-- Rendered Item Cards -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. QUEST LOG VIEWPORT -->
+    <div class="viewport" id="view-quests">
+      <div class="view-card-wrapper">
+        <div class="view-card-header">
+          <div class="view-card-title">Chronicle of Quests & Deeds</div>
+        </div>
+        <div class="view-scrollable-body" id="quest-list-container">
+          <!-- Rendered Quests with Objectives -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. JOURNAL VIEWPORT -->
+    <div class="viewport" id="view-journal">
+      <div class="journal-layout">
+        <div class="journal-nav">
+          <button class="journal-tab-btn active" data-jtab="chronicle">Adventure History</button>
+          <button class="journal-tab-btn" data-jtab="discoveries">Discoveries & Sites</button>
+          <button class="journal-tab-btn" data-jtab="knowledge">Knowledge & Clues</button>
+          <button class="journal-tab-btn" data-jtab="people">People & Factions</button>
+          <button class="journal-tab-btn" data-jtab="mysteries">Unresolved Riddles</button>
+          <button class="journal-tab-btn" data-jtab="notes">Personal Notes</button>
+        </div>
+
+        <div class="journal-content-pane" id="journal-content-pane">
+          <!-- Rendered Journal Entries -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. CODEX & LORE VIEWPORT -->
+    <div class="viewport" id="view-codex">
+      <div class="view-card-wrapper">
+        <div class="view-card-header">
+          <div class="view-card-title">Hellenic Codex & Mythological Sources</div>
+        </div>
+        <div class="view-scrollable-body" id="codex-entries-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.85rem; align-content: start;">
+          <!-- Rendered Lore Entries with Academic Sources -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. PANTHEON & GODS VIEWPORT -->
+    <div class="viewport" id="view-gods">
+      <div class="view-card-wrapper">
+        <div class="view-card-header">
+          <div class="view-card-title">The Olympian Pantheon & Sacred Cults</div>
+        </div>
+        <div class="view-scrollable-body" id="pantheon-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; align-content: start;">
+          <!-- Deities cards -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. SETTINGS & SAVE SLOTS VIEWPORT -->
+    <div class="viewport" id="view-settings">
+      <div class="view-card-wrapper">
+        <div class="view-card-header">
+          <div class="view-card-title">Game State & Storage Management</div>
+        </div>
+        
+        <div class="view-scrollable-body" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.65rem;">Persistent Save Slots (IndexedDB)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;" id="save-slots-grid"></div>
+          </div>
+
+          <div style="border-top: 1px solid var(--border-meander); padding-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.85rem;">
+            <button class="btn-classical" onclick="window.engine.exportSaveToFile()">Export Save (.json)</button>
+            <label class="btn-classical" style="cursor: pointer; display: inline-flex; align-items: center;">
+              Import Save (.json)
+              <input type="file" id="import-save-file" style="display: none;" onchange="window.engine.importSaveFromFile(event)">
+            </label>
+            <button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="window.engine.startWalkthrough(true)">Relaunch Interface Guide</button>
+            <button class="nav-btn" style="border-color: var(--terracotta); color: var(--terracotta-bright);" onclick="window.engine.restartAdventure()">Restart Tutorial</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       FLOATING ITEM TOOLTIP POPOVER (HOVER INSPECTION)
+       ========================================================================= -->
+  <div id="item-tooltip-popover" class="item-floating-tooltip" style="display: none;"></div>
+
+  <!-- =========================================================================
+       ONBOARDING INTERACTIVE WALKTHROUGH OVERLAY
+       ========================================================================= -->
+  <div class="walkthrough-overlay" id="walkthrough-overlay">
+    <div class="walkthrough-card">
+      <div class="walkthrough-header">
+        <div class="walkthrough-step-title" id="wt-step-title">Welcome to Mythos Hellas</div>
+        <div style="font-size: 0.8rem; color: var(--bronze-bright);" id="wt-step-count">Step 1 of 6</div>
+      </div>
+      <div class="walkthrough-text" id="wt-step-text">
+        Welcome, noble wayfarer. You are entering an authentic, text-driven tabletop RPG set in the archaic world of ancient Greek myth.
+      </div>
+      <div class="walkthrough-highlight-box" id="wt-step-highlight"></div>
+      <div class="walkthrough-controls">
+        <button class="nav-btn" id="wt-btn-skip" onclick="window.engine.skipWalkthrough()">Skip to Character Creation</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="nav-btn" id="wt-btn-prev" onclick="window.engine.prevWalkthroughStep()">Previous</button>
+          <button class="btn-classical" id="wt-btn-next" onclick="window.engine.nextWalkthroughStep()">Next Step &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       IN-PAGE INTERACTIVE DIALOGUE MODAL (NO ALERT/PROMPT POPUPS)
+       ========================================================================= -->
+  <div class="inpage-modal-overlay" id="dialogue-modal">
+    <div class="inpage-dialogue-box">
+      <div class="inpage-dialogue-header">
+        <div class="inpage-dialogue-speaker" id="dialogue-speaker-name">Speaker Name</div>
+        <button class="nav-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">End Conversation</button>
+      </div>
+      <div class="inpage-dialogue-body">
+        <div class="inpage-dialogue-text" id="dialogue-text-body"></div>
+        <div class="context-actions-label">Select Your Response:</div>
+        <div class="inpage-dialogue-choices" id="dialogue-choices-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       IN-PAGE INTERACTIVE RIDDLE MODAL (CADMEAN THRESHOLD)
+       ========================================================================= -->
+  <div class="inpage-modal-overlay" id="riddle-modal">
+    <div class="inpage-dialogue-box" style="max-width: 650px;">
+      <div class="inpage-dialogue-header">
+        <div class="inpage-dialogue-speaker">The Cadmean Threshold</div>
+        <button class="nav-btn" onclick="document.getElementById('riddle-modal').style.display='none'">Step Back</button>
+      </div>
+      <div class="inpage-dialogue-body">
+        <div class="inpage-dialogue-text" id="riddle-prompt-text">
+          Carved into the limestone archway above the sealed subterranean door is a relief of a crested serpent coiled around a bronze tripod. The archaic letters read:<br><br>
+          <em>"Speak the sacred name of the earth-born guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus."</em>
+        </div>
+
+        <div class="context-actions-label">How will you unseal the threshold?</div>
+        
+        <div class="riddle-choice-grid" id="riddle-choices-container"></div>
+
+        <div style="border-top: 1px dotted #383025; padding-top: 0.65rem; margin-top: 0.4rem;">
+          <div style="font-size: 0.78rem; color: var(--marble-dim); margin-bottom: 0.35rem;">Or speak a custom name into the rock:</div>
+          <div style="display: flex; gap: 0.45rem;">
+            <input type="text" id="riddle-custom-input" class="form-input" placeholder="Type sacred title...">
+            <button class="btn-classical" onclick="window.engine.submitCustomRiddleAnswer()">Speak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       TUTORIAL ADVENTURE VICTORY CEREMONY MODAL
+       ========================================================================= -->
+  <div class="inpage-modal-overlay" id="victory-modal">
+    <div class="victory-modal-card">
+      <div class="victory-crown-icon">&#9813;</div>
+      <div class="victory-title">Hero of Cithaeron</div>
+      <div style="color: var(--bronze-bright); font-style: italic; font-size: 1.05rem;">
+        The Whispering Fissure of Mount Cithaeron — Completed
+      </div>
+      <div style="color: var(--parchment); line-height: 1.7; font-size: 1rem;" id="victory-summary-text">
+        Through courage in battle, pious reverence to Hermes, and mythological wisdom before the Cadmean Threshold, you have rescued the consecrated sacrificial ram and preserved the sacred rites of Plataea!
+      </div>
+      <div style="background: rgba(44, 94, 59, 0.2); border: 1px solid var(--laurel-bright); padding: 0.85rem; border-radius: 4px; text-align: left; font-size: 0.9rem;">
+        <div>&bull; <strong>Title Conferred:</strong> Protector of the Pastures</div>
+        <div>&bull; <strong>Relic Acquired:</strong> Archaic Bronze Bell of Hermes (+2 Divine Favour)</div>
+        <div>&bull; <strong>Rewards:</strong> 30 Silver Drachmae &bull; +25 Heroic Renown (Kleos)</div>
+        <div>&bull; <strong>Standing:</strong> Revered Friend among the people of Boeotia</div>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 0.85rem; margin-top: 0.4rem;">
+        <button class="btn-classical" onclick="document.getElementById('victory-modal').style.display='none'; window.engine.switchView('view-story');">
+          Continue Wandering Hellas
+        </button>
+        <button class="nav-btn" onclick="document.getElementById('victory-modal').style.display='none'; window.engine.switchView('view-journal');">
+          Review Chronicle in Journal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       COMBAT MODAL OVERLAY
+       ========================================================================= -->
+  <div class="combat-modal-overlay" id="combat-modal">
+    <div class="combat-arena">
+      <div class="combat-header">
+        <div class="combat-title" id="combat-enemy-title">Combat Encounter</div>
+        <div style="font-size: 0.85rem; color: var(--bronze-bright);" id="combat-round-indicator">Round 1</div>
+      </div>
+      <div class="combat-body">
+        <div class="combatant-box">
+          <div style="font-family: var(--font-heading); color: var(--parchment); font-size: 1.05rem;" id="combat-player-name">Hero</div>
+          <div style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.65rem;" id="combat-player-archetype">Heroic Champion</div>
+          <div style="display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem;">
+            <div>Health: <strong id="combat-player-hp" style="color: var(--terracotta-bright);">24 / 24</strong></div>
+            <div>Stamina: <strong id="combat-player-stm" style="color: var(--laurel-bright);">18 / 18</strong></div>
+          </div>
+        </div>
+
+        <div class="combatant-box">
+          <div style="font-family: var(--font-heading); color: var(--terracotta-bright); font-size: 1.05rem;" id="combat-enemy-name">Cithaeronian Timber Wolf</div>
+          <div style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.65rem;" id="combat-enemy-desc">Ferocious predator guarding the unsealed grotto</div>
+          <div style="display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem;">
+            <div>Health: <strong id="combat-enemy-hp" style="color: var(--terracotta-bright);">18 / 18</strong></div>
+            <div>Morale: <strong id="combat-enemy-morale" style="color: var(--lapis-bright);">10</strong></div>
+          </div>
+        </div>
+
+        <div class="combat-log-pane" id="combat-log-feed"></div>
+      </div>
+      <div class="combat-actions-bar" id="combat-actions-bar">
+        <button class="btn-combat attack-btn" onclick="window.engine.combatAction('thrust')">Thrust Weapon</button>
+        <button class="btn-combat" onclick="window.engine.combatAction('shield_block')">Raise Shield (Aspis)</button>
+        <button class="btn-combat" onclick="window.engine.combatAction('feint')">Tactical Feint</button>
+        <button class="btn-combat" onclick="window.engine.combatAction('salve')">Apply Salve</button>
+        <button class="btn-combat" onclick="window.engine.combatAction('flee')">Retreat to Entrance</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       CORE GAME ENGINE SCRIPT (VANILLA ES6+)
+       ========================================================================= -->
+  <script>
+    /**
+     * GREEK MYTHOLOGY TEXT-DRIVEN RPG ENGINE
+     * Stage 2 & 3: Playable Experience, Guided Onboarding, Character Creation & Complete Tutorial
+     */
+    class GreekMythologyEngine {
+      constructor() {
+        this.version = "1.2.0";
+        this.dbName = "GreekMythologyRPG_DB";
+        this.dbVersion = 1;
+        this.db = null;
+
+        // Content Databases
+        this.world = {
+          locations: [],
+          characters: [],
+          creatures: [],
+          items: [],
+          deities: [],
+          mythology: []
+        };
+
+        this.currentAdventure = null;
+
+        // Active Inventory Category Filter
+        this.currentInventoryFilter = 'all';
+
+        // Character Creation Temporary State
+        this.creationState = this.getDefaultCreationState();
+
+        // Onboarding Walkthrough State
+        this.walkthroughStep = 0;
+        this.walkthroughSteps = [
+          {
+            title: "Welcome to Mythos Hellas",
+            text: "You are stepping into a text-driven tabletop RPG set in authentic ancient Greece. Here, your choices, attributes, and discoveries determine your fate—just as in a pen-and-paper campaign.",
+            highlight: "The game is grounded in classical literature (Homer, Hesiod, Pausanias). Everything you read has real mythological significance."
+          },
+          {
+            title: "The Narrative Chronicle",
+            text: "This central parchment area is your story log. It narrates encounters, records spoken conversations, and displays your transparent d20 dice checks.",
+            highlight: "Observe the speaker tags and dice breakdowns [d20 + Mod vs DC] that show exactly how skill checks resolve."
+          },
+          {
+            title: "Selectable Actions System",
+            text: "Available actions are displayed as clickable cards below the story transcript. You never need to guess what to do—choose from contextual interactions, dialogues, and rites.",
+            highlight: "Important actions are color-accented: Gold for quests, Blue for dialogue, Green for sacred rites, and Red for hazards."
+          },
+          {
+            title: "The World Campaign Map",
+            text: "Click the 'World Map' tab anytime to inspect the regional geography. Travel between mountain passes, shrines, and villages, accounting for travel hours and stamina costs.",
+            highlight: "Travel isn't real-time arcade walking; it is tabletop point-to-point movement with stamina consumption and encounter checks."
+          },
+          {
+            title: "The Deductive Journal & Codex",
+            text: "The Journal preserves your discoveries, clues, and people met. Crucially, clues recorded earlier can unlock solutions to later riddles and conversations!",
+            highlight: "Check your Journal under Knowledge & Clues when confronting ancient inscriptions or mysteries."
+          },
+          {
+            title: "Create Your Hero",
+            text: "Now, let us forge your champion. Choose your homeland origin, background, custom attributes, and traits before taking your first steps upon Mount Cithaeron.",
+            highlight: "Click 'Next Step' to launch Character Creation!"
+          }
+        ];
+
+        // Central Serialisable Game State
+        this.state = this.getInitialState();
+
+        // Active combat session state
+        this.combatSession = null;
+      }
+
+      getDefaultCreationState() {
+        return {
+          name: "Alkaios",
+          gender: "male",
+          origin: "boeotia",
+          background: "hoplite",
+          attributes: {
+            strength: 13,
+            agility: 12,
+            endurance: 13,
+            intelligence: 11,
+            wisdom: 12,
+            charisma: 11,
+            perception: 12
+          },
+          pointsLeft: 5,
+          trait: "vigilant"
+        };
+      }
+
+      getInitialState() {
+        return {
+          version: "1.2.0",
+          saveSlot: 1,
+          timestamp: Date.now(),
+          hasCompletedOnboarding: false,
+          hasCompletedCreation: false,
+          player: {
+            name: "Alkaios",
+            gender: "male",
+            origin: "boeotia",
+            originTitle: "Boeotian Freeman",
+            background: "hoplite",
+            backgroundTitle: "Hoplite Veteran",
+            vitals: {
+              health: 24, maxHealth: 24,
+              stamina: 18, maxStamina: 18,
+              morale: 15, maxMorale: 15
+            },
+            attributes: {
+              strength: 14,
+              agility: 12,
+              endurance: 14,
+              intelligence: 11,
+              wisdom: 13,
+              charisma: 11,
+              perception: 13
+            },
+            skills: {
+              melee_combat: 3,
+              ranged_combat: 1,
+              stealth: 1,
+              persuasion: 2,
+              survival: 2,
+              tracking: 2,
+              medicine: 1,
+              mythology_lore: 2,
+              investigation: 2
+            },
+            traits: [
+              { name: "Hoplite Discipline", desc: "+2 bonus on morale checks against monstrous beasts." },
+              { name: "Wayfarer's Eye", desc: "Recognizes sacred boundary markers and omens on mountain trails." }
+            ],
+            piety: {
+              hermes: 1,
+              athena: 1,
+              apollo: 0,
+              artemis: 0,
+              poseidon: 0
+            },
+            currencies: { drachmae: 45, obols: 4 },
+            renown: 10,
+            inventory: [
+              { itemId: "item_dory_spear_001", quantity: 1, equipped: true, slot: "main_hand" },
+              { itemId: "item_aspis_shield_001", quantity: 1, equipped: true, slot: "off_hand" },
+              { itemId: "item_linothorax_001", quantity: 1, equipped: true, slot: "body" },
+              { itemId: "item_clay_aryballos_wine", quantity: 1, equipped: false },
+              { itemId: "item_dried_figs_bread", quantity: 2, equipped: false }
+            ]
+          },
+          worldState: {
+            currentLocationId: "loc_cithaeron_crossroads",
+            discoveredLocations: ["loc_cithaeron_crossroads", "loc_shrine_hermes_strophaios", "loc_plataea_outskirts"],
+            time: { hour: 8, minute: 30, day: 12, month: 4, year: 1 },
+            flags: {},
+            npcStates: {},
+            quests: {},
+            journal: {
+              chronicle: [],
+              discoveries: [],
+              knowledge: [],
+              people: [],
+              mysteries: [],
+              notes: "The path northward winds through the crags of Mount Cithaeron. Watch for ancient boundary stones."
+            }
+          }
+        };
+      }
+
+      async init() {
+        console.log("Initializing Greek Mythology RPG Engine v" + this.version);
+        await this.initIndexedDB();
+        await this.loadContent();
+        this.setupNavigation();
+        this.setupEventListeners();
+        this.setupItemTooltips();
+
+        const existingSave = await this.loadGameSilently(1);
+        if (existingSave && existingSave.hasCompletedCreation) {
+          this.state = existingSave;
+          this.logTranscript("System", `Welcome back, ${this.state.player.name}. Continued from Slot 1.`, "entry-discovery");
+          this.renderAll();
+        } else {
+          this.startAdventure();
+          this.renderAll();
+          this.startWalkthrough(true);
+        }
+      }
+
+      /* =========================================================================
+         ONBOARDING WALKTHROUGH CONTROLLER
+         ========================================================================= */
+      startWalkthrough(force = false) {
+        if (!force && this.state.hasCompletedOnboarding) return;
+        this.walkthroughStep = 0;
+        this.renderWalkthroughStep();
+        document.getElementById("walkthrough-overlay").style.display = "flex";
+      }
+
+      renderWalkthroughStep() {
+        const step = this.walkthroughSteps[this.walkthroughStep];
+        document.getElementById("wt-step-title").innerText = step.title;
+        document.getElementById("wt-step-count").innerText = `Step ${this.walkthroughStep + 1} of ${this.walkthroughSteps.length}`;
+        document.getElementById("wt-step-text").innerText = step.text;
+        document.getElementById("wt-step-highlight").innerHTML = `<strong>Note:</strong> ${step.highlight}`;
+
+        document.getElementById("wt-btn-prev").disabled = (this.walkthroughStep === 0);
+        const nextBtn = document.getElementById("wt-btn-next");
+        if (this.walkthroughStep === this.walkthroughSteps.length - 1) {
+          nextBtn.innerText = "Create Character &rarr;";
+        } else {
+          nextBtn.innerText = "Next Step &rarr;";
+        }
+      }
+
+      nextWalkthroughStep() {
+        if (this.walkthroughStep < this.walkthroughSteps.length - 1) {
+          this.walkthroughStep++;
+          this.renderWalkthroughStep();
+        } else {
+          this.skipWalkthrough();
+          this.openCharacterCreationWizard();
+        }
+      }
+
+      prevWalkthroughStep() {
+        if (this.walkthroughStep > 0) {
+          this.walkthroughStep--;
+          this.renderWalkthroughStep();
+        }
+      }
+
+      skipWalkthrough() {
+        this.state.hasCompletedOnboarding = true;
+        document.getElementById("walkthrough-overlay").style.display = "none";
+        if (!this.state.hasCompletedCreation) {
+          this.openCharacterCreationWizard();
+        }
+        this.saveGameSilently();
+      }
+
+      /* =========================================================================
+         CHARACTER CREATION WIZARD
+         ========================================================================= */
+      openCharacterCreationWizard() {
+        this.creationState = this.getDefaultCreationState();
+        this.renderWizardStep(1);
+        this.switchView("view-char-creation");
+      }
+
+      renderWizardStep(stepNum) {
+        for (let i = 1; i <= 5; i++) {
+          const pane = document.getElementById(`wizard-pane-${i}`);
+          const node = document.getElementById(`step-node-${i}`);
+          if (pane) pane.classList.toggle("active-pane", i === stepNum);
+          if (node) node.classList.toggle("active-step", i === stepNum);
+        }
+
+        if (stepNum === 1) this.renderWizardStep1();
+        if (stepNum === 2) this.renderWizardStep2();
+        if (stepNum === 3) this.renderWizardStep3();
+        if (stepNum === 4) this.renderWizardStep4();
+        if (stepNum === 5) this.renderWizardStep5();
+      }
+
+      wizardNext(currentStep) {
+        if (currentStep === 1) {
+          const nameInput = document.getElementById("wiz-name-input").value.trim();
+          this.creationState.name = nameInput || "Alkaios";
+          this.creationState.gender = document.getElementById("wiz-gender-select").value;
+        }
+        this.renderWizardStep(currentStep + 1);
+      }
+
+      wizardBack(currentStep) {
+        this.renderWizardStep(currentStep - 1);
+      }
+
+      renderWizardStep1() {
+        const origins = [
+          {
+            id: "boeotia",
+            title: "Boeotia (Plataea & Thebes)",
+            desc: "The sacred borderlands of Cithaeron and the birthplace of the Cadmeia. Heart of heroic shepherd traditions.",
+            perks: "+1 Wisdom &bull; +1 Survival &bull; High standing with Plataeans"
+          },
+          {
+            id: "attica",
+            title: "Attica (Athens)",
+            desc: "The olive-bearing plains beneath the Parthenon. Renowned for sharp rhetoric, tactical philosophy, and civil law.",
+            perks: "+1 Intelligence &bull; +1 Persuasion &bull; Blessed by Athena"
+          },
+          {
+            id: "laconia",
+            title: "Laconia (Sparta)",
+            desc: "The Eurotas valley, where youths endure the uncompromising martial discipline of Lycurgus.",
+            perks: "+1 Strength &bull; +1 Melee Combat &bull; Unyielding Morale"
+          },
+          {
+            id: "arcadia",
+            title: "Arcadia (Highlands)",
+            desc: "The ancient pine forests and crags where Pan and Hermes roam among mortal herdsmen.",
+            perks: "+1 Agility &bull; +1 Tracking &bull; Swift Mountain Movement"
+          }
+        ];
+
+        const container = document.getElementById("origin-cards-grid");
+        container.innerHTML = origins.map(o => `
+          <div class="selectable-choice-card ${this.creationState.origin === o.id ? "selected" : ""}" onclick="window.engine.selectOrigin('${o.id}')">
+            <div class="choice-card-title">${o.title}</div>
+            <div class="choice-card-desc">${o.desc}</div>
+            <div class="choice-card-perks">${o.perks}</div>
+          </div>
+        `).join("");
+      }
+
+      selectOrigin(id) {
+        this.creationState.origin = id;
+        this.renderWizardStep1();
+      }
+
+      renderWizardStep2() {
+        const bgs = [
+          {
+            id: "hoplite",
+            title: "Hoplite Veteran",
+            desc: "Trained to stand shoulder-to-shoulder with spear and bronze shield. You understand discipline and martial grit.",
+            perks: "Starts with Ash Dory & Argive Aspis &bull; +2 Melee Combat, +1 Athletics"
+          },
+          {
+            id: "hunter",
+            title: "Hunter of the Crags",
+            desc: "Stalker of mountain wildfowl and predators on the slopes of Cithaeron. Attuned to Artemis Agrotera.",
+            perks: "Starts with Yew Hunting Bow & Dagger &bull; +2 Tracking, +2 Survival"
+          },
+          {
+            id: "acolyte",
+            title: "Temple Diviner / Acolyte",
+            desc: "Trained in the sacred precincts to read omens, interpret archaic inscriptions, and compound herbal balms.",
+            perks: "Starts with Libation Wine & Epidaurian Salve &bull; +2 Mythology Lore, +1 Medicine"
+          },
+          {
+            id: "wayfarer",
+            title: "Cunning Wayfarer",
+            desc: "A wide-roaming messenger and trader who knows the secret boundary stones and how to strike a bargain.",
+            perks: "Starts with +25 Extra Drachmae &bull; +2 Persuasion, +2 Investigation"
+          }
+        ];
+
+        const container = document.getElementById("background-cards-grid");
+        container.innerHTML = bgs.map(b => `
+          <div class="selectable-choice-card ${this.creationState.background === b.id ? "selected" : ""}" onclick="window.engine.selectBackground('${b.id}')">
+            <div class="choice-card-title">${b.title}</div>
+            <div class="choice-card-desc">${b.desc}</div>
+            <div class="choice-card-perks">${b.perks}</div>
+          </div>
+        `).join("");
+      }
+
+      selectBackground(id) {
+        this.creationState.background = id;
+        this.renderWizardStep2();
+      }
+
+      renderWizardStep3() {
+        document.getElementById("wiz-points-left").innerText = this.creationState.pointsLeft;
+        const attrDescs = {
+          strength: "Affects melee spear/sword damage and athletic feats of power.",
+          agility: "Affects reflexes, bow accuracy, initiative, and evasion in combat.",
+          endurance: "Governs maximum Health, poison resilience, and forced marching.",
+          intelligence: "Governs puzzle deduction, tactical appraisal, and literacy.",
+          wisdom: "Affects observation, tracking, mythology lore, and sacred rites.",
+          charisma: "Affects persuasion, leadership, intimidation, and oratory.",
+          perception: "Affects noticing subtle tracks, ambush traps, and distant sounds."
+        };
+
+        const container = document.getElementById("wiz-attr-grid");
+        container.innerHTML = Object.entries(this.creationState.attributes).map(([attr, val]) => {
+          const mod = this.getModifier(val);
+          return `
+            <div class="attr-card">
+              <div class="attr-card-top">
+                <div class="attr-name">${attr.toUpperCase()}</div>
+                <div class="attr-controls">
+                  <button class="attr-btn" onclick="window.engine.alterWizAttr('${attr}', -1)" ${val <= 10 ? "disabled" : ""}>-</button>
+                  <div class="attr-val">${val} <span style="font-size: 0.75rem; color: var(--marble-dim);">(${mod >= 0 ? "+" + mod : mod})</span></div>
+                  <button class="attr-btn" onclick="window.engine.alterWizAttr('${attr}', 1)" ${this.creationState.pointsLeft <= 0 || val >= 18 ? "disabled" : ""}>+</button>
+                </div>
+              </div>
+              <div class="attr-desc-text">${attrDescs[attr] || ""}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      alterWizAttr(attr, delta) {
+        if (delta > 0 && this.creationState.pointsLeft > 0) {
+          this.creationState.attributes[attr]++;
+          this.creationState.pointsLeft--;
+        } else if (delta < 0 && this.creationState.attributes[attr] > 10) {
+          this.creationState.attributes[attr]--;
+          this.creationState.pointsLeft++;
+        }
+        this.renderWizardStep3();
+      }
+
+      renderWizardStep4() {
+        const traits = [
+          {
+            id: "vigilant",
+            title: "Vigilant Scout",
+            desc: "Accustomed to watching the ridgelines for bandits and beasts.",
+            perk: "+2 bonus on all Perception & Tracking checks on wilderness trails."
+          },
+          {
+            id: "pious",
+            title: "Pious Devotee",
+            desc: "Never passes an altar without pouring a libation or offering prayer.",
+            perk: "Starts with +2 Divine Standing with Hermes & Apollo; libations restore double stamina."
+          },
+          {
+            id: "eloquent",
+            title: "Silver-Tongued Orator",
+            desc: "Gifted in the heroic art of persuasive speech in civic assemblies.",
+            perk: "+2 bonus on Persuasion & Deception checks when addressing mortals."
+          },
+          {
+            id: "resolute",
+            title: "Dauntless Courage",
+            desc: "Your bronze heart does not falter when encountering supernatural terrors.",
+            perk: "+3 bonus against fear effects; +2 Morale in all combat encounters."
+          }
+        ];
+
+        const container = document.getElementById("trait-cards-grid");
+        container.innerHTML = traits.map(t => `
+          <div class="selectable-choice-card ${this.creationState.trait === t.id ? "selected" : ""}" onclick="window.engine.selectTrait('${t.id}')">
+            <div class="choice-card-title">${t.title}</div>
+            <div class="choice-card-desc">${t.desc}</div>
+            <div class="choice-card-perks">${t.perk}</div>
+          </div>
+        `).join("");
+      }
+
+      selectTrait(id) {
+        this.creationState.trait = id;
+        this.renderWizardStep4();
+      }
+
+      renderWizardStep5() {
+        const c = this.creationState;
+        const container = document.getElementById("wiz-summary-card");
+        container.innerHTML = `
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.65rem;">
+            <div>
+              <div style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--bronze-bright);">${c.name}</div>
+              <div style="color: var(--marble-dim); font-style: italic; font-size: 0.85rem;">Origin: ${c.origin.toUpperCase()} &bull; Calling: ${c.background.toUpperCase()}</div>
+            </div>
+            <div style="text-align: right; color: var(--laurel-bright); font-weight: bold; font-size: 0.85rem;">
+              Ready for Adventure
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+            <div>
+              <strong style="color: var(--parchment);">Allocated Attributes:</strong>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; margin-top: 0.3rem;">
+                ${Object.entries(c.attributes).map(([a, v]) => `<div>${a.substring(0,3).toUpperCase()}: <strong>${v}</strong></div>`).join("")}
+              </div>
+            </div>
+            <div>
+              <strong style="color: var(--parchment);">Defining Trait:</strong>
+              <div style="color: var(--bronze-bright); margin-top: 0.3rem;">${c.trait.toUpperCase()}</div>
+              <div style="font-size: 0.8rem; color: var(--marble-dim); margin-top: 0.2rem;">
+                All starting panoply equipment and abilities will be assigned to your knapsack.
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      confirmHeroCreation() {
+        const c = this.creationState;
+        const p = this.state.player;
+
+        p.name = c.name;
+        p.gender = c.gender;
+        p.origin = c.origin;
+        p.background = c.background;
+        p.attributes = JSON.parse(JSON.stringify(c.attributes));
+
+        p.vitals.maxHealth = 20 + this.getModifier(p.attributes.endurance) * 2;
+        p.vitals.health = p.vitals.maxHealth;
+        p.vitals.maxStamina = 16 + this.getModifier(p.attributes.endurance);
+        p.vitals.stamina = p.vitals.maxStamina;
+
+        if (c.background === "hunter") {
+          p.inventory = [
+            { itemId: "item_hunting_bow_001", quantity: 1, equipped: true, slot: "two_hand" },
+            { itemId: "item_travelers_chlamys_001", quantity: 1, equipped: true, slot: "body" },
+            { itemId: "item_clay_aryballos_wine", quantity: 1, equipped: false },
+            { itemId: "item_dried_figs_bread", quantity: 3, equipped: false }
+          ];
+          p.skills.tracking += 2;
+          p.skills.survival += 2;
+          p.piety.artemis = 2;
+        } else if (c.background === "acolyte") {
+          p.inventory = [
+            { itemId: "item_xiphos_001", quantity: 1, equipped: true, slot: "main_hand" },
+            { itemId: "item_travelers_chlamys_001", quantity: 1, equipped: true, slot: "body" },
+            { itemId: "item_clay_aryballos_wine", quantity: 2, equipped: false },
+            { itemId: "item_salve_asclepius", quantity: 2, equipped: false },
+            { itemId: "item_dried_figs_bread", quantity: 2, equipped: false }
+          ];
+          p.skills.mythology_lore += 2;
+          p.skills.medicine += 2;
+          p.piety.apollo = 2;
+          p.piety.athena = 1;
+        } else if (c.background === "wayfarer") {
+          p.currencies.drachmae += 25;
+          p.skills.persuasion += 2;
+          p.skills.investigation += 2;
+          p.piety.hermes = 2;
+        } else {
+          p.skills.melee_combat += 2;
+        }
+
+        if (c.trait === "pious") {
+          p.piety.hermes = (p.piety.hermes || 0) + 2;
+        }
+
+        this.state.hasCompletedCreation = true;
+        this.saveGameSilently();
+
+        this.logTranscript("Oracle", `Your oath is recorded. Welcome, ${p.name} of ${c.origin.toUpperCase()}. Your saga on Mount Cithaeron begins!`, "entry-discovery");
+        this.switchView("view-story");
+        this.renderAll();
+      }
+
+      /* =========================================================================
+         PERSISTENCE: IndexedDB Storage Manager
+         ========================================================================= */
+      initIndexedDB() {
+        return new Promise((resolve) => {
+          const request = indexedDB.open(this.dbName, this.dbVersion);
+          request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("saves")) {
+              db.createObjectStore("saves", { keyPath: "slot" });
+            }
+          };
+          request.onsuccess = (e) => {
+            this.db = e.target.result;
+            resolve();
+          };
+          request.onerror = (e) => {
+            console.warn("IndexedDB not available, fallback to LocalStorage", e);
+            resolve();
+          };
+        });
+      }
+
+      async saveGameSilently(slot = 1) {
+        this.state.saveSlot = slot;
+        this.state.timestamp = Date.now();
+        if (this.db) {
+          const tx = this.db.transaction("saves", "readwrite");
+          const store = tx.objectStore("saves");
+          store.put({ slot, state: JSON.parse(JSON.stringify(this.state)) });
+        } else {
+          localStorage.setItem(`gm_save_slot_${slot}`, JSON.stringify(this.state));
+        }
+      }
+
+      async loadGameSilently(slot = 1) {
+        let loaded = null;
+        if (this.db) {
+          loaded = await new Promise((resolve) => {
+            const tx = this.db.transaction("saves", "readonly");
+            const store = tx.objectStore("saves");
+            const req = store.get(slot);
+            req.onsuccess = () => resolve(req.result ? req.result.state : null);
+            req.onerror = () => resolve(null);
+          });
+        }
+        if (!loaded) {
+          const raw = localStorage.getItem(`gm_save_slot_${slot}`);
+          if (raw) loaded = JSON.parse(raw);
+        }
+        return loaded;
+      }
+
+      async saveGame(slot = 1) {
+        await this.saveGameSilently(slot);
+        this.logTranscript("System", `Game saved to Slot ${slot}.`, "entry-discovery");
+        this.renderSaveSlots();
+      }
+
+      async loadGame(slot = 1) {
+        const loaded = await this.loadGameSilently(slot);
+        if (loaded) {
+          this.state = loaded;
+          this.logTranscript("System", `Game loaded from Slot ${slot}.`, "entry-discovery");
+          this.renderAll();
+        } else {
+          alert(`No save data found in Slot ${slot}.`);
+        }
+      }
+
+      exportSaveToFile() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
+        const dlAnchor = document.createElement("a");
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", `greek_mythology_save_${this.state.player.name}.json`);
+        dlAnchor.click();
+      }
+
+      importSaveFromFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (parsed.player && parsed.worldState) {
+              this.state = parsed;
+              this.logTranscript("System", "Save file imported successfully.", "entry-discovery");
+              this.renderAll();
+            } else {
+              alert("Invalid save file structure.");
+            }
+          } catch (err) {
+            alert("Error parsing save file: " + err.message);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      restartAdventure() {
+        if (confirm("Restart adventure from the beginning? All unsaved progress will be reset.")) {
+          this.state = this.getInitialState();
+          this.startAdventure();
+          this.openCharacterCreationWizard();
+        }
+      }
+
+      /* =========================================================================
+         CONTENT LOADER (External JSONs with resilient embedded fallbacks)
+         ========================================================================= */
+      async loadContent() {
+        try {
+          const [locRes, charRes, creatRes, itemRes, deitRes, mythRes, advRes] = await Promise.all([
+            fetch("content/world/locations.json").then(r => r.json()).catch(() => null),
+            fetch("content/world/characters.json").then(r => r.json()).catch(() => null),
+            fetch("content/world/creatures.json").then(r => r.json()).catch(() => null),
+            fetch("content/world/items.json").then(r => r.json()).catch(() => null),
+            fetch("content/world/deities.json").then(r => r.json()).catch(() => null),
+            fetch("content/world/mythology.json").then(r => r.json()).catch(() => null),
+            fetch("content/adventures/tutorial.json").then(r => r.json()).catch(() => null)
+          ]);
+
+          if (locRes && locRes.locations) this.world.locations = locRes.locations;
+          if (charRes && charRes.characters) this.world.characters = charRes.characters;
+          if (creatRes && creatRes.creatures) this.world.creatures = creatRes.creatures;
+          if (itemRes && itemRes.items) this.world.items = itemRes.items;
+          if (deitRes && deitRes.deities) this.world.deities = deitRes.deities;
+          if (mythRes && mythRes.loreEntries) this.world.mythology = mythRes.loreEntries;
+          if (advRes) this.currentAdventure = advRes;
+        } catch (e) {
+          console.warn("Could not load external JSON packs, falling back to embedded baseline", e);
+        }
+
+        if (this.world.locations.length === 0) {
+          this.loadEmbeddedFallbackContent();
+        }
+      }
+
+      loadEmbeddedFallbackContent() {
+        this.world.locations = [
+          {
+            id: "loc_cithaeron_crossroads",
+            name: "Crossroads of Mount Cithaeron",
+            region: "Boeotia / Attica Border",
+            coordinates: { x: 380, y: 420 },
+            terrain: "rocky_scrubland",
+            connections: [
+              { targetLocationId: "loc_shrine_hermes_strophaios", name: "The Sacred Herm Path", distanceKm: 3.5, travelHours: 1.0, staminaCost: 3 },
+              { targetLocationId: "loc_plataea_outskirts", name: "Road to Plataea", distanceKm: 6.0, travelHours: 2.0, staminaCost: 4 },
+              { targetLocationId: "loc_cithaeron_fissure_cave", name: "Ascent to Whispering Fissure", distanceKm: 5.0, travelHours: 2.0, staminaCost: 6, requiresFlag: "cithaeron_cave_path_known" }
+            ],
+            narrative: {
+              overview: "You stand at a high wind-swept pass on the lower slopes of Mount Cithaeron. The air smells of crushed wild thyme, pine resin, and sun-baked limestone. At the fork in the dust road stands an ancient stone cairn (hermaion) crowned by a weather-hewn stone pillar. To the north, dark limestone gullies carve deep into the mountain."
+            },
+            presentNPCs: ["npc_daidalos_shepherd"]
+          },
+          {
+            id: "loc_shrine_hermes_strophaios",
+            name: "Shrine of Hermes Strophaios",
+            region: "Boeotia",
+            coordinates: { x: 240, y: 320 },
+            terrain: "sacred_grove",
+            connections: [
+              { targetLocationId: "loc_cithaeron_crossroads", name: "Path to Crossroads", distanceKm: 3.5, travelHours: 1.0, staminaCost: 3 },
+              { targetLocationId: "loc_crag_overlook", name: "Trail to High Crag", distanceKm: 4.0, travelHours: 1.5, staminaCost: 5 }
+            ],
+            narrative: {
+              overview: "A secluded mountain sanctuary sheltered beneath ancient gnarled wild olives. A carved marble herm pillar stands upon a stone terrace, depicting the bearded visage of Hermes wearing a petasos traveler's cap."
+            },
+            presentNPCs: ["npc_timon_pilgrim"]
+          },
+          {
+            id: "loc_plataea_outskirts",
+            name: "Pastures of Plataea",
+            region: "Boeotia",
+            coordinates: { x: 200, y: 550 },
+            terrain: "pasture",
+            connections: [
+              { targetLocationId: "loc_cithaeron_crossroads", name: "Mountain Road to Cithaeron", distanceKm: 6.0, travelHours: 2.0, staminaCost: 4 }
+            ],
+            narrative: {
+              overview: "The rolling green meadows stretch out toward the fortified acropolis of Plataea in the distance. Low stone walls border fields of barley and grazing sheep."
+            },
+            presentNPCs: []
+          },
+          {
+            id: "loc_cithaeron_fissure_cave",
+            name: "The Whispering Fissure",
+            region: "Boeotia",
+            coordinates: { x: 520, y: 260 },
+            terrain: "limestone_cave",
+            connections: [
+              { targetLocationId: "loc_cithaeron_crossroads", name: "Descent to Crossroads", distanceKm: 5.0, travelHours: 1.5, staminaCost: 4 },
+              { targetLocationId: "loc_crag_overlook", name: "Ridge Route to Overlook", distanceKm: 3.0, travelHours: 1.0, staminaCost: 4 }
+            ],
+            narrative: {
+              overview: "A shadowy vertical cleft splits the sheer limestone cliff face. Cold air draughts from within, carrying a hollow subterranean sigh. Archaic Phoenician-Greek letters are chiseled into the rock lintel above a massive counterweighted stone slab."
+            },
+            presentNPCs: []
+          },
+          {
+            id: "loc_crag_overlook",
+            name: "The Lion's Crag Overlook",
+            region: "Boeotia",
+            coordinates: { x: 420, y: 180 },
+            terrain: "mountain_peak",
+            connections: [
+              { targetLocationId: "loc_shrine_hermes_strophaios", name: "Descent to Herm Shrine", distanceKm: 4.0, travelHours: 1.0, staminaCost: 3 },
+              { targetLocationId: "loc_cithaeron_fissure_cave", name: "Path to Whispering Fissure", distanceKm: 3.0, travelHours: 1.0, staminaCost: 4 }
+            ],
+            narrative: {
+              overview: "A bare limestone promontory towering over the mountain ridges. Legend says this high perch was where the eighteen-year-old Herakles stalked the fierce Lion of Cithaeron."
+            },
+            presentNPCs: []
+          }
+        ];
+      }
+
+      /* =========================================================================
+         ADVENTURE & QUEST INITIALIZATION
+         ========================================================================= */
+      startAdventure() {
+        if (!this.state.worldState.quests["quest_tutorial_stolen_ram"]) {
+          this.state.worldState.quests["quest_tutorial_stolen_ram"] = {
+            id: "quest_tutorial_stolen_ram",
+            title: "The Consecrated Ram of Hermes",
+            stage: "investigate_tracks",
+            objectives: {
+              obj_speak_daidalos: { text: "Speak with Daidalos the shepherd about the vanishing.", completed: false },
+              obj_find_tracks: { text: "Search the scrubland for tracks of the beast.", completed: false },
+              obj_cairn_omen: { text: "Examine the Hermaion cairn for an omen or blessing.", completed: false, optional: true },
+              obj_solve_riddle: { text: "Decipher the Cadmean Threshold riddle at the cave.", completed: false },
+              obj_defeat_beast: { text: "Vanquish the creature within the cavern grotto.", completed: false }
+            },
+            completed: false
+          };
+        }
+
+        if (this.state.worldState.journal.chronicle.length === 0) {
+          this.state.worldState.journal.chronicle.push({
+            id: "chron_01",
+            title: "Arrival at Mount Cithaeron",
+            text: "Traveled north along the boundary road between Attica and Boeotia. Arrived at the windswept mountain crossroad where Elder Daidalos was lamenting a lost sacrificial ram."
+          });
+        }
+
+        const loc = this.getLocation(this.state.worldState.currentLocationId);
+        this.logTranscript("Narrator", loc.narrative.overview, "entry-prose");
+      }
+
+      /* =========================================================================
+         TABLETOP RULES ENGINE (d20 + Modifiers vs DC)
+         ========================================================================= */
+      rollD20() {
+        return Math.floor(Math.random() * 20) + 1;
+      }
+
+      getModifier(score) {
+        return Math.floor((score - 10) / 2);
+      }
+
+      checkSkill(skillName, attributeName, dc, label = "Skill Check") {
+        const d20 = this.rollD20();
+        const attrScore = this.state.player.attributes[attributeName] || 10;
+        const attrMod = this.getModifier(attrScore);
+        const skillRank = this.state.player.skills[skillName] || 0;
+        const total = d20 + attrMod + (skillRank * 2);
+
+        const isArete = d20 === 20;
+        const isAte = d20 === 1;
+        const success = isArete || (!isAte && total >= dc);
+
+        let rollClass = success ? "roll-success" : "roll-failure";
+        if (isArete) rollClass = "roll-arete";
+        if (isAte) rollClass = "roll-ate";
+
+        const rollHtml = `
+          <div class="entry-roll ${rollClass}">
+            <strong>${label} (${skillName}):</strong>
+            <span>d20: ${d20} + Mod: ${attrMod} + Skill: ${skillRank * 2} = <strong>${total}</strong> vs DC ${dc}</span>
+            <span>&bull; ${isArete ? "CRITICAL TRIUMPH (ARETE)!" : isAte ? "CRITICAL SETBACK (ATE)!" : success ? "SUCCESS" : "FAILURE"}</span>
+          </div>
+        `;
+
+        this.appendTranscriptHtml(rollHtml);
+        return { success, isArete, isAte, total };
+      }
+
+      /* =========================================================================
+         SELECTABLE ACTION ENGINE (CARDS WITH DESCRIPTIONS)
+         ========================================================================= */
+      getContextualActionGroups() {
+        const groups = [];
+        const locId = this.state.worldState.currentLocationId;
+        const flags = this.state.worldState.flags;
+        const q = this.state.worldState.quests["quest_tutorial_stolen_ram"];
+
+        // 1. Dialogue Group
+        const dialogueActions = [];
+        if (locId === "loc_cithaeron_crossroads") {
+          dialogueActions.push({
+            id: "act_talk_daidalos",
+            title: "Speak with Elder Daidalos",
+            desc: "Inquire about the vanishing of the sacrificial ram and learn of the mountain's perils.",
+            badge: "Dialogue",
+            type: "dialogue-action",
+            handler: () => this.openInpageDialogue("dialogue_daidalos_shepherd")
+          });
+        }
+        if (locId === "loc_shrine_hermes_strophaios") {
+          dialogueActions.push({
+            id: "act_talk_timon",
+            title: "Speak with Timon the Suppliant",
+            desc: "Ask the pilgrim resting by the olives about Boeotian legends and archaic stone door inscriptions.",
+            badge: "Dialogue",
+            type: "dialogue-action",
+            handler: () => this.openInpageDialogue("dialogue_timon_pilgrim")
+          });
+        }
+        if (dialogueActions.length > 0) {
+          groups.push({ category: "Conversations & Inquiries", actions: dialogueActions });
+        }
+
+        // 2. Exploration & Investigation Group
+        const exploreActions = [];
+        if (locId === "loc_cithaeron_crossroads") {
+          if (!flags["examined_hermaion"]) {
+            exploreActions.push({
+              id: "act_examine_cairn",
+              title: "Examine the Hermaion Stone Cairn",
+              desc: "Inspect the ancient pile of boundary stones dedicated to Hermes (DC 11 Mythology Lore).",
+              badge: "Lore Check",
+              type: "primary-quest-action",
+              handler: () => this.handleExamineCairn()
+            });
+          }
+
+          if (!flags["cithaeron_cave_path_known"]) {
+            exploreActions.push({
+              id: "act_search_tracks",
+              title: "Search Scrubland for Ram Tracks",
+              desc: "Look for fleece tufts and claw marks in the thorny gorse bushes (DC 11 Tracking).",
+              badge: "Tracking Check",
+              type: "primary-quest-action",
+              handler: () => this.handleSearchTracks()
+            });
+          }
+        }
+
+        if (locId === "loc_cithaeron_fissure_cave") {
+          if (!flags["cithaeron_cave_unsealed"]) {
+            exploreActions.push({
+              id: "act_inspect_lintel",
+              title: "Examine the Cadmean Inscription",
+              desc: "Inspect the serpent relief and chiseled letters on the sealed stone portal (DC 11 Investigation).",
+              badge: "Investigation",
+              type: "primary-quest-action",
+              handler: () => this.handleInspectCadmeanLintel()
+            });
+            exploreActions.push({
+              id: "act_open_riddle",
+              title: "Decipher the Cadmean Threshold",
+              desc: "Speak the sacred title of Ares' earth-born guardian to open the subterranean door.",
+              badge: "Riddle / Mystery",
+              type: "primary-quest-action",
+              handler: () => this.openRiddleModal()
+            });
+          } else if (!flags["cithaeron_beast_defeated"]) {
+            exploreActions.push({
+              id: "act_enter_grotto",
+              title: "Enter the Grotto & Slay the Beast",
+              desc: "Step through the opened portal and confront the ferocious creature guarding the sacred ram.",
+              badge: "Combat Encounter",
+              type: "danger-action",
+              handler: () => this.startCaveCombat()
+            });
+          } else {
+            exploreActions.push({
+              id: "act_inspect_grotto_safe",
+              title: "Inspect the Quiet Sanctuary Spring",
+              desc: "The sacred cavern spring flows gently. The black ram is safe, grazing on wild ferns.",
+              badge: "Observation",
+              type: "sacred-action",
+              handler: () => {
+                this.logTranscript("Narrator", "The sacred mountain spring trickles peacefully over moss-covered limestone. The black ram is safe, grazing quietly on wild herbs near the entrance.", "entry-prose");
+              }
+            });
+          }
+        }
+        if (exploreActions.length > 0) {
+          groups.push({ category: "Exploration & Investigation", actions: exploreActions });
+        }
+
+        // 3. Sacred Rites Group
+        const sacredActions = [];
+        if (locId === "loc_cithaeron_crossroads" && flags["examined_hermaion"] && !flags["poured_libation_hermes"]) {
+          const hasWine = this.hasItem("item_clay_aryballos_wine");
+          sacredActions.push({
+            id: "act_pour_libation",
+            title: "Pour Wine Libation to Hermes Enodios",
+            desc: hasWine ? "Uncork your aryballos and pour dark Pramnian wine upon the crest stone (+2 Piety, Restores Stamina)." : "Requires an Aryballos of Wine in your inventory.",
+            badge: "Sacred Rite",
+            type: "sacred-action",
+            disabled: !hasWine,
+            handler: () => this.handlePourLibation()
+          });
+        }
+        if (sacredActions.length > 0) {
+          groups.push({ category: "Sacred Rites & Offerings", actions: sacredActions });
+        }
+
+        // 4. Quick Travel Group
+        const travelActions = [];
+        const currentLoc = this.getLocation(locId);
+        currentLoc.connections.forEach(conn => {
+          const target = this.getLocation(conn.targetLocationId);
+          if (target && this.state.worldState.discoveredLocations.includes(target.id)) {
+            travelActions.push({
+              id: `act_travel_${target.id}`,
+              title: `Journey to ${target.name}`,
+              desc: `Travel along ${conn.name} (${conn.distanceKm} km &bull; ${conn.travelHours} hrs &bull; Costs ${conn.staminaCost} Stamina).`,
+              badge: "Travel",
+              type: "primary-quest-action",
+              handler: () => this.executeTravel(target, conn)
+            });
+          }
+        });
+        if (travelActions.length > 0) {
+          groups.push({ category: "Travel Pathways", actions: travelActions });
+        }
+
+        return groups;
+      }
+
+      handleExamineCairn() {
+        const check = this.checkSkill("mythology_lore", "wisdom", 11, "Mythology Lore");
+        this.state.worldState.flags["examined_hermaion"] = true;
+        
+        if (check.success) {
+          this.logTranscript("Discovery", "You recognize the archaic mound as an *hermaion* raised by travelers adding stones in gratitude for safe passage. Carved beneath the capstone is an ancient dedication: 'To Hermes Enodios, Guide of Paths. Pour the sweet dark wine and receive the god's swift stride.'", "entry-discovery");
+          this.addJournalEntry("discoveries", "The Hermaion of Cithaeron", "Identified an archaic stone mound to Hermes. Offerings of wine invoke the god's protection over rugged paths.");
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_cairn_omen", true);
+        } else {
+          this.logTranscript("Narrator", "A weathered pile of limestone boulders marking the high pass. You notice dried wine stains upon the stones from past travelers.", "entry-prose");
+        }
+        this.renderAll();
+      }
+
+      handlePourLibation() {
+        this.removeItem("item_clay_aryballos_wine", 1);
+        this.state.worldState.flags["poured_libation_hermes"] = true;
+        this.state.player.piety.hermes = (this.state.player.piety.hermes || 0) + 2;
+        this.state.player.vitals.stamina = Math.min(this.state.player.vitals.maxStamina, this.state.player.vitals.stamina + 6);
+        
+        this.logTranscript("Sacred Offering", "Uncorking the aryballos, you pour fragrant dark Pramnian wine over the crest stone of the cairn. A sudden warm gust of wind sweeps across the pass, carrying the scent of mountain thyme. Your weariness lifts—Hermes has received your pious offering!", "entry-discovery");
+        this.logTranscript("Consequence", "Gained +2 Piety with Hermes. Restored 6 Stamina points.", "entry-consequence");
+        this.addJournalEntry("chronicle", "Libation to Hermes", "Poured wine upon the Hermaion at Cithaeron pass; honored Hermes of the Way.");
+        this.renderAll();
+      }
+
+      handleSearchTracks() {
+        const check = this.checkSkill("tracking", "perception", 11, "Tracking Check");
+        if (check.success) {
+          this.state.worldState.flags["cithaeron_cave_path_known"] = true;
+          this.logTranscript("Investigation", "Kneeling beside the thorny gorse bushes, you find tufts of thick black fleece snagged on the brambles and heavy claw gouges in the loose limestone scree. The dragging tracks climb straight up the eastern crags toward the Whispering Fissure!", "entry-discovery");
+          this.addJournalEntry("knowledge", "Tracks of the Beast", "Discovered fleece and claw indentations leading up to the Whispering Fissure.");
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_find_tracks", true);
+          
+          if (!this.state.worldState.discoveredLocations.includes("loc_cithaeron_fissure_cave")) {
+            this.state.worldState.discoveredLocations.push("loc_cithaeron_fissure_cave");
+          }
+        } else {
+          this.state.worldState.flags["cithaeron_cave_path_known"] = true;
+          this.logTranscript("Narrator", "The wind has scattered the loose dust across the road, but elder Daidalos points his crook toward the eastern limestone crags: 'There! See where the brambles are broken? That trail ascends straight to the Whispering Fissure!'", "entry-prose");
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_find_tracks", true);
+          if (!this.state.worldState.discoveredLocations.includes("loc_cithaeron_fissure_cave")) {
+            this.state.worldState.discoveredLocations.push("loc_cithaeron_fissure_cave");
+          }
+        }
+        this.renderAll();
+      }
+
+      handleInspectCadmeanLintel() {
+        const check = this.checkSkill("investigation", "intelligence", 11, "Investigation Check");
+        this.logTranscript("Narrator", "Chiseled into the limestone lintel above the sealed stone portal are archaic letters and a bas-relief depicting a crested serpent wrapped around a tripod and a spring.", "entry-prose");
+        if (check.success) {
+          this.logTranscript("Discovery", "The inscription reads: 'Speak the sacred name of the earth-born guardian born of Ares, whose venomous teeth were sown into Boeotian soil by the founder Cadmus.'", "entry-discovery");
+          this.addJournalEntry("mysteries", "The Cadmean Threshold", "The stone door requires the ancient name of the guardian beast slain by Cadmus when founding Thebes (Drakon / Serpent of Ares).");
+        }
+        this.renderAll();
+      }
+
+      /* =========================================================================
+         IN-PAGE RIDDLE SOLVER (NO ALERT/PROMPT POPUPS)
+         ========================================================================= */
+      openRiddleModal() {
+        const modal = document.getElementById("riddle-modal");
+        const container = document.getElementById("riddle-choices-container");
+        const knowsCadmus = this.hasJournalClue("Cadmus") || this.state.worldState.flags["knows_cadmus_drakon"];
+
+        let choicesHtml = "";
+
+        if (knowsCadmus) {
+          choicesHtml += `
+            <button class="dialogue-choice-btn" style="border-left: 4px solid var(--bronze-bright);" onclick="window.engine.resolveRiddleChoice('drakon')">
+              <strong>Invoke the Ismenian Drakon (Serpent of Ares)</strong>
+              <div style="font-size: 0.8rem; color: var(--laurel-bright);">(Known from conversation with Daidalos & Journal Clue)</div>
+            </button>
+          `;
+        }
+
+        choicesHtml += `
+          <button class="dialogue-choice-btn" onclick="window.engine.resolveRiddleChoice('skill_check')">
+            <strong>Deduce from Mythological Knowledge (DC 12 Mythology Lore)</strong>
+            <div style="font-size: 0.8rem; color: var(--marble-dim);">Attempt to recall the ancient Boeotian founding hymn of Thebes.</div>
+          </button>
+          <button class="dialogue-choice-btn" onclick="window.engine.resolveRiddleChoice('nemean_lion')">
+            <strong>Invoke the Nemean Lion slain by Herakles</strong>
+          </button>
+          <button class="dialogue-choice-btn" onclick="window.engine.resolveRiddleChoice('minotaur')">
+            <strong>Invoke the Bull of Minos from Crete</strong>
+          </button>
+        `;
+
+        container.innerHTML = choicesHtml;
+        modal.style.display = "flex";
+      }
+
+      hasJournalClue(keyword) {
+        const j = this.state.worldState.journal;
+        return j.knowledge.some(k => k.title.includes(keyword) || k.text.includes(keyword)) ||
+               j.mysteries.some(m => m.title.includes(keyword) || m.text.includes(keyword));
+      }
+
+      resolveRiddleChoice(choice) {
+        const modal = document.getElementById("riddle-modal");
+
+        if (choice === "drakon") {
+          modal.style.display = "none";
+          this.state.worldState.flags["cithaeron_cave_unsealed"] = true;
+          this.logTranscript("Arete", `You speak the ancient name: "Drakon of Ares!" Counterweighted stones rumble deep within the cliff. The massive limestone slab sinks into the rock, revealing the torchlit cavern within!`, "entry-discovery");
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_solve_riddle", true);
+          this.addJournalEntry("chronicle", "The Threshold Unsealed", "Spoke the name of Ares' sacred Drakon and opened the inner grotto.");
+          this.renderAll();
+        } else if (choice === "skill_check") {
+          const check = this.checkSkill("mythology_lore", "wisdom", 12, "Riddle Deduction");
+          if (check.success) {
+            modal.style.display = "none";
+            this.state.worldState.flags["cithaeron_cave_unsealed"] = true;
+            this.logTranscript("Arete", `Recalling the archaic hymn of Cadmus, you invoke the "Ismenian Drakon!" The counterweighted stones groan and sink into the floor, opening the way!`, "entry-discovery");
+            this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_solve_riddle", true);
+            this.addJournalEntry("chronicle", "The Threshold Unsealed", "Duced the ancient name of Ares' Drakon and unlocked the portal.");
+            this.renderAll();
+          } else {
+            this.logTranscript("Narrator", "The ancient words slip from your memory. The stone door remains silent and unmoving.", "entry-prose");
+          }
+        } else {
+          this.logTranscript("Narrator", "You speak that name, but the stones remain unmoved. Only a cold draft sighs through the crag.", "entry-prose");
+        }
+      }
+
+      submitCustomRiddleAnswer() {
+        const input = document.getElementById("riddle-custom-input");
+        const val = input.value.trim().toLowerCase();
+        if (!val) return;
+        input.value = "";
+
+        const validAnswers = ["drakon", "dragon", "serpent", "ismenian drakon", "serpent of ares", "drakon ismenios"];
+        if (validAnswers.some(k => val.includes(k))) {
+          this.resolveRiddleChoice("drakon");
+        } else {
+          this.resolveRiddleChoice("wrong");
+        }
+      }
+
+      /* =========================================================================
+         IN-PAGE INTERACTIVE DIALOGUE RUNNER
+         ========================================================================= */
+      openInpageDialogue(treeId) {
+        const modal = document.getElementById("dialogue-modal");
+        const speakerEl = document.getElementById("dialogue-speaker-name");
+        const textEl = document.getElementById("dialogue-text-body");
+        const choicesEl = document.getElementById("dialogue-choices-list");
+
+        if (treeId === "dialogue_daidalos_shepherd") {
+          const flags = this.state.worldState.flags;
+          speakerEl.innerText = "Daidalos the Shepherd";
+
+          if (flags["cithaeron_beast_defeated"] && !flags["tutorial_quest_completed"]) {
+            textEl.innerHTML = `
+              "By the blessed gods of Olympus! You have brought back the black ram unharmed, and its bronze bell rings once more across the pasture! You have proven the true arete of a hero, stranger. Take these silver drachmae, and wear the consecrated bronze bell of Hermes as an amulet of safe travels!"
+            `;
+            choicesEl.innerHTML = `
+              <button class="dialogue-choice-btn" onclick="window.engine.completeTutorialQuest()">
+                <strong>"It was an honor, Daidalos. May Hermes watch over your flocks." (Complete Quest)</strong>
+              </button>
+            `;
+          } else {
+            textEl.innerHTML = `
+              "Hail, traveler! By Zeus Xenios, keeper of guests and strangers, hear an old herdsman's grief. My prize black ram—reared since spring to be offered at the feast of Hermes Kriophoros—was dragged into the rocky crags this very dawn! No common wolf did this; I heard a hiss like steam and claws scraping stone!"
+            `;
+            choicesEl.innerHTML = `
+              <button class="dialogue-choice-btn" onclick="window.engine.advanceDialogueDaidalos('creature')">
+                "Tell me more of what you saw of the creature."
+              </button>
+              <button class="dialogue-choice-btn" onclick="window.engine.advanceDialogueDaidalos('cadmus')">
+                "Who carved the ancient serpent inscriptions on this mountain?"
+              </button>
+              <button class="dialogue-choice-btn" onclick="window.engine.advanceDialogueDaidalos('accept')">
+                "Fear not, Daidalos. I will search the slopes and recover your ram."
+              </button>
+              <button class="dialogue-choice-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">
+                "I must inspect the road. Farewell for now."
+              </button>
+            `;
+          }
+        } else if (treeId === "dialogue_timon_pilgrim") {
+          speakerEl.innerText = "Timon the Suppliant";
+          textEl.innerHTML = `
+            "Peace be with you, friend of the mountain road. I am Timon of Megara, carrying sacred wool-wreathed olive branches to Delphi. The peace of Hermes' grove restores weary limbs."
+          `;
+          choicesEl.innerHTML = `
+            <button class="dialogue-choice-btn" onclick="window.engine.advanceDialogueTimon('inscriptions')">
+              "What wisdom can you share of the sealed doors on Cithaeron?"
+            </button>
+            <button class="dialogue-choice-btn" onclick="window.engine.advanceDialogueTimon('rumors')">
+              "Have you heard any unnatural beasts howling from the crags?"
+            </button>
+            <button class="dialogue-choice-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">
+              "May Apollo hear your supplication, Timon. Farewell."
+            </button>
+          `;
+        }
+
+        modal.style.display = "flex";
+      }
+
+      advanceDialogueDaidalos(node) {
+        const textEl = document.getElementById("dialogue-text-body");
+        const choicesEl = document.getElementById("dialogue-choices-list");
+
+        if (node === "creature") {
+          textEl.innerHTML = `"It moved in the early mist—larger than a wolf, with iron-hard talons that struck sparks on the limestone. In the old stories, they say ancient brood of Echidna still slumber in the deep limestone faults of Cithaeron. Be on your guard!"`;
+          this.addJournalEntry("knowledge", "The Beast of Cithaeron", "Elder Daidalos described the predator: larger than a wolf with iron talons, resembling the subterranean brood of Echidna.");
+        } else if (node === "cadmus") {
+          textEl.innerHTML = `"Ah! Long ago, Prince Cadmus walked these Boeotian foothills seeking his sister Europa. To found Thebes, he had to slay the ferocious Drakon of Ares—a colossal serpent whose venomous teeth he sowed into the earth. The ancient doors in these crags still answer to the name of Ares' Drakon!"`;
+          this.state.worldState.flags["knows_cadmus_drakon"] = true;
+          this.addJournalEntry("knowledge", "Cadmus and the Drakon", "Daidalos confirmed that Prince Cadmus slew the sacred Serpent (Drakon) of Ares upon these slopes; archaic Boeotian stone doors respond to the name of Ares' Drakon.");
+        } else if (node === "accept") {
+          textEl.innerHTML = `"May Hermes Enodios bless your strides, noble friend! Take this aryballos of Pramnian wine—if you reach the stone cairn, pour a libation; the gods never turn away from a pious heart."`;
+          if (!this.hasItem("item_clay_aryballos_wine")) {
+            this.addItem("item_clay_aryballos_wine", 1);
+          }
+          this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_speak_daidalos", true);
+        }
+
+        choicesEl.innerHTML = `
+          <button class="dialogue-choice-btn" onclick="window.engine.openInpageDialogue('dialogue_daidalos_shepherd')">
+            &larr; Back to questions
+          </button>
+          <button class="dialogue-choice-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">
+            Leave conversation
+          </button>
+        `;
+        this.renderAll();
+      }
+
+      advanceDialogueTimon(node) {
+        const textEl = document.getElementById("dialogue-text-body");
+        const choicesEl = document.getElementById("dialogue-choices-list");
+
+        if (node === "inscriptions") {
+          textEl.innerHTML = `"In Boeotia, the old kings inscribed the guardian beasts of their legends upon limestone thresholds. Remember: the Greeks do not pray to dead idols—they invoke the specific epithet of the guardian, such as the sacred Drakon of Ares."`;
+          this.state.worldState.flags["knows_cadmus_drakon"] = true;
+          this.addJournalEntry("knowledge", "Archaic Inscriptions", "Timon confirmed that Boeotian mountain doors answer to the names of mythic beasts chiseled in holy hymns (such as the Drakon of Ares).");
+        } else if (node === "rumors") {
+          textEl.innerHTML = `"At twilight yesterday, as the red sun sank behind Plataea, I heard deep howling from the Whispering Fissure. It was no jackal—the sound set the hair on my arms upright. Carry good bronze and a stout shield if you tread that upper path!"`;
+        }
+
+        choicesEl.innerHTML = `
+          <button class="dialogue-choice-btn" onclick="window.engine.openInpageDialogue('dialogue_timon_pilgrim')">
+            &larr; Back to questions
+          </button>
+          <button class="dialogue-choice-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">
+            Leave conversation
+          </button>
+        `;
+        this.renderAll();
+      }
+
+      completeTutorialQuest() {
+        document.getElementById("dialogue-modal").style.display = "none";
+        this.state.worldState.flags["tutorial_quest_completed"] = true;
+        this.state.player.currencies.drachmae += 30;
+        this.state.player.renown += 25;
+        this.addItem("item_votive_bell_hermes", 1);
+        this.q_complete("quest_tutorial_stolen_ram");
+        
+        this.addJournalEntry("chronicle", "Triumph at Cithaeron", "Safely returned the consecrated black ram to Daidalos. Received the Archaic Bronze Bell of Hermes and won the enduring gratitude of Plataea.");
+        this.saveGameSilently();
+        this.renderAll();
+
+        document.getElementById("victory-modal").style.display = "flex";
+      }
+
+      /* =========================================================================
+         COMBAT ENGINE: Narrative Turn-Based Encounters
+         ========================================================================= */
+      startCaveCombat() {
+        const modal = document.getElementById("combat-modal");
+        modal.style.display = "flex";
+
+        this.combatSession = {
+          enemy: {
+            name: "Cithaeronian Timber Wolf",
+            hp: 18, maxHp: 18,
+            morale: 10,
+            atkBonus: 3,
+            dmgMin: 3, dmgMax: 7,
+            armorClass: 12
+          },
+          round: 1
+        };
+
+        const feed = document.getElementById("combat-log-feed");
+        feed.innerHTML = `
+          <div style="color: #ff9d82; font-style: italic; margin-bottom: 0.5rem;">
+            As you step into the torchlit cavern, twin amber eyes flare in the shadows! A ferocious grey wolf with snarling jaws bars your path, guarding the terrified sacrificial ram!
+          </div>
+        `;
+        this.updateCombatUI();
+      }
+
+      updateCombatUI() {
+        const c = this.combatSession;
+        if (!c) return;
+        document.getElementById("combat-player-name").innerText = this.state.player.name;
+        document.getElementById("combat-player-archetype").innerText = `${this.state.player.origin.toUpperCase()} &bull; ${this.state.player.background.toUpperCase()}`;
+        document.getElementById("combat-enemy-name").innerText = c.enemy.name;
+        document.getElementById("combat-enemy-hp").innerText = `${c.enemy.hp} / ${c.enemy.maxHp}`;
+        document.getElementById("combat-player-hp").innerText = `${this.state.player.vitals.health} / ${this.state.player.vitals.maxHealth}`;
+        document.getElementById("combat-player-stm").innerText = `${this.state.player.vitals.stamina} / ${this.state.player.vitals.maxStamina}`;
+        document.getElementById("combat-round-indicator").innerText = `Round ${c.round}`;
+      }
+
+      combatAction(actionType) {
+        const c = this.combatSession;
+        if (!c) return;
+        const feed = document.getElementById("combat-log-feed");
+
+        if (actionType === "thrust") {
+          const d20 = this.rollD20();
+          const strMod = this.getModifier(this.state.player.attributes.strength);
+          const meleeSkill = this.state.player.skills.melee_combat || 0;
+          const attackRoll = d20 + strMod + meleeSkill;
+
+          if (d20 === 20 || (d20 !== 1 && attackRoll >= c.enemy.armorClass)) {
+            const dmg = Math.floor(Math.random() * 6) + 4 + strMod;
+            c.enemy.hp -= dmg;
+            feed.innerHTML += `<div style="color: #85e39d;"><strong>You strike!</strong> Your bronze thrust pierces the wolf for ${dmg} damage!</div>`;
+          } else {
+            feed.innerHTML += `<div style="color: #dfdbd2;">You lunge with your weapon, but the agile beast leaps aside over the rocks.</div>`;
+          }
+        } else if (actionType === "shield_block") {
+          this.state.player.vitals.stamina = Math.max(0, this.state.player.vitals.stamina - 2);
+          feed.innerHTML += `<div style="color: var(--lapis-bright);">You brace your bronze shield firmly, anticipating the beast's lunge. (+4 Defense this turn)</div>`;
+        } else if (actionType === "feint") {
+          feed.innerHTML += `<div style="color: var(--parchment);">You feint to the flank, throwing the predator off balance! (-2 to enemy attack)</div>`;
+        } else if (actionType === "salve") {
+          if (this.hasItem("item_salve_asclepius")) {
+            this.removeItem("item_salve_asclepius", 1);
+            this.state.player.vitals.health = Math.min(this.state.player.vitals.maxHealth, this.state.player.vitals.health + 12);
+            feed.innerHTML += `<div style="color: #85e39d;">Applied Epidaurian herbal salve, restoring 12 health points!</div>`;
+          } else {
+            feed.innerHTML += `<div style="color: #ff9d82;">You do not possess any healing salves in your bag!</div>`;
+          }
+        } else if (actionType === "flee") {
+          feed.innerHTML += `<div style="color: #ff9d82;">You retreat carefully out of the cave entrance back to the mountain pass.</div>`;
+          setTimeout(() => {
+            document.getElementById("combat-modal").style.display = "none";
+            this.combatSession = null;
+            this.renderAll();
+          }, 1000);
+          return;
+        }
+
+        if (c.enemy.hp <= 0) {
+          feed.innerHTML += `<div style="color: #ffe680; font-weight: bold; margin-top: 0.5rem;">The wolf whimpers and slumps onto the cave floor, defeated! The sacred ram bleats softly in the grotto, unharmed!</div>`;
+          setTimeout(() => {
+            document.getElementById("combat-modal").style.display = "none";
+            this.handleCombatVictory();
+          }, 1500);
+          return;
+        }
+
+        const enemyD20 = this.rollD20();
+        const enemyRoll = enemyD20 + c.enemy.atkBonus;
+        const playerAC = 13 + (actionType === "shield_block" ? 4 : 0);
+
+        if (enemyRoll >= playerAC) {
+          const dmg = Math.floor(Math.random() * (c.enemy.dmgMax - c.enemy.dmgMin + 1)) + c.enemy.dmgMin;
+          this.state.player.vitals.health = Math.max(0, this.state.player.vitals.health - dmg);
+          feed.innerHTML += `<div style="color: #f0896e;">The wolf snaps its jaws, tearing flesh for ${dmg} slashing damage!</div>`;
+        } else {
+          feed.innerHTML += `<div style="color: #85e39d;">The wolf snaps viciously, but its fangs skid harmlessly off your bronze defense!</div>`;
+        }
+
+        c.round++;
+        this.updateCombatUI();
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      handleCombatVictory() {
+        this.combatSession = null;
+        this.state.worldState.flags["cithaeron_beast_defeated"] = true;
+        this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_defeat_beast", true);
+        this.logTranscript("Triumph", "You vanquished the beast within the Whispering Fissure! The black ram is safe, and the archaic bronze bell around its horns rings with a pure resonance. Return to Daidalos at the crossroads!", "entry-discovery");
+        this.addJournalEntry("chronicle", "Victory in the Grotto", "Defeated the predator within the cave and secured the consecrated ram of Hermes.");
+        this.renderAll();
+      }
+
+      /* =========================================================================
+         WORLD MAP NAVIGATION & TRAVEL
+         ========================================================================= */
+      renderMap() {
+        const svgEdges = document.getElementById("svg-edges-group");
+        const svgNodes = document.getElementById("svg-nodes-group");
+        if (!svgEdges || !svgNodes) return;
+
+        svgEdges.innerHTML = "";
+        svgNodes.innerHTML = "";
+
+        const currentLocId = this.state.worldState.currentLocationId;
+        const currentLoc = this.getLocation(currentLocId);
+        const discovered = this.state.worldState.discoveredLocations;
+
+        this.world.locations.forEach(loc => {
+          if (!discovered.includes(loc.id)) return;
+          loc.connections.forEach(conn => {
+            const target = this.getLocation(conn.targetLocationId);
+            if (target && discovered.includes(target.id)) {
+              const isConnected = (loc.id === currentLocId || target.id === currentLocId);
+              const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+              line.setAttribute("x1", loc.coordinates.x);
+              line.setAttribute("y1", loc.coordinates.y);
+              line.setAttribute("x2", target.coordinates.x);
+              line.setAttribute("y2", target.coordinates.y);
+              line.setAttribute("class", `map-edge ${isConnected ? "connected-active" : ""}`);
+              svgEdges.appendChild(line);
+            }
+          });
+        });
+
+        this.world.locations.forEach(loc => {
+          const isKnown = discovered.includes(loc.id);
+          const isCurrent = loc.id === currentLocId;
+
+          const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+          g.setAttribute("class", `map-node ${isCurrent ? "active" : ""}`);
+          g.setAttribute("transform", `translate(${loc.coordinates.x}, ${loc.coordinates.y})`);
+
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("r", isCurrent ? "10" : "7");
+          circle.setAttribute("class", "map-node-marker");
+          g.appendChild(circle);
+
+          if (isKnown) {
+            const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            label.setAttribute("y", "22");
+            label.setAttribute("class", "map-node-label");
+            label.textContent = loc.name;
+            g.appendChild(label);
+
+            g.addEventListener("click", () => this.showTravelModal(loc));
+          } else {
+            circle.setAttribute("opacity", "0.25");
+          }
+
+          svgNodes.appendChild(g);
+        });
+      }
+
+      showTravelModal(targetLoc) {
+        const modal = document.getElementById("map-travel-modal");
+        const currentLoc = this.getLocation(this.state.worldState.currentLocationId);
+
+        if (targetLoc.id === currentLoc.id) {
+          modal.style.display = "none";
+          return;
+        }
+
+        const conn = currentLoc.connections.find(c => c.targetLocationId === targetLoc.id);
+        if (!conn) {
+          alert("There is no direct trail connecting these two locations. Follow the road network.");
+          return;
+        }
+
+        document.getElementById("modal-dest-name").innerText = targetLoc.name;
+        document.getElementById("modal-dest-desc").innerText = targetLoc.narrative.shortDescription || targetLoc.narrative.overview;
+        document.getElementById("modal-travel-stats").innerHTML = `
+          <div>Distance: <strong>${conn.distanceKm} km</strong> &bull; Travel Time: <strong>${conn.travelHours} hrs</strong></div>
+          <div>Stamina Cost: <strong>${conn.staminaCost} pts</strong> &bull; Danger: <strong>Level ${conn.dangerRating || 1}</strong></div>
+        `;
+
+        const btnConfirm = document.getElementById("btn-confirm-travel");
+        btnConfirm.onclick = () => {
+          modal.style.display = "none";
+          this.executeTravel(targetLoc, conn);
+        };
+
+        modal.style.display = "block";
+      }
+
+      executeTravel(targetLoc, conn) {
+        this.state.player.vitals.stamina = Math.max(0, this.state.player.vitals.stamina - conn.staminaCost);
+        this.advanceTime(conn.travelHours, 0);
+
+        this.state.worldState.currentLocationId = targetLoc.id;
+        if (!this.state.worldState.discoveredLocations.includes(targetLoc.id)) {
+          this.state.worldState.discoveredLocations.push(targetLoc.id);
+        }
+
+        this.logTranscript("Travel", `You traveled ${conn.distanceKm} km along ${conn.name} to arrive at ${targetLoc.name}. (-${conn.staminaCost} Stamina)`, "entry-consequence");
+        this.logTranscript("Narrator", targetLoc.narrative.overview, "entry-prose");
+
+        this.switchView("view-story");
+        this.renderAll();
+      }
+
+      advanceTime(hours, minutes) {
+        const t = this.state.worldState.time;
+        t.minute += minutes;
+        t.hour += hours;
+        while (t.minute >= 60) {
+          t.minute -= 60;
+          t.hour += 1;
+        }
+        while (t.hour >= 24) {
+          t.hour -= 24;
+          t.day += 1;
+        }
+      }
+
+      /* =========================================================================
+         OPTIONAL CUSTOM ACTION INTENT PARSER
+         ========================================================================= */
+      handleCustomAction() {
+        const inputEl = document.getElementById("custom-action-input");
+        const query = inputEl.value.trim();
+        if (!query) return;
+        inputEl.value = "";
+
+        this.logTranscript("Player", `> "${query}"`, "entry-dialogue");
+        const lower = query.toLowerCase();
+
+        if (lower.includes("examine") || lower.includes("look") || lower.includes("inspect") || lower.includes("search")) {
+          if (lower.includes("cairn") || lower.includes("herm") || lower.includes("stone")) {
+            this.handleExamineCairn();
+            return;
+          }
+          if (lower.includes("track") || lower.includes("ground") || lower.includes("fleece") || lower.includes("bush")) {
+            this.handleSearchTracks();
+            return;
+          }
+          if (lower.includes("lintel") || lower.includes("door") || lower.includes("inscription") || lower.includes("slab")) {
+            this.handleInspectCadmeanLintel();
+            return;
+          }
+          this.logTranscript("Narrator", `You carefully inspect your surroundings. The limestone landscape is stark and timeless under the Greek sky.`, "entry-prose");
+          return;
+        }
+
+        if (lower.includes("offer") || lower.includes("pour") || lower.includes("libation") || lower.includes("wine") || lower.includes("pray")) {
+          if (this.hasItem("item_clay_aryballos_wine")) {
+            this.handlePourLibation();
+            return;
+          } else {
+            this.logTranscript("Narrator", "You offer a silent prayer to the Olympian gods. A cool mountain breeze whispers in response.", "entry-prose");
+            return;
+          }
+        }
+
+        if (lower.includes("talk") || lower.includes("speak") || lower.includes("ask")) {
+          if (lower.includes("daidalos") || lower.includes("shepherd")) {
+            this.openInpageDialogue("dialogue_daidalos_shepherd");
+            return;
+          }
+          if (lower.includes("timon") || lower.includes("pilgrim")) {
+            this.openInpageDialogue("dialogue_timon_pilgrim");
+            return;
+          }
+          if (lower.includes("dragon") || lower.includes("drakon") || lower.includes("serpent")) {
+            if (this.state.worldState.currentLocationId === "loc_cithaeron_fissure_cave") {
+              this.openRiddleModal();
+              return;
+            }
+          }
+        }
+
+        this.logTranscript("Narrator", `You consider attempting to '${query}'. While an interesting heroic instinct, there is no immediate result here. Try selecting one of the available action cards above.`, "entry-prose");
+      }
+
+      /* =========================================================================
+         INVENTORY & ITEMS (WITH HOVER TOOLTIPS & REACTIVE CATEGORY FILTERING)
+         ========================================================================= */
+      hasItem(itemId) {
+        return this.state.player.inventory.some(i => i.itemId === itemId && i.quantity > 0);
+      }
+
+      addItem(itemId, quantity = 1) {
+        const existing = this.state.player.inventory.find(i => i.itemId === itemId);
+        if (existing) {
+          existing.quantity += quantity;
+        } else {
+          this.state.player.inventory.push({ itemId, quantity, equipped: false });
+        }
+      }
+
+      removeItem(itemId, quantity = 1) {
+        const idx = this.state.player.inventory.findIndex(i => i.itemId === itemId);
+        if (idx !== -1) {
+          this.state.player.inventory[idx].quantity -= quantity;
+          if (this.state.player.inventory[idx].quantity <= 0) {
+            this.state.player.inventory.splice(idx, 1);
+          }
+        }
+      }
+
+      getItemData(itemId) {
+        return this.world.items.find(i => i.id === itemId) || { id: itemId, name: itemId, category: "misc", description: "An item of Hellas." };
+      }
+
+      setupItemTooltips() {
+        const tooltip = document.getElementById("item-tooltip-popover");
+        if (!tooltip) return;
+
+        document.addEventListener("mousemove", (e) => {
+          if (tooltip.style.display === "flex") {
+            this.positionTooltip(e.clientX, e.clientY);
+          }
+        });
+      }
+
+      showItemTooltip(itemId, targetEl) {
+        const tooltip = document.getElementById("item-tooltip-popover");
+        if (!tooltip) return;
+
+        const item = this.getItemData(itemId);
+        const invItem = this.state.player.inventory.find(i => i.itemId === itemId);
+        const qty = invItem ? invItem.quantity : 1;
+        const isEquipped = invItem ? invItem.equipped : false;
+
+        let statsHtml = "";
+        if (item.stats) {
+          if (item.stats.damageMin !== undefined) {
+            statsHtml += `<div>Damage: <strong>${item.stats.damageMin}–${item.stats.damageMax} ${item.stats.damageType || ""}</strong></div>`;
+          }
+          if (item.stats.defenseBonus) {
+            statsHtml += `<div>Defense: <strong>+${item.stats.defenseBonus}</strong></div>`;
+          }
+          if (item.stats.reachBonus) {
+            statsHtml += `<div>Reach: <strong>+${item.stats.reachBonus}</strong></div>`;
+          }
+          if (item.stats.restoreHealth) {
+            statsHtml += `<div style="color: var(--laurel-bright);">Restores: <strong>${item.stats.restoreHealth} HP</strong></div>`;
+          }
+          if (item.stats.restoreStamina) {
+            statsHtml += `<div style="color: var(--laurel-bright);">Restores: <strong>${item.stats.restoreStamina} Stamina</strong></div>`;
+          }
+          if (item.stats.attributeRequirement) {
+            const [attr, reqVal] = Object.entries(item.stats.attributeRequirement)[0];
+            statsHtml += `<div style="color: var(--bronze-bright);">Requirement: <strong>${attr.toUpperCase()} ${reqVal}</strong></div>`;
+          }
+        }
+
+        let loreHtml = "";
+        if (item.mythologicalLore) {
+          loreHtml = `
+            <div class="tooltip-lore-block">
+              <div style="font-style: italic; color: var(--bronze-bright); font-size: 0.72rem;">[${item.mythologicalLore.source}]</div>
+              <div>${item.mythologicalLore.note}</div>
+            </div>
+          `;
+        }
+
+        tooltip.innerHTML = `
+          <div class="tooltip-header">
+            <div class="tooltip-title">${item.name}</div>
+            <div class="tooltip-subtitle">${item.ancientGreek ? item.ancientGreek + " &bull; " : ""}${item.category.toUpperCase()} ${item.slot ? "• " + item.slot.replace('_', ' ').toUpperCase() : ""}</div>
+            ${item.rarity ? `<span class="tooltip-rarity">${item.rarity}</span>` : ""}
+            ${isEquipped ? `<span class="tooltip-rarity" style="border-color: var(--laurel-bright); color: var(--laurel-bright); background: rgba(44,94,59,0.2);">Equipped</span>` : ""}
+          </div>
+          <div>${item.description || "An authentic artifact of ancient Hellas."}</div>
+          ${statsHtml ? `<div class="tooltip-stats-block">${statsHtml}</div>` : ""}
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--marble-dim); border-top: 1px dotted #332d24; padding-top: 0.25rem;">
+            <span>Weight: <strong>${item.weightKg ? item.weightKg + " kg" : "0.5 kg"}</strong></span>
+            <span>Value: <strong>${item.valueDrachmae ? item.valueDrachmae + " Drachmae" : "Quest Item"}</strong></span>
+          </div>
+          ${loreHtml}
+        `;
+
+        tooltip.style.display = "flex";
+
+        if (targetEl) {
+          const rect = targetEl.getBoundingClientRect();
+          this.positionTooltip(rect.right + 12, rect.top);
+        }
+      }
+
+      positionTooltip(clientX, clientY) {
+        const tooltip = document.getElementById("item-tooltip-popover");
+        if (!tooltip || tooltip.style.display !== "flex") return;
+
+        const w = tooltip.offsetWidth || 300;
+        const h = tooltip.offsetHeight || 200;
+        const pad = 16;
+
+        let left = clientX + 14;
+        let top = clientY - 10;
+
+        if (left + w > window.innerWidth - pad) {
+          left = clientX - w - 14;
+        }
+        if (left < pad) left = pad;
+
+        if (top + h > window.innerHeight - pad) {
+          top = window.innerHeight - h - pad;
+        }
+        if (top < pad) top = pad;
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+      }
+
+      hideItemTooltip() {
+        const tooltip = document.getElementById("item-tooltip-popover");
+        if (tooltip) tooltip.style.display = "none";
+      }
+
+      setInventoryFilter(filterCategory) {
+        this.currentInventoryFilter = filterCategory;
+        const filterBtns = document.querySelectorAll("#inv-category-filters button");
+        filterBtns.forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.filter === filterCategory);
+        });
+        this.renderInventory();
+      }
+
+      renderInventory() {
+        const p = this.state.player;
+        const invContainer = document.getElementById("inventory-items-container");
+        if (!invContainer) return;
+
+        let itemsToRender = p.inventory;
+        const filter = this.currentInventoryFilter;
+
+        if (filter !== "all") {
+          itemsToRender = p.inventory.filter(slot => {
+            const itemData = this.getItemData(slot.itemId);
+            if (filter === "weapon") return itemData.category === "weapon";
+            if (filter === "armor") return itemData.category === "armor" || itemData.category === "shield";
+            if (filter === "consumable") return itemData.category === "consumable";
+            if (filter === "relic") return itemData.category === "relic" || itemData.category === "quest";
+            return itemData.category === filter;
+          });
+        }
+
+        if (itemsToRender.length === 0) {
+          invContainer.innerHTML = `
+            <div class="empty-inventory-notice">
+              No items in the [${filter.toUpperCase()}] category carried in your knapsack.
+            </div>
+          `;
+          return;
+        }
+
+        invContainer.innerHTML = itemsToRender.map(itemSlot => {
+          const data = this.getItemData(itemSlot.itemId);
+          return `
+            <div class="item-card" 
+                 data-item-id="${itemSlot.itemId}"
+                 onmouseenter="window.engine.showItemTooltip('${itemSlot.itemId}', this)"
+                 onmouseleave="window.engine.hideItemTooltip()"
+                 onclick="window.engine.showItemTooltip('${itemSlot.itemId}', this)">
+              <div>
+                <div class="item-name">${data.name}</div>
+                <div style="font-size: 0.75rem; color: var(--bronze); font-style: italic;">
+                  ${data.category.toUpperCase()}${itemSlot.equipped ? " &bull; <strong style='color: var(--laurel-bright);'>EQUIPPED</strong>" : ""}
+                </div>
+              </div>
+              <div class="item-meta">
+                <span>Qty: ${itemSlot.quantity}</span>
+                <span>${data.weightKg ? data.weightKg + " kg" : "0.5 kg"}</span>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        // Also update equipped slots tooltips and paper doll labels
+        this.updatePaperDoll();
+      }
+
+      updatePaperDoll() {
+        const p = this.state.player;
+        const slots = ["main_hand", "off_hand", "body", "head", "accessory"];
+        let totalWeight = 0;
+
+        slots.forEach(slotKey => {
+          const equippedItemSlot = p.inventory.find(i => i.equipped && i.slot === slotKey);
+          const el = document.getElementById(`eq-${slotKey.replace('_', '-')}`);
+          const slotEl = document.getElementById(`slot-${slotKey}`);
+
+          if (equippedItemSlot) {
+            const data = this.getItemData(equippedItemSlot.itemId);
+            if (el) el.innerText = data.name;
+            if (slotEl) {
+              slotEl.setAttribute("onmouseenter", `window.engine.showItemTooltip('${equippedItemSlot.itemId}', this)`);
+              slotEl.setAttribute("onmouseleave", `window.engine.hideItemTooltip()`);
+              slotEl.setAttribute("onclick", `window.engine.showItemTooltip('${equippedItemSlot.itemId}', this)`);
+            }
+          } else {
+            if (el) el.innerText = "None";
+            if (slotEl) {
+              slotEl.removeAttribute("onmouseenter");
+              slotEl.removeAttribute("onmouseleave");
+              slotEl.removeAttribute("onclick");
+            }
+          }
+        });
+
+        p.inventory.forEach(i => {
+          const d = this.getItemData(i.itemId);
+          totalWeight += (d.weightKg || 0.5) * i.quantity;
+        });
+        const weightEl = document.getElementById("inv-total-weight");
+        if (weightEl) weightEl.innerText = `${totalWeight.toFixed(1)} kg`;
+      }
+
+      /* =========================================================================
+         JOURNAL & QUEST HELPERS
+         ========================================================================= */
+      addJournalEntry(category, title, text) {
+        const cat = this.state.worldState.journal[category];
+        if (cat) {
+          if (!cat.some(e => e.title === title)) {
+            cat.push({ title, text, date: `Day ${this.state.worldState.time.day}, Hour ${this.state.worldState.time.hour}:00` });
+            this.logTranscript("Journal", `New entry recorded under [${category.toUpperCase()}]: ${title}`, "entry-discovery");
+          }
+        }
+      }
+
+      updateQuestObjective(questId, objId, completed) {
+        const q = this.state.worldState.quests[questId];
+        if (q && q.objectives[objId]) {
+          q.objectives[objId].completed = completed;
+          this.renderAll();
+        }
+      }
+
+      q_complete(questId) {
+        const q = this.state.worldState.quests[questId];
+        if (q) q.completed = true;
+      }
+
+      /* =========================================================================
+         UI RENDERING PIPELINE
+         ========================================================================= */
+      renderAll() {
+        this.renderHUD();
+        this.renderStoryPanel();
+        this.renderMap();
+        this.renderCharacterSheet();
+        this.renderInventory();
+        this.renderQuests();
+        this.renderJournal();
+        this.renderCodex();
+        this.renderPantheon();
+        this.renderSaveSlots();
+      }
+
+      renderHUD() {
+        const p = this.state.player;
+        const w = this.state.worldState;
+        const loc = this.getLocation(w.currentLocationId);
+
+        document.getElementById("hud-hero-name").innerText = p.name;
+        document.getElementById("hud-hero-origin").innerText = `${p.origin.toUpperCase()} &bull; ${p.background.toUpperCase()}`;
+        document.getElementById("hud-location-name").innerText = loc.name;
+        document.getElementById("hud-time-display").innerText = `Day ${w.time.day}, ${String(w.time.hour).padStart(2,'0')}:${String(w.time.minute).padStart(2,'0')} (${w.time.hour < 12 ? "Morning" : w.time.hour < 18 ? "Afternoon" : "Night"})`;
+        document.getElementById("hud-drachmae").innerText = p.currencies.drachmae;
+
+        const hpPct = Math.round((p.vitals.health / p.vitals.maxHealth) * 100);
+        const stmPct = Math.round((p.vitals.stamina / p.vitals.maxStamina) * 100);
+
+        document.getElementById("bar-health").style.width = `${hpPct}%`;
+        document.getElementById("txt-health").innerText = `${p.vitals.health}/${p.vitals.maxHealth}`;
+        document.getElementById("bar-stamina").style.width = `${stmPct}%`;
+        document.getElementById("txt-stamina").innerText = `${p.vitals.stamina}/${p.vitals.maxStamina}`;
+      }
+
+      renderStoryPanel() {
+        const loc = this.getLocation(this.state.worldState.currentLocationId);
+        document.getElementById("story-location-title").innerText = loc.name;
+        document.getElementById("story-location-region").innerText = loc.region;
+
+        const actionsContainer = document.getElementById("context-actions-container");
+        actionsContainer.innerHTML = "";
+
+        const actionGroups = this.getContextualActionGroups();
+        if (actionGroups.length === 0) {
+          actionsContainer.innerHTML = `<span style="font-size: 0.8rem; color: var(--marble-dim); font-style: italic;">No specific actions suggested. Consult your map or type a custom command.</span>`;
+        } else {
+          actionGroups.forEach(grp => {
+            const grpDiv = document.createElement("div");
+            grpDiv.className = "action-category-group";
+            grpDiv.innerHTML = `<div class="action-category-title">${grp.category}</div>`;
+
+            const row = document.createElement("div");
+            row.className = "action-cards-row";
+
+            grp.actions.forEach(act => {
+              const card = document.createElement("button");
+              card.className = `action-card-btn ${act.type || ""}`;
+              if (act.disabled) card.disabled = true;
+
+              card.innerHTML = `
+                <div class="action-card-title">
+                  <span>${act.title}</span>
+                  ${act.badge ? `<span class="action-card-badge">${act.badge}</span>` : ""}
+                </div>
+                <div class="action-card-desc">${act.desc}</div>
+              `;
+              card.onclick = () => act.handler();
+              row.appendChild(card);
+            });
+
+            grpDiv.appendChild(row);
+            actionsContainer.appendChild(grpDiv);
+          });
+        }
+
+        const qContainer = document.getElementById("side-quest-preview");
+        const q = this.state.worldState.quests["quest_tutorial_stolen_ram"];
+        if (q) {
+          const objs = Object.values(q.objectives);
+          const currentObj = objs.find(o => !o.completed) || objs[objs.length - 1];
+          qContainer.innerHTML = `
+            <div class="mini-quest-item">
+              <div class="mini-quest-title">${q.title}</div>
+              <div class="mini-quest-obj">${currentObj ? currentObj.text : "Quest completed."}</div>
+            </div>
+          `;
+        }
+
+        const presenceContainer = document.getElementById("side-presence-list");
+        const npcs = loc.presentNPCs || [];
+        if (npcs.length > 0) {
+          presenceContainer.innerHTML = npcs.map(nId => {
+            const char = this.world.characters.find(c => c.id === nId) || { name: nId, title: "" };
+            return `<div>&bull; <strong>${char.name}</strong> (${char.title || "Local"})</div>`;
+          }).join("");
+        } else {
+          presenceContainer.innerHTML = `<span style="font-style: italic;">Solitary mountain landscape. The wind stirs the pines.</span>`;
+        }
+
+        const linksContainer = document.getElementById("side-travel-links");
+        linksContainer.innerHTML = loc.connections.map(conn => {
+          const target = this.getLocation(conn.targetLocationId);
+          return `
+            <button class="nav-btn" style="text-align: left; justify-content: space-between;" onclick="window.engine.showTravelModal(window.engine.getLocation('${conn.targetLocationId}'))">
+              <span>${target ? target.name : conn.targetLocationId}</span>
+              <span style="font-size: 0.75rem; color: var(--bronze-bright);">${conn.travelHours}h</span>
+            </button>
+          `;
+        }).join("");
+      }
+
+      renderCharacterSheet() {
+        const p = this.state.player;
+        document.getElementById("sheet-hero-name").innerText = p.name;
+        document.getElementById("sheet-hero-origin").innerText = `${p.origin.toUpperCase()} &bull; ${p.background.toUpperCase()}`;
+        document.getElementById("sheet-hero-renown").innerText = p.renown;
+
+        const attrContainer = document.getElementById("sheet-attributes-grid");
+        attrContainer.innerHTML = Object.entries(p.attributes).map(([attr, val]) => {
+          const mod = this.getModifier(val);
+          return `
+            <div class="attr-card">
+              <div class="attr-card-top">
+                <div class="attr-name">${attr.toUpperCase()}</div>
+                <div class="attr-val">${val} <span style="font-size: 0.75rem; color: var(--marble-dim);">(${mod >= 0 ? "+" + mod : mod})</span></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const skillsContainer = document.getElementById("sheet-skills-list");
+        skillsContainer.innerHTML = Object.entries(p.skills).map(([skill, rank]) => {
+          return `
+            <div style="background: #19181e; padding: 0.4rem 0.65rem; border-radius: 3px; font-size: 0.8rem; display: flex; justify-content: space-between;">
+              <span style="color: var(--parchment);">${skill.replace("_", " ").toUpperCase()}</span>
+              <strong style="color: var(--bronze-bright);">Rank ${rank}</strong>
+            </div>
+          `;
+        }).join("");
+
+        const traitsContainer = document.getElementById("sheet-traits-list");
+        traitsContainer.innerHTML = p.traits.map(t => `
+          <div style="margin-bottom: 0.45rem;">
+            <strong style="color: var(--bronze-bright);">${t.name}:</strong> <span>${t.desc}</span>
+          </div>
+        `).join("");
+
+        const pietyContainer = document.getElementById("sheet-piety-list");
+        pietyContainer.innerHTML = Object.entries(p.piety).map(([deity, pts]) => {
+          let color = "var(--marble-dim)";
+          if (pts > 0) color = "var(--laurel-bright)";
+          if (pts < 0) color = "var(--terracotta-bright)";
+          const formattedPts = pts > 0 ? "+" + pts : pts;
+          return `
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #332d24; padding-bottom: 0.2rem;">
+              <span>${deity.toUpperCase()}</span>
+              <strong style="color: ${color};">${formattedPts}</strong>
+            </div>
+          `;
+        }).join("");
+      }
+
+      renderQuests() {
+        const container = document.getElementById("quest-list-container");
+        const quests = Object.values(this.state.worldState.quests);
+        if (quests.length === 0) {
+          container.innerHTML = `<span style="font-style: italic; color: var(--marble-dim);">No active quests recorded.</span>`;
+          return;
+        }
+
+        container.innerHTML = quests.map(q => {
+          const objs = Object.values(q.objectives).map(o => `
+            <div style="margin-top: 0.35rem; color: ${o.completed ? 'var(--laurel-bright)' : 'var(--marble-light)'};">
+              ${o.completed ? "&#10003;" : "&#9675;"} ${o.text} ${o.optional ? "<em style='color: var(--marble-dim)'>(Optional)</em>" : ""}
+            </div>
+          `).join("");
+
+          return `
+            <div class="journal-card">
+              <h4>${q.title} ${q.completed ? "<span style='color: var(--laurel-bright); font-size: 0.8rem;'>[COMPLETED]</span>" : ""}</h4>
+              <div style="font-size: 0.9rem; margin-bottom: 0.45rem; color: var(--parchment);">${q.summary || "Heroic quest of the borderlands."}</div>
+              <div style="font-size: 0.85rem; padding-left: 0.5rem; border-left: 2px solid var(--bronze-dark);">${objs}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      renderJournal() {
+        const pane = document.getElementById("journal-content-pane");
+        const j = this.state.worldState.journal;
+        const activeTab = document.querySelector(".journal-tab-btn.active").dataset.jtab;
+
+        if (activeTab === "notes") {
+          pane.innerHTML = `
+            <h4 style="font-family: var(--font-heading); color: var(--bronze-bright); margin-bottom: 0.4rem;">Hero's Personal Journal</h4>
+            <p style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.65rem;">Your private notes persist across sessions and saves.</p>
+            <textarea id="player-notes-textarea" class="form-textarea" style="height: 340px; width: 100%; font-family: var(--font-body); font-size: 1rem;" oninput="window.engine.savePlayerNotes(this.value)">${j.notes || ""}</textarea>
+          `;
+          return;
+        }
+
+        const entries = j[activeTab] || [];
+        if (entries.length === 0) {
+          pane.innerHTML = `<div style="font-style: italic; color: var(--marble-dim); padding: 1.5rem;">No recorded entries under this chronicle section yet.</div>`;
+          return;
+        }
+
+        pane.innerHTML = entries.map(e => `
+          <div class="journal-card">
+            <h4>${e.title}</h4>
+            <p style="color: #ded7c6; font-size: 0.9rem; line-height: 1.55;">${e.text}</p>
+            ${e.date ? `<div style="font-size: 0.72rem; color: var(--marble-dim); margin-top: 0.35rem; text-align: right;">${e.date}</div>` : ""}
+          </div>
+        `).join("");
+      }
+
+      savePlayerNotes(val) {
+        this.state.worldState.journal.notes = val;
+      }
+
+      renderCodex() {
+        const container = document.getElementById("codex-entries-container");
+        container.innerHTML = this.world.mythology.map(entry => `
+          <div class="journal-card" style="border-left-color: var(--lapis-bright);">
+            <h4>${entry.title}</h4>
+            <div style="font-size: 0.75rem; color: var(--bronze-bright); font-style: italic; margin-bottom: 0.35rem;">Source: ${entry.primarySource}</div>
+            <p style="font-size: 0.85rem; line-height: 1.5; color: var(--parchment);">${entry.text}</p>
+          </div>
+        `).join("");
+      }
+
+      renderPantheon() {
+        const container = document.getElementById("pantheon-grid");
+        container.innerHTML = this.world.deities.map(d => `
+          <div class="journal-card" style="border-left-color: var(--bronze-bright);">
+            <h4>${d.name} (${d.ancientGreek})</h4>
+            <div style="font-size: 0.78rem; color: var(--marble-dim); margin-bottom: 0.3rem;">Epithets: ${d.epithets.join(", ")}</div>
+            <div style="font-size: 0.82rem; color: var(--parchment); margin-bottom: 0.4rem;">${d.description}</div>
+            <div style="font-size: 0.72rem; color: var(--bronze); border-top: 1px dotted #383025; padding-top: 0.25rem;">
+              Sacred: ${d.symbols.join(" &bull; ")}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      renderSaveSlots() {
+        const container = document.getElementById("save-slots-grid");
+        if (!container) return;
+        container.innerHTML = [1, 2, 3].map(slot => `
+          <div class="side-widget" style="display: flex; flex-direction: column; gap: 0.45rem;">
+            <div style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.9rem;">Slot ${slot}</div>
+            <div style="display: flex; gap: 0.35rem;">
+              <button class="nav-btn" style="flex: 1;" onclick="window.engine.saveGame(${slot})">Save</button>
+              <button class="nav-btn" style="flex: 1;" onclick="window.engine.loadGame(${slot})">Load</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      logTranscript(speaker, text, cssClass = "entry-prose") {
+        const transcript = document.getElementById("narrative-transcript");
+        const entry = document.createElement("div");
+        entry.className = `transcript-entry ${cssClass}`;
+
+        if (speaker && speaker !== "Narrator") {
+          entry.innerHTML = `<div class="speaker-tag">${speaker}</div><div>${text}</div>`;
+        } else {
+          entry.innerHTML = `<p>${text}</p>`;
+        }
+
+        transcript.appendChild(entry);
+        transcript.scrollTop = transcript.scrollHeight;
+      }
+
+      appendTranscriptHtml(html) {
+        const transcript = document.getElementById("narrative-transcript");
+        const entry = document.createElement("div");
+        entry.className = "transcript-entry";
+        entry.innerHTML = html;
+        transcript.appendChild(entry);
+        transcript.scrollTop = transcript.scrollHeight;
+      }
+
+      getLocation(locId) {
+        return this.world.locations.find(l => l.id === locId) || this.world.locations[0];
+      }
+
+      setupNavigation() {
+        const navBtns = document.querySelectorAll(".nav-btn[data-view]");
+        navBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            this.switchView(btn.dataset.view);
+          });
+        });
+
+        // Journal sub-tabs
+        const jBtns = document.querySelectorAll(".journal-tab-btn");
+        jBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            jBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            this.renderJournal();
+          });
+        });
+
+        // Inventory Category Filters
+        const invFilterBtns = document.querySelectorAll("#inv-category-filters button");
+        invFilterBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            this.setInventoryFilter(btn.dataset.filter);
+          });
+        });
+      }
+
+      switchView(viewId) {
+        document.querySelectorAll(".viewport").forEach(vp => vp.classList.remove("active-view"));
+        document.querySelectorAll(".nav-btn[data-view]").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.view === viewId);
+        });
+        const targetView = document.getElementById(viewId);
+        if (targetView) targetView.classList.add("active-view");
+
+        if (viewId === "view-map") this.renderMap();
+        if (viewId === "view-inventory") this.renderInventory();
+      }
+
+      setupEventListeners() {
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            const combatModal = document.getElementById("combat-modal");
+            if (combatModal && combatModal.style.display === "flex") {
+              // ignore in combat
+            } else {
+              const travelModal = document.getElementById("map-travel-modal");
+              if (travelModal) travelModal.style.display = "none";
+              const dialogueModal = document.getElementById("dialogue-modal");
+              if (dialogueModal) dialogueModal.style.display = "none";
+              const riddleModal = document.getElementById("riddle-modal");
+              if (riddleModal) riddleModal.style.display = "none";
+              this.hideItemTooltip();
+            }
+          }
+        });
+      }
+    }
+
+    // Launch engine on DOM readiness
+    window.addEventListener("DOMContentLoaded", () => {
+      window.engine = new GreekMythologyEngine();
+      window.engine.init();
+    });
+  </script>
+</body>
+</html>

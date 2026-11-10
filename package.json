@@ -1,0 +1,9 @@
+{
+  "name": "greek-mythology-rpg",
+  "version": "1.0.0",
+  "description": "Greek Mythology Text-Driven RPG Engine",
+  "private": true,
+  "scripts": {
+    "test": "node tests/engine_tests.js"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "creatures": [
+    {
+      "id": "creature_cithaeron_wolf",
+      "name": "Cithaeronian Wolf",
+      "ancientGreek": "λύκος",
+      "mythologicalSource": {
+        "author": "Pausanias",
+        "work": "Description of Greece",
+        "passage": "Book 9.2.4",
+        "notes": "Pausanias records wild beasts and wolves roaming the deep pine forests of Mount Cithaeron sacred to Artemis."
+      },
+      "level": 1,
+      "vitals": {
+        "health": 18,
+        "maxHealth": 18,
+        "morale": 10
+      },
+      "attributes": {
+        "strength": 12,
+        "agility": 14,
+        "endurance": 13,
+        "perception": 14
+      },
+      "armorClass": 12,
+      "actions": [
+        {
+          "name": "Snapping Jaws",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "piercing",
+          "description": "Lurches forward with bared yellow canines aiming for the throat."
+        },
+        {
+          "name": "Circling Feint",
+          "attackBonus": 3,
+          "damage": "1d4+1",
+          "damageType": "slashing",
+          "description": "Darts across the loose limestone scree to strike from the unprotected flank."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_dried_figs_bread", "chance": 0.3 }
+      ]
+    },
+    {
+      "id": "creature_shadow_prowler",
+      "name": "Chthonic Cave Beast",
+      "ancientGreek": "θὴρ χθόνιος",
+      "mythologicalSource": {
+        "author": "Hesiod",
+        "work": "Theogony",
+        "passage": "lines 295-332",
+        "notes": "The subterranean brood of Echidna and Typhon dwelling in craggy hollows."
+      },
+      "level": 2,
+      "vitals": {
+        "health": 26,
+        "maxHealth": 26,
+        "morale": 14
+      },
+      "attributes": {
+        "strength": 14,
+        "agility": 13,
+        "endurance": 15,
+        "perception": 13
+      },
+      "armorClass": 13,
+      "actions": [
+        {
+          "name": "Crushing Bite",
+          "attackBonus": 5,
+          "damage": "1d8+2",
+          "damageType": "piercing",
+          "description": "Massive jaws close with bone-cracking ferocity."
+        },
+        {
+          "name": "Claw Rake",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "slashing",
+          "description": "Sweeps curved talons through the air, tearing leather and flesh."
+        }
+      ],
+      "loot": [
+        { "itemId": "item_salve_asclepius", "chance": 0.5 }
+      ]
+    }
+  ]
+}

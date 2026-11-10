@@ -1,0 +1,237 @@
+{
+  "items": [
+    {
+      "id": "item_dory_spear_001",
+      "name": "Ash-Wood Hoplite Dory",
+      "ancientGreek": "δόρυ",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "common",
+      "weightKg": 2.2,
+      "valueDrachmae": 25,
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 10,
+        "damageType": "piercing",
+        "reachBonus": 2,
+        "attributeRequirement": { "strength": 12 }
+      },
+      "description": "An eight-foot ash shaft tipped with a leaf-shaped bronze spearhead and balanced by a four-sided bronze sauroter spike.",
+      "mythologicalLore": {
+        "source": "Homer, Iliad 16.140-144",
+        "note": "Ash from Mount Pelion was favored by heroic spear-makers; Chiron cut the great spear of Peleus from its slopes."
+      }
+    },
+    {
+      "id": "item_xiphos_001",
+      "name": "Bronze Xiphos",
+      "ancientGreek": "ξίφος",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "common",
+      "weightKg": 1.1,
+      "valueDrachmae": 20,
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "damageType": "slashing",
+        "reachBonus": 0,
+        "attributeRequirement": { "strength": 10 }
+      },
+      "description": "A double-edged, leaf-shaped bronze short sword suited for close-quarters fighting once the spear is spent.",
+      "mythologicalLore": {
+        "source": "Homer, Odyssey 11.24",
+        "note": "The straight thrusting blade carried in a baldric across the chest."
+      }
+    },
+    {
+      "id": "item_hunting_bow_001",
+      "name": "Yew Hunting Bow",
+      "ancientGreek": "τόξον",
+      "category": "weapon",
+      "slot": "two_hand",
+      "rarity": "common",
+      "weightKg": 1.2,
+      "valueDrachmae": 18,
+      "stats": {
+        "damageMin": 3,
+        "damageMax": 7,
+        "damageType": "piercing",
+        "reachBonus": 5,
+        "attributeRequirement": { "agility": 12 }
+      },
+      "description": "A curved wooden bow crafted from mountain yew, strung with twisted sinew.",
+      "mythologicalLore": {
+        "source": "Pausanias 9.2.3",
+        "note": "Hunters of the Cithaeron forest dedicated their bows to Artemis Agrotera."
+      }
+    },
+    {
+      "id": "item_aspis_shield_001",
+      "name": "Argive Aspis Shield",
+      "ancientGreek": "ἀσπίς",
+      "category": "shield",
+      "slot": "off_hand",
+      "rarity": "common",
+      "weightKg": 7.0,
+      "valueDrachmae": 35,
+      "stats": {
+        "defenseBonus": 4,
+        "blockChance": 0.25,
+        "attributeRequirement": { "strength": 13 }
+      },
+      "description": "A deep, bowl-shaped wooden shield faced with beaten bronze sheet. Fitted with a revolutionary central forearm porpax strap and antilabe handgrip.",
+      "mythologicalLore": {
+        "source": "Herodotus, Histories 1.171",
+        "note": "The Carians invented shield grips and blazons, perfected by Argive armories."
+      }
+    },
+    {
+      "id": "item_linothorax_001",
+      "name": "Layered Linothorax",
+      "ancientGreek": "λινοθώραξ",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "common",
+      "weightKg": 4.5,
+      "valueDrachmae": 28,
+      "stats": {
+        "defenseBonus": 3,
+        "speedPenalty": 0
+      },
+      "description": "A body cuirass composed of laminated sheets of heavy linen glued into a stiff, resilient torso defense with shoulder flaps.",
+      "mythologicalLore": {
+        "source": "Homer, Iliad 2.529",
+        "note": "Ajax son of Oileus fought renowned in a linen corslet rather than heavy bronze."
+      }
+    },
+    {
+      "id": "item_corinthian_helmet_001",
+      "name": "Bronze Corinthian Helmet",
+      "ancientGreek": "κόρυς Κορινθία",
+      "category": "armor",
+      "slot": "head",
+      "rarity": "crafted",
+      "weightKg": 2.0,
+      "valueDrachmae": 40,
+      "stats": {
+        "defenseBonus": 3,
+        "perceptionPenalty": -1
+      },
+      "description": "Beaten from a single bronze ingot, covering the cheeks and nose with narrow eye slits. Intimidating and protective, though muffling distant sounds.",
+      "mythologicalLore": {
+        "source": "Herodotus 4.180",
+        "note": "The iconic helmet worn by hoplites across the Aegean."
+      }
+    },
+    {
+      "id": "item_travelers_chlamys_001",
+      "name": "Woolen Traveler's Chlamys",
+      "ancientGreek": "χλαμύς",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "common",
+      "weightKg": 1.0,
+      "valueDrachmae": 8,
+      "stats": {
+        "defenseBonus": 1,
+        "coldResistance": 5
+      },
+      "description": "A rectangular wool mantle pinned at the right shoulder with a bronze fibula, standard dress for messengers and hunters.",
+      "mythologicalLore": {
+        "source": "Philostratus, Imagines 1.28",
+        "note": "The cloak of Hermes and the Attic ephebes."
+      }
+    },
+    {
+      "id": "item_clay_aryballos_wine",
+      "name": "Aryballos of Pramnian Wine",
+      "ancientGreek": "ἀρύβαλλος",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "common",
+      "weightKg": 0.8,
+      "valueDrachmae": 5,
+      "stats": {
+        "restoreStamina": 8,
+        "libationUse": true
+      },
+      "description": "A small globular terracotta vessel filled with fragrant, dark Pramnian wine suitable for restoring spirits or pouring a sacred libation to the gods.",
+      "mythologicalLore": {
+        "source": "Homer, Iliad 11.639",
+        "note": "Pramnian wine was renowned for its strength and used in heroic offerings."
+      }
+    },
+    {
+      "id": "item_salve_asclepius",
+      "name": "Herbal Salve of Epidaurus",
+      "ancientGreek": "φάρμακον",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 12,
+      "stats": {
+        "restoreHealth": 12
+      },
+      "description": "An unguent compounded from mountain thyme, beeswax, and crushed dittany from Crete, blessed in the tradition of Asclepius.",
+      "mythologicalLore": {
+        "source": "Virgil, Aeneid 12.412; Theophrastus, Enquiry into Plants",
+        "note": "Cretan dittany was reputed to drive out spear-points and knit wounded flesh."
+      }
+    },
+    {
+      "id": "item_dried_figs_bread",
+      "name": "Dried Attic Figs & Barley Cakes",
+      "ancientGreek": "μᾶζα καὶ ἰσχάδες",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "common",
+      "weightKg": 0.5,
+      "valueDrachmae": 2,
+      "stats": {
+        "restoreStamina": 6
+      },
+      "description": "Sweet sun-dried figs and toasted barley cakes, the staples of marching warriors and herdsmen.",
+      "mythologicalLore": {
+        "source": "Aristophanes, Peace 1349",
+        "note": "The nourishing bread of rural Attica and Boeotia."
+      }
+    },
+    {
+      "id": "item_votive_bell_hermes",
+      "name": "Archaic Bronze Bell of Hermes",
+      "ancientGreek": "κώδων",
+      "category": "relic",
+      "slot": "accessory",
+      "rarity": "consecrated",
+      "weightKg": 0.4,
+      "valueDrachmae": 60,
+      "stats": {
+        "favourHermes": 2,
+        "perceptionBonus": 1
+      },
+      "description": "A small cast-bronze bell hung from the horn of Daidalos' prize sacrificial ram, incised with archaic dedication letters to Hermes Kriophoros.",
+      "mythologicalLore": {
+        "source": "Pausanias 9.22.1",
+        "note": "Bells were dedicated in pastoral shrines to ward off malicious daimones and wolves."
+      }
+    },
+    {
+      "id": "item_ancient_cadmean_tablet",
+      "name": "Fragment of the Cadmean Stone",
+      "ancientGreek": "γραμματεῖον",
+      "category": "quest",
+      "slot": "inventory",
+      "rarity": "exceptional",
+      "weightKg": 0.9,
+      "valueDrachmae": 0,
+      "stats": {},
+      "description": "A slate fragment bearing ancient Phoenician-derived letters describing the sowing of the Dragon's teeth at Thebes.",
+      "mythologicalLore": {
+        "source": "Apollodorus, Bibliotheca 3.4.1",
+        "note": "Cadmus brought the art of letters (Phoinikeia grammata) to Boeotia."
+      }
+    }
+  ]
+}

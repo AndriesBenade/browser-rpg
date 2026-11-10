@@ -1,0 +1,175 @@
+{
+  "locations": [
+    {
+      "id": "loc_cithaeron_crossroads",
+      "name": "Crossroads of Mount Cithaeron",
+      "ancientName": "Kithairōn Triodos",
+      "region": "Boeotia / Attica Border",
+      "coordinates": { "x": 380, "y": 420 },
+      "terrain": "rocky_scrubland",
+      "connections": [
+        {
+          "targetLocationId": "loc_shrine_hermes_strophaios",
+          "name": "The Sacred Herm Path",
+          "distanceKm": 3.5,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_plataea_outskirts",
+          "name": "Road to Plataea",
+          "distanceKm": 6.0,
+          "travelHours": 2.0,
+          "staminaCost": 4,
+          "terrain": "paved_road",
+          "dangerRating": 0
+        },
+        {
+          "targetLocationId": "loc_cithaeron_fissure_cave",
+          "name": "Ascent to the Whispering Fissure",
+          "distanceKm": 5.0,
+          "travelHours": 2.0,
+          "staminaCost": 6,
+          "terrain": "mountain_trail",
+          "dangerRating": 2,
+          "requiresFlag": "cithaeron_cave_path_known"
+        }
+      ],
+      "narrative": {
+        "overview": "You stand at a high wind-swept pass on the lower slopes of Mount Cithaeron. The air smells of crushed wild thyme, pine resin, and sun-baked limestone. At the fork in the dust road stands an ancient stone cairn (hermaion) crowned by a weather-hewn stone pillar. Down in the valley, the red clay tiles of rural farmsteads glint under the morning sun. To the north, dark limestone gullies carve deep into the mountain.",
+        "shortDescription": "A wind-swept crossroad beneath the pines of Cithaeron with an ancient stone cairn."
+      },
+      "presentNPCs": ["npc_daidalos_shepherd"],
+      "presentItems": ["item_clay_aryballos_wine"]
+    },
+    {
+      "id": "loc_shrine_hermes_strophaios",
+      "name": "Shrine of Hermes Strophaios",
+      "ancientName": "Hieron Hermou",
+      "region": "Boeotia",
+      "coordinates": { "x": 240, "y": 320 },
+      "terrain": "sacred_grove",
+      "connections": [
+        {
+          "targetLocationId": "loc_cithaeron_crossroads",
+          "name": "Path to the Crossroads",
+          "distanceKm": 3.5,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_crag_overlook",
+          "name": "Trail to the High Crag",
+          "distanceKm": 4.0,
+          "travelHours": 1.5,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "A secluded mountain sanctuary sheltered beneath ancient gnarled wild olives. A carved marble herm pillar stands upon a stone terrace, depicting the bearded visage of Hermes wearing a petasos traveler's cap. A low stone offering table holds dried figs and withered myrtle wreaths. The wind here drops to a soft whisper.",
+        "shortDescription": "A tranquil shrine of Hermes surrounded by sacred olive trees."
+      },
+      "presentNPCs": ["npc_timon_pilgrim"],
+      "presentItems": ["item_dried_figs_bread"]
+    },
+    {
+      "id": "loc_plataea_outskirts",
+      "name": "Pastures of Plataea",
+      "ancientName": "Plataiai",
+      "region": "Boeotia",
+      "coordinates": { "x": 200, "y": 550 },
+      "terrain": "pasture",
+      "connections": [
+        {
+          "targetLocationId": "loc_cithaeron_crossroads",
+          "name": "Mountain Road to Cithaeron Pass",
+          "distanceKm": 6.0,
+          "travelHours": 2.0,
+          "staminaCost": 4,
+          "terrain": "paved_road",
+          "dangerRating": 0
+        }
+      ],
+      "narrative": {
+        "overview": "The rolling green meadows stretch out toward the fortified acropolis of Plataea in the distance. Low stone walls border fields of barley and grazing sheep. Country wagons creak along the packed dirt track heading south toward the Isthmus.",
+        "shortDescription": "Rolling pastoral pastures beneath the distant walls of Plataea."
+      },
+      "presentNPCs": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_cithaeron_fissure_cave",
+      "name": "The Whispering Fissure",
+      "ancientName": "Spelaion Kithaironos",
+      "region": "Boeotia",
+      "coordinates": { "x": 520, "y": 260 },
+      "terrain": "limestone_cave",
+      "connections": [
+        {
+          "targetLocationId": "loc_cithaeron_crossroads",
+          "name": "Descent to the Crossroads",
+          "distanceKm": 5.0,
+          "travelHours": 1.5,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_crag_overlook",
+          "name": "Ridge Route to the Overlook",
+          "distanceKm": 3.0,
+          "travelHours": 1.0,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "A shadowy vertical cleft splits the sheer limestone cliff face. Cold air draughts from within, carrying a hollow subterranean sigh and the scent of damp moss. Archaic Phoenician-Greek letters are chiseled into the rock lintel above a massive counterweighted stone slab sealing the inner sanctuary.",
+        "shortDescription": "A foreboding chasm in the rock face barred by an inscribed Cadmean lintel."
+      },
+      "presentNPCs": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_crag_overlook",
+      "name": "The Lion's Crag Overlook",
+      "ancientName": "Skopelos Leontos",
+      "region": "Boeotia",
+      "coordinates": { "x": 420, "y": 180 },
+      "terrain": "mountain_peak",
+      "connections": [
+        {
+          "targetLocationId": "loc_shrine_hermes_strophaios",
+          "name": "Descent to the Herm Shrine",
+          "distanceKm": 4.0,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_cithaeron_fissure_cave",
+          "name": "Crag Path to the Whispering Fissure",
+          "distanceKm": 3.0,
+          "travelHours": 1.0,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 2
+        }
+      ],
+      "narrative": {
+        "overview": "A bare limestone promontory towering over the mountain ridges. Legend says this high perch was where the eighteen-year-old Herakles stalked the fierce Lion of Cithaeron. Looking eastward, the blue expanse of the Corinthian Gulf gleams like beaten silver.",
+        "shortDescription": "A panoramic limestone peak sacred to the youthful deeds of Herakles."
+      },
+      "presentNPCs": [],
+      "presentItems": ["item_salve_asclepius"]
+    }
+  ]
+}

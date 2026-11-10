@@ -1,0 +1,32 @@
+{
+  "loreEntries": [
+    {
+      "id": "lore_hermaion_tradition",
+      "title": "The Hermaion (Cairns of Hermes)",
+      "category": "Religious Practice",
+      "primarySource": "Cornutus, De Natura Deorum 16; Pausanias 8.34.6",
+      "text": "In ancient Greece, wayfarers passing a crossroad or boundary stone tossed a stone onto the heap, creating a 'hermaion'. According to myth, when Hermes was brought before the Olympian council for slaying Argus Panoptes, each god cast a stone of acquittal at his feet, forming the first sacred heap. Honoring the cairn protects travelers from wandering astray."
+    },
+    {
+      "id": "lore_ismenian_dragon",
+      "title": "The Ismenian Drakon & Cadmus",
+      "category": "Heroic Myth",
+      "primarySource": "Apollodorus, Bibliotheca 3.4.1; Euripides, Phoenissae 657-675",
+      "text": "Before founding Thebes (the Cadmeia), the Phoenician prince Cadmus sent his companions to fetch water from the spring of Ares. A gigantic serpent with crested crest and fire in its eyes—the Ismenian Drakon, sacred offspring of Ares—slew his men. Cadmus crushed the monster with a mighty rock and, at Athena's command, sowed its venomous teeth into the furrowed earth, from which the armed Spartoi ('Sown Men') sprang forth."
+    },
+    {
+      "id": "lore_mount_cithaeron",
+      "title": "Mount Cithaeron (Kithairōn)",
+      "category": "Geography & Sacred Sites",
+      "primarySource": "Hesiod, Theogony 23; Pausanias 9.2.1-4; Euripides, Bacchae",
+      "text": "A limestone mountain ridge between Boeotia and Attica, Cithaeron was consecrated to Zeus Cithaeronius, the god Dionysus, and the nymphs of the Sphragidian cave. It was here that Herakles, as an eighteen-year-old youth, hunted the ferocious Lion of Cithaeron before undertaking his famous Labours."
+    },
+    {
+      "id": "lore_sacred_libations",
+      "title": "Sponde (Libations to the Gods)",
+      "category": "Ritual Custom",
+      "primarySource": "Homer, Iliad 9.500; Hesiod, Works and Days 724-726",
+      "text": "Pouring wine, milk, honey, or pure spring water upon the earth or an altar was the universal gesture of communion and honor between mortals and immortals. Morning and evening libations turned away divine wrath and secured safe journey through desolate lands."
+    }
+  ]
+}

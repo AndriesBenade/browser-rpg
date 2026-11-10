@@ -1,0 +1,51 @@
+{
+  "characters": [
+    {
+      "id": "npc_daidalos_shepherd",
+      "name": "Daidalos the Shepherd",
+      "title": "Elder of the Plataean Pastures",
+      "ancientGreek": "Δαίδαλος",
+      "region": "Boeotia",
+      "locationId": "loc_cithaeron_crossroads",
+      "disposition": 10,
+      "attributes": {
+        "strength": 12,
+        "agility": 10,
+        "endurance": 14,
+        "intelligence": 11,
+        "wisdom": 13,
+        "charisma": 10
+      },
+      "dialogueTreeId": "dialogue_daidalos_shepherd",
+      "description": "A seasoned Boeotian herdsman clad in coarse sheepskin, holding a knotted wild-olive crook. His weathered face bears the deep lines of forty mountain winters.",
+      "knowledge": [
+        "lore_hermes_enodios",
+        "clue_cadmean_serpent",
+        "rumor_fissure_voices"
+      ]
+    },
+    {
+      "id": "npc_timon_pilgrim",
+      "name": "Timon of Megara",
+      "title": "Wandering Suppliant",
+      "ancientGreek": "Τίμων",
+      "region": "Attica / Megaris",
+      "locationId": "loc_shrine_hermes_strophaios",
+      "disposition": 5,
+      "attributes": {
+        "strength": 9,
+        "agility": 11,
+        "endurance": 10,
+        "intelligence": 13,
+        "wisdom": 14,
+        "charisma": 12
+      },
+      "dialogueTreeId": "dialogue_timon_pilgrim",
+      "description": "A dust-stained traveler resting beneath a wild olive tree near the Herm shrine. He carries an olive branch wound with sacred white wool ribbons (*hiketeria*), marking him as a holy suppliant.",
+      "knowledge": [
+        "lore_sacred_libations",
+        "lore_ismenian_dragon"
+      ]
+    }
+  ]
+}

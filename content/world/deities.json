@@ -1,0 +1,61 @@
+{
+  "deities": [
+    {
+      "id": "deity_hermes",
+      "name": "Hermes",
+      "ancientGreek": "Ἑρμῆς",
+      "epithets": ["Enodios (Of the Way)", "Psychopompos (Guide of Souls)", "Strophaios (Guardian of the Door)", "Kriophoros (Ram-Bearer)"],
+      "domain": "Travelers, shepherds, boundaries, thieves, heralds, trade",
+      "symbols": ["Kerykeion (Caduceus)", "Winged sandals (Talaria)", "Petasos hat", "Sacred Ram"],
+      "sacredAnimals": ["Ram", "Tortoise", "Rooster"],
+      "primarySources": [
+        { "author": "Homer", "work": "Homeric Hymn to Hermes", "passage": "Hymn 4" },
+        { "author": "Hesiod", "work": "Theogony", "passage": "lines 938-939" },
+        { "author": "Pausanias", "work": "Description of Greece", "passage": "Book 9.22.1 (Hermes Kriophoros of Tanagra)" }
+      ],
+      "description": "Swift herald of the immortals and guardian of boundaries, Hermes walks the paths of mortals and shades alike. Travelers pile stones at crossroads in his honor."
+    },
+    {
+      "id": "deity_athena",
+      "name": "Athena",
+      "ancientGreek": "Ἀθηνᾶ",
+      "epithets": ["Promachos (Champion of the Front)", "Glaukopis (Owl-Eyed)", "Polias (Of the City)", "Ergane (The Craftswoman)"],
+      "domain": "Wisdom, tactical warfare, craftsmanship, justice, heroic endeavor",
+      "symbols": ["Aegis with Gorgoneion", "Olive tree", "Owl", "Bronze spear and crested helmet"],
+      "sacredAnimals": ["Little Owl (Athene noctua)", "Serpent"],
+      "primarySources": [
+        { "author": "Homer", "work": "Iliad", "passage": "Books 5 & 8" },
+        { "author": "Hesiod", "work": "Theogony", "passage": "lines 886-900 (Birth from Zeus)" }
+      ],
+      "description": "Born armor-clad from the brow of Zeus, Athena embodies calculated martial strategy and intellect over brute frenzy."
+    },
+    {
+      "id": "deity_apollo",
+      "name": "Apollo",
+      "ancientGreek": "Ἀπόλλων",
+      "epithets": ["Phoebus (Radiant)", "Pythios (Slayer of Python)", "Smintheus (Lord of Mice / Plagues)", "Alexikakos (Averter of Evil)"],
+      "domain": "Prophecy, music, light, healing, archery, plague",
+      "symbols": ["Silver bow", "Golden lyre", "Laurel wreath", "Bronze tripod"],
+      "sacredAnimals": ["Raven", "Dolphin", "Wolf", "Swan"],
+      "primarySources": [
+        { "author": "Homer", "work": "Iliad", "passage": "Book 1.37-52 (Apollo Smintheus brings plague)" },
+        { "author": "Homer", "work": "Homeric Hymn to Apollo", "passage": "Hymn 3" }
+      ],
+      "description": "Son of Zeus and Leto, Apollo's arrows bring both swift disease and sudden healing. His oracle at Pytho (Delphi) speaks the unbending will of Zeus."
+    },
+    {
+      "id": "deity_artemis",
+      "name": "Artemis",
+      "ancientGreek": "Ἄρτεμις",
+      "epithets": ["Agrotera (Of the Wilds)", "Potnia Theron (Mistress of Animals)", "Lochia (Protector of Childbirth)", "Kynagetis (The Huntress)"],
+      "domain": "The untamed wilderness, hunting, wild animals, maidenhood, the moon",
+      "symbols": ["Golden bow and arrows", "Hunting hounds", "Crescent moon"],
+      "sacredAnimals": ["Hind (Deer)", "Boar", "Bear", "Quail"],
+      "primarySources": [
+        { "author": "Homer", "work": "Iliad", "passage": "Book 21.470" },
+        { "author": "Callimachus", "work": "Hymn to Artemis", "passage": "Hymn 3" }
+      ],
+      "description": "Twin sister of Apollo, Artemis roams the untamed ridges of Cithaeron and Taygetos with her silver bow and pack of swift hounds."
+    }
+  ]
+}
