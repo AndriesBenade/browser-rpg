@@ -36,6 +36,7 @@
     "origins": "content/campaigns/greek_mythology/origins.json",
     "traits": "content/campaigns/greek_mythology/traits.json"
   },
+  "law": { "guardFactions": ["faction_theban_guard"], "fineBase": 30, "finePerOffence": 20, "jailHours": 24 },
   "activityDurations": {
     "travel": "connection",
     "combat": 15,

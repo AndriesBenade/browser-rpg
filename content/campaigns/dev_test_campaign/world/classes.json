@@ -8,9 +8,10 @@
       "description": "A fortified frontier guardian trained in test combat mechanics.",
       "primaryAttributes": ["strength", "endurance"],
       "statBonuses": { "strength": 1, "endurance": 1 },
-      "startingEquipment": ["item_dev_broadsword"],
+      "startingEquipment": ["item_dev_broadsword", "item_dev_trail_rations", "item_dev_trail_rations"],
       "classFeatures": [
-        { "level": 1, "name": "Aegis Guard", "type": "passive", "desc": "+2 Armor Class." }
+        { "level": 1, "name": "Aegis Guard", "type": "passive", "desc": "+2 Armor Class.", "effect": {"ac": 2} },
+        { "level": 1, "name": "Shield Bash", "type": "active", "desc": "Slam your foe: 1d4 damage and it loses its next attack (once per fight, 1 Stamina).", "combat": {"damage": "1d4", "enemyStatus": {"id": "stunned", "rounds": 1}, "uses": 1, "staminaCost": 1} }
       ]
     },
     {
@@ -21,9 +22,10 @@
       "description": "A stealth operative specialized in lockpicking and scouting.",
       "primaryAttributes": ["agility", "perception"],
       "statBonuses": { "agility": 1, "perception": 1 },
-      "startingEquipment": ["item_dev_iron_lockpick"],
+      "startingEquipment": ["item_dev_iron_lockpick", "item_dev_trail_rations", "item_dev_trail_rations"],
       "classFeatures": [
-        { "level": 1, "name": "Lockpick Mastery", "type": "passive", "desc": "+3 on lockpicking." }
+        { "level": 1, "name": "Lockpick Mastery", "type": "passive", "desc": "+3 on lockpicking.", "effect": {"activityBonus": {"lockpick": 3}} },
+        { "level": 1, "name": "Crippling Cut", "type": "active", "desc": "A strike at +2 to hit that leaves the foe bleeding for 3 rounds (once per fight, 1 Stamina).", "combat": {"attack": true, "hitBonus": 2, "status": {"id": "bleeding", "rounds": 3, "value": 2}, "uses": 1, "staminaCost": 1} }
       ]
     }
   ]

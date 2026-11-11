@@ -691,3 +691,14 @@ In quests and dialogues, grant Virtue (*Arete*) or Hubris (*Miasma*) through out
 * **Next steps**: the ★ strip finds quest progress by looking for `questId` / `completeQuest` / `questActive` in actions, encounter `victoryOutcome`s, object `unlockOutcome`s and the first choices of conversations. Progress written that way is pointed out to players automatically; progress that only happens through `events.json` is not.
 
 Field details: CONTENT_SCHEMA §26–§28.
+
+## 16. Fights and Journeys with Texture (v1.8.0)
+
+* **Give signature attacks a tell.** Mark a creature's big attack `style: "heavy"` with a `telegraph` line, so players learn to brace or side-step it; add `inflicts` to the attacks that should leave a mark (a wolf's bite bleeds, a howl frightens).
+* **Every class feature needs an `effect` or a `combat` block** (a test enforces it). Write the description from the mechanics, not the other way round.
+* **Companions**: a `companion` block on an NPC is all it takes; add `hireCost` for hirelings or recruit through dialogue.
+* **Hide things**: two or three `hiddenSpots` per important location, at different DCs, so searching again (or coming back in daylight) pays off. A spot whose outcome sets a flag can open a road with `requiresFlag`.
+* **Let people talk**: `rumours` on NPCs point players at far places before they can reach them.
+* **Sell food**: mark provisions `ration: true` and stock them with a merchant near every long road.
+
+Field details: CONTENT_SCHEMA §29–§30.

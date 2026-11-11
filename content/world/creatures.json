@@ -29,6 +29,7 @@
       "actions": [
         {
           "name": "Snapping Jaws",
+          "inflicts": {"status": "bleeding", "chance": 0.3, "rounds": 2, "value": 1},
           "attackBonus": 4,
           "damage": "1d6+2",
           "damageType": "piercing",
@@ -76,6 +77,8 @@
       "actions": [
         {
           "name": "Crushing Bite",
+          "style": "heavy",
+          "telegraph": "The prowler coils low, jaws gaping...",
           "attackBonus": 5,
           "damage": "1d8+2",
           "damageType": "piercing",
@@ -214,6 +217,8 @@
       "actions": [
         {
           "name": "Molten Hammer",
+          "style": "heavy",
+          "telegraph": "The thrall heaves its glowing hammer overhead...",
           "attackBonus": 5,
           "damage": "1d10+3",
           "damageType": "bludgeoning",
@@ -221,6 +226,8 @@
         },
         {
           "name": "Smoldering Steam Vent",
+          "style": "normal",
+          "inflicts": {"status": "weakened", "chance": 0.4, "rounds": 2},
           "attackBonus": 4,
           "damage": "1d8+2",
           "damageType": "fire",
@@ -260,6 +267,8 @@
       "actions": [
         {
           "name": "Feral Throat-Rip",
+          "style": "heavy",
+          "inflicts": {"status": "bleeding", "chance": 0.5, "rounds": 3, "value": 2},
           "attackBonus": 6,
           "damage": "1d10+3",
           "damageType": "slashing",
@@ -267,6 +276,8 @@
         },
         {
           "name": "Bloodcurdling Howl",
+          "style": "normal",
+          "inflicts": {"status": "frightened", "chance": 0.6, "rounds": 2},
           "attackBonus": 4,
           "damage": "1d6+2",
           "damageType": "psychic",
@@ -313,6 +324,8 @@
         },
         {
           "name": "Trampling Charge",
+          "style": "heavy",
+          "telegraph": "The great boar lowers its head and paws the earth...",
           "attackBonus": 5,
           "damage": "2d6+3",
           "damageType": "bludgeoning",
@@ -359,6 +372,8 @@
         },
         {
           "name": "Blinding Whirlwind",
+          "style": "normal",
+          "inflicts": {"status": "weakened", "chance": 0.4, "rounds": 2},
           "attackBonus": 5,
           "damage": "1d6+2",
           "damageType": "bludgeoning",
@@ -405,6 +420,8 @@
         },
         {
           "name": "Vampiric Drain",
+          "style": "normal",
+          "inflicts": {"status": "weakened", "chance": 0.6, "rounds": 2},
           "attackBonus": 5,
           "damage": "1d8+2",
           "damageType": "necrotic",
@@ -444,6 +461,8 @@
       "actions": [
         {
           "name": "Strangling Lion Pounce",
+          "style": "heavy",
+          "telegraph": "The Sphinx crouches, wings half-spread, eyes fixed on your throat...",
           "attackBonus": 7,
           "damage": "2d8+4",
           "damageType": "bludgeoning",
@@ -458,6 +477,8 @@
         },
         {
           "name": "Terrifying Enigma Gaze",
+          "style": "normal",
+          "inflicts": {"status": "frightened", "chance": 0.7, "rounds": 2},
           "attackBonus": 6,
           "damage": "1d8+3",
           "damageType": "psychic",
@@ -498,6 +519,8 @@
       "actions": [
         {
           "name": "Venomous Triple-Bite",
+          "style": "heavy",
+          "telegraph": "The Drakon rears to its full height, three fangs dripping...",
           "attackBonus": 7,
           "damage": "2d8+4",
           "damageType": "piercing",
@@ -505,6 +528,8 @@
         },
         {
           "name": "Serpentine Coils",
+          "style": "normal",
+          "inflicts": {"status": "entangled", "chance": 0.6, "rounds": 2},
           "attackBonus": 6,
           "damage": "2d6+4",
           "damageType": "bludgeoning",
@@ -512,6 +537,8 @@
         },
         {
           "name": "Miasmic Venom Breath",
+          "style": "normal",
+          "inflicts": {"status": "poisoned", "chance": 0.7, "rounds": 3, "value": 2},
           "attackBonus": 6,
           "damage": "1d10+3",
           "damageType": "poison",
@@ -552,6 +579,8 @@
       "actions": [
         {
           "name": "Multi-Headed Hydra Strike",
+          "style": "heavy",
+          "telegraph": "Every head of the Hydra draws back at once...",
           "attackBonus": 8,
           "damage": "2d10+5",
           "damageType": "piercing",
@@ -559,6 +588,8 @@
         },
         {
           "name": "Toxic Acid Spurt",
+          "style": "normal",
+          "inflicts": {"status": "poisoned", "chance": 0.7, "rounds": 3, "value": 3},
           "attackBonus": 7,
           "damage": "2d6+4",
           "damageType": "acid",

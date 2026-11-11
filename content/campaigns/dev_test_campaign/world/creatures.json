@@ -12,8 +12,15 @@
       "armorClass": 12,
       "lootTableId": "loot_dev_wild_boar",
       "actions": [
-        { "name": "Goring Tusk Thrust", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" },
-        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning" }
+        {
+          "name": "Goring Tusk Thrust",
+          "attackBonus": 3,
+          "damage": "1d6+2",
+          "damageType": "piercing",
+          "style": "heavy",
+          "telegraph": "The boar lowers its head and paws the ground..."
+        },
+        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning", "style": "quick" }
       ]
     },
     {
@@ -28,7 +35,13 @@
       "armorClass": 13,
       "lootTableId": "loot_dev_forest_wolf",
       "actions": [
-        { "name": "Snapping Jaws", "attackBonus": 4, "damage": "1d6+2", "damageType": "piercing" }
+        {
+          "name": "Snapping Jaws",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "piercing",
+          "inflicts": { "status": "bleeding", "chance": 0.35, "rounds": 2, "value": 1 }
+        }
       ]
     },
     {
@@ -43,8 +56,23 @@
       "armorClass": 15,
       "lootTableId": "loot_dev_shadow_stalker",
       "actions": [
-        { "name": "Obsidian Talon Rend", "attackBonus": 6, "damage": "2d8+3", "damageType": "slashing" },
-        { "name": "Shadow Vapor Breath", "attackBonus": 5, "damage": "2d6+2", "damageType": "necrotic" }
+        {
+          "name": "Obsidian Talon Rend",
+          "attackBonus": 6,
+          "damage": "2d8+3",
+          "damageType": "slashing",
+          "style": "heavy",
+          "telegraph": "The stalker rears back, talons spread wide...",
+          "inflicts": { "status": "bleeding", "chance": 0.5, "rounds": 3, "value": 2 }
+        },
+        {
+          "name": "Shadow Vapor Breath",
+          "attackBonus": 5,
+          "damage": "2d6+2",
+          "damageType": "necrotic",
+          "style": "normal",
+          "inflicts": { "status": "frightened", "chance": 0.5, "rounds": 2 }
+        }
       ]
     },
     {
@@ -77,8 +105,22 @@
         }
       ],
       "actions": [
-        { "name": "Crypt Cleaver", "attackBonus": 5, "damage": "1d10+3", "damageType": "slashing" },
-        { "name": "Grave Chill Wave", "attackBonus": 4, "damage": "2d6+2", "damageType": "cold" }
+        {
+          "name": "Crypt Cleaver",
+          "attackBonus": 5,
+          "damage": "1d10+3",
+          "damageType": "slashing",
+          "style": "heavy",
+          "telegraph": "Lord Karas raises his cleaver high above his crowned skull..."
+        },
+        {
+          "name": "Grave Chill Wave",
+          "attackBonus": 4,
+          "damage": "2d6+2",
+          "damageType": "cold",
+          "style": "normal",
+          "inflicts": { "status": "weakened", "chance": 0.6, "rounds": 2 }
+        }
       ]
     }
   ]

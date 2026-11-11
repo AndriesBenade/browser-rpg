@@ -58,7 +58,8 @@
           },
           "choices": [
             { "label": "Good to know.", "target": "root" }
-          ]
+          ],
+          "revealRumour": "loc_dev_obsidian_crag"
         }
       }
     },
@@ -300,7 +301,8 @@
           "setFlags": { "silas_pact": true },
           "choices": [
             { "label": "Let them come.", "target": "exit" }
-          ]
+          ],
+          "recruitCompanion": "npc_dev_bandit_renegade"
         }
       }
     }

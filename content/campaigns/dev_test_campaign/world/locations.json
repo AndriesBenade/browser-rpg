@@ -81,6 +81,16 @@
           "terrain": "rocky_scrubland",
           "dangerRating": 2,
           "requiresFlag": "discovered_sunken_grotto"
+        },
+        {
+          "targetLocationId": "loc_dev_obsidian_crag",
+          "name": "The Hidden Goat Track",
+          "distanceKm": 5.0,
+          "travelHours": 1.5,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 2,
+          "requiresFlag": "crag_goat_track_found"
         }
       ],
       "narrative": {
@@ -136,6 +146,22 @@
           "dc": 13,
           "effect": { "enemyAttack": 2, "attack": 1, "rounds": 3 },
           "text": "Thorns tear at your foe as it blunders into the thicket."
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "hunters_cache",
+          "name": "a hunter's cache",
+          "dc": 12,
+          "text": "Under a fallen pine you find a hunter's cache wrapped in oilcloth: smoked meat, still good.",
+          "outcome": { "giveItem": "item_dev_trail_rations" }
+        },
+        {
+          "id": "hollow_oak",
+          "name": "a hollow oak",
+          "dc": 15,
+          "text": "Inside a hollow oak someone has hidden a small purse.",
+          "outcome": { "giveDrachmae": 12, "awardXP": 10 }
         }
       ]
     },
@@ -195,6 +221,16 @@
           "staminaCost": 8,
           "terrain": "mountain_trail",
           "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_dev_whispering_woods",
+          "name": "The Hidden Goat Track",
+          "distanceKm": 5.0,
+          "travelHours": 1.5,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 2,
+          "requiresFlag": "crag_goat_track_found"
         }
       ],
       "narrative": {
@@ -256,6 +292,19 @@
               "style": "entry-discovery"
             },
             "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice", "completed": true }
+          }
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "goat_track",
+          "name": "a hidden goat track",
+          "dc": 14,
+          "text": "Between two black pinnacles you find a narrow goat track winding down toward the Whispering Woods: a secret way off the crags.",
+          "outcome": {
+            "setFlags": { "crag_goat_track_found": true },
+            "awardXP": 20,
+            "addJournalKnowledge": { "title": "The Goat Track", "text": "A hidden path links the Obsidian Crags and the Whispering Woods." }
           }
         }
       ]

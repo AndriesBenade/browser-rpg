@@ -52,7 +52,10 @@
         "shortDescription": "A wind-swept crossroad beneath the pines of Cithaeron with an ancient stone cairn."
       },
       "presentNPCs": ["npc_daidalos_shepherd"],
-      "presentItems": ["item_clay_aryballos_wine"]
+      "presentItems": ["item_clay_aryballos_wine"],
+      "hiddenSpots": [
+        { "id": "shepherd_stash", "name": "a shepherd's stash", "dc": 12, "text": "Tucked under the cairn's lee side you find a shepherd's stash: barley cakes wrapped in fig leaves.", "outcome": { "giveItem": "item_dried_figs_bread" } }
+      ]
     },
     {
       "id": "loc_shrine_hermes_strophaios",

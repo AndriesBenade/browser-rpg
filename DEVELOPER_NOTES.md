@@ -8,6 +8,16 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 17 — 2026-11-11 (combat depth and exploration depth)
+* **Collaborator / Model**: User & Claude (Anthropic)
+* **Combat** (ENGINE_ARCHITECTURE §7.15, CONTENT_SCHEMA §29): telegraphed enemy moves with a Side-step action and a brace bonus against heavy blows; status effects (bleeding, poisoned, entangled, frightened, stunned, confused, weakened); all class features given real mechanics as data (`effect` / `combat`), with ability buttons in combat; creature morale and flight; surrender to guards (fine or cells); companions and hirelings (Dev: Brannoch for hire, Silas after the villainous pact; Greek: Lykos at Thebes).
+* **Exploration** (§7.16, CONTENT_SCHEMA §30): hidden spots revealed one per search (Dev: a goat track linking the Crags and the Woods); travel pace; night and weather effects (event-driven weather); NPC rumours with "?" map markers; rations, hunger and camp events.
+* **Bugs found on the way**: the travel card was inside the hidden map view, so the sidebar "Travel Pathways" buttons did nothing in the story view (moved to page level); an enemy `attackBonus` of 0 was read as 3; the map title and Greek place labels showed in every campaign.
+* **Behaviour changes to know**: class feature descriptions were rewritten where the old text promised mechanics that do not exist (e.g. "advantage", "adjacent enemies"); searching now finds one thing at a time; locations without authored spots hide a small cache; Dev heroes start with 2 rations.
+* **Save v1.8.0** (migrated; `foundItems` → `foundSpots`).
+* **Size**: `index.html` +72 KB (901 → 973 KB; about 17 KB of that is the embedded class and Dev content).
+* **Tests**: behaviour 89/89 (7 new), legacy 74/74, browser smoke 8/8 (new: page-level windows really visible); real-browser play-throughs of the tutorial (HTTP and file://) and all Dev quests; no cut-off content at 4 window sizes; stress fuzz 12,000 steps / 2,192 fights clean.
+
 ### Session 16 — 2026-11-11 (play-test fixes, quest log, NPC standing, trading, confrontations)
 * **Collaborator / Model**: User & Claude (Anthropic). Builds on Session 15 (its travel-time fix is kept).
 * **Play-test bugs fixed (tutorial + Dev campaign)**: all 8 Dev quests were active on day 1 and 6 of them could not be finished (no turn-in, no delivery target, moral paths unreachable, rescue/monolith had no actions, objects updated quests nobody had). Each now has a start and an end through dialogue, actions or fights; the 48-hour rescue starts when the Captain asks. Quests completed by objects/dialogue never paid their `rewards`; `completeQuest()` pays them once. Dialogue nodes ignored `consumeItem` (the Sunstone stayed in your pack). A creature with an encounter also had a plain "Attack" card that skipped the encounter's quest outcome. Persuade/Deceive had no buttons; Pickpocket showed a wrong DC. `presentItems` could never be picked up (Search card). Resting in Haven/Thebes counted as wilderness. A yielding NPC was always recorded as killed. The strongbox could be picked through the locked vault door. The presence list missed NPCs placed by `locationId`. Combat text named every foe "the beast" on a "cavern floor"; feats and sacred rest used Greek names in the Dev campaign.

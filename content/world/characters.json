@@ -2,6 +2,7 @@
   "characters": [
     {
       "id": "npc_daidalos_shepherd",
+      "rumours": ["loc_thebes_seven_gates", "loc_crag_overlook"],
       "name": "Daidalos the Shepherd",
       "title": "Elder of the Plataean Pastures",
       "ancientGreek": "Δαίδαλος",
@@ -34,6 +35,7 @@
     },
     {
       "id": "npc_timon_pilgrim",
+      "rumours": ["loc_delphi_sanctuary", "loc_triple_way_phocis"],
       "name": "Timon of Megara",
       "title": "Wandering Suppliant",
       "ancientGreek": "Τίμων",
@@ -58,6 +60,7 @@
     },
     {
       "id": "npc_teiresias_prophet",
+      "rumours": ["loc_mount_sphingion", "loc_fountain_of_ares"],
       "name": "Teiresias the Blind Seer",
       "title": "Prophet of Apollo at Thebes",
       "ancientGreek": "Τειρεσίας",
@@ -259,6 +262,7 @@
     },
     {
       "id": "npc_theban_agora_merchant",
+      "rumours": ["loc_lake_copais", "loc_mycenae_lion_gate"],
       "name": "Gorgo of the Agora",
       "title": "Cadmean Armaments Merchant",
       "ancientGreek": "Γοργώ",
@@ -278,6 +282,7 @@
     },
     {
       "id": "npc_delphi_sanctuary_purveyor",
+      "rumours": ["loc_corycian_cave", "loc_castalian_spring"],
       "name": "Kallias the Sacred Purveyor",
       "title": "Purveyor of Delphic Votives",
       "ancientGreek": "Καλλίας",
@@ -297,6 +302,7 @@
     },
     {
       "id": "npc_mycenae_armourer",
+      "rumours": ["loc_nemean_valley", "loc_lernaean_swamp"],
       "name": "Echephron the Cyclopean Smith",
       "title": "Master of Mycenaean Forges",
       "ancientGreek": "Ἐχέφρων",
@@ -312,6 +318,34 @@
       ],
       "attributes": { "strength": 16, "agility": 11, "endurance": 15, "intelligence": 14, "wisdom": 11, "charisma": 12 },
       "description": "A soot-stained artisan whose massive brawn echoes the mythical cyclopean stone masons of Mycenae."
+    },
+    {
+      "id": "npc_lykos_hired_spear",
+      "name": "Lykos the Hired Spear",
+      "title": "Arcadian Mercenary",
+      "ancientGreek": "Λύκος",
+      "region": "Boeotia",
+      "faction": "faction_theban_guard",
+      "locationId": "loc_thebes_seven_gates",
+      "disposition": 0,
+      "vitals": { "health": 26, "maxHealth": 26 },
+      "combatStats": {
+        "armorClass": 14,
+        "attackBonus": 4,
+        "damage": "1d8+2",
+        "xpReward": 45,
+        "actions": [
+          { "name": "Dory Thrust", "attackBonus": 4, "damage": "1d8+2", "damageType": "piercing" }
+        ]
+      },
+      "companion": {
+        "hireCost": 40,
+        "days": 3,
+        "joinText": "\"Silver buys my spear until the third dawn.\"",
+        "perksText": "A hired spear: fights beside you for 3 days and draws some of the enemy's attacks."
+      },
+      "attributes": { "strength": 14, "agility": 12, "endurance": 14, "intelligence": 10, "wisdom": 11, "charisma": 10 },
+      "description": "A lean Arcadian mercenary leaning on a long ash spear beneath the Electran Gate, waiting for a paymaster."
     }
   ]
 }

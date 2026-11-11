@@ -66,7 +66,8 @@
       "weightKg": 0.5,
       "valueDrachmae": 5,
       "effect": { "restoreStamina": 8 },
-      "description": "Durable traveling provisions that revive weary muscles."
+      "description": "Durable traveling provisions that revive weary muscles.",
+      "ration": true
     },
     {
       "id": "item_dev_forest_berries",
@@ -76,7 +77,8 @@
       "weightKg": 0.2,
       "valueDrachmae": 2,
       "effect": { "restoreStamina": 4 },
-      "description": "Plump wild berries gathered from the brambles of the Whispering Woods."
+      "description": "Plump wild berries gathered from the brambles of the Whispering Woods.",
+      "ration": true
     },
     {
       "id": "item_dev_boar_tusk",

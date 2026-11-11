@@ -1051,3 +1051,24 @@ All keys are optional (defaults shown). Items: `noSell` / `questItem` / `categor
 **Locations**: `presentItems` are found with the Search card (DC 10 + 2 per rarity step).
 
 **Progression**: `progression.feats: { "hydra_bane": { "name": "…", "desc": "…" } }` renames feats; non-Greek campaigns get neutral feat names by default.
+
+## 29. Combat Depth: Actions, Class Features, Companions, Law
+
+**Creature / NPC actions**: `style: "heavy" | "quick" | "normal"`, `telegraph` (text shown one round ahead), `inflicts: { "status": "bleeding", "chance": 0.5, "rounds": 3, "value": 2 }`. Creatures: `immune: ["frightened"]`, `fearless: true` (never flees), `vitals.morale`. Encounters: `fearless`.
+
+**Statuses**: `bleeding`, `poisoned` (use `value` = damage per round), `entangled`, `frightened`, `stunned`, `confused`, `weakened`. Campaign `combatStatuses: { "id": { "label", "icon", "dot", "attack", "noFlee" } }` adds or relabels.
+
+**Class features** (`classes.json` → `classFeatures[]`: `level`, `name`, `desc`, plus one of):
+* `effect` (passive). Numbers add up: `ac`, `acWithShield`, `acUnarmored`, `attack`, `attackRanged`, `attackWhenBloodied`, `damage`, `damageVsMonsters`, `damagePolearm`, `dodge`, `merchantDiscount`, `lootBonus`, `restBonus`, `rageOnHit`, `staminaOnVictory`, `maxHealth`, `maxStamina`. Maps: `checkBonus { skill: n }`, `activityBonus { lockpick | pickpocket | heave | puzzle | search | persuasion | deception: n }`, `attributeBonus { attribute: n }`, `attributes { attribute: n }` (permanent). Lists: `immune`. Other: `critMin` + `critWeapon` (regex), `unarmedDamage` ("1d6"), `inflictOnHit { status, chance, rounds, value, weapon }`, `regen { every, amount }`, `travelStamina` / `travelTime` (multipliers), `stealthStrike` (multiplier for opening strikes), `consumablePotency`, `wineHeal`, and flags `toolsSafe`, `avoidTraps`, `nightVision`, `revealFoes`, `standingInsight`, `rerollEnemyHit`, `deathWard`, `beastsPeaceful`, `noSurpriseRest`.
+* `combat` (ability button): `uses` (per fight), `staminaCost`, and any of `attack: true` / `strikes: n` (+ `hitBonus`, `extraDamage`, `status`), `damage` (dice, cannot miss; `addIntelligence`), `contest: "strength"` (must succeed for what follows), `enemyStatus { id, rounds, value }`, `enemyMods` / `selfMods { attack | ac | enemyAttack | damage | dr: { value, rounds } }`, `heal`, `cure`, `ward`, `flee`.
+
+**Companions** (`characters.json`): `"companion": { "hireCost": 30, "days": 3, "joinText": "…", "perksText": "…", "perks": { …effect keys… } }`. Omit `hireCost` for story companions and recruit them with `recruitCompanion: "npc_id"` in a dialogue node or outcome. They fight with their `combatStats` and `vitals`. Campaign: `maxCompanions` (default 2).
+
+**Law** (`campaign.json`): `"law": { "guardFactions": ["faction_id"], "fineBase": 25, "finePerOffence": 15, "jailHours": 24, "jailLocationId": "loc_id" }`; NPCs may also set `isGuard: true`.
+
+## 30. Exploration Depth: Hidden Spots, Pace, Weather, Rumours, Rations, Camp Events
+
+* **Locations**: `hiddenSpots: [{ "id", "name", "dc", "text", "outcome": { … } }]` (authoring the list replaces the default cache; `noHiddenCache: true` removes it), `rumour` (what people say about the place).
+* **NPCs**: `rumours: ["loc_id", …]` (told one at a time). Dialogue nodes / outcomes: `revealRumour: "loc_id"` or `true` (a random unknown place), `inspiration: true`, `loseRation: n`.
+* **Items**: `ration: true`. Campaign `survival: { "enabled": true, "rationItems": ["item_id"], "campEventChance": 0.35, "hiddenCaches": true }`.
+* **Campaign** `campEvents: [{ "id", "weight", "text", "outcome": { … } }]` (replaces the defaults), `travelPaces: { "careful": { "label", "icon", "time", "stamina", "ambush", "spot", "desc" } }`, `weather: { "enabled": true, "types": { "sandstorm": { "label", "icon", "weight", "perception", "stealth", "ranged", "ambush", "travelTime", "travelStamina" } } }`.

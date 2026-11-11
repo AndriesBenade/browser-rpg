@@ -82,6 +82,22 @@ function serve() {
     const resumed = await page.evaluate(() => ({ campaign: engine.activeCampaignId, loc: engine.state.worldState.currentLocationId, hud: document.getElementById('hud-location-name').innerText }));
     check('Reload resumes the Dev campaign with its own content', resumed.campaign === 'campaign_dev_test' && resumed.loc === 'loc_dev_haven' && /Haven/.test(resumed.hud), JSON.stringify(resumed));
 
+    // Session 17: page-level windows are really visible when opened (a mis-nested window is invisible).
+    const windows = await page.evaluate(() => {
+      const shown = (id) => { const r = document.getElementById(id).getBoundingClientRect(); return r.width > 50 && r.height > 50; };
+      const out = {};
+      window.engine.switchView('view-story');
+      document.querySelector('#side-travel-links button').click();
+      out.travel = shown('map-travel-modal') && !!document.querySelector('#map-travel-modal .pace-btn');
+      document.getElementById('map-travel-modal').style.display = 'none';
+      window.engine.openTrade('npc_dev_merchant_lycus'); out.trade = shown('trade-modal'); window.engine.closeTrade();
+      window.engine.engageCreature('creature_dev_forest_wolf'); out.confront = shown('confront-modal');
+      window.engine.chooseConfrontation('attack'); out.combat = shown('combat-modal') && /Next:/.test(document.getElementById('combat-intent-line').innerText);
+      document.getElementById('combat-modal').style.display = 'none'; window.engine.combatSession = null;
+      out.weather = /ration|Hungry/.test(document.getElementById('story-location-weather').innerText);
+      return out;
+    });
+    check('Travel card (with pace), trade, confrontation and combat windows are visible; weather and supplies are shown', Object.values(windows).every(Boolean), JSON.stringify(windows));
     check('No uncaught page errors', errors.length === 0, errors.join(' | '));
   } finally {
     await browser.close();

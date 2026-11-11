@@ -48,7 +48,7 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 +-----------------------------------------------------------------------------------------+
 |                               PERSISTENCE & SECURITY                                    |
 |  - Multi-slot IndexedDB with LocalStorage fallback                                      |
-|  - Save Versioning (v1.7.0) with automated migration pipeline                           |
+|  - Save Versioning (v1.8.0) with automated migration pipeline                           |
 |  - Slot overwrite protection & isolated campaign saves                                  |
 +-----------------------------------------------------------------------------------------+
 ```
@@ -203,6 +203,15 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 
 ---
 
+### 5.6 Telegraphed Moves, Status Effects, Morale and Surrender
+* The foe's next move is shown a round ahead; heavy blows reward a braced shield or a side-step, quick strikes are hard to dodge.
+* Status effects on both sides: bleeding, poisoned, entangled, frightened, stunned, confused, weakened.
+* Wounded creatures may lose their nerve and flee (half XP); guards accept surrender for a fine or a day in the cells.
+
+### 5.7 Working Class Features and Companions
+* Every class feature is data with real mechanics: passive bonuses, and combat abilities with uses per fight.
+* Hirelings and story companions travel with the hero, fight each round, draw attacks, and bring perks.
+
 ## 6. Dynamic World Time & Event-Driven Priority Scheduler
 
 ### 6.1 Centralized Time Progression
@@ -307,6 +316,13 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 
 ---
 
+### 10.1 Exploration Depth
+* **Hidden spots**: each search reveals one cache, item or secret path.
+* **Travel pace**: careful, normal or fast, trading time against stamina and ambush risk.
+* **Light and weather**: night and fog hide you and blind you; storms slow the road. Weather changes are scheduled events.
+* **Rumours**: NPCs tell of far places, drawn on the map with a "?" until visited.
+* **Rations and camp events**: food is eaten on long journeys and at rest; hunger penalises checks; nights in the wild can bring events.
+
 ## 11. Grouped Action Deck UI
 
 * **Grouped by what you act on**: People, Creatures, Objects and Places.
@@ -331,7 +347,7 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 
 * **Multi-Slot IndexedDB**: Robust asynchronous persistence with LocalStorage fallbacks.
 * **Save Versioning & Automated Migration (`migrateState()`)**:
-  * Seamlessly upgrades older save formats across v1.2 to v1.7 without losing player progress (v1.7.0 adds merchant stock, searched items and focused quests).
+  * Seamlessly upgrades older save formats across v1.2 to v1.8 without losing player progress (v1.8.0 adds companions, hidden spots, rumours, pace and hunger; v1.7.0 adds merchant stock, searched items and focused quests).
   * Preserves time timestamps, dynamic crafted items, custom traits, and newly added skills (`athletics`, `deception`).
 * **Slot Safety Architecture**:
   * `findSlotForNewGame()` finds the first unused slot.

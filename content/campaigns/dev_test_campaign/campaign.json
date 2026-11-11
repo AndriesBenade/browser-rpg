@@ -38,6 +38,7 @@
       "content/shared/traits.json"
     ]
   },
+  "law": { "guardFactions": ["faction_dev_guards"], "fineBase": 25, "finePerOffence": 15, "jailHours": 24, "jailLocationId": "loc_dev_haven" },
   "activityDurations": {
     "travel": "connection",
     "combat": 15,

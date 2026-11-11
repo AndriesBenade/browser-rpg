@@ -416,6 +416,7 @@
     },
     {
       "id": "item_dried_figs_bread",
+      "ration": true,
       "name": "Dried Attic Figs & Barley Cakes",
       "ancientGreek": "μᾶζα καὶ ἰσχάδες",
       "category": "consumable",

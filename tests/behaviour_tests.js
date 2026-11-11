@@ -983,7 +983,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.strictEqual(pers - engine.checkSkill('persuasion', 'charisma', 99, 't').total, 1, 'persuasionBonus applies');
     // Damage reduction
     engine.addItem('item_nemean_pelt_fragment', 1); engine.equipItem('item_nemean_pelt_fragment');
-    engine.startCombat({ id: 'x', name: 'Test Brute', vitals: { health: 99, maxHealth: 99 }, armorClass: 30, actions: [{ name: 'Smash', attackBonus: 50, damage: '5' }] });
+    engine.startCombat({ id: 'x', name: 'Test Brute', vitals: { health: 99, maxHealth: 99 }, armorClass: 30, actions: [{ name: 'Smash', style: 'normal', attackBonus: 50, damage: '5' }] });
     p.vitals.health = 50; p.vitals.maxHealth = 50;
     fixedRoll(engine, 2);
     engine.combatAction('thrust');
@@ -1220,7 +1220,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     await startCampaign(env, engine, 'campaign_dev_test');
     const p = engine.state.player;
     p.skills.melee_combat = 40;
-    const brute = { id: 'x', name: 'Test Brute', vitals: { health: 999, maxHealth: 999 }, armorClass: 5, actions: [{ name: 'Smash', attackBonus: 0, damage: '1' }] };
+    const brute = { id: 'x', name: 'Test Brute', vitals: { health: 999, maxHealth: 999 }, armorClass: 5, actions: [{ name: 'Smash', style: 'normal', attackBonus: 0, damage: '1' }] };
     p.vitals.health = p.vitals.maxHealth = 100;
     engine.startCombat(brute);
     rollSeq(engine, [1, 1]); // hero fumbles (despite +40), creature fumbles
@@ -1302,7 +1302,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
       const e = engine.getActionEntity(a, loc); (groups[`${e.kind}:${e.id}`] = groups[`${e.kind}:${e.id}`] || []).push(a.id);
     });
     assert.deepStrictEqual(groups['npc:npc_dev_merchant_lycus'].map(id => id.split('_')[1]).sort(),
-      ['attack', 'deceive', 'persuade', 'pickpocket', 'talk', 'trade'], 'talk, trade, persuade, deceive, attack and pickpocket grouped under Lycus');
+      ['attack', 'deceive', 'persuade', 'pickpocket', 'rumour', 'talk', 'trade'], 'talk, trade, rumours, persuade, deceive, attack and pickpocket grouped under Lycus');
     assert.strictEqual(groups['object:obj_treasury_iron_door'].length, 1);
     assert.ok(groups['place:loc_dev_whispering_woods'], 'travel belongs to the destination');
     // Rendering ("lists" layout): details elements for multi-action entities, plain cards otherwise
@@ -1313,8 +1313,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.renderStoryPanel();
     env.sandbox.document.createElement = origCreate;
     const details = created.filter(el => el.tagName === 'DETAILS' && el.className === 'action-entity-group');
-    assert.strictEqual(details.length, 4, 'three NPC lists (Lycus, Valerius, Elena) and Haven itself (search, rest)');
-    assert.strictEqual(created.filter(el => el.tagName === 'DETAILS' && el.className === 'risky-acts').length, 3, 'attack and pickpocket tucked behind a toggle per NPC');
+    assert.strictEqual(details.length, 5, 'four NPC lists (Lycus, Valerius, Elena, Brannoch) and Haven itself (search, rest)');
+    assert.strictEqual(created.filter(el => el.tagName === 'DETAILS' && el.className === 'risky-acts').length, 4, 'attack and pickpocket tucked behind a toggle per NPC');
     engine.setUiSize('actionLayout', null);
     assert.ok(created.filter(el => el.tagName === 'BUTTON').length >= 9 + 6);
     // Greek tutorial: "Speak with Elder Daidalos" joins Daidalos' list
@@ -1356,9 +1356,9 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     env.sandbox.document.createElement = origCreate;
     const chips = created.filter(el => el.className && /entity-chip/.test(el.className));
     const panels = created.filter(el => el.className === 'focus-panel');
-    assert.strictEqual(chips.length, 4, 'Lycus, Valerius, Elena and Haven');
-    assert.ok(panels.length === 4 && panels.every(p => p.hidden), 'panels exist but stay closed until chosen');
-    assert.strictEqual(created.filter(el => el.className === 'risky-acts').length, 3, 'hostile acts behind a toggle for each person');
+    assert.strictEqual(chips.length, 5, 'Lycus, Valerius, Elena, Brannoch and Haven');
+    assert.ok(panels.length === 5 && panels.every(p => p.hidden), 'panels exist but stay closed until chosen');
+    assert.strictEqual(created.filter(el => el.className === 'risky-acts').length, 4, 'hostile acts behind a toggle for each person');
     assert.ok(created.some(el => el.className === 'next-steps'), 'next steps strip rendered');
     chips[0].onclick();
     assert.ok(engine._focusEntity, 'a chip selects its entity');
@@ -1608,6 +1608,11 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.searchArea('loc_dev_haven');
     assert.ok(engine.hasItem('item_dev_iron_lockpick'));
     assert.deepStrictEqual(plain(engine.getUnfoundItems('loc_dev_haven')), [], 'found once');
+    // One find per search: further searches reveal the remaining hidden spots, then the card goes away.
+    fixedRoll(engine, 20);
+    let guard = 0;
+    while (engine.getUnrevealedSpots('loc_dev_haven').length && guard++ < 10) engine.searchArea('loc_dev_haven');
+    fixedRoll(engine, 15);
     assert.ok(!engine.getContextualActionGroups().flatMap(g => g.actions).some(a => a.id === 'act_search_loc_dev_haven'));
     // Rest safety: towns and cities are safe
     assert.strictEqual(engine.getRestSafety(engine.getLocation('loc_dev_haven')), 'settlement');
@@ -1664,18 +1669,356 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.deepStrictEqual(plain(copy.worldState.focusedQuests), ['quest_dev_sunstone_relic']);
   });
 
-  await test('Save migration 1.7.0: older saves gain merchants, found items and focused quests', async () => {
+  await test('Save migration: 1.6 saves gain merchants and focused quests; 1.7 found items become hidden spots', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
     await startCampaign(env, engine, 'campaign_dev_test');
     const old = JSON.parse(JSON.stringify(engine.state));
     old.version = '1.6.0';
-    delete old.worldState.merchants; delete old.worldState.foundItems; delete old.worldState.focusedQuests;
+    delete old.worldState.merchants; delete old.worldState.focusedQuests; delete old.worldState.foundSpots;
+    delete old.worldState.companions; delete old.worldState.rumouredLocations; delete old.worldState.travelPace; delete old.worldState.hunger;
+    old.worldState.foundItems = { loc_dev_haven: ['item_dev_iron_lockpick'] };
     const m = engine.migrateState(old);
-    assert.strictEqual(m.version, '1.7.0');
+    assert.strictEqual(m.version, '1.8.0');
     assert.deepStrictEqual(plain(m.worldState.merchants), {});
-    assert.deepStrictEqual(plain(m.worldState.foundItems), {});
+    assert.deepStrictEqual(plain(m.worldState.foundSpots), { loc_dev_haven: ['item:item_dev_iron_lockpick'] });
+    assert.strictEqual(m.worldState.foundItems, undefined);
+    assert.deepStrictEqual(plain(m.worldState.companions), []);
+    assert.deepStrictEqual(plain(m.worldState.rumouredLocations), {});
+    assert.strictEqual(m.worldState.travelPace, 'normal');
+    assert.strictEqual(m.worldState.hunger, 0);
     assert.deepStrictEqual(plain(m.worldState.focusedQuests), []);
+  });
+
+  // ---------------------------------------------------------------------------
+  // Session 17: combat depth and exploration
+  // ---------------------------------------------------------------------------
+  const dummy = (over = {}) => Object.assign({ id: 'creature_test_dummy', name: 'Test Brute', level: 1, vitals: { health: 200, maxHealth: 200, morale: 20 }, armorClass: 5,
+    actions: [{ name: 'Maul', style: 'heavy', attackBonus: 50, damage: '4' }] }, over);
+
+  await test('Combat: telegraphed moves reward bracing and side-stepping', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.vitals.health = p.vitals.maxHealth = 100; p.vitals.stamina = p.vitals.maxStamina = 30;
+    engine.startCombat(dummy());
+    const c = engine.combatSession;
+    assert.strictEqual(c.intent.style, 'heavy');
+    assert.ok(/Next:.*Maul/.test(engine.describeIntent()), 'the next move is announced');
+    fixedRoll(engine, 10);
+    engine.combatAction('thrust');
+    assert.strictEqual(100 - p.vitals.health, 6, 'a heavy blow deals half again as much (4 -> 6)');
+    // Side-step: the telegraphed blow misses entirely and sets up a counter
+    const hp = p.vitals.health;
+    fixedRoll(engine, 18);
+    engine.combatAction('sidestep');
+    assert.strictEqual(p.vitals.health, hp, 'side-stepped: no damage');
+    assert.strictEqual(engine.combatSession.playerBonus, 2, 'counter bonus on the next strike');
+    // Bracing a shield against a heavy blow is worth +2 more AC, and turning it gives +2 on the next strike
+    engine.combatSession = null;
+    engine.startCombat(dummy({ actions: [{ name: 'Maul', style: 'heavy', attackBonus: 0, damage: '4' }] }));
+    const ac = engine.getPlayerArmorClass();
+    const calls = [];
+    const orig = engine.resolveD20.bind(engine);
+    engine.resolveD20 = (o) => { calls.push(o); return orig(o); };
+    fixedRoll(engine, 10);
+    engine.combatAction('shield_block');
+    engine.resolveD20 = orig;
+    const enemyRoll = calls[calls.length - 1];
+    assert.strictEqual(enemyRoll.dc, ac + engine.combatSession.shieldBonus + 2, 'brace vs heavy: +2 AC on top of the shield');
+    assert.strictEqual(enemyRoll.modifier, -1, 'heavy blows are a little easier to see coming (-1 to hit)');
+    // Quick strikes hit more often for less
+    engine.combatSession = null;
+    engine.startCombat(dummy({ actions: [{ name: 'Jab', style: 'quick', attackBonus: 50, damage: '4' }] }));
+    p.vitals.health = 100;
+    engine.combatAction('thrust');
+    assert.strictEqual(100 - p.vitals.health, 3, 'quick: 1 less damage');
+  });
+
+  await test('Combat: status effects (bleeding, entangled, frightened, stunned) tick, expire and respect immunities', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.vitals.health = p.vitals.maxHealth = 100; p.vitals.stamina = p.vitals.maxStamina = 30;
+    engine.startCombat(dummy({ armorClass: 40, actions: [{ name: 'Bite', style: 'normal', attackBonus: 50, damage: '1', inflicts: { status: 'bleeding', rounds: 2, value: 3 } }] }));
+    fixedRoll(engine, 10);
+    engine.combatAction('thrust');
+    assert.strictEqual(p.vitals.health, 100 - 1 - 3, 'bite + first bleed tick');
+    assert.strictEqual(engine.combatSession.status.player.bleeding.rounds, 1);
+    engine.combatSession.enemy.actions[0].inflicts = null; engine.combatSession.intent.action.inflicts = null;
+    engine.combatAction('thrust');
+    assert.strictEqual(p.vitals.health, 96 - 1 - 3, 'second tick');
+    assert.ok(!engine.combatSession.status.player.bleeding, 'bleeding wears off');
+    // Entangled: no fleeing, -2 to hit; frightened foes hit less
+    engine.applyCombatStatus('player', 'entangled', 2);
+    assert.strictEqual(engine.getStatusAttackMod('player'), -2);
+    engine.combatAction('flee');
+    assert.ok(engine.combatSession && !engine.combatSession.ended, 'cannot flee while entangled');
+    engine.applyCombatStatus('enemy', 'frightened', 2);
+    assert.strictEqual(engine.getStatusAttackMod('enemy'), -2);
+    // Enemy bleeding damages it each round; a stunned hero loses the action
+    const hp = engine.combatSession.enemy.hp;
+    engine.applyCombatStatus('enemy', 'bleeding', 2, 5);
+    engine.applyCombatStatus('player', 'stunned', 1);
+    engine.combatAction('thrust');
+    assert.strictEqual(engine.combatSession.enemy.hp, hp - 5, 'only the bleed hurt it: the stunned hero did not strike');
+    // Immunity from a class feature (Hoplite level 3: Steadfast Discipline)
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    engine.state.player.class = 'hoplite'; engine.state.player.level = 3;
+    engine.startCombat(dummy());
+    assert.strictEqual(engine.applyCombatStatus('player', 'frightened', 2), false);
+    assert.ok(!engine.hasCombatStatus('player', 'frightened'));
+  });
+
+  await test('Class features: passive effects and combat abilities work from class data', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    const p = engine.state.player;
+    // Every feature of every class has mechanics
+    engine.getCampaignClasses().forEach(c => c.classFeatures.forEach(f => assert.ok(f.effect || f.combat, `${c.id}: ${f.name} has an effect`)));
+    // Hoplite: +2 AC only while a shield is equipped
+    p.class = 'hoplite'; p.level = 1;
+    const shield = p.inventory.find(i => i.equipped && i.slot === 'off_hand');
+    assert.ok(shield, 'hoplite starts with a shield');
+    assert.strictEqual(engine.getFeatureArmorBonus(), 2, 'Aspis Phalanx Wall with a shield');
+    engine.unequipItem(shield.itemId);
+    assert.strictEqual(engine.getFeatureArmorBonus(), 0, 'no shield, no bonus');
+    // Trickster 3: 15% off; lockpicking +3
+    p.class = 'trickster'; p.level = 3;
+    assert.strictEqual(engine.getFeatureNumber('merchantDiscount'), 0.15);
+    assert.strictEqual(engine.getFeatureCheckBonus('lockpicking', 'agility', 'lockpick'), 3);
+    assert.strictEqual(engine.getFeatureCheckBonus('persuasion', 'charisma'), 2);
+    // Demigod 2: +5 max health granted once
+    p.class = 'demigod'; p.level = 2;
+    const mh = p.vitals.maxHealth;
+    engine.renderAll(); engine.renderAll();
+    assert.strictEqual(p.vitals.maxHealth, mh + 5, 'Ichor of the Gods granted exactly once');
+    // Abilities: uses and stamina, automatic damage, ward
+    p.level = 4; p.vitals.stamina = p.vitals.maxStamina = 20; p.vitals.health = p.vitals.maxHealth;
+    engine.startCombat(dummy({ actions: [{ name: 'Hit', style: 'normal', attackBonus: 50, damage: '6' }] }));
+    const ab = engine.getCombatAbilities();
+    assert.deepStrictEqual(plain(ab.map(a => a.name)), ['Olympian Sparks', 'Heavenly Aegis']);
+    const hp0 = engine.combatSession.enemy.hp, php = p.vitals.health;
+    fixedRoll(engine, 10);
+    engine.combatAction('ability:heavenly_aegis');
+    assert.strictEqual(p.vitals.health, php, 'the aegis absorbed the blow');
+    assert.strictEqual(engine.combatSession.ward, 9);
+    engine.combatAction('ability:olympian_sparks');
+    assert.ok(engine.combatSession.enemy.hp < hp0, 'sparks always hit');
+    assert.strictEqual(p.vitals.stamina, 19);
+    engine.combatAction('ability:heavenly_aegis');
+    assert.strictEqual(engine.combatSession.abilityUses.heavenly_aegis, 1, 'once per fight');
+    // Dev classes too
+    await startCampaign(env, engine, 'campaign_dev_test');
+    engine.state.player.class = 'dev_sentinel';
+    engine.startCombat(dummy());
+    engine.combatAction('ability:shield_bash');
+    assert.ok(engine.combatSession.enemy.hp < 200);
+    assert.strictEqual(100, 100);
+  });
+
+  await test('Morale and the law: beasts can break and flee; guards accept surrender (fine or cells)', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState, p = engine.state.player;
+    // A wounded wolf fails its morale check and runs: half XP, not dead, no loot
+    engine.startCombat('creature_dev_forest_wolf');
+    const xp0 = p.xp;
+    engine.combatSession.enemy.hp = 4;
+    rollSeq(engine, [2, 3]); // hero misses, the wolf's morale roll fails
+    engine.combatAction('thrust');
+    assert.ok(engine.combatSession.ended, 'the wolf flees');
+    env.flushTimers();
+    assert.ok(!engine.combatSession);
+    assert.ok(!w.deadEntities.creature_dev_forest_wolf, 'it survives');
+    assert.strictEqual(p.xp - xp0, 20, 'half the XP for driving it off');
+    // Quest encounters and bosses never flee
+    engine.startCombatEncounter('enc_dev_wild_boar');
+    engine.combatSession.enemy.hp = 2;
+    assert.strictEqual(engine.checkFoeMorale({ innerHTML: '' }), false);
+    engine.combatSession = null;
+    // Surrender to a guard who attacks: fine paid, no longer hunted
+    engine.setNpcDisposition('npc_dev_guard_captain', -100);
+    engine.modifyFactionReputation('faction_dev_guards', -80);
+    p.currencies.drachmae = 100;
+    engine.engageNpc('npc_dev_guard_captain', { initiator: 'enemy' });
+    assert.ok(engine.getConfrontationOptions().some(o => o.id === 'surrender'));
+    engine.chooseConfrontation('surrender');
+    assert.strictEqual(p.currencies.drachmae, 75, 'first offence: 25 drachmae');
+    assert.ok(!engine.confrontation && !engine.combatSession);
+    assert.notStrictEqual(engine.getNpcStanding('npc_dev_guard_captain').tier, 'hostile', 'the debt is paid');
+    // Second offence, no money: the cells (time passes), purse emptied; also available mid-fight
+    engine.setNpcDisposition('npc_dev_guard_captain', -100);
+    p.currencies.drachmae = 10;
+    engine.startCombatWithEntity('npc_dev_guard_captain', 'npc');
+    engine.renderAll(); engine.updateCombatUI();
+    assert.ok(/Surrender/.test(env.el('combat-extra-bar').innerHTML));
+    const t0 = engine.getTotalInGameMinutes();
+    engine.combatAction('surrender');
+    assert.strictEqual(p.currencies.drachmae, 0);
+    assert.strictEqual(engine.getTotalInGameMinutes() - t0, 24 * 60, 'a day in the cells');
+    assert.strictEqual(w.lawRecord.offences, 2);
+    // Merchants are not the law
+    engine.engageNpc('npc_dev_merchant_lycus', { initiator: 'enemy' });
+    assert.ok(!engine.getConfrontationOptions().some(o => o.id === 'surrender'));
+  });
+
+  await test('Companions: hirelings and allies fight beside the hero, give perks, and leave when their time is up', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState, p = engine.state.player;
+    p.currencies.drachmae = 50;
+    const hire = engine.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_hire_npc_dev_sellsword_brannoch');
+    assert.ok(hire && !hire.disabled);
+    hire.handler();
+    assert.strictEqual(p.currencies.drachmae, 20);
+    assert.ok(engine.isCompanion('npc_dev_sellsword_brannoch'));
+    assert.ok(!engine.getNpcsAt('loc_dev_haven').some(n => n.id === 'npc_dev_sellsword_brannoch'), 'he travels with you now');
+    // In a fight he attacks after the hero
+    engine.startCombat(dummy({ actions: [{ name: 'Hit', style: 'normal', attackBonus: -50, damage: '1' }] }));
+    assert.strictEqual(engine.combatSession.allies.length, 1);
+    rollSeq(engine, [2, 15, 2]); // hero misses, Brannoch hits, foe misses
+    engine.combatAction('thrust');
+    assert.ok(engine.combatSession.enemy.hp < 200, 'the companion dealt damage');
+    engine.combatSession = null;
+    // Silas joins through the villainous pact and brings perks
+    w.currentLocationId = 'loc_dev_whispering_woods';
+    engine.openDialogue('dialogue_dev_bandit', 'node_bargain'); engine.openDialogue('dialogue_dev_bandit', 'node_ally'); engine.closeDialogue();
+    assert.ok(engine.isCompanion('npc_dev_bandit_renegade'));
+    assert.strictEqual(engine.getFeatureCheckBonus('stealth', 'agility'), 2);
+    assert.strictEqual(engine.getFeatureCheckBonus('x', 'agility', 'lockpick'), 2);
+    assert.strictEqual(w.companions.length, 2);
+    // Save round trip, then the contract runs out (event-driven)
+    const copy = engine.migrateState(JSON.parse(JSON.stringify(engine.state)));
+    assert.strictEqual(copy.worldState.companions.length, 2);
+    engine.advanceTime(73, 0);
+    assert.ok(!engine.isCompanion('npc_dev_sellsword_brannoch'), 'the hireling leaves after 3 days');
+    assert.ok(engine.isCompanion('npc_dev_bandit_renegade'), 'Silas stays');
+    engine.dismissCompanion('npc_dev_bandit_renegade');
+    assert.ok(engine.getNpcsAt('loc_dev_whispering_woods').some(n => n.id === 'npc_dev_bandit_renegade'), 'dismissed companions go home');
+  });
+
+  await test('Exploration: hidden spots one at a time, secret paths, travel pace, light and weather', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState;
+    // Hidden spots: one find per search, easiest first; a secret path opens a new road
+    w.currentLocationId = 'loc_dev_whispering_woods';
+    const n0 = engine.getUnrevealedSpots('loc_dev_whispering_woods').length;
+    assert.ok(n0 >= 2);
+    fixedRoll(engine, 19);
+    engine.searchArea('loc_dev_whispering_woods');
+    assert.strictEqual(w.foundSpots.loc_dev_whispering_woods.length, 1, 'one thing per search');
+    assert.strictEqual(engine.getUnrevealedSpots('loc_dev_whispering_woods').length, n0 - 1);
+    engine.searchArea('loc_dev_whispering_woods'); engine.searchArea('loc_dev_whispering_woods');
+    assert.ok(w.foundSpots.loc_dev_whispering_woods.includes('hunters_cache') && engine.hasItem('item_dev_trail_rations'));
+    w.currentLocationId = 'loc_dev_obsidian_crag';
+    const roads = () => engine.getLocation('loc_dev_obsidian_crag').connections.filter(c => engine.isConnectionOpen(c)).map(c => c.targetLocationId);
+    assert.deepStrictEqual(plain(roads()), ['loc_dev_haven']);
+    engine.searchArea('loc_dev_obsidian_crag');
+    assert.deepStrictEqual(plain(roads()), ['loc_dev_haven', 'loc_dev_whispering_woods'], 'the goat track is found');
+    // Locations without authored spots hide a small default cache
+    assert.strictEqual(engine.getLocationSpots('loc_dev_ancient_crypt').filter(sp => sp.id === 'cache').length, 1);
+    // Travel pace
+    const conn = engine.getLocation('loc_dev_haven').connections.find(c => c.targetLocationId === 'loc_dev_whispering_woods');
+    w.time.hour = 10;
+    const normal = engine.getTravelCost(conn);
+    assert.strictEqual(normal.minutes, 60);
+    engine.setTravelPace('careful');
+    assert.strictEqual(engine.getTravelCost(conn).minutes, 90);
+    assert.strictEqual(engine.getTravelPace().spot, 4);
+    engine.setTravelPace('fast');
+    assert.strictEqual(engine.getTravelCost(conn).minutes, 42);
+    assert.ok(engine.getTravelCost(conn).stamina > normal.stamina);
+    w.currentLocationId = 'loc_dev_haven';
+    const t0 = engine.getTotalInGameMinutes();
+    fixedRoll(engine, 15);
+    engine.executeTravel(engine.getLocation('loc_dev_whispering_woods'), conn);
+    env.flushTimers();
+    if (engine.confrontation) engine.chooseConfrontation(engine.getConfrontationOptions().some(o => o.id === 'withdraw') ? 'withdraw' : 'fight');
+    assert.strictEqual(engine.getTotalInGameMinutes() - t0, 42, 'the journey takes the pace-adjusted time');
+    engine.combatSession = null;
+    engine.setTravelPace('normal');
+    // Light: night hides you and hinders the eye; weather: storms slow the road
+    w.time.hour = 23;
+    assert.strictEqual(engine.getEnvironmentMod('perception'), -2);
+    assert.strictEqual(engine.getEnvironmentMod('stealth'), 2);
+    w.time.hour = 10;
+    assert.strictEqual(engine.getEnvironmentMod('perception'), 0);
+    w.weather = { id: 'storm' };
+    assert.strictEqual(engine.getTravelCost(conn).minutes, 90);
+    assert.strictEqual(engine.getEnvironmentMod('ranged'), -2);
+    w.weather = { id: 'fog' };
+    const base = engine.checkSkill('stealth', 'agility', 99, 't').total;
+    w.weather = { id: 'clear' };
+    assert.strictEqual(base - engine.checkSkill('stealth', 'agility', 99, 't').total, 3, 'fog helps stealth checks');
+    // Weather is event-driven and keeps going across long skips
+    engine.renderAll();
+    assert.strictEqual(w.scheduledEvents.filter(e => e.type === 'weather_change').length, 1);
+    engine.advanceTime(60, 0);
+    assert.strictEqual(w.scheduledEvents.filter(e => e.type === 'weather_change').length, 1, 'the next change is always scheduled');
+    assert.ok(engine.getWeatherDefs()[w.weather.id]);
+  });
+
+  await test('Exploration: rumours mark places on the map; rations, hunger and camp events', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState, p = engine.state.player;
+    // Rumours
+    const card = () => engine.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_rumour_npc_dev_merchant_lycus');
+    assert.ok(card());
+    card().handler();
+    assert.ok(w.rumouredLocations.loc_dev_ancient_crypt, 'rumoured, not discovered');
+    assert.ok(!w.discoveredLocations.includes('loc_dev_ancient_crypt'));
+    assert.ok(w.journal.knowledge.some(k => /Rumour/.test(k.title)));
+    card().handler();
+    assert.ok(w.rumouredLocations.loc_dev_obsidian_crag);
+    assert.ok(!card(), 'nothing more to tell');
+    assert.strictEqual(engine.getRumourFor(engine.getCharacter('npc_dev_elena_scholar')), null, 'no repeats from others');
+    // Rations on the road: one per 8 hours of travel; none left means hunger
+    p.inventory = p.inventory.filter(e => !engine.isRation(e.itemId));
+    engine.addItem('item_dev_trail_rations', 1);
+    engine.noteTravelHours(9);
+    assert.ok(!engine.hasItem('item_dev_trail_rations'), 'eaten on the road');
+    assert.strictEqual(w.hunger, 0);
+    engine.noteTravelHours(8);
+    assert.strictEqual(w.hunger, 1, 'no rations: hungry');
+    w.time.hour = 10; w.weather = { id: 'clear' };
+    fixedRoll(engine, 15);
+    const hungry = engine.checkSkill('perception', 'wisdom', 99, 't').total;
+    engine.addItem('item_dev_trail_rations', 1);
+    engine.consumeItem('item_dev_trail_rations');
+    assert.strictEqual(w.hunger, 0, 'eating ends hunger');
+    w.time.hour = 10;
+    fixedRoll(engine, 15);
+    assert.strictEqual(engine.checkSkill('perception', 'wisdom', 99, 't').total - hungry, 1, 'hunger was a -1 on checks');
+    // Resting in the wild without food is a poor rest; in town you are fed
+    w.currentLocationId = 'loc_dev_whispering_woods';
+    p.vitals.stamina = 1;
+    const realRandom = env.sandbox.Math.random;
+    env.sandbox.Math.random = () => 0.99; // no camp event
+    fixedRoll(engine, 15);
+    try { engine.executeRest('long'); } finally { env.sandbox.Math.random = realRandom; }
+    env.flushTimers();
+    engine.combatSession = null; engine.confrontation = null;
+    assert.strictEqual(w.hunger, 1);
+    assert.ok(p.vitals.stamina < p.vitals.maxStamina, 'a hungry rest does not fully restore stamina');
+    // Camp events use the shared outcome vocabulary
+    env.sandbox.Math.random = () => 0;
+    let ev;
+    try { ev = engine.rollCampEvent(); } finally { env.sandbox.Math.random = realRandom; }
+    assert.strictEqual(ev, 'shooting_star');
+    assert.strictEqual(w.inspiration, true);
+    const a = engine.checkSkill('perception', 'wisdom', 99, 't').total;
+    const b = engine.checkSkill('perception', 'wisdom', 99, 't').total;
+    assert.strictEqual(a - b, 2, 'inspiration: +2 once');
   });
 
   // ---------------------------------------------------------------------------
@@ -1713,7 +2056,10 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
           else if (r === 1 && mine.length) engine.sellItem(engine.tradeSession.npcId, mine[rnd(mine.length)]);
           else engine.closeTrade();
         } else if (engine.combatSession && !engine.combatSession.ended) {
-          engine.combatAction(['thrust', 'thrust', 'thrust', 'shield_block', 'feint', 'salve', 'prayer'][rnd(7)]);
+          const abil = engine.getCombatAbilities().filter(a => a.ready).map(a => 'ability:' + a.id);
+          const acts = ['thrust', 'thrust', 'thrust', 'shield_block', 'feint', 'salve', 'prayer', 'sidestep', 'flee', 'surrender'].concat(abil);
+          const pick = acts[rnd(acts.length)];
+          if (pick !== 'surrender' || (engine.combatSession.enemy.isNpc && engine.isLawOfficer(engine.getCharacter(engine.combatSession.enemy.id)))) engine.combatAction(pick);
         } else if (env.el('dialogue-modal').style.display === 'flex' && rnd(4) > 0) {
           const opts = choicesFrom(env.el('dialogue-choices-list').innerHTML, 'window.engine.selectDialogueChoice');
           if (opts.length) { const [tree, node] = opts[rnd(opts.length)].split(',').map(x => x.trim().replace(/^'|'$/g, '')); engine.selectDialogueChoice(tree, node); }
