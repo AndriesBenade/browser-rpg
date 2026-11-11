@@ -29,7 +29,14 @@
     "quests": "content/campaigns/dev_test_campaign/world/quests.json",
     "encounters": "content/campaigns/dev_test_campaign/world/encounters.json",
     "dialogues": "content/campaigns/dev_test_campaign/world/dialogues.json",
-    "events": "content/campaigns/dev_test_campaign/world/events.json"
+    "events": "content/campaigns/dev_test_campaign/world/events.json",
+    "origins": [
+      "content/shared/origins.json",
+      "content/campaigns/dev_test_campaign/world/origins.json"
+    ],
+    "traits": [
+      "content/shared/traits.json"
+    ]
   },
   "activityDurations": {
     "travel": "connection",

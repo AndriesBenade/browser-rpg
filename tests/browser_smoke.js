@@ -56,7 +56,8 @@ function serve() {
       engine.skipWalkthrough(); engine.selectCampaign('campaign_greek_mythology'); await engine.confirmCampaignSelection();
       engine.renderWizardStep(2); engine.confirmHeroCreation();
       ['view-map', 'view-character', 'view-inventory', 'view-journal', 'view-codex', 'view-crafting', 'view-settings', 'view-story'].forEach(v => engine.switchView(v));
-      const cards = [...document.querySelectorAll('#context-actions-container .action-card-btn')].map(b => b.innerText.split('\n')[0]);
+      // Cards may sit inside closed per-NPC / per-place lists, so read textContent (innerText is empty for hidden text).
+      const cards = [...document.querySelectorAll('#context-actions-container .action-card-btn')].map(b => b.querySelector('.action-card-title span').textContent.trim());
       return { cards, unique: new Set(cards).size === cards.length };
     });
     check('Greek campaign: all views render and the action deck has no duplicates', greek.cards.length > 0 && greek.unique, JSON.stringify(greek));
@@ -64,7 +65,7 @@ function serve() {
     const dev = await page.evaluate(async () => {
       engine.selectCampaign('campaign_dev_test'); await engine.confirmCampaignSelection();
       engine.renderWizardStep(2); engine.confirmHeroCreation();
-      const talk = [...document.querySelectorAll('#context-actions-container .action-card-btn')].find(b => /Speak with Merchant Lycus/.test(b.innerText));
+      const talk = [...document.querySelectorAll('#context-actions-container .action-card-btn')].find(b => /Speak with Merchant Lycus/.test(b.textContent));
       if (talk) talk.click();
       const speaker = document.getElementById('dialogue-speaker-name').innerText;
       await engine.saveGameSilently(1);

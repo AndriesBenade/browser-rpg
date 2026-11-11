@@ -1,0 +1,10 @@
+{
+  "origins": [
+    {
+      "id": "wanderer",
+      "name": "Wanderer",
+      "description": "A traveller with no ties to any particular land.",
+      "perks": "No regional bonus"
+    }
+  ]
+}

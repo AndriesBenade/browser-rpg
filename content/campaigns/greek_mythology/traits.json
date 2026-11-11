@@ -1,0 +1,42 @@
+{
+  "traits": [
+    {
+      "id": "vigilant",
+      "name": "Vigilant Scout",
+      "description": "Accustomed to watching the ridgelines for bandits and beasts.",
+      "perks": "+2 bonus on all Perception & Tracking checks.",
+      "checkBonus": {
+        "perception": 2,
+        "tracking": 2
+      }
+    },
+    {
+      "id": "pious",
+      "name": "Pious Devotee",
+      "description": "Never passes an altar without pouring a libation or offering prayer.",
+      "perks": "Starts with +2 Divine Standing with Hermes & Apollo; libations restore double stamina.",
+      "piety": {
+        "hermes": 2,
+        "apollo": 2
+      },
+      "libationMultiplier": 2
+    },
+    {
+      "id": "eloquent",
+      "name": "Silver-Tongued Orator",
+      "description": "Gifted in the heroic art of persuasive speech in civic assemblies.",
+      "perks": "+2 bonus on Persuasion & Deception checks.",
+      "checkBonus": {
+        "persuasion": 2,
+        "deception": 2
+      }
+    },
+    {
+      "id": "resolute",
+      "name": "Dauntless Courage",
+      "description": "Your bronze heart does not falter when encountering supernatural terrors.",
+      "perks": "+2 Maximum Morale.",
+      "maxMorale": 2
+    }
+  ]
+}

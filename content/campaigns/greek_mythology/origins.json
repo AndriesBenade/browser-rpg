@@ -1,0 +1,59 @@
+{
+  "origins": [
+    {
+      "id": "boeotia",
+      "name": "Boeotia (Plataea & Thebes)",
+      "description": "The sacred borderlands of Cithaeron and the birthplace of the Cadmeia. Heart of heroic shepherd traditions.",
+      "perks": "+1 Wisdom • +1 Survival • High standing with Plataeans",
+      "attributes": {
+        "wisdom": 1
+      },
+      "skills": {
+        "survival": 1
+      },
+      "reputation": {
+        "faction_plataea": 5
+      }
+    },
+    {
+      "id": "attica",
+      "name": "Attica (Athens)",
+      "description": "The olive-bearing plains beneath the Parthenon. Renowned for sharp rhetoric, tactical philosophy, and civil law.",
+      "perks": "+1 Intelligence • +1 Persuasion • Blessed by Athena",
+      "attributes": {
+        "intelligence": 1
+      },
+      "skills": {
+        "persuasion": 1
+      },
+      "piety": {
+        "athena": 1
+      }
+    },
+    {
+      "id": "laconia",
+      "name": "Laconia (Sparta)",
+      "description": "The Eurotas valley, where youths endure the uncompromising martial discipline of Lycurgus.",
+      "perks": "+1 Strength • +1 Melee Combat • Unyielding Morale",
+      "attributes": {
+        "strength": 1
+      },
+      "skills": {
+        "melee_combat": 1
+      },
+      "maxMorale": 2
+    },
+    {
+      "id": "arcadia",
+      "name": "Arcadia (Highlands)",
+      "description": "The ancient pine forests and crags where Pan and Hermes roam among mortal herdsmen.",
+      "perks": "+1 Agility • +1 Tracking",
+      "attributes": {
+        "agility": 1
+      },
+      "skills": {
+        "tracking": 1
+      }
+    }
+  ]
+}

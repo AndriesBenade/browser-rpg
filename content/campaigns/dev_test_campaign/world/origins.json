@@ -1,0 +1,28 @@
+{
+  "origins": [
+    {
+      "id": "haven_born",
+      "name": "Haven-Born",
+      "description": "Raised behind the palisades of Haven of the Crossways.",
+      "perks": "+1 Persuasion • Trusted by the Haven citizens",
+      "skills": {
+        "persuasion": 1
+      },
+      "reputation": {
+        "faction_dev_haven": 5
+      }
+    },
+    {
+      "id": "frontier_raised",
+      "name": "Frontier-Raised",
+      "description": "Grew up in the woods and crags beyond the town walls.",
+      "perks": "+1 Endurance • +1 Survival",
+      "attributes": {
+        "endurance": 1
+      },
+      "skills": {
+        "survival": 1
+      }
+    }
+  ]
+}

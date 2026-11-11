@@ -39,14 +39,25 @@ const ADVENTURE = {
   encounters: ['encounters.json', 'encounters'],
 };
 
+// Catalogs the Dev manifest loads from one or several (possibly shared) files: merged by id like fetchCatalog().
+const MANIFEST = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
+const fromModules = (key) => {
+  const byId = new Map();
+  [].concat(MANIFEST.modules[key] || []).forEach(p => (JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'))[key] || []).forEach(e => byId.set(e.id, e)));
+  return [...byId.values()];
+};
+const MODULE_CATALOGS = ['origins', 'traits'];
+
 function build(html) {
   const start = html.indexOf('      loadEmbeddedDevTestContent() {');
   if (start === -1) throw new Error('loadEmbeddedDevTestContent() not found in index.html');
   const end = html.indexOf('\n      }\n', start);
   let body = html.slice(start, end);
 
-  for (const [key, [file, prop]] of Object.entries(WORLD)) {
-    const json = JSON.stringify(read(file)[prop] || []);
+  const catalogs = Object.entries(WORLD).map(([key, [file, prop]]) => [key, read(file)[prop] || []])
+    .concat(MODULE_CATALOGS.map(key => [key, fromModules(key)]));
+  for (const [key, data] of catalogs) {
+    const json = JSON.stringify(data);
     const line = `        this.world.${key} = ${json};`;
     // A catalog is either a one-line JSON assignment or a multi-line literal ending in "];".
     const re = new RegExp(`\\n        this\\.world\\.${key} = (\\[[^\\n]*\\];|\\[\\n[\\s\\S]*?\\n        \\];)`);

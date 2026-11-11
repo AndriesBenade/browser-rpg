@@ -351,8 +351,8 @@
        ========================================================================= */
     .story-layout {
       display: grid;
-      grid-template-columns: 1fr 310px;
-      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr) 8px var(--sidebar-width, 310px);
+      gap: 0.4rem;
       height: 100%;
       min-height: 0;
       max-height: 100%;
@@ -363,7 +363,7 @@
       .story-layout {
         grid-template-columns: 1fr;
       }
-      .story-sidebar {
+      .story-sidebar, .resize-handle.vertical {
         display: none !important;
       }
     }
@@ -490,8 +490,9 @@
        ========================================================================= */
     .action-control-deck {
       flex-shrink: 0;
-      max-height: 40%;
-      min-height: 140px;
+      height: var(--action-deck-height, auto);
+      max-height: var(--action-deck-max, 40%);
+      min-height: 120px;
       background: #141318;
       border-top: 1px solid var(--border-meander);
       padding: 0.75rem 1rem;
@@ -520,6 +521,57 @@
       flex-direction: column;
       gap: 0.65rem;
     }
+
+    /* ---- Player-resizable panels ---- */
+    .resize-handle {
+      flex-shrink: 0;
+      background: transparent;
+      position: relative;
+      z-index: 3;
+      touch-action: none;
+    }
+    .resize-handle::after {
+      content: "";
+      position: absolute;
+      background: var(--bronze-dark);
+      border-radius: 2px;
+      opacity: 0.6;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .resize-handle:hover::after, .resize-handle.dragging::after { opacity: 1; background: var(--bronze-bright); }
+    .resize-handle.horizontal { height: 8px; cursor: row-resize; margin: -4px 0; }
+    .resize-handle.horizontal::after { left: 45%; right: 45%; top: 3px; height: 3px; }
+    .resize-handle.vertical { width: 8px; cursor: col-resize; }
+    .resize-handle.vertical::after { top: 45%; bottom: 45%; left: 3px; width: 3px; }
+    /* Selection lists and text panels can be resized with the corner grip */
+    .user-resizable {
+      resize: vertical;
+      overflow: auto;
+      min-height: 90px;
+      flex-shrink: 0; /* full height by default; the player can shrink or grow it with the corner grip */
+    }
+
+    .action-entity-group {
+      border: 1px solid var(--border-meander);
+      border-radius: 4px;
+      background: #17161c;
+    }
+    .action-entity-group > summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.7rem;
+      font-family: var(--font-heading);
+      color: var(--bronze-bright);
+      font-size: 0.85rem;
+    }
+    .action-entity-group > summary::before { content: "▸"; margin-right: 0.35rem; }
+    .action-entity-group[open] > summary::before { content: "▾"; }
+    .action-entity-group > summary > span:first-child { flex: 1; }
+    .action-entity-group > .action-cards-row { padding: 0 0.6rem 0.6rem; }
 
     .action-category-group {
       display: flex;
@@ -1358,12 +1410,12 @@
       background: var(--bg-card);
       border: 1px solid var(--border-meander);
       border-radius: 4px;
-      max-width: 1050px;
+      max-width: 1500px; /* use the screen width for the choice cards */
       width: 100%;
       height: 100%;
       min-height: 0;
       margin: 0 auto;
-      padding: 1.25rem 1.75rem;
+      padding: 1rem 1.5rem;
       box-shadow: var(--shadow-depth);
       display: flex;
       flex-direction: column;
@@ -1420,8 +1472,8 @@
 
     .cards-selection-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.65rem;
     }
 
     .selectable-choice-card {
@@ -1549,9 +1601,14 @@
       flex-shrink: 0;
       display: flex;
       justify-content: space-between;
-      margin-top: 0.85rem;
+      margin-top: auto;
       border-top: 1px solid var(--border-meander);
-      padding-top: 0.75rem;
+      padding: 0.6rem 0;
+      /* Back / Next stay visible while the choices scroll */
+      position: sticky;
+      bottom: 0;
+      background: var(--bg-card);
+      z-index: 2;
     }
 
     .form-label {
@@ -2401,7 +2458,7 @@
             <h3 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.1rem; margin: 0;">Available Campaigns</h3>
             <span style="font-size: 0.8rem; color: var(--marble-dark);" id="campaign-count-indicator">2 Campaigns Installed</span>
           </div>
-          <div class="campaign-grid" id="campaign-cards-grid">
+          <div class="campaign-grid user-resizable" id="campaign-cards-grid">
             <!-- Dynamic campaign cards rendered here -->
           </div>
         </div>
@@ -2445,7 +2502,7 @@
 
           <div>
             <label class="form-label" style="margin-top: 0.4rem;">Select Your Homeland (Origin)</label>
-            <div class="cards-selection-grid" id="origin-cards-grid"></div>
+            <div class="cards-selection-grid user-resizable" id="origin-cards-grid"></div>
           </div>
 
           <div class="wizard-nav-btns">
@@ -2462,12 +2519,12 @@
           <div style="margin-top: 0.8rem; margin-bottom: 0.4rem; font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">
             1. Select Heroic Class Archetype
           </div>
-          <div class="cards-selection-grid" id="class-cards-grid" style="max-height: 260px; overflow-y: auto; margin-bottom: 1rem;"></div>
+          <div class="cards-selection-grid user-resizable" id="class-cards-grid" style="margin-bottom: 0.5rem;"></div>
 
           <div style="margin-top: 0.8rem; margin-bottom: 0.4rem; font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">
             2. Select Origin Background
           </div>
-          <div class="cards-selection-grid" id="background-cards-grid" style="max-height: 260px; overflow-y: auto;"></div>
+          <div class="cards-selection-grid user-resizable" id="background-cards-grid"></div>
 
           <div class="wizard-nav-btns">
             <button class="nav-btn" onclick="window.engine.wizardBack(2)">&larr; Back</button>
@@ -2493,7 +2550,7 @@
         <div class="wizard-pane" id="wizard-pane-4">
           <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 4: Defining Ethos & Trait</h2>
           <p style="color: var(--marble-dim); font-size: 0.9rem;">Ancient Greek heroes were celebrated for distinct moral virtues and temperament.</p>
-          <div class="cards-selection-grid" id="trait-cards-grid"></div>
+          <div class="cards-selection-grid user-resizable" id="trait-cards-grid"></div>
           <div class="wizard-nav-btns">
             <button class="nav-btn" onclick="window.engine.wizardBack(4)">&larr; Back</button>
             <button class="btn-classical" onclick="window.engine.wizardNext(4)">Next: Review Hero &rarr;</button>
@@ -2532,6 +2589,7 @@
           <!-- Live Transcript Log (Internally Scrollable) -->
           <div class="narrative-transcript" id="narrative-transcript"></div>
 
+          <div class="resize-handle horizontal" data-resize="actionDeck" title="Drag to resize the story text and the action list"></div>
           <!-- Action Tray & Command Deck -->
           <div class="action-control-deck" id="action-control-deck">
             <div class="action-deck-header">
@@ -2548,6 +2606,7 @@
         </div>
 
         <!-- Story Viewport Sidebar (Internally Scrollable) -->
+        <div class="resize-handle vertical" data-resize="sidebar" title="Drag to resize the sidebar"></div>
         <div class="story-sidebar">
           <div class="side-widget" id="side-widget-quest">
             <div class="widget-title">
@@ -2826,7 +2885,7 @@
 
         <div style="display: grid; grid-template-columns: 220px 1fr 340px; gap: 1rem; margin-top: 1rem;">
           <!-- Col 1: Consolidated Professions (7) -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;" id="crafting-professions-list">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;" class="user-resizable" id="crafting-professions-list">
             <!-- Rendered by renderCraftingView() -->
           </div>
 
@@ -2906,6 +2965,16 @@
         
         <div class="view-scrollable-body" style="display: flex; flex-direction: column; gap: 1.5rem;">
           <div>
+            <h3 style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.65rem;">Display</h3>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem; font-size: 0.85rem;">
+              <label for="ui-text-scale">Text size</label>
+              <input type="range" id="ui-text-scale" min="80" max="140" step="5" value="100" oninput="window.engine.setUiSize('textScale', Number(this.value))">
+              <span id="ui-text-scale-value">100%</span>
+              <button class="nav-btn" onclick="window.engine.resetUiSizes()">Reset panel sizes</button>
+              <span style="color: var(--marble-dim);">Drag the bronze grips to resize panels; lists and text boxes have a resize corner.</span>
+            </div>
+          </div>
+          <div>
             <h3 style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.65rem;">Persistent Save Slots (IndexedDB)</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;" id="save-slots-grid"></div>
           </div>
@@ -2978,9 +3047,9 @@
         <button class="nav-btn" onclick="document.getElementById('dialogue-modal').style.display='none'">End Conversation</button>
       </div>
       <div class="inpage-dialogue-body">
-        <div class="inpage-dialogue-text" id="dialogue-text-body"></div>
+        <div class="inpage-dialogue-text user-resizable" id="dialogue-text-body"></div>
         <div class="context-actions-label">Select Your Response:</div>
-        <div class="inpage-dialogue-choices" id="dialogue-choices-list"></div>
+        <div class="inpage-dialogue-choices user-resizable" id="dialogue-choices-list"></div>
       </div>
     </div>
   </div>
@@ -3002,7 +3071,7 @@
 
         <div class="context-actions-label">How will you unseal the threshold?</div>
         
-        <div class="riddle-choice-grid" id="riddle-choices-container"></div>
+        <div class="riddle-choice-grid user-resizable" id="riddle-choices-container"></div>
 
         <div style="border-top: 1px dotted #383025; padding-top: 0.65rem; margin-top: 0.4rem;">
           <div style="font-size: 0.78rem; color: var(--marble-dim); margin-bottom: 0.35rem;">Or speak a custom name into the rock:</div>
@@ -3174,7 +3243,7 @@
        HEROIC ASCENSION (LEVEL-UP) MODAL
        ========================================================================= -->
   <div class="inpage-modal-overlay" id="levelup-modal" style="display: none;">
-    <div class="victory-modal-card" style="max-width: 680px; text-align: left; border-color: #e0be36;">
+    <div class="victory-modal-card" style="max-width: 920px; text-align: left; border-color: #e0be36;">
       <div style="text-align: center;">
         <div style="font-size: 2.2rem; color: #ffe680;">⚡</div>
         <div class="victory-title" style="color: #ffe680; font-size: 1.4rem;">Heroic Ascension!</div>
@@ -3203,7 +3272,7 @@
         <label style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">
           2. Train Skills (+2 points, can be spent on one or two skills):
         </label>
-        <div id="levelup-skill-options" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem;">
+        <div id="levelup-skill-options" class="user-resizable" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.45rem;">
           <!-- Populated by engine -->
         </div>
       </div>
@@ -3213,7 +3282,7 @@
         <label style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">
           3. Select a Heroic Feat of the Immortals:
         </label>
-        <div id="levelup-feat-options" style="display: flex; flex-direction: column; gap: 0.45rem;">
+        <div id="levelup-feat-options" class="user-resizable" style="display: flex; flex-direction: column; gap: 0.45rem;">
           <!-- Populated by engine -->
         </div>
       </div>
@@ -3844,6 +3913,7 @@
         await this.loadContent();
         this.setupNavigation();
         this.setupEventListeners();
+        this.setupResizablePanels();
         this.setupItemTooltips();
         this.setupGlossaryTooltips();
 
@@ -3955,42 +4025,36 @@
        * Perk fields: attributes {attr: delta}, skills {skill: delta}, reputation {factionId: delta},
        * piety {deity: delta}, maxMorale (number).
        */
+      /**
+       * Creation-wizard origins and traits work like classes and backgrounds: loaded from the campaign's
+       * `modules.origins` / `modules.traits` (one file or a list of shared files), else inline manifest
+       * arrays, else the built-in Greek lists (default campaign, file:// mode).
+       * Perk fields: attributes, skills, piety, reputation (faction: delta), maxMorale; traits may also
+       * have checkBonus { skill: bonus } and libationMultiplier.
+       */
       getCampaignOrigins() {
         const campaign = this.activeCampaign || this.campaigns.get(this.activeCampaignId) || {};
+        if (this.world.origins && this.world.origins.length) return this.world.origins;
         if (Array.isArray(campaign.origins) && campaign.origins.length > 0) return campaign.origins;
         if (!this.usesDefaultContentFallbacks()) {
-          return [{ id: "wanderer", title: "Wanderer", desc: "A traveller with no ties to any particular land.", perks: "No regional bonus" }];
+          return [{ id: "wanderer", name: "Wanderer", description: "A traveller with no ties to any particular land.", perks: "No regional bonus" }];
         }
-        return [
-          {
-            id: "boeotia",
-            title: "Boeotia (Plataea & Thebes)",
-            desc: "The sacred borderlands of Cithaeron and the birthplace of the Cadmeia. Heart of heroic shepherd traditions.",
-            perks: "+1 Wisdom &bull; +1 Survival &bull; High standing with Plataeans",
-            attributes: { wisdom: 1 }, skills: { survival: 1 }, reputation: { faction_plataea: 5 }
-          },
-          {
-            id: "attica",
-            title: "Attica (Athens)",
-            desc: "The olive-bearing plains beneath the Parthenon. Renowned for sharp rhetoric, tactical philosophy, and civil law.",
-            perks: "+1 Intelligence &bull; +1 Persuasion &bull; Blessed by Athena",
-            attributes: { intelligence: 1 }, skills: { persuasion: 1 }, piety: { athena: 1 }
-          },
-          {
-            id: "laconia",
-            title: "Laconia (Sparta)",
-            desc: "The Eurotas valley, where youths endure the uncompromising martial discipline of Lycurgus.",
-            perks: "+1 Strength &bull; +1 Melee Combat &bull; Unyielding Morale",
-            attributes: { strength: 1 }, skills: { melee_combat: 1 }, maxMorale: 2
-          },
-          {
-            id: "arcadia",
-            title: "Arcadia (Highlands)",
-            desc: "The ancient pine forests and crags where Pan and Hermes roam among mortal herdsmen.",
-            perks: "+1 Agility &bull; +1 Tracking &bull; Swift Mountain Movement",
-            attributes: { agility: 1 }, skills: { tracking: 1 }
-          }
-        ];
+        return this.getFallbackOrigins();
+      }
+
+      getFallbackOrigins() {
+        return [{"id":"boeotia","name":"Boeotia (Plataea & Thebes)","description":"The sacred borderlands of Cithaeron and the birthplace of the Cadmeia. Heart of heroic shepherd traditions.","perks":"+1 Wisdom • +1 Survival • High standing with Plataeans","attributes":{"wisdom":1},"skills":{"survival":1},"reputation":{"faction_plataea":5}},{"id":"attica","name":"Attica (Athens)","description":"The olive-bearing plains beneath the Parthenon. Renowned for sharp rhetoric, tactical philosophy, and civil law.","perks":"+1 Intelligence • +1 Persuasion • Blessed by Athena","attributes":{"intelligence":1},"skills":{"persuasion":1},"piety":{"athena":1}},{"id":"laconia","name":"Laconia (Sparta)","description":"The Eurotas valley, where youths endure the uncompromising martial discipline of Lycurgus.","perks":"+1 Strength • +1 Melee Combat • Unyielding Morale","attributes":{"strength":1},"skills":{"melee_combat":1},"maxMorale":2},{"id":"arcadia","name":"Arcadia (Highlands)","description":"The ancient pine forests and crags where Pan and Hermes roam among mortal herdsmen.","perks":"+1 Agility • +1 Tracking","attributes":{"agility":1},"skills":{"tracking":1}}];
+      }
+
+      renderChoiceCard(o, selected, selectFn) {
+        const c = this.choiceText(o);
+        return `
+          <div class="selectable-choice-card ${selected ? "selected" : ""}" onclick="window.engine.${selectFn}('${o.id}')">
+            <div class="choice-card-title">${c.name}</div>
+            <div class="choice-card-desc">${c.desc}</div>
+            ${c.perks ? `<div class="choice-card-perks">${c.perks}</div>` : ""}
+          </div>
+        `;
       }
 
       renderWizardStep1() {
@@ -4000,13 +4064,7 @@
         }
 
         const container = document.getElementById("origin-cards-grid");
-        container.innerHTML = origins.map(o => `
-          <div class="selectable-choice-card ${this.creationState.origin === o.id ? "selected" : ""}" onclick="window.engine.selectOrigin('${o.id}')">
-            <div class="choice-card-title">${o.title}</div>
-            <div class="choice-card-desc">${o.desc}</div>
-            <div class="choice-card-perks">${o.perks}</div>
-          </div>
-        `).join("");
+        container.innerHTML = origins.map(o => this.renderChoiceCard(o, this.creationState.origin === o.id, "selectOrigin")).join("");
       }
 
       selectOrigin(id) {
@@ -4117,53 +4175,82 @@
 
       getCreationTraits() {
         const campaign = this.activeCampaign || this.campaigns.get(this.activeCampaignId) || {};
+        if (this.world.traits && this.world.traits.length) return this.world.traits;
         if (Array.isArray(campaign.traits) && campaign.traits.length > 0) return campaign.traits;
-        return [
-          {
-            id: "vigilant",
-            title: "Vigilant Scout",
-            desc: "Accustomed to watching the ridgelines for bandits and beasts.",
-            perk: "+2 bonus on all Perception & Tracking checks on wilderness trails."
-          },
-          {
-            id: "pious",
-            title: "Pious Devotee",
-            desc: "Never passes an altar without pouring a libation or offering prayer.",
-            perk: "Starts with +2 Divine Standing with Hermes & Apollo; libations restore double stamina."
-          },
-          {
-            id: "eloquent",
-            title: "Silver-Tongued Orator",
-            desc: "Gifted in the heroic art of persuasive speech in civic assemblies.",
-            perk: "+2 bonus on Persuasion & Deception checks when addressing mortals."
-          },
-          {
-            id: "resolute",
-            title: "Dauntless Courage",
-            desc: "Your bronze heart does not falter when encountering supernatural terrors.",
-            perk: "+3 bonus against fear effects; +2 Morale in all combat encounters."
-          }
-        ];
+        return this.usesDefaultContentFallbacks() ? this.getFallbackTraits() : [];
+      }
+
+      getFallbackTraits() {
+        return [{"id":"vigilant","name":"Vigilant Scout","description":"Accustomed to watching the ridgelines for bandits and beasts.","perks":"+2 bonus on all Perception & Tracking checks.","checkBonus":{"perception":2,"tracking":2}},{"id":"pious","name":"Pious Devotee","description":"Never passes an altar without pouring a libation or offering prayer.","perks":"Starts with +2 Divine Standing with Hermes & Apollo; libations restore double stamina.","piety":{"hermes":2,"apollo":2},"libationMultiplier":2},{"id":"eloquent","name":"Silver-Tongued Orator","description":"Gifted in the heroic art of persuasive speech in civic assemblies.","perks":"+2 bonus on Persuasion & Deception checks.","checkBonus":{"persuasion":2,"deception":2}},{"id":"resolute","name":"Dauntless Courage","description":"Your bronze heart does not falter when encountering supernatural terrors.","perks":"+2 Maximum Morale.","maxMorale":2}];
+      }
+
+      /** Display fields of a creation choice (accepts name|title, description|desc, perks|perk). */
+      choiceText(o) {
+        return { name: o.name || o.title || o.id, desc: o.description || o.desc || "", perks: o.perks || o.perk || "" };
+      }
+
+      /** Apply origin / trait perks to the new hero (one implementation for every creation choice). */
+      applyCreationPerks(def) {
+        if (!def) return;
+        const p = this.state.player;
+        Object.entries(def.attributes || {}).forEach(([k, v]) => { if (p.attributes[k] !== undefined) p.attributes[k] += v; });
+        Object.entries(def.skills || {}).forEach(([k, v]) => { if (p.skills && p.skills[k] !== undefined) p.skills[k] += v; });
+        Object.entries(def.piety || {}).forEach(([k, v]) => { p.piety[k] = (p.piety[k] || 0) + v; });
+        Object.entries(def.reputation || {}).forEach(([k, v]) => {
+          if (this.state.worldState.factions[k]) this.state.worldState.factions[k].reputation = (this.state.worldState.factions[k].reputation || 0) + v;
+        });
+        if (def.maxMorale) {
+          p.vitals.maxMorale = (p.vitals.maxMorale || 0) + def.maxMorale;
+          p.vitals.morale = p.vitals.maxMorale;
+        }
+      }
+
+      /** Definition behind a hero's trait entry (current campaign, then built-in Greek traits for old saves). */
+      getTraitDefinition(t) {
+        if (!t) return null;
+        if (t.checkBonus || t.libationMultiplier) return t;
+        return this.getCreationTraits().find(d => d.id === t.id) || this.getFallbackTraits().find(d => d.id === t.id) || null;
+      }
+
+      /** Bonus from the hero's traits on a check of this skill (perception checks also match by attribute). */
+      getTraitCheckBonus(skillName, attributeName) {
+        let bonus = 0;
+        ((this.state.player && this.state.player.traits) || []).forEach(t => {
+          const def = this.getTraitDefinition(t);
+          const cb = (def && def.checkBonus) || {};
+          if (cb[skillName]) bonus += cb[skillName];
+          else if (attributeName === "perception" && skillName !== "perception" && cb.perception) bonus += cb.perception;
+          // Very old saves: "Wayfarer's Eye" gave +2 perception and tracking.
+          if (!def && t.name && t.name.includes("Wayfarer") && (skillName === "perception" || skillName === "tracking" || attributeName === "perception")) bonus += 2;
+        });
+        return bonus;
+      }
+
+      /** Largest value of a numeric trait property among the hero's traits (e.g. libationMultiplier). */
+      getTraitValue(key) {
+        return ((this.state.player && this.state.player.traits) || []).reduce((m, t) => {
+          const d = this.getTraitDefinition(t);
+          return (d && typeof d[key] === "number") ? Math.max(m, d[key]) : m;
+        }, 0);
       }
 
       /** True if the hero has the trait (by id, or by the trait's display name for older saves). */
       hasTrait(traitId) {
         const traits = (this.state && this.state.player && this.state.player.traits) || [];
         const def = this.getCreationTraits().find(t => t.id === traitId);
-        return traits.some(t => t && (t.id === traitId || (def && t.name === def.title)));
+        return traits.some(t => t && (t.id === traitId || (def && t.name === this.choiceText(def).name)));
       }
 
       renderWizardStep4() {
         const traits = this.getCreationTraits();
 
         const container = document.getElementById("trait-cards-grid");
-        container.innerHTML = traits.map(t => `
-          <div class="selectable-choice-card ${this.creationState.trait === t.id ? "selected" : ""}" onclick="window.engine.selectTrait('${t.id}')">
-            <div class="choice-card-title">${t.title}</div>
-            <div class="choice-card-desc">${t.desc}</div>
-            <div class="choice-card-perks">${t.perk}</div>
-          </div>
-        `).join("");
+        if ((!this.creationState.trait || !traits.some(t => t.id === this.creationState.trait)) && traits.length > 0) {
+          this.creationState.trait = traits[0].id;
+        }
+        container.innerHTML = traits.length
+          ? traits.map(t => this.renderChoiceCard(t, this.creationState.trait === t.id, "selectTrait")).join("")
+          : `<div style="color: var(--marble-dim); font-style: italic;">This campaign defines no personality traits.</div>`;
       }
 
       selectTrait(id) {
@@ -4239,7 +4326,7 @@
         p.name = c.name;
         p.gender = c.gender;
         p.origin = origin ? origin.id : (c.origin || p.origin);
-        p.originTitle = origin ? String(origin.title || origin.id).replace(/\s*\(.*\)\s*$/, "") : p.originTitle;
+        p.originTitle = origin ? String(this.choiceText(origin).name).replace(/\s*\(.*\)\s*$/, "") : p.originTitle;
         p.background = selectedBg ? selectedBg.id : (c.background || p.background);
         p.backgroundTitle = selectedBg ? (selectedBg.name || selectedBg.title || selectedBg.id) : p.backgroundTitle;
         p.class = selectedClass ? selectedClass.id : (c.classId || "hoplite");
@@ -4253,18 +4340,7 @@
         p.attributes = JSON.parse(JSON.stringify(c.attributes));
 
         // Origin perks (as shown on the wizard cards)
-        if (origin) {
-          Object.entries(origin.attributes || {}).forEach(([k, v]) => { if (p.attributes[k] !== undefined) p.attributes[k] += v; });
-          Object.entries(origin.skills || {}).forEach(([k, v]) => { if (p.skills && p.skills[k] !== undefined) p.skills[k] += v; });
-          Object.entries(origin.piety || {}).forEach(([k, v]) => { p.piety[k] = (p.piety[k] || 0) + v; });
-          Object.entries(origin.reputation || {}).forEach(([k, v]) => {
-            if (this.state.worldState.factions[k]) this.state.worldState.factions[k].reputation = (this.state.worldState.factions[k].reputation || 0) + v;
-          });
-          if (origin.maxMorale) {
-            p.vitals.maxMorale = (p.vitals.maxMorale || 0) + origin.maxMorale;
-            p.vitals.morale = p.vitals.maxMorale;
-          }
-        }
+        this.applyCreationPerks(origin);
 
         if (selectedClass) {
           if (selectedClass.statBonuses) {
@@ -4322,18 +4398,13 @@
           this.equipItem(itemId, { silent: true });
         });
 
-        // Traits: the hero has exactly the trait chosen in the wizard.
+        // Traits: the hero has exactly the trait chosen in the wizard. The entry keeps the trait's
+        // mechanics so it keeps working even if the campaign's trait file changes later.
         p.traits = [];
         if (trait) {
-          p.traits.push({ id: trait.id, name: trait.title || trait.name || trait.id, desc: trait.perk || trait.desc || "" });
-          if (trait.id === "pious") {
-            p.piety.hermes = (p.piety.hermes || 0) + 2;
-            p.piety.apollo = (p.piety.apollo || 0) + 2;
-          }
-          if (trait.id === "resolute") {
-            p.vitals.maxMorale = (p.vitals.maxMorale || 0) + 2;
-            p.vitals.morale = p.vitals.maxMorale;
-          }
+          const t = this.choiceText(trait);
+          p.traits.push({ id: trait.id, name: t.name, desc: t.perks || t.desc, checkBonus: trait.checkBonus, libationMultiplier: trait.libationMultiplier });
+          this.applyCreationPerks(trait);
         }
 
         p.vitals.maxHealth = 20 + this.getModifier(p.attributes.endurance) * 2;
@@ -4825,12 +4896,27 @@
         this.campaigns.set(manifest.id, manifest);
       }
 
+      /**
+       * Load one catalog (classes, backgrounds, origins, traits, ...) from a module path or a LIST of
+       * paths, so campaigns can reuse each other's or shared files (content/shared/). Entries are
+       * merged by id; a later file overrides an earlier one. Returns null when nothing could be loaded.
+       */
+      async fetchCatalog(paths, key) {
+        const list = (Array.isArray(paths) ? paths : [paths]).filter(Boolean);
+        const byId = new Map();
+        for (const path of list) {
+          const json = await fetch(path).then(r => r.json()).catch(() => null);
+          ((json && json[key]) || []).forEach(e => { if (e && e.id) byId.set(e.id, e); });
+        }
+        return byId.size ? [...byId.values()] : null;
+      }
+
       /** Empty content catalogs. Used so one campaign's content can never leak into another. */
       createEmptyWorld() {
         return {
           locations: [], characters: [], creatures: [], items: [], deities: [], mythology: [],
           lootTables: [], interactiveObjects: [], factions: [], encounters: [], randomEncounters: [], quests: [], events: [],
-          classes: [], backgrounds: [], professions: [], materials: [], craftingTemplates: []
+          classes: [], backgrounds: [], origins: [], traits: [], professions: [], materials: [], craftingTemplates: []
         };
       }
 
@@ -4861,8 +4947,8 @@
               fetch(modules.encounters || "content/campaigns/dev_test_campaign/world/encounters.json").then(r => r.json()).catch(() => null),
               fetch(modules.dialogues || "content/campaigns/dev_test_campaign/world/dialogues.json").then(r => r.json()).catch(() => null),
               fetch(modules.events || "content/campaigns/dev_test_campaign/world/events.json").then(r => r.json()).catch(() => null),
-              fetch(modules.classes || "content/campaigns/dev_test_campaign/world/classes.json").then(r => r.json()).catch(() => null),
-              fetch(modules.backgrounds || "content/campaigns/dev_test_campaign/world/backgrounds.json").then(r => r.json()).catch(() => null)
+              this.fetchCatalog(modules.classes || "content/campaigns/dev_test_campaign/world/classes.json", "classes").then(list => list && { classes: list }),
+              this.fetchCatalog(modules.backgrounds || "content/campaigns/dev_test_campaign/world/backgrounds.json", "backgrounds").then(list => list && { backgrounds: list })
             ]);
 
             this.world.locations = (locRes && locRes.locations) || [];
@@ -4915,8 +5001,8 @@
               fetch(modules.glossary || "content/world/glossary.json").then(r => r.json()).catch(() => null),
               fetch(modules.lootTables || "content/world/loot_tables.json").then(r => r.json()).catch(() => null),
               fetch(modules.interactiveObjects || "content/world/interactive_objects.json").then(r => r.json()).catch(() => null),
-              fetch(modules.classes || "content/campaigns/greek_mythology/classes.json").then(r => r.json()).catch(() => null),
-              fetch(modules.backgrounds || "content/campaigns/greek_mythology/backgrounds.json").then(r => r.json()).catch(() => null),
+              this.fetchCatalog(modules.classes || "content/campaigns/greek_mythology/classes.json", "classes").then(list => list && { classes: list }),
+              this.fetchCatalog(modules.backgrounds || "content/campaigns/greek_mythology/backgrounds.json", "backgrounds").then(list => list && { backgrounds: list }),
               fetch(modules.professions || "content/campaigns/greek_mythology/professions.json").then(r => r.json()).catch(() => null),
               fetch(modules.materials || "content/campaigns/greek_mythology/materials.json").then(r => r.json()).catch(() => null),
               fetch(modules.craftingTemplates || "content/campaigns/greek_mythology/crafting_templates.json").then(r => r.json()).catch(() => null)
@@ -4956,6 +5042,11 @@
             this.world.quests = (this.currentAdventure && this.currentAdventure.quests) || [];
           }
         }
+
+        // Creation catalogs that every campaign loads the same way (a module may list several files).
+        const [originList, traitList] = await Promise.all([this.fetchCatalog(modules.origins, "origins"), this.fetchCatalog(modules.traits, "traits")]);
+        if (originList) this.world.origins = originList;
+        if (traitList) this.world.traits = traitList;
 
         // Synchronize instance shortcuts
         this.lootTables = this.world.lootTables || [];
@@ -5026,6 +5117,8 @@
         // (Faction standings are created by resetStateForActiveCampaign when a game starts; loading
         // content must never write into the running game's state.)
         this.world.encounters = [{"id":"enc_dev_crypt_boss","locationId":"loc_dev_ancient_crypt","creatureId":"creature_dev_crypt_boss","isBoss":true,"repeatable":true,"cooldownHours":24,"introProse":"From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!","victoryOutcome":{"text":"Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!","setFlags":{"defeated_lord_karas":true},"updateQuest":{"questId":"quest_dev_sunstone_relic","objectiveId":"obj_defeat_karas","completed":true},"awardXP":180,"addJournalChronicle":{"title":"Vanquished Lord Karas","text":"Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."}}},{"id":"enc_dev_wild_boar","locationId":"loc_dev_whispering_woods","creatureId":"creature_dev_wild_boar","introProse":"A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!","victoryOutcome":{"text":"You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.","setFlags":{"slain_dev_boar":true},"updateQuest":{"questId":"quest_dev_boar_menace","objectiveId":"obj_slay_boar","completed":true},"awardXP":35}},{"id":"enc_dev_shadow_stalker","locationId":"loc_dev_obsidian_crag","creatureId":"creature_dev_shadow_stalker","introProse":"A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!","victoryOutcome":{"text":"The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.","awardXP":220}}];
+        this.world.traits = [{"id":"vigilant","name":"Vigilant Scout","description":"Always watching the road ahead for danger.","perks":"+2 bonus on all Perception & Tracking checks.","checkBonus":{"perception":2,"tracking":2}},{"id":"eloquent","name":"Silver-Tongued","description":"A natural talker who can win over a crowd.","perks":"+2 bonus on Persuasion & Deception checks.","checkBonus":{"persuasion":2,"deception":2}},{"id":"resolute","name":"Dauntless","description":"Does not flinch in the face of terror.","perks":"+2 Maximum Morale.","maxMorale":2}];
+        this.world.origins = [{"id":"wanderer","name":"Wanderer","description":"A traveller with no ties to any particular land.","perks":"No regional bonus"},{"id":"haven_born","name":"Haven-Born","description":"Raised behind the palisades of Haven of the Crossways.","perks":"+1 Persuasion • Trusted by the Haven citizens","skills":{"persuasion":1},"reputation":{"faction_dev_haven":5}},{"id":"frontier_raised","name":"Frontier-Raised","description":"Grew up in the woods and crags beyond the town walls.","perks":"+1 Endurance • +1 Survival","attributes":{"endurance":1},"skills":{"survival":1}}];
         this.world.randomEncounters = [{"id":"re_dev_forest_wolf","regions":["The Central Marches"],"terrain":["rocky_scrubland","mountain_trail"],"weight":50,"type":"combat","creatureId":"creature_dev_forest_wolf","introProse":"A prowling timber wolf stalks out from behind a cluster of pines, growling low in its throat!"},{"id":"re_dev_traveling_tinker","regions":["The Central Marches"],"terrain":["paved_road"],"weight":35,"type":"peaceful","title":"A Traveling Merchant on the Road","narrative":"A friendly peddler with a mule stops to exchange greetings: 'Safe travels, wayfarer! The roads are peaceful today, thank the gods.' He shares some dried figs (+3 Stamina).","outcomes":{"restoreStamina":3}},{"id":"re_dev_ancient_shrine","regions":["The Central Marches","Highland Peaks"],"weight":25,"type":"discovery","title":"An Ancient Roadside Altar","narrative":"You stumble upon an archaic stone marker carved with blessing runes. Pausing to pay respects fills you with resolute focus (+15 XP).","outcomes":{"awardXP":15}}];
         this.world.events = [{"id":"event_dev_guard_alert","name":"Haven Guard Murder Investigation","trigger":"FLAG_SET","conditions":{"flag":"merchant_lycus_dead","expected":true},"outcomes":{"setFlags":{"haven_under_curfew":true},"transcript":{"speaker":"Town Crier","text":"Oyez! By order of Captain Valerius, Haven is placed under dusk curfew following the murder of Merchant Lycus! Watch patrols are doubled!","style":"entry-consequence"}}},{"id":"event_dev_sunstone_radiance","name":"The Sunstone Resonates","trigger":"ITEM_ACQUIRED","conditions":{"itemId":"item_dev_sunstone_relic"},"outcomes":{"transcript":{"speaker":"Ancient Relic","text":"The Sunstone warms in your grasp, casting golden ripples of solar light across the ancient stones. Its power restores your vitality (+10 Health).","style":"entry-discovery"},"restoreHealth":10}}];
         this.currentAdventure = {
@@ -5941,11 +6034,8 @@
           : ((p.skills && p.skills.tracking !== undefined) ? p.skills.tracking : 1);
         let bonus = wisMod + (perceptionRank * 2);
 
-        // Trait bonuses (Vigilant Scout, Wayfarer's Eye)
-        const traits = p.traits || [];
-        if (traits.some(t => t && ((t.id === "vigilant") || (t.name && (t.name.includes("Vigilant") || t.name.includes("Wayfarer")))))) {
-          bonus += 2;
-        }
+        // Trait bonuses (e.g. Vigilant Scout)
+        bonus += this.getTraitCheckBonus("perception", "wisdom");
 
         // Heroic Feat bonuses (Eye of the Eagle)
         if (p.feats && p.feats.includes("eagle_zeus")) {
@@ -6120,15 +6210,7 @@
 
         // Trait bonuses
         let traitBonus = 0;
-        const traits = this.state.player.traits || [];
-        if ((skillName === "perception" || skillName === "tracking" || attributeName === "perception") &&
-            traits.some(t => t && ((t.id === "vigilant") || (t.name && (t.name.includes("Vigilant") || t.name.includes("Wayfarer")))))) {
-          traitBonus += 2;
-        }
-        // Silver-Tongued Orator: +2 on persuasion and deception checks
-        if ((skillName === "persuasion" || skillName === "deception") && this.hasTrait("eloquent")) {
-          traitBonus += 2;
-        }
+        traitBonus += this.getTraitCheckBonus(skillName, attributeName);
 
         // Equipment modifiers
         let equipBonus = 0;
@@ -6317,8 +6399,8 @@
             const consumed = this.getItemData(action.consumeItem);
             this.removeItem(action.consumeItem, action.consumeCount || 1);
             // Pious Devotee: libations restore double stamina.
-            if (outcome && outcome.restoreStamina && consumed && consumed.stats && consumed.stats.libationUse && this.hasTrait("pious")) {
-              outcome = Object.assign({}, outcome, { restoreStamina: outcome.restoreStamina * 2 });
+            if (outcome && outcome.restoreStamina && consumed && consumed.stats && consumed.stats.libationUse && this.getTraitValue("libationMultiplier") > 1) {
+              outcome = Object.assign({}, outcome, { restoreStamina: outcome.restoreStamina * this.getTraitValue("libationMultiplier") });
             }
           }
           if (outcome) {
@@ -11156,6 +11238,167 @@
         }
       }
 
+      /**
+       * Which NPC, creature, object or place an action belongs to. Uses explicit `entity`, the
+       * action's dialogue / encounter, the entity id at the end of the action id (act_talk_<npcId>,
+       * act_obj_pick_<objectId>, act_travel_<locationId>, ...), or a name in the title; otherwise the
+       * current location.
+       */
+      getActionEntity(act, loc) {
+        if (act.entity) return act.entity;
+        const id = String(act.id || "");
+        const ends = (x) => x && id.endsWith("_" + x);
+        const ref = (kind, e, name) => ({ kind, id: e.id, name: name || e.name });
+        let e;
+        if (act.dialogueId && (e = this.findNpcByDialogueTree(act.dialogueId))) return ref("npc", e);
+        const encs = (this.world.encounters || []).concat((this.currentAdventure && this.currentAdventure.encounters) || []);
+        const enc = encs.find(x => x.id === act.encounterId || ends(x.id));
+        if (enc && (e = this.getCreature(enc.creatureId))) return ref("creature", e, enc.name || e.name);
+        if ((e = (this.world.characters || []).find(c => ends(c.id)))) return ref("npc", e);
+        if ((e = (this.world.creatures || []).find(c => ends(c.id)))) return ref("creature", e);
+        if ((e = (this.world.interactiveObjects || []).find(o => ends(o.id)))) return ref("object", e);
+        if ((e = (this.world.locations || []).find(l => ends(l.id)))) return ref("place", e);
+        // Short ids such as act_talk_daidalos -> npc_daidalos_shepherd
+        const last = id.split("_").pop();
+        if (last.length >= 4 && (e = (this.world.characters || []).find(c => String(c.id).split("_").includes(last)))) return ref("npc", e);
+        const title = String(act.title || "");
+        if ((e = (this.world.characters || []).find(c => c.name && title.includes(c.name.split(" ").pop())))) return ref("npc", e);
+        if ((e = (this.world.creatures || []).find(c => c.name && title.includes(c.name)))) return ref("creature", e);
+        return ref("place", loc);
+      }
+
+      /**
+       * Action deck grouped by what you interact with: one openable list per NPC, creature, object and
+       * place; an entity with a single action gets a plain button. Open lists stay open on re-render.
+       */
+      renderGroupedActions(container, actions, loc) {
+        this._openActionGroups = this._openActionGroups || new Set();
+        const sections = { npc: "🗣️ People", creature: "🐾 Creatures", object: "🗝️ Objects & Containers", place: "📍 Places" };
+        const buckets = new Map();
+        actions.forEach(act => {
+          const ent = this.getActionEntity(act, loc);
+          const key = `${ent.kind}:${ent.id}`;
+          if (!buckets.has(key)) buckets.set(key, { ent, key, actions: [] });
+          buckets.get(key).actions.push(act);
+        });
+        const card = (act) => {
+          const btn = document.createElement("button");
+          btn.className = `action-card-btn ${act.type || ""}`;
+          if (act.disabled) btn.disabled = true;
+          btn.innerHTML = `
+            <div class="action-card-title">
+              <span>${act.title}</span>
+              ${act.badge ? `<span class="action-card-badge">${act.badge}</span>` : ""}
+            </div>
+            <div class="action-card-desc">${this.enrichMythologicalText ? this.enrichMythologicalText(act.desc) : act.desc}</div>
+          `;
+          btn.onclick = () => act.handler();
+          return btn;
+        };
+        Object.entries(sections).forEach(([kind, label]) => {
+          // The current place first, other places (travel destinations) after it.
+          const list = [...buckets.values()].filter(b => b.ent.kind === kind)
+            .sort((a, b) => (b.ent.id === loc.id) - (a.ent.id === loc.id));
+          if (list.length === 0) return;
+          const grpDiv = document.createElement("div");
+          grpDiv.className = "action-category-group";
+          grpDiv.innerHTML = `<div class="action-category-title">${label}</div>`;
+          const singles = document.createElement("div");
+          singles.className = "action-cards-row";
+          let singleCount = 0;
+          list.forEach(b => {
+            if (b.actions.length === 1) { singles.appendChild(card(b.actions[0])); singleCount++; return; }
+            const det = document.createElement("details");
+            det.className = "action-entity-group";
+            if (this._openActionGroups.has(b.key)) det.open = true;
+            det.addEventListener("toggle", () => { if (det.open) this._openActionGroups.add(b.key); else this._openActionGroups.delete(b.key); });
+            const sum = document.createElement("summary");
+            sum.innerHTML = `<span>${b.ent.id === loc.id && kind === "place" ? `Here: ${b.ent.name}` : b.ent.name}</span><span class="action-card-badge">${b.actions.length} actions</span>`;
+            det.appendChild(sum);
+            const row = document.createElement("div");
+            row.className = "action-cards-row";
+            b.actions.forEach(a => row.appendChild(card(a)));
+            det.appendChild(row);
+            grpDiv.appendChild(det);
+          });
+          if (singleCount) grpDiv.appendChild(singles);
+          container.appendChild(grpDiv);
+        });
+      }
+
+      /* ---- Player-resizable layout (sizes saved in localStorage "gm_ui_sizes") ---- */
+      getUiSizes() {
+        try { return JSON.parse(localStorage.getItem("gm_ui_sizes")) || {}; } catch (e) { return {}; }
+      }
+
+      setUiSize(key, value) {
+        const sizes = this.getUiSizes();
+        if (value === null) delete sizes[key]; else sizes[key] = value;
+        try { localStorage.setItem("gm_ui_sizes", JSON.stringify(sizes)); } catch (e) { /* non-critical */ }
+        this.applyUiSizes(sizes);
+      }
+
+      resetUiSizes() {
+        try { localStorage.removeItem("gm_ui_sizes"); } catch (e) { /* non-critical */ }
+        this.applyUiSizes({});
+      }
+
+      applyUiSizes(sizes = this.getUiSizes()) {
+        const root = document.documentElement;
+        if (!root || !root.style || typeof root.style.setProperty !== "function") return;
+        const set = (name, v) => (v ? root.style.setProperty(name, v) : root.style.removeProperty(name));
+        set("--sidebar-width", sizes.sidebar ? `${sizes.sidebar}px` : null);
+        set("--action-deck-height", sizes.actionDeck ? `${sizes.actionDeck}px` : null);
+        set("--action-deck-max", sizes.actionDeck ? "85%" : null);
+        const scale = sizes.textScale || 100;
+        root.style.fontSize = `${16 * scale / 100}px`;
+        if (document.body && document.body.style) document.body.style.fontSize = `${16 * scale / 100}px`;
+        const slider = document.getElementById("ui-text-scale");
+        if (slider) slider.value = scale;
+        const label = document.getElementById("ui-text-scale-value");
+        if (label) label.innerText = `${scale}%`;
+      }
+
+      /** Drag grips: the action list height (top edge) and the story sidebar width (left edge). */
+      setupResizablePanels() {
+        this.applyUiSizes();
+        if (typeof document.querySelectorAll !== "function") return;
+        document.querySelectorAll(".resize-handle[data-resize]").forEach(handle => {
+          handle.addEventListener("pointerdown", (ev) => {
+            const kind = handle.dataset.resize;
+            const target = kind === "sidebar" ? document.querySelector(".story-sidebar") : document.getElementById("action-control-deck");
+            if (!target) return;
+            ev.preventDefault();
+            const startPos = kind === "sidebar" ? ev.clientX : ev.clientY;
+            const rect = target.getBoundingClientRect();
+            const startSize = kind === "sidebar" ? rect.width : rect.height;
+            handle.classList.add("dragging");
+            if (handle.setPointerCapture) handle.setPointerCapture(ev.pointerId);
+            const move = (e) => {
+              const delta = (kind === "sidebar" ? e.clientX : e.clientY) - startPos;
+              // Both grips sit on the panel's leading edge: dragging away from the panel shrinks it.
+              const size = kind === "sidebar"
+                ? Math.min(Math.max(startSize - delta, 200), window.innerWidth * 0.5)
+                : Math.min(Math.max(startSize - delta, 100), window.innerHeight * 0.8);
+              this.applyUiSizes(Object.assign(this.getUiSizes(), { [kind]: Math.round(size) }));
+              this._pendingUiSize = [kind, Math.round(size)];
+            };
+            const up = () => {
+              handle.classList.remove("dragging");
+              handle.removeEventListener("pointermove", move);
+              handle.removeEventListener("pointerup", up);
+              handle.removeEventListener("pointercancel", up);
+              if (this._pendingUiSize) this.setUiSize(...this._pendingUiSize);
+              this._pendingUiSize = null;
+            };
+            handle.addEventListener("pointermove", move);
+            handle.addEventListener("pointerup", up);
+            handle.addEventListener("pointercancel", up);
+          });
+          handle.addEventListener("dblclick", () => this.setUiSize(handle.dataset.resize, null));
+        });
+      }
+
       renderStoryPanel() {
         const loc = this.getLocation(this.state.worldState.currentLocationId);
         document.getElementById("story-location-title").innerText = loc.name;
@@ -11168,33 +11411,7 @@
         if (actionGroups.length === 0) {
           actionsContainer.innerHTML = `<span style="font-size: 0.8rem; color: var(--marble-dim); font-style: italic;">No specific actions suggested. Consult your map for travel pathways.</span>`;
         } else {
-          actionGroups.forEach(grp => {
-            const grpDiv = document.createElement("div");
-            grpDiv.className = "action-category-group";
-            grpDiv.innerHTML = `<div class="action-category-title">${grp.category}</div>`;
-
-            const row = document.createElement("div");
-            row.className = "action-cards-row";
-
-            grp.actions.forEach(act => {
-              const card = document.createElement("button");
-              card.className = `action-card-btn ${act.type || ""}`;
-              if (act.disabled) card.disabled = true;
-
-              card.innerHTML = `
-                <div class="action-card-title">
-                  <span>${act.title}</span>
-                  ${act.badge ? `<span class="action-card-badge">${act.badge}</span>` : ""}
-                </div>
-                <div class="action-card-desc">${this.enrichMythologicalText ? this.enrichMythologicalText(act.desc) : act.desc}</div>
-              `;
-              card.onclick = () => act.handler();
-              row.appendChild(card);
-            });
-
-            grpDiv.appendChild(row);
-            actionsContainer.appendChild(grpDiv);
-          });
+          this.renderGroupedActions(actionsContainer, actionGroups.flatMap(g => g.actions), loc);
         }
 
         const qContainer = document.getElementById("side-quest-preview");

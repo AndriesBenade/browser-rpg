@@ -1,0 +1,31 @@
+{
+  "traits": [
+    {
+      "id": "vigilant",
+      "name": "Vigilant Scout",
+      "description": "Always watching the road ahead for danger.",
+      "perks": "+2 bonus on all Perception & Tracking checks.",
+      "checkBonus": {
+        "perception": 2,
+        "tracking": 2
+      }
+    },
+    {
+      "id": "eloquent",
+      "name": "Silver-Tongued",
+      "description": "A natural talker who can win over a crowd.",
+      "perks": "+2 bonus on Persuasion & Deception checks.",
+      "checkBonus": {
+        "persuasion": 2,
+        "deception": 2
+      }
+    },
+    {
+      "id": "resolute",
+      "name": "Dauntless",
+      "description": "Does not flinch in the face of terror.",
+      "perks": "+2 Maximum Morale.",
+      "maxMorale": 2
+    }
+  ]
+}

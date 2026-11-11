@@ -8,6 +8,13 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 14 — 2026-11-11 (creation catalogs, grouped actions, resizable UI)
+* **Origins & traits** are campaign content like classes/backgrounds: `greek_mythology/origins.json`, `greek_mythology/traits.json`, reusable `content/shared/origins.json` + `traits.json`, and Dev `world/origins.json`. Modules may list several files (`fetchCatalog()`), for classes and backgrounds too. Trait effects are data (`checkBonus`, `libationMultiplier`, perk fields) instead of hard-coded ids; old saves resolve their trait by id. The Dev campaign no longer shows Greek traits. Trait card texts now describe what the engine actually does (e.g. Dauntless: +2 max Morale).
+* **Selection screens**: wizard widened to 1500 px, no more 260 px class/background boxes, sticky Back/Next, wider level-up window.
+* **Action deck** grouped per NPC / creature / object / place with openable lists (single action = plain button); open lists stay open between actions.
+* **Resizable**: drag grips (action list height, sidebar width), resize corners on selection lists, dialogue text, level-up lists, crafting disciplines, campaign cards; text-size slider + reset in Settings; saved in `localStorage.gm_ui_sizes`.
+* **Tests**: behaviour 74/74 (3 new), legacy 74/74, browser smoke 7/7 (reads hidden card text with textContent), no cut-off content at 4 window sizes.
+
 ### Session 13 — 2026-11-11 (D20 criticals, Reliable Talent, scrolling)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **User Request**: universal D20 critical success / critical failure and Reliable Talent system (shared engine logic, campaign-configurable); keep the project lean; fix "cannot scroll down to see everything".

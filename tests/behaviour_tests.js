@@ -1259,6 +1259,65 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   });
 
   // ---------------------------------------------------------------------------
+  // Creation catalogs, grouped action deck, resizable layout
+  // ---------------------------------------------------------------------------
+  await test('Creation: origins and traits load per campaign like classes, and shared files are reusable', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test', { origin: 'haven_born', trait: 'eloquent' });
+    assert.deepStrictEqual(plain(engine.getCampaignOrigins().map(o => o.id)), ['wanderer', 'haven_born', 'frontier_raised'], 'shared + Dev origin files merged');
+    assert.deepStrictEqual(plain(engine.getCreationTraits().map(t => t.id)), ['vigilant', 'eloquent', 'resolute'], 'Dev reuses the shared trait file');
+    const p = engine.state.player;
+    assert.strictEqual(p.skills.persuasion, engine.getInitialState().player.skills.persuasion + 1, 'origin perk applied from data');
+    assert.strictEqual(engine.getTraitCheckBonus('deception', 'charisma'), 2, 'trait bonus comes from trait data');
+    await startCampaign(env, engine, 'campaign_greek_mythology', { trait: 'pious' });
+    assert.deepStrictEqual(plain(engine.getCreationTraits().map(t => t.id)), ['vigilant', 'pious', 'eloquent', 'resolute']);
+    assert.strictEqual(engine.getTraitValue('libationMultiplier'), 2);
+    assert.ok(engine.state.player.piety.hermes >= 2, 'pious piety perk applied');
+    // Old saves store traits without mechanics: they are resolved by id
+    engine.state.player.traits = [{ id: 'vigilant', name: 'Vigilant Scout', desc: '' }];
+    assert.strictEqual(engine.getTraitCheckBonus('tracking', 'wisdom'), 2);
+  });
+
+  await test('Action deck: one openable list per NPC / creature / object / place; a single action stays a button', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const loc = engine.getLocation(engine.state.worldState.currentLocationId);
+    const groups = {};
+    engine.getContextualActionGroups().flatMap(g => g.actions).forEach(a => {
+      const e = engine.getActionEntity(a, loc); (groups[`${e.kind}:${e.id}`] = groups[`${e.kind}:${e.id}`] || []).push(a.id);
+    });
+    assert.strictEqual(groups['npc:npc_dev_merchant_lycus'].length, 3, 'talk, attack and pickpocket grouped under Lycus');
+    assert.strictEqual(groups['object:obj_treasury_iron_door'].length, 1);
+    assert.ok(groups['place:loc_dev_whispering_woods'], 'travel belongs to the destination');
+    // Rendering: details elements for multi-action entities, plain cards otherwise
+    const created = [];
+    const origCreate = env.sandbox.document.createElement;
+    env.sandbox.document.createElement = (tag) => { const el = origCreate(tag); created.push(el); return el; };
+    engine.renderStoryPanel();
+    env.sandbox.document.createElement = origCreate;
+    const details = created.filter(el => el.tagName === 'DETAILS');
+    assert.strictEqual(details.length, 3, 'three NPC lists (Lycus, Valerius, Elena)');
+    assert.ok(created.filter(el => el.tagName === 'BUTTON').length >= 9 + 6);
+    // Greek tutorial: "Speak with Elder Daidalos" joins Daidalos' list
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    const gl = engine.getLocation(engine.state.worldState.currentLocationId);
+    const talk = engine.getContextualActionGroups().flatMap(g => g.actions).find(a => /Speak with Elder Daidalos/.test(a.title));
+    assert.strictEqual(engine.getActionEntity(talk, gl).id, 'npc_daidalos_shepherd');
+  });
+
+  await test('UI: panel sizes and text size are saved and restored', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    engine.setUiSize('sidebar', 420);
+    engine.setUiSize('textScale', 120);
+    assert.deepStrictEqual(JSON.parse(env.storage.gm_ui_sizes), { sidebar: 420, textScale: 120 });
+    engine.resetUiSizes();
+    assert.strictEqual(env.storage.gm_ui_sizes, undefined);
+  });
+
+  // ---------------------------------------------------------------------------
   // Integration fuzzing: random play through the real action deck
   // ---------------------------------------------------------------------------
   for (const campaignId of ['campaign_greek_mythology', 'campaign_dev_test']) {

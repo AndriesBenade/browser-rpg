@@ -893,8 +893,7 @@ These fields are supported by the engine as of v4.1. Where two spellings exist i
 * `criticalDiscovery`: `{ "itemId", "quantity", "drachmae", "pietyDeity", "pietyAmount", "title", "narrative" }` — the cache a natural 20 can uncover (once per location).
 
 ### Campaign manifest (`campaign.json`)
-* `origins`: creation-wizard origins `{ "id", "title", "desc", "perks", "attributes": {}, "skills": {}, "reputation": {}, "piety": {}, "maxMorale" }`.
-* `traits`: creation-wizard traits `{ "id", "title", "desc", "perk" }`.
+* `origins` / `traits`: inline creation-wizard lists (prefer the `modules.origins` / `modules.traits` files, §25).
 * `defeatRecoveryLocationId`, `defeatNarrative`: where and how the hero recovers after a defeat.
 * `timeOfDayNarration`: `{ "Morning", "Afternoon", "Dusk", "Night" }`.
 * `startingJournalNotes`: initial text of the player's notes.
@@ -967,4 +966,36 @@ Content `skill_check` actions can choose the activity and their own critical out
 }
 ```
 `npcId` may be added to a social `skill_check` so `disposition` / `reputation` effects target that NPC. A skill check without `skill` (attribute only) works as a saving throw; it has criticals but no Reliable Talent.
+
+---
+
+## 25. Origins & Personality Traits (`origins.json`, `traits.json`)
+
+Origins and traits are loaded exactly like classes and backgrounds, from the campaign's `modules`. **Any of `classes`, `backgrounds`, `origins` and `traits` may be one path or a list of paths**, so campaigns can reuse shared files (`content/shared/`) or another campaign's file. Entries are merged by `id`; a later file overrides an earlier one.
+
+```json
+"modules": {
+  "origins": ["content/shared/origins.json", "content/campaigns/dev_test_campaign/world/origins.json"],
+  "traits": ["content/shared/traits.json"]
+}
+```
+
+```json
+{ "origins": [
+  { "id": "haven_born", "name": "Haven-Born", "description": "Raised behind the palisades.", "perks": "+1 Persuasion • Trusted by the citizens",
+    "attributes": { "charisma": 1 }, "skills": { "persuasion": 1 }, "reputation": { "faction_dev_haven": 5 }, "piety": {}, "maxMorale": 0 }
+] }
+```
+```json
+{ "traits": [
+  { "id": "eloquent", "name": "Silver-Tongued", "description": "A natural talker.", "perks": "+2 bonus on Persuasion & Deception checks.",
+    "checkBonus": { "persuasion": 2, "deception": 2 } },
+  { "id": "pious", "name": "Pious Devotee", "description": "…", "perks": "…", "piety": { "hermes": 2 }, "libationMultiplier": 2 }
+] }
+```
+* Shared perk fields (origins and traits): `attributes`, `skills`, `piety`, `reputation` (faction id: delta), `maxMorale`.
+* Trait-only fields: `checkBonus` (skill id: bonus on that skill's checks; `perception` also applies to perception-based checks), `libationMultiplier`.
+* `perks` is the text shown on the card; write it to match the fields. `title` / `desc` / `perk` are accepted as older spellings.
+* Without files: inline manifest `origins` / `traits`, else the built-in Greek lists (default campaign, `file://`), else a neutral "Wanderer" origin and no traits.
+* The hero keeps a copy of the chosen trait's mechanics, so later edits to a trait file do not change existing heroes.
 

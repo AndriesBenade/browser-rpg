@@ -32,7 +32,9 @@
     "glossary": "content/world/glossary.json",
     "adventures": [
       "content/adventures/tutorial.json"
-    ]
+    ],
+    "origins": "content/campaigns/greek_mythology/origins.json",
+    "traits": "content/campaigns/greek_mythology/traits.json"
   },
   "activityDurations": {
     "travel": "connection",
