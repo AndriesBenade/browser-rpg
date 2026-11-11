@@ -7899,10 +7899,8 @@
 
         switch (activityType) {
           case "travel":
-            if (context.travelMinutes !== undefined) {
-              minutes = context.travelMinutes;
-            } else if (context.travelHours !== undefined) {
-              minutes = Math.round(context.travelHours * 60);
+            if (context.travelMinutes !== undefined || context.travelHours !== undefined) {
+              minutes = Math.round((context.travelHours || 0) * 60) + (context.travelMinutes || 0);
             } else {
               minutes = 60;
             }

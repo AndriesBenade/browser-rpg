@@ -8,6 +8,15 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 15 — 2026-11-11 (engine capabilities summary & time system audit)
+* **Collaborator / Model**: User & Antigravity (Google DeepMind)
+* **User Request**: Generate downloadable comprehensive summary of all capabilities; verify and explain how time passing works.
+* **Deliverables & Verification**:
+  1. Authored `documentation/ENGINE_CAPABILITIES_SUMMARY.md` (and user-facing in-app artifact) providing a complete architectural and technical capabilities breakdown across all 16 engine subsystems.
+  2. Verified discrete event-driven world clock: confirmed `advanceTime()` rollover, HUD updates, chronological scheduler dispatch, and activity costs across travel, combat, rests, minigames, crafting, and object interactions.
+  3. Micro-fix in `getActivityDuration("travel")` to gracefully sum composite `{ travelHours, travelMinutes }` structures.
+  4. Tests: full suite passing (`npm test` &rarr; 74/74 legacy, 74/74 behaviour, embedded sync clean = 148 passing tests).
+
 ### Session 14 — 2026-11-11 (creation catalogs, grouped actions, resizable UI)
 * **Origins & traits** are campaign content like classes/backgrounds: `greek_mythology/origins.json`, `greek_mythology/traits.json`, reusable `content/shared/origins.json` + `traits.json`, and Dev `world/origins.json`. Modules may list several files (`fetchCatalog()`), for classes and backgrounds too. Trait effects are data (`checkBonus`, `libationMultiplier`, perk fields) instead of hard-coded ids; old saves resolve their trait by id. The Dev campaign no longer shows Greek traits. Trait card texts now describe what the engine actually does (e.g. Dauntless: +2 max Morale).
 * **Selection screens**: wizard widened to 1500 px, no more 260 px class/background boxes, sticky Back/Next, wider level-up window.
