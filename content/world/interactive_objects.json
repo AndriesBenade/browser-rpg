@@ -7,6 +7,7 @@
       "type": "door",
       "locked": true,
       "isPickable": false,
+      "openedByFlag": "cithaeron_cave_unsealed",
       "unpickableReason": "A monumental limestone slab counterweighted with ancient gears. It has no keyhole and cannot be picked; it yields only to the spoken name of the guardian.",
       "description": "A heavy stone slab inscribed with archaic Cadmean letters and a coiled serpent relief."
     },

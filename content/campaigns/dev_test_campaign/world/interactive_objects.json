@@ -23,7 +23,8 @@
           "text": "With a satisfying click of heavy brass tumblers, the ironbound door creaks inward, granting access to the interior vault!",
           "style": "entry-discovery"
         },
-        "awardXP": 25
+        "awardXP": 25,
+        "updateQuest": { "questId": "quest_dev_treasury_heist", "objectiveId": "obj_unlock_vault", "completed": true }
       }
     },
     {
@@ -55,7 +56,9 @@
           "text": "The lock springs open! Inside lies a velvet-lined cache containing 60 silver drachmae and an ancient silver chalice!",
           "style": "entry-discovery"
         },
-        "awardXP": 35
+        "awardXP": 35,
+        "updateQuest": { "questId": "quest_dev_treasury_heist", "objectiveId": "obj_loot_coffer", "completed": true },
+        "completeQuest": "quest_dev_treasury_heist"
       }
     },
     {
@@ -76,7 +79,9 @@
           "text": "Bracing your shoulders against the massive stone, you heave with all your might. With a grinding crunch, the boulder rolls aside, revealing the hidden passage to the Sunken Grotto!",
           "style": "entry-discovery"
         },
-        "awardXP": 30
+        "awardXP": 30,
+        "updateQuest": { "questId": "quest_dev_grotto_mystery", "objectiveId": "obj_move_boulder", "completed": true },
+        "completeQuest": "quest_dev_grotto_mystery"
       }
     },
     {

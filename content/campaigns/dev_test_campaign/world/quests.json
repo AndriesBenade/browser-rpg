@@ -36,7 +36,7 @@
       "alternatePathways": {
         "onNpcDeath": {
           "npcId": "npc_dev_elena_scholar",
-          "setStage": "explore_crypt",
+          "setStage": "explore_crypt", "giveItem": "item_dev_elena_journal",
           "completeObjective": "obj_speak_elena",
           "narrative": "With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."
         }

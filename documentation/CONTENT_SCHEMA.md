@@ -208,7 +208,7 @@ Locations represent both points on the vector campaign map and rich narrative ex
   "ancientName": "Dory (δόρυ)",
   "category": "weapon", // weapon | armor | shield | accessory | consumable | quest | material | relic
   "slot": "main_hand", // main_hand | off_hand | two_hand | head | body | feet | ring
-  "rarity": "common", // common | crafted | exceptional | consecrated | mythic
+  "rarity": "common", // common | crafted | uncommon | rare | exceptional | epic | consecrated | legendary | mythic
   "weightKg": 2.2,
   "valueDrachmae": 30,
   "durability": { "current": 100, "max": 100 },
@@ -745,22 +745,19 @@ Campaign manifests configure calendar parameters and time consumption (in minute
 
 ## 20. Respawn Rules Schema (`campaign.json` & `creatures.json`)
 
-Campaign manifests declare global respawn guidelines, while individual creature declarations define exact respawn intervals.
+Individual creature declarations define exact respawn intervals; the campaign manifest supplies the boss default.
+(Corrected in the second v4.1 audit pass: the previous example listed fields the engine never read.)
 
 ### Campaign Manifest (`campaign.json`):
 ```json
 {
   "respawnRules": {
-    "creatureRespawnEnabled": true,
-    "bossRespawnEnabled": true,
-    "minCreatureHours": 12,
-    "maxCreatureHours": 48,
-    "minBossHours": 24,
-    "maxBossHours": 168,
-    "allowNpcRespawn": false
+    "bossHours": 72
   }
 }
 ```
+* Respawn hours are resolved as: creature `respawnHours` → `respawnRules.bossHours` (bosses only) → tier default (tier 1: 12, 2: 24, 3: 48, 4: 96, 5+: 168).
+* NPCs never respawn (permanent death). `creatureNormalHours`, `creatureRareHours` and `preventNpcRespawn`, present in the shipped manifests, are not read by the engine.
 
 ### Creature Declaration (`creatures.json`):
 ```json
@@ -781,70 +778,140 @@ Campaign manifests declare global respawn guidelines, while individual creature 
 
 ## 21. Morality & Alignment Configuration Schema (`campaign.json`)
 
-Campaign manifests configure morality terminology, initial starting balances, and tier thresholds.
+Campaign manifests configure morality terminology, optional starting balances, and tier thresholds. Two formats are accepted:
 
 ```json
 {
   "moralityConfig": {
-    "virtueLabel": "Arete (Virtue)",
-    "hubrisLabel": "Hubris (Miasma)",
+    "enabled": true,
+    "virtueLabel": "Arete & Dike",
+    "hubrisLabel": "Hubris & Miasma",
+    "tiers": { "heroic": 30, "pragmatic": -15, "ruthless": -40, "villainous": -100 }
+  }
+}
+```
+
+```json
+{
+  "moralityConfig": {
+    "virtueLabel": "Honor",
+    "hubrisLabel": "Infamy",
     "initialVirtue": 10,
     "initialHubris": 0,
     "alignmentTiers": {
       "heroic": { "minScore": 40, "title": "Heroic Exemplar" },
       "pragmatic": { "minScore": -15, "title": "Pragmatic Wanderer" },
       "ruthless": { "minScore": -40, "title": "Ruthless Opportunist" },
-      "villainous": { "minScore": -999, "title": "Cursed Villain" }
+      "villainous": { "title": "Cursed Villain" }
     }
+  }
+}
+```
+* Score = virtue − hubris. Alignment is the first tier (heroic → pragmatic → ruthless) whose minimum the score reaches; anything lower is villainous (its minimum is ignored).
+* Missing values use the defaults: heroic 30, pragmatic −15, ruthless −40.
+* `virtueLabel` / `hubrisLabel` appear in notifications; tier `title`s in the morality summary.
+* `initialVirtue` / `initialHubris` set the hero's starting balance when a new game starts.
+
+---
+
+## 22. Time-Sensitive & Moral-Choice Quests Schema (`quests.json`)
+
+(Corrected in the second v4.1 audit pass: the previous example used `milestones`, `hoursElapsed` and `moralChoices`, which the engine does not read.)
+
+```json
+{
+  "id": "quest_dev_urgent_rescue",
+  "title": "Hostage of the Obsidian Crag",
+  "timeSensitive": true,
+  "deadlineHours": 48,
+  "earlyCompletionBonus": { "hoursThreshold": 24, "drachmae": 40, "virtue": 10, "narrative": "Rescued the apprentice swiftly!" },
+  "timeMilestones": [
+    { "hours": 24, "action": "warn", "narrative": "Bandit lookouts have doubled." },
+    { "hours": 48, "action": "escalate", "mutateStage": "stage_hostage_moved", "setFlags": { "hostage_moved_deep": true }, "narrative": "The captive has been moved." },
+    { "hours": 72, "action": "fail", "narrative": "The trail has gone cold." }
+  ],
+  "currentStage": "rescue_crag",
+  "stages": { "rescue_crag": { "objectives": [] }, "stage_hostage_moved": { "objectives": [] }, "completed": { "objectives": [] } }
+}
+```
+* `timeMilestones` are scheduled when the quest starts (only if `timeSensitive: true`), counted from the moment it was accepted. `mutateStage` moves the quest to that stage and shows its objectives; `"action": "fail"` fails the quest and cancels its later milestones; `setFlags` and `narrative` are applied as written.
+* `deadlineHours` is descriptive; enforce a deadline with a `fail` milestone.
+* `earlyCompletionBonus` is granted by `completeQuest()` when the quest is completed within `hoursThreshold` hours.
+
+Moral choices use `moralPaths` and are resolved with `resolveMoralChoice(questId, pathKey)`:
+```json
+{
+  "moralPaths": {
+    "heroic": { "label": "Arrest Silas", "virtue": 20, "hubris": 0, "reputation": { "faction_dev_guards": 25 }, "rewards": { "experience": 120, "drachmae": 30 } },
+    "villainous": { "label": "Eliminate the Captain", "virtue": 0, "hubris": 35, "rewards": { "experience": 200, "drachmae": 100 } }
   }
 }
 ```
 
 ---
 
-## 22. Time-Sensitive Quests Schema (`quests.json`)
+## 23. Field Reference Added or Clarified in the v4.1 Audit
 
-Quests can define deadlines, intermediate escalation milestones, early completion bonuses, and multi-path moral resolutions.
+These fields are supported by the engine as of v4.1. Where two spellings exist in shipped content, both are accepted.
 
-```json
-{
-  "id": "quest_dev_urgent_rescue",
-  "name": "Hostage at the Forgotten Watchtower",
-  "category": "urgent",
-  "deadlineHours": 48,
-  "earlyCompletionBonusHours": 24,
-  "earlyCompletionReward": {
-    "xp": 100,
-    "currency": 50,
-    "title": "Swift Liberator"
-  },
-  "milestones": [
-    {
-      "hoursElapsed": 24,
-      "event": "hostage_guard_doubled",
-      "notification": "Rumors reach you that the captors have fortified their guard watch!"
-    },
-    {
-      "hoursElapsed": 36,
-      "event": "hostage_transferred",
-      "notification": "A scout reports the hostage has been moved into the lower dungeon cells!"
-    }
-  ],
-  "moralChoices": [
-    {
-      "id": "choice_spare_bandit_leader",
-      "name": "Accept surrender and ransom",
-      "virtue": 15,
-      "hubris": 0,
-      "reward": { "currency": 40 }
-    },
-    {
-      "id": "choice_execute_bandit_leader",
-      "name": "Execute without trial",
-      "virtue": 0,
-      "hubris": 20,
-      "reward": { "xp": 50 }
-    }
-  ]
-}
-```
+### Items
+* `rarity` must be one of: `common`, `crafted`, `uncommon`, `rare`, `exceptional`, `epic`, `consecrated`, `legendary`, `mythic`. Loot caps only apply to `epic`, `legendary` and `mythic` (see ENGINE_ARCHITECTURE §7.5).
+* `stats.ranged: true` marks a ranged weapon (attacks with Agility + Ranged Combat).
+* `stats.defenseBonus` adds to Armour Class.
+* Consumables: `restoreHealth` / `restoreStamina` may be placed in `stats` **or** `effect` (both are read by the inventory *Use* button and the combat item button).
+* Equipped-item bonuses applied by the rules engine: `<attribute>Bonus` (`strengthBonus` … `charismaBonus`, e.g. `wisdomBonus`), `<skill>Bonus` (e.g. `persuasionBonus`, `athleticsBonus`), `perceptionBonus` / `perceptionPenalty`, and `damageReduction` (per hit, minimum 1 damage). Other stats (`moraleBonus`, `staminaBonus`, `coldResistance`, `blockChance`, `speedPenalty`, …) are descriptive only. `attributeRequirement` is shown in tooltips but not enforced.
+
+### Characters / NPCs
+* Dialogue link: `dialogueTreeId` or `dialogueId`.
+* Faction: `faction` or `factionId`.
+* `combatStats`: `{ "armorClass", "attackBonus", "damage", "xpReward", "actions": [{ "name", "attackBonus", "damage" }] }` and `vitals.maxHealth` are used when the NPC is attacked.
+* `knowledge`: ids of `mythology.json` lore entries; used for generated conversations.
+
+### Quests
+* Stage objectives may declare `"locationId"`: the objective completes when the hero arrives there.
+* `"autoStart": false` keeps a quest from starting automatically when the campaign begins (start it with a `startQuest` outcome).
+* `alternatePathways.onNpcDeath`: `{ "npcId", "setStage", "completeObjective", "giveItem", "setFlags", "narrative" }` (object or array).
+* `failableConditions.onNpcDeath`: `{ "npcId", "reason" }` (object or array).
+* When all required objectives of the current stage are completed, the quest advances to the next stage; the final `completed` stage is entered by `completeQuest`.
+* `rewards` on a quest is **descriptive**: it is not granted automatically. Grant rewards in the outcome that completes the quest (e.g. the turn-in dialogue node's `giveDrachmae` / `awardXP`, as both shipped campaigns do), so they are never paid twice.
+
+### Action / outcome objects (actions, encounter `victoryOutcome`, puzzle `successOutcome`)
+* Added: `startQuest`, `failQuest`, `failReason`. `giveDrachmae` now credits the hero's purse.
+
+### Puzzles
+* `acceptedKeywords` (typed answers), `successOutcome` (applied on success), `clueJournalIds`, optional `deductionSkill`, `deductionAttribute`, `deductionDc`, `deductionHint`, `knownAnswerLabel`, `distractors` (array of wrong-answer labels).
+
+### Interactive objects
+* Lock difficulty: `lockDc` or `lockDifficulty`. Key: `keyRequired` or `requiredKeyId`. Heave: `heaveDc` or `requiredScore`, with optional `requiredAttribute`.
+* `"locked": false` objects are open from the start. `"openedByFlag": "<flag>"` marks an object as open once that world flag is set.
+* Container contents: `items` (array) or `contents: { "drachmae", "items" }`, or a `lootTableId`.
+* `unlockOutcome` (any outcome fields: `setFlags`, `updateQuest`, `completeQuest`, `awardXP`, `transcript`, `giveItem`, …) is applied once, the first time the object is opened by lockpick, key, heave or mechanism. Its `awardXP` replaces the generic 35 XP for opening.
+* `failureConsequence`: `message` is shown when a lockpick attempt fumbles (natural 1); `"breakToolOnAte": false` keeps the lockpick. `alertNpcId` is not implemented.
+
+### Locations
+* Connections: `requiresFlag` closes the road until the flag is set; `requiresNotFlag` closes it while the flag is set. Every open road can be travelled, including to places not yet discovered (arriving discovers them).
+* `criticalDiscovery`: `{ "itemId", "quantity", "drachmae", "pietyDeity", "pietyAmount", "title", "narrative" }` — the cache a natural 20 can uncover (once per location).
+
+### Campaign manifest (`campaign.json`)
+* `origins`: creation-wizard origins `{ "id", "title", "desc", "perks", "attributes": {}, "skills": {}, "reputation": {}, "piety": {}, "maxMorale" }`.
+* `traits`: creation-wizard traits `{ "id", "title", "desc", "perk" }`.
+* `defeatRecoveryLocationId`, `defeatNarrative`: where and how the hero recovers after a defeat.
+* `timeOfDayNarration`: `{ "Morning", "Afternoon", "Dusk", "Night" }`.
+* `startingJournalNotes`: initial text of the player's notes.
+* `activityDurations.divination` (default 30), `lockpicking` (default 10) and `heave` (default 10) in addition to the existing keys.
+* `respawnRules.bossHours` is used for bosses without their own `respawnHours`.
+* `moralityConfig`: see §21 (both `tiers` and `alignmentTiers` formats).
+* `progression`: `{ "xpTable": { "1": 100, "2": 250 }, "levelTitles": { "1": "Recruit" }, "maxLevelTitle": "Legend" }` — XP needed to leave each level and level titles; missing entries use the engine defaults (non-default campaigns get "Level N Adventurer").
+* `randomEncounters` (or a top-level `randomEncounters` array in the campaign's `encounters.json`): `{ "id", "type": "combat", "creatureId", "regions", "terrain", "weight" }` — used for rest/travel ambushes.
+
+### Encounters (`encounters.json`)
+* A won encounter is **one-time** unless `"repeatable": true`. A repeatable encounter returns after `cooldownHours`, or, without a cooldown, once its creature has respawned.
+* `triggerCondition: { "flag", "expected" }` must hold for the encounter to be offered or started.
+
+### World events (`events.json`)
+* `{ "id", "trigger", "conditions", "outcomes", "repeatable" }`. Triggers: `FLAG_SET` (conditions `flag`, `expected`; raised when an outcome changes that flag), `ITEM_ACQUIRED` (condition `itemId`), or any engine event name such as `ENTITY_DEATH` (conditions `targetEntityId`, `locationId`).
+* Outcomes: `setFlags`, `modifyReputation`, `scheduleEvent`, `failQuest`, `piety`, `morality`, `restoreHealth`, `restoreStamina`, `transcript` (`speaker`, `text`, `style`), `addJournalChronicle`.
+* Each event fires once per game unless `repeatable: true` (fired ids are saved).
+
+### Dev campaign and `file://` mode
+* After editing any file in `content/campaigns/dev_test_campaign/world/`, run `node scripts/sync-embedded-dev-content.js` (or `npm run sync:embedded`) to regenerate the embedded copy used under `file://`. `npm test` fails while they differ.

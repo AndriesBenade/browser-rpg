@@ -83,6 +83,7 @@
           "objectives": [
             {
               "id": "obj_reach_fissure",
+              "locationId": "loc_cithaeron_fissure_cave",
               "text": "Ascend the mountain path to the Whispering Fissure.",
               "completed": false
             }

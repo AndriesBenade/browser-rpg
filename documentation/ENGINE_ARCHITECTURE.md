@@ -383,132 +383,128 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 
 ---
 
-## 7. Universal RPG Engine, Progression, Equipment, Loot, and Dynamic Crafting (Engine v3.0.0)
+## 7. Universal RPG Engine, Progression, Equipment, Loot, and Dynamic Crafting (Engine v3.0.0, corrected in v4.1 audit)
 
-### 7.1 Universal Campaign Independence
-The RPG engine is completely decoupled from any single mythology, setting, or genre:
-* **Campaign-Scoped Rules & Definitions**: Classes, backgrounds, professions, materials, and crafting templates are declared within each campaign's directory and manifest (`campaign.json`).
-* **Content Isolation Guarantee**: Non-Greek campaigns (e.g. Developer Verification Campaign) declare their own distinct classes (`dev_sentinel`, `dev_infiltrator`) and backgrounds (`bg_dev_tester`), preventing archetype leakage across different fictional worlds.
-* **Dual-Mode Manifest Synchronization**: `loadEmbeddedFallbackContent()` and `loadEmbeddedDevTestContent()` ensure that full modularity functions offline via `file:///` as well as over HTTP.
+> This section was corrected during the v4.1 independent audit (2026-11-11) so that it describes what the engine
+> actually does. Items marked **Not implemented** are data or descriptions that exist without engine behaviour.
 
-### 7.2 14 Greek Heroic Classes & 16 Cultural Backgrounds
-* **14 Classes**: Hoplite, Toxotes, Peltast, Hippeus, Pankratiast, Mystes, Rhapsode, Pythia, Asklepiad, Stratiotes, Korybante, Skiritae, Syntrophos, Telemachos.
-* **16 Backgrounds**: Spartiate Agoge, Athenian Ephebe, Theban Sacred Band, Arcadian Hunter, Cretan Archer, Myrmidon Veteran, Corinthian Navigator, Phocian Miner, Delphic Suppliant, Argive Bronzesmith, Centaur Foster-Child, Thessalian Horseman, Thracian Mercenary, Olympic Victor, Chthonic Oracle, Laconian Helot.
-* **Cross-Compatibility Matrix**: Any background pairs with any class. The engine combines attribute modifiers, determines proficiency lists, equips starting panoplies, and activates background traits without hardcoded restrictions.
+### 7.1 Campaign Independence
+* **Campaign-scoped content**: Classes, backgrounds, professions, materials and crafting templates are loaded from the modules declared in each campaign's `campaign.json`.
+* **Content isolation**: `loadContent()` resets every catalog (`createEmptyWorld()`), the glossary, the adventure and consequence rules before loading a campaign, so switching campaigns in one session cannot leak content. The built-in fallback catalogs (`getFallbackClasses()` etc.) are used **only** by the default (Greek) campaign; other campaigns get empty catalogs when they define none.
+* **Campaign start**: `confirmCampaignSelection()` builds a fresh state with `resetStateForActiveCampaign(slot)`: only the campaign's own factions, discovered locations that exist in the campaign, its starting location/time, optional starting morality (`moralityConfig.initialVirtue/initialHubris`), and default-kit items that exist in its catalog. The new game goes to a free save slot (see §9).
+* **Browsing vs. launching**: clicking a campaign card only highlights it (`selectedCampaignId`); the running game's `activeCampaignId`, rules and content change only when *Launch Campaign* is confirmed. *Validate Campaign* checks the highlighted campaign against **its own** content (`withCampaignContent()` loads it temporarily and restores the running game's content afterwards).
+* **Loading content never writes into the game state** (the embedded Dev loader used to add Dev faction standings to whatever game was running).
+* **Creation wizard data**: origins and traits can be supplied by a manifest (`origins`, `traits`); the default campaign uses the built-in Greek lists, other campaigns without origins get a neutral "Wanderer" origin.
+* **Dual-mode loading**: Over HTTP the JSON files are fetched. Under `file:///` (where browsers block `fetch`) the engine uses embedded copies: `loadEmbeddedDevTestContent()` is **generated** from the Dev campaign JSON by `node scripts/sync-embedded-dev-content.js` (`npm test` fails if it is out of date; a stale hand-written copy had different classes and backgrounds), while `loadEmbeddedFallbackContent()` is a **reduced subset** of the Greek content (e.g. 32 of 62 items, no crafting toolkits). Serve the game with `python server.py` for the full experience.
+* **Progression rules per campaign**: a manifest may define `progression.xpTable` (XP needed to leave each level) and `progression.levelTitles`; missing entries use the engine defaults. Greek level titles are used only by the default campaign; other campaigns get neutral "Level N Adventurer" titles unless they define their own.
 
-### 7.3 Character Progression Overhaul
-* **Point Distribution**: Every level up awards exactly **1 primary attribute point** and **2 secondary skill/substat points**.
-* **Stat Integration**: Upgrades to Wisdom immediately recalculate active Perception and Passive Perception (`10 + Perception Bonus`). Health and Stamina scale dynamically with Endurance.
+### 7.2 Greek Classes & Backgrounds (actual content)
+* **14 classes** (`content/campaigns/greek_mythology/classes.json`): hoplite, hypaspist, amazon, myrmidon, trickster, oracle_shadow, labyrinth_runner, demigod, oracle, philosopher, mystery_cultist, nymph_bound, tide_caller, maenad.
+* **16 backgrounds** (`backgrounds.json`): bg_demigod_scion, bg_oracle_seer, bg_temple_acolyte, bg_cursed_mortal, bg_nymph_foundling, bg_hoplite_veteran, bg_pankration_champion, bg_monster_hunter, bg_royal_guard, bg_argonaut_sailor, bg_philosopher_sophist, bg_artisan_forge, bg_exiled_noble, bg_underworld_escapee, bg_cultist_mysteries, bg_brigand_crags.
+* **Applied at creation**: class `statBonuses`, class + background `startingEquipment` (replaces the default kit's equipment; the first item per slot is equipped), background `proficiencies` (+2 to matching skill ranks), background `startingBonus.drachmae`, origin perks, chosen trait.
+* **Skills**: melee_combat, ranged_combat, stealth, persuasion, survival, tracking, perception, medicine, mythology_lore, investigation, **athletics** (added in save v1.5.0; rolled when heaving obstacles; heroes from older saves whose background trained it receive the +2). The level-up window offers every skill the hero has.
+* **Not implemented**: class `classFeatures` (all levels) and proficiency effects (e.g. armour/weapon proficiencies) have no engine behaviour yet. The background proficiencies `intimidation` and `crafting` are recorded but are not skills, so they have no effect.
 
-### 7.4 14-Slot Equipment Paper Doll Architecture
-* **14 Dedicated Slots**: `head`, `neck`, `shoulders`, `back`, `body`, `arms`, `hands`, `waist`, `legs`, `feet`, `ring_1`, `ring_2`, `main_hand`, `off_hand`.
-* **Dual Ring Logic**:
-  * Equipping an accessory ring checks `ring_1`. If empty, it equips into `ring_1`.
-  * If `ring_1` is occupied, it equips into `ring_2`.
-  * If both are occupied, it replaces `ring_1`.
-* **Two-Handed Weapon Mutual Exclusion**:
-  * Equipping a two-handed weapon (`two_hand`) automatically unequips any shield or weapon in `off_hand`.
-  * Equipping any item in `off_hand` automatically unequips any currently equipped two-handed weapon.
-* **Slot Aliasing**: Legacy keys (`helm`, `armor`, `weapon`, `shield`, `relic`, `ring`) automatically map to standard paper doll slots.
+### 7.3 Character Progression
+* Each level-up awards exactly **1 attribute point**, **2 skill points** and one heroic feat; max Health +4 and max Stamina +2 (flat). Endurance affects Health/Stamina only at character creation (`20 + END mod × 2`, `16 + END mod`).
+* Wisdom drives Perception and Passive Perception (`10 + Perception Bonus`).
+* XP is cumulative; thresholds come from `getXPForNextLevel()`.
 
-### 7.5 Centralized Loot Engine & Probability Hard Caps
-* **Hard Probability Caps**:
-  * Normal creatures: Epic drops $\le 0.02\%$ ($0.0002$), Legendary clamped to $0.00\%$, Mythic clamped to $0.00\%$.
-  * Boss creatures: Mythic drops capped at $\le 0.02\%$ ($0.0002$).
-* **Level-Scaled Independent Currency**:
-  * Normal creature defeats award silver drachmae scaled dynamically to creature level ($\ge \text{level} \times 3$), independent of loot table rolls.
-* **Anti-Exploit Relic Protection**: Suppresses duplicate relic drops on repeat encounters, awarding compensation currency instead.
+### 7.4 14-Slot Equipment Paper Doll
+* Slots: `head`, `neck`, `shoulders`, `back`, `body`, `arms`, `hands`, `waist`, `legs`, `feet`, `ring_1`, `ring_2`, `main_hand`, `off_hand`.
+* Rings fill `ring_1`, then `ring_2`, then replace `ring_1`. Items with slot `accessory` fill `neck`, then the ring slots.
+* Two-handed weapons (`slot: "two_hand"` or `twoHanded: true`) are stored in `main_hand` and unequip the off hand; equipping an off-hand item unequips a two-handed weapon.
+* Legacy slot names in old saves (`two_hand`, `helm`, `armor`, `weapon`, `shield`, `ring`, `relic`, equipped `accessory`) are normalised by `migrateState()`.
+* Armour Class = `10 + AGI mod + Σ stats.defenseBonus` (crafted items from older versions that stored `stats.defense` are also counted).
+* **Equipped item bonuses** are applied by the shared rules: `<attribute>Bonus` (e.g. `wisdomBonus`) raises that attribute for skill checks and attack rolls (`getEffectiveAttribute()`), `<skill>Bonus` (e.g. `persuasionBonus`) adds to that skill's checks, `perceptionBonus`/`perceptionPenalty` to perception and tracking, and `damageReduction` reduces each hit taken (minimum 1). Tooltips list these bonuses. **Not applied**: `moraleBonus`, `staminaBonus`, `coldResistance`, `blockChance`, `speedPenalty` and other descriptive stats; `attributeRequirement` is shown but not enforced.
+* Ranged weapons (`stats.ranged: true`, or `weaponType: "ranged"`) attack with **Agility + Ranged Combat**; all other weapons use Strength + Melee Combat.
 
-### 7.6 Recipe-Free Dynamic Crafting Engine
-* **Consolidated Professions & Toolkits**: 7 professions (Blacksmithing, Woodworking, Leatherworking, Weaving, Alchemy, Jewelcrafting, Inscription) requiring dedicated physical toolkits (`item_toolkit_smithing`, etc.).
-* **Material Property Matrix**: 10 standardized materials with composite physical and magical properties:
-  * `hardness`, `durability`, `flexibility`, `magicalAffinity`, `toxicity`, `weightTier`.
-* **Recipe-Free Procedural Assembly**:
-  * Input: 1 item template + 2 primary materials + 1 supplementary material.
-  * Check: D20 + governing attribute modifier + profession skill + minigame bonus vs template base DC.
-  * Quality Outcomes: Standard (roll $\ge$ DC), Superior (margin $\ge 5$), Masterwork (margin $\ge 10$ or Natural 20).
-  * Composite Statistics: Damage, defense, stamina recovery, and sell values calculated from material attributes and quality multipliers.
-  * Classical Lore Attribution: Dynamically generated items cite Hephaestus, Telchines, or classical artisans in `mythologicalLore`.
+### 7.5 Loot Engine & Probability Caps
+* `resolveEntityLoot()` is the single place drops are resolved (it is called once per victory). It applies loot-table `guaranteed` items, `entries` (with `minQuantity`/`maxQuantity`), `currency`, **and** a creature's inline `loot` array, plus level-scaled drachmae.
+* **Caps** (by rarity *name*): normal creatures — `epic` ≤ 0.02 %, `legendary`/`mythic` 0 %; bosses — `mythic` ≤ 0.02 %. The Greek content uses `exceptional` and `consecrated` tiers, which are **not** capped (see `getRarityRank()` for the full vocabulary: common, crafted, uncommon, rare, exceptional/epic, consecrated/legendary, mythic).
+* Unique items (`isUnique`) are granted once (`worldState.grantedUniqueItems`); repeat kills give replacement drachmae.
+* References to items that do not exist in the campaign are skipped (and reported by the validator).
 
-### 7.7 Minigame Suite & Hephaestus' Forge Strike
-* **Interactive Challenges**: Artemis Stalk, Asklepian Herbal Mortar, Hoplite Shield Clash, Astragaloi Divination, and Hephaestus' Forge Strike.
-* **Hephaestus' Forge Strike**: Oscillating kinetic hammer strike timing challenge.
-* **Zero Failure Penalty**: Crafting bonuses strictly capped between +1 and +3. Failures never destroy materials or penalize the player.
+### 7.6 Recipe-Free Crafting
+* Professions (Greek): metalworking, artifice, textiles, alchemy, stonework, music, scribing — each requires its toolkit item.
+* Materials expose `hardness`, `durability`, `flexibility`, `heatResistance`, `magicalAffinity`, `purity`.
+* Check: `d20 + governing attribute modifier + Forge Strike bonus (0–3)` vs template `baseDC`. Quality: Standard, Superior (margin ≥ 5), Masterwork (margin ≥ 10 or natural 20).
+* `craftItem()` validates the toolkit and material quantities itself. **Materials are consumed only on success**; a failed attempt still takes the crafting time.
+* Generated items use `stats.defenseBonus` for armour and are stored in the save at `worldState.dynamicItems`, so they survive reloads.
 
-### 7.8 Settlement Economy & Merchant Stock Rules
-* **Settlement Merchants**: Major settlements (Thebes, Delphi, Mycenae, Mount Cithaeron/Plataea) feature dedicated local merchants.
-* **Stock Requirements**: Each merchant stocks $\ge 3\text{--}4$ regional trade goods and **ALWAYS maintains at least one healing potion/draught/salve** in stock.
+### 7.7 Minigames
+* Artemis Stalk (hunting), Asklepian Mortar (camp medicine), Hoplite Shield Clash (combat), Astragaloi (divination), Hephaestus' Forge Strike (crafting bonus +1…+3, free to retry, no penalty).
+* Time costs use the campaign's `activityDurations`: stalk → `hunting`, mortar → `rest_short`, astragaloi → `divination` (default 30 min).
+* Shield Clash costs 2 Stamina, can be attempted once per combat round, and resolves the round like *Raise Shield* (+3/+5/+8 AC; a perfect brace also staggers the enemy).
+* The Venus cast pays out once per casting session.
 
-### 7.9 NPC Defensive Behavior & Social Anti-Exploit Cooldowns
-* **Wounded NPC Behavior**: When living NPCs drop below 25% HP in combat, they evaluate surrender, yielding, or fleeing (`fleeing: true`).
-* **Social Anti-Exploit System**: `attemptPersuadeNpc()` and `attemptDeceiveNpc()` enforce persistent cooldown timestamps in `state.worldState.socialCooldowns`, blocking repetitive exploit farming.
+### 7.8 Settlement Merchants
+* Merchants declare `merchantInventory` (`itemId`, `price`, `stock`); every major Greek settlement merchant stocks a healing item.
+* **Not implemented**: there is no buy/sell interface or economy logic yet. Talking to a merchant without an authored dialogue lists their wares.
+
+### 7.9 NPC Behaviour & Social Cooldowns
+* NPCs below 25 % HP yield and flee; the engine currently records this the same way as a kill (permanent death, consequences).
+* NPC combat uses authored `combatStats` (`armorClass`, `actions`, `attackBonus`, `damage`, `xpReward`) and `vitals` when present, else attribute-derived defaults.
+* Persuade/Deceive share a 4-hour per-NPC cooldown; Pickpocket has a 24-hour per-NPC cooldown. All use the absolute world clock and are stored in `worldState.socialInteractions`; each attempt takes `social_interaction` time. Disposition changes are saved in `worldState.npcStates[npcId].disposition`.
+* **Lockpicking and heaving** take `lockpicking` / `heave` time (default 10 minutes each, configurable in `activityDurations`), so failed attempts cannot be retried for free while quest clocks are frozen.
+* **Opening objects**: picking, key, heave and mechanism all go through `markObjectOpened()`, which applies the object's authored `unlockOutcome` (flags, quest updates, XP, text) exactly once. If `unlockOutcome.awardXP` is set it replaces the generic 35 XP award. `failureConsequence.message` is shown on a fumble and `breakToolOnAte: false` keeps the tool. **Not implemented**: `failureConsequence.alertNpcId`, `trap.disarmDC` (there is no disarm action).
+
+### 7.10 Travel & Exploration
+* The action deck offers a travel card for **every open road** from the current location; arriving at a place discovers it. Unexplored destinations are labelled "(unexplored)" and are also clickable on the map. (Previously only already-discovered places were offered, which left 15–16 of 19 Greek locations and 4 of 5 Dev locations unreachable.)
+* A road is closed while its `requiresFlag` is unset (or its `requiresNotFlag` is set); `executeTravel()` and the map enforce this too.
+* Wilderness ambushes pick the creature first (`pickAmbush()`), so the narration names the actual creature; the Greek wolf prose is only used for the Greek wolf.
+* NPCs without an authored dialogue tree get a generated conversation from their `description`, `knowledge` (matched against mythology entries) and merchant stock. NPCs may reference their tree with `dialogueTreeId` or `dialogueId`.
 
 ---
 
-## 8. Dynamic World Time, Event-Driven Scheduler, Living World, and Morality Engine (Engine v4.0.0)
+## 8. World Time, Event Scheduler, Living World and Morality (Engine v4.0.0, corrected in v4.1 audit)
 
-### 8.1 Centralized World-Time Engine
-* **Unified Time Progression**: In-game time advances strictly as a consequence of player actions and deliberate choices:
-  * Minutes, hours, days, months (30 days/month), and years (12 months/year).
-  * `getTotalInGameMinutes()` and `getTotalInGameHours()` calculate monotonic chronological timestamps.
-  * `formatInGameTime()` provides formatted temporal strings for journals, chronicles, and UI presentation.
-* **Configurable Activity Durations**: Activities consume time configured per campaign in `campaign.json` (`activityDurations`):
-  * Travel between waypoints (e.g. 120 minutes base, reduced by 20% with *Hermes' Swift Stride* feat).
-  * Combat encounters (15 minutes).
-  * Short rest (60 minutes), full rest (480 minutes / 8 hours), healing treatments (120 minutes).
-  * Crafting items (base 60 minutes).
-  * Interface interactions (viewing inventory, character sheet, journal, map) consume **0 minutes** to eliminate interface penalties.
+### 8.1 World Time
+* Calendar: 60-minute hours, 24-hour days, **30-day months, 12-month (360-day) years**. The calendar is not yet configurable per campaign.
+* `getTotalInGameMinutes()` is a continuous clock consistent with that calendar (it previously counted 365-day years and jumped 5 days at each new year). Year-1 timestamps are unchanged; `migrateState()` shifts later-year timestamps in older saves.
+* Activities advance time through `performActivity(type)` using the campaign's `activityDurations` (defaults in brackets): travel (connection `travelHours`, −20 % with *Stride of Hermes*), combat (15), rest_short (60), rest_sacred (120), rest_long (480), crafting (120, reduced by INT), hunting (90), foraging (45), investigation (30), social_interaction (15), dialogue (5, currently unused), divination (30), lockpicking (10), heave (10). Menus, map, inventory and journal take no time.
 
-### 8.2 Event-Driven Priority Scheduler
-* **Zero Polling Loops / Zero Continuous Timers**:
-  * The world-time and event engine operates without `setInterval`, `setTimeout`, or polling loops for game time.
-  * Time advances exclusively when the player performs activities (`advanceTime(minutes)`).
-* **Sorted Chronological Execution**:
-  * Events are maintained in an ordered array sorted ascending by `triggerTimestamp`.
-  * New events are inserted via binary search ($O(\log n)$) to maintain strict chronological order.
-* **Memory Pruning & Duplicate Prevention**:
-  * Executed one-time events are automatically pruned from `state.worldState.scheduledEvents` to prevent memory accumulation in long-running saves.
-  * Unique execution history is tracked in `state.worldState.executedEventIds`, guaranteeing events can never trigger twice.
-  * Large time jumps (e.g. 8-hour rests) process all intermediate due events in exact chronological sequence.
-* **API Interface**:
-  * `scheduleEvent(event)`: Registers a scheduled event with automatic insertion sort.
-  * `cancelScheduledEvent(eventId)`: Cancels pending events (e.g. when quests complete before deadlines).
-  * `rescheduleEvent(eventId, newTimestamp)`: Modifies trigger time for delayed consequences.
-  * `processScheduledEvents()`: Dispatches due events and prunes completed entries.
+### 8.2 Event Scheduler
+* No polling: events are processed only inside `advanceTime()` (UI animations use timers, game time never does).
+* `scheduleEvent()` inserts by `triggerTimeMinutes` (binary search). Re-scheduling an id that already ran is treated as a new occurrence.
+* `processScheduledEvents()` repeatedly takes the **earliest due event**, so large time skips run every due event — including each occurrence of a recurring event and events scheduled by other events — in chronological order (safety valve: 1000 dispatches per call).
+* Conditional events (`conditions.requiresFlag`, `requiresNotFlag`, `npcAlive`) are dropped if their condition is false when due; **recurring** events stay scheduled.
+* Duplicate protection: `worldState.executedEventIds` (bounded to the latest 500 ids).
+* Manifest consequence rules (`scheduleEvent` outcome) also go through `scheduleEvent()`.
+* Scheduled quest events use the quest helpers: `quest_deadline` / `quest_stage` move stages with `setQuestStage()` (revealing the new stage's objectives) and fail quests with `failQuest()` (which cancels the quest's remaining milestones).
+* **World events (`events.json`)** are event-driven, never polled: `setWorldFlags()` raises `FLAG_SET` for each flag whose value changes, `addItem()` raises `ITEM_ACQUIRED`, and every `emitEvent()` name (e.g. `ENTITY_DEATH`) is also offered to world events. Each event fires once per game unless `repeatable: true`; fired ids are saved in `worldState.firedWorldEvents`. Outcomes share `applyWorldOutcome()` with manifest consequence rules (flags, reputation, scheduled events, failQuest, piety, morality, restoreHealth/Stamina, transcript with optional `speaker`, chronicle entry).
+* API: `scheduleEvent`, `cancelScheduledEvent`, `rescheduleEvent`, `getTimeUntilEvent`, `processScheduledEvents`.
 
-### 8.3 Time-Sensitive Quests & Deteriorating World States
-* **Quest-Specific Temporal Autonomy**: Quests independently define their time sensitivity:
-  * **Deadlines**: Quests declare `deadlineHours` from acceptance. Exceeding deadlines fails or escalates the quest (e.g. hostages executed, rivals claiming relics).
-  * **Milestone Warnings**: Intermediate events trigger at configured thresholds (e.g. 24h warning, 36h stage escalation).
-  * **Early Completion Bonuses**: Completing quests well before deadlines awards bonus XP and drachmae.
-  * **Timeless Quests**: Ancient ruins, exploration, and mythological codex quests do not enforce arbitrary deadlines.
+### 8.3 Time-Sensitive Quests
+* `timeMilestones` (`hours`, `action`, `mutateStage`, `setFlags`, `narrative`; `action: "fail"` fails the quest) are scheduled when the quest starts. `deadlineHours` is descriptive only — use a milestone to enforce it.
+* `earlyCompletionBonus` (`hoursThreshold`, `drachmae`, `virtue`, `narrative`) is applied by `completeQuest()`.
+* Completing or failing a quest cancels its pending milestone events.
 
 ### 8.4 Creature & Boss Respawns
-* **Data-Driven Respawn Rules**:
-  * Standard creatures declare `respawnHours` (e.g. 12–24 hours).
-  * Boss creatures declare extended `respawnHours` (e.g. 48–168 hours).
-  * When slain, the engine calculates `triggerTimestamp = currentTimestamp + (respawnHours * 60)` and schedules a `"creature_respawn"` event.
-* **Anti-Exploit Relic Preservation**:
-  * Unique relics and artifacts dropped on initial boss defeats are recorded in `state.worldState.grantedUniqueItems`.
-  * Respawned boss defeats grant level-scaled drachmae and consumable supplies, strictly preventing relic duplication exploits.
+* Respawn hours: creature `respawnHours` → campaign `respawnRules.bossHours` for bosses → tier defaults (12/24/48/96/168). `respawnRules.creatureNormalHours` / `creatureRareHours` are not used.
+* Every non-NPC kill schedules a `creature_respawn` with the id `respawn_<creatureId>` (killing the same kind again reschedules it instead of piling up events); bosses and encounters with `cooldownHours` also schedule `boss_respawn_<encounterId>`.
+* **Encounter availability** (`isEncounterAvailable()`): `triggerCondition { flag, expected }` must hold; a won encounter is **one-time unless `repeatable: true`**; a repeatable encounter waits for `cooldownHours`, or (without a cooldown) until its creature has respawned. (Before this, every non-repeatable encounter could be re-fought forever for its full victory rewards.)
 
-### 8.5 Permanent NPC Death & Murder Inquests
-* **Non-Respawning Living Entities**:
-  * NPCs, merchants, and named story characters are classified as unique mortals. When slain, their ID is permanently registered in `state.worldState.permanentNpcDeaths`.
-  * NPCs never respawn under any circumstance, and creature respawn handlers explicitly reject permanent NPC IDs.
-* **Living Consequence Cascade**:
-  * Killing an NPC terminates associated active contracts and quests with failover narratives.
-  * The engine schedules a delayed murder inquest event (e.g. 24 hours later) adjusting regional security, merchant prices, and faction standings.
+### 8.5 Permanent NPC Death
+* Slain NPCs are recorded in `worldState.permanentNpcDeaths` and `deadEntities` and never respawn.
+* Consequences: +15 Hubris, −25 reputation with the NPC's own faction, manifest consequence rules (`ENTITY_DEATH`: flags, reputation, `failQuest`, `piety`, `morality`, scheduled events), and a scheduled inquest event that sets the flag `inquest_<npcId>`.
+* Quest failover is data-driven: `alternatePathways.onNpcDeath` and `failableConditions.onNpcDeath` in quest definitions.
+* **Not implemented**: inquest effects on prices or regional security.
 
-### 8.6 Morality & Karma Architecture
-* **Virtue (*Arete*) vs Hubris (*Miasma*)**:
-  * Tracks separate cumulative values: `player.morality.virtue` and `player.morality.hubris`.
-  * Net morality score is calculated as `score = virtue - hubris`.
-* **Dynamic Alignment Tiers**:
-  * **Heroic**: Net score $\ge +40$. Favored by gods, honored by citizens, discounts at merchants.
-  * **Pragmatic**: Net score between $-15$ and $+39$. Balanced survivalist, standard reactions.
-  * **Ruthless**: Net score between $-40$ and $-16$. Feared, shunned by holy sanctuaries, heightened guard suspicion.
-  * **Villainous**: Net score $\le -41$. Accursed with *miasma*, hunted by mercenaries, barred from sacred temples.
-* **Multi-Path Quest Resolutions**:
-  * Quests offer divergent choices yielding distinct moral outcomes (e.g. sparing defeated foes, taking ransoms, or executing prisoners).
+### 8.6 Morality
+* `player.morality.virtue` and `.hubris`; score = virtue − hubris.
+* Alignment thresholds come from the campaign's `moralityConfig` (`getMoralityConfig()`): either `tiers: { heroic: 30, pragmatic: -15, ruthless: -40 }` (shipped campaigns) or `alignmentTiers: { heroic: { minScore, title }, ... }`. Defaults: heroic ≥ 30, pragmatic ≥ −15, ruthless ≥ −40, otherwise villainous. `virtueLabel` / `hubrisLabel` are used in notifications; tier `title`s in the morality summary.
+* Alignment can gate actions (`requiresMorality`, `morality_alignment` conditions). **Not implemented**: merchant discounts, temple bans or other passive alignment effects.
+* Moral quest choices: `resolveMoralChoice(questId, pathKey)` with `moralPaths` in the quest definition.
 
+---
+
+## 9. Save Format & Migration (v1.5.0)
+* Saves are written to IndexedDB (`GreekMythologyRPG_DB`/`saves`), falling back to `localStorage` (`gm_save_slot_<n>`). `gm_last_slot` remembers the slot of the game in play and the game resumes from it on start. Autosaves (`autosave()`) write to the slot of the game in play: a game loaded from Slot 2 keeps autosaving to Slot 2.
+* **Slot safety (v1.5.0)**: a new game (Launch Campaign, Restart) or an imported save first autosaves the current game, then goes to the **first slot without a hero** (`findSlotForNewGame()`); if all 3 slots are in use the player is asked before the current game's slot is replaced. Imports never reuse the slot number stored inside the file. *Save* into another game's slot asks for confirmation; *Load* of another slot saves the current game first. The slot list shows each slot's hero, level, campaign and save time.
+* A level-up that was pending when the game was saved is offered again after loading (`checkPendingLevelUp()`).
+* `state.version` is the save format version (`GreekMythologyEngine.SAVE_VERSION`). Every loaded or imported save passes through `migrateState()`, which adds missing containers, normalises legacy slots, recovers currency from an old stray `player.drachmae` field, and never removes progress.
+* Loading a save whose `worldState.campaignId` differs from the loaded content reloads that campaign's content first (`applyLoadedState()`).
+* World-state containers added in v1.4.0: `socialInteractions`, `criticalDiscoveries` (one natural-20 cache per location), `dialogueRewardsClaimed` (one-time dialogue rewards), `dynamicItems` (crafted item definitions), `npcStates[npcId].disposition`. Added in v1.5.0: `firedWorldEvents`, `player.skills.athletics`.
+* Calendar migration for pre-1.4.0 saves in year 2+: each timestamp is shifted by the error of the year it was taken in (scheduled events by the year they were created in), so events created before and after a year boundary both keep their exact timing.
+* Crafted items made before v1.4.0 were never saved; their definitions cannot be recovered and they appear as unidentified items.

@@ -1858,6 +1858,9 @@ runTest("Boss Mechanics: Enrage phase triggered below threshold and cooldown hou
 runTest("Factions & Consequences: Reputation modifications, scheduled world events, and standings", () => {
   const engine = new GreekMythologyEngine();
   engine.loadEmbeddedDevTestContent();
+  // Loading content no longer writes into the running game's state; starting a game does.
+  engine.activeCampaignId = "campaign_dev_test";
+  engine.resetStateForActiveCampaign();
 
   // Initial reputation
   const initialHavenRep = engine.getFactionReputation("faction_dev_haven");
@@ -1940,9 +1943,10 @@ runTest("Campaign Independence: Switching to Dev Test isolates classes and backg
   assert.ok(!devClasses.some(c => c.id === "hoplite"), "Greek hoplite class must not leak into dev test campaign");
   assert.ok(!devClasses.some(c => c.id === "amazon"), "Greek amazon class must not leak into dev test campaign");
 
+  // The embedded (file://) catalog is generated from backgrounds.json (it used to be a stale hand-written copy).
   const devBgs = engine.getCampaignBackgrounds();
-  assert.equal(devBgs.length, 1, "Dev test campaign must expose exactly 1 verified test background");
-  assert.equal(devBgs[0].id, "bg_dev_tester");
+  assert.equal(devBgs.length, 2, "Dev test campaign must expose its 2 test backgrounds");
+  assert.ok(devBgs.every(b => b.id.startsWith("dev_bg_")), "only Dev backgrounds");
   assert.ok(!devBgs.some(b => b.id === "bg_demigod_scion"), "Greek background must not leak into dev test campaign");
 });
 
@@ -2118,10 +2122,17 @@ runTest("Dynamic Crafting Engine: Template + 2 primary materials + 1 supplementa
   assert.ok(engine.hasItem(craftResult.item.id), "Crafted item must be added to player knapsack");
   assert.ok(engine.getItem(craftResult.item.id), "Crafted item must be registered in world items");
 
-  // Verify failure produces zero penalty and does not crash
+  // Verify failure produces zero penalty (materials are kept) and does not crash
+  engine.addItem("mat_cypriot_bronze", 2);
   const failResult = engine.craftItem("template_sword", "mat_cypriot_bronze", "mat_cypriot_bronze", null, -50);
   assert.equal(failResult.success, false, "Negative roll must fail craft check");
   assert.equal(failResult.reason, "Roll below DC");
+  assert.equal(engine.getItemQuantity("mat_cypriot_bronze"), 2, "Failed craft must not consume materials");
+
+  // Crafting without the required materials is refused
+  const noMats = engine.craftItem("template_sword", "mat_celestial_bronze", "mat_celestial_bronze", null, 3);
+  assert.equal(noMats.success, false);
+  assert.equal(noMats.reason, "Insufficient materials");
 
   // Restore rollD20
   engine.rollD20 = originalRoll;

@@ -34,7 +34,7 @@
         { "level": 4, "name": "Lion's Stranglehold", "type": "active", "desc": "Immobilize a humanoid or beast, denying their turn on a successful Strength contest." },
         { "level": 5, "name": "Olympic Might", "type": "passive", "desc": "Strength checks gain advantage; critical hits deal triple unarmed damage." }
       ],
-      "startingEquipment": ["item_bronze_xiphos_001", "item_chlamys_cloak"]
+      "startingEquipment": ["item_xiphos_001", "item_travelers_chlamys_001"]
     },
     {
       "id": "amazon",
@@ -70,7 +70,7 @@
         { "level": 4, "name": "Spear of Phthia", "type": "active", "desc": "Deliver a devastating thrust that pierces deep, causing heavy bleeding." },
         { "level": 5, "name": "Legendary Wrath", "type": "passive", "desc": "+10 Max Health; weapon strikes add +4 bonus damage." }
       ],
-      "startingEquipment": ["item_bronze_xiphos_001", "item_linothorax_001"]
+      "startingEquipment": ["item_xiphos_001", "item_linothorax_001"]
     },
     {
       "id": "trickster",
@@ -88,7 +88,7 @@
         { "level": 4, "name": "Smoke & Mirror Exit", "type": "active", "desc": "Flee from combat with 100% guarantee without sustaining opportunity damage." },
         { "level": 5, "name": "Odyssean Guile", "type": "passive", "desc": "All skill checks involving deception, stealth, or puzzles gain +4." }
       ],
-      "startingEquipment": ["item_bronze_dagger", "item_lockpick_bronze", "item_chlamys_cloak"]
+      "startingEquipment": ["item_bronze_dagger", "item_lockpick_bronze", "item_travelers_chlamys_001"]
     },
     {
       "id": "oracle_shadow",
@@ -106,7 +106,7 @@
         { "level": 4, "name": "Silencing Strike", "type": "active", "desc": "Strike the throat, preventing the target from sounding an alarm or casting spells." },
         { "level": 5, "name": "Ghost of the Adyton", "type": "passive", "desc": "Can move silently across any terrain; stealth checks roll with advantage." }
       ],
-      "startingEquipment": ["item_bronze_dagger", "item_chlamys_cloak"]
+      "startingEquipment": ["item_bronze_dagger", "item_travelers_chlamys_001"]
     },
     {
       "id": "labyrinth_runner",
@@ -142,7 +142,7 @@
         { "level": 4, "name": "Heavenly Aegis", "type": "active", "desc": "Summon a radiant aura that absorbs the next 15 points of damage." },
         { "level": 5, "name": "Ascendant Spark", "type": "passive", "desc": "+2 to all primary attributes; divine favor can be invoked twice per day." }
       ],
-      "startingEquipment": ["item_bronze_xiphos_001", "item_chlamys_cloak"]
+      "startingEquipment": ["item_xiphos_001", "item_travelers_chlamys_001"]
     },
     {
       "id": "oracle",
@@ -196,7 +196,7 @@
         { "level": 4, "name": "Harvest Renewal", "type": "active", "desc": "Heal 15 Health during combat by invoking Demeter and Persephone." },
         { "level": 5, "name": "Initiate of Eternity", "type": "passive", "desc": "Upon suffering fatal damage, automatically revive at 1 HP once per full rest." }
       ],
-      "startingEquipment": ["item_sickle_bronze", "item_chlamys_cloak"]
+      "startingEquipment": ["item_sickle_bronze", "item_travelers_chlamys_001"]
     },
     {
       "id": "nymph_bound",
@@ -232,7 +232,7 @@
         { "level": 4, "name": "Wrath of the Earth-Shaker", "type": "active", "desc": "Shake the ground beneath opponents, inflicting 2d8 seismic damage." },
         { "level": 5, "name": "Master of the Aegean", "type": "passive", "desc": "Water and cold damage reduced by 50%; trident attacks ignore 4 enemy AC." }
       ],
-      "startingEquipment": ["item_trident_bronze", "item_chlamys_cloak"]
+      "startingEquipment": ["item_trident_bronze", "item_travelers_chlamys_001"]
     },
     {
       "id": "maenad",

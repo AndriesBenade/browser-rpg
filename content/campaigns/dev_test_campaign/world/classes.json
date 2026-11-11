@@ -8,6 +8,7 @@
       "description": "A fortified frontier guardian trained in test combat mechanics.",
       "primaryAttributes": ["strength", "endurance"],
       "statBonuses": { "strength": 1, "endurance": 1 },
+      "startingEquipment": ["item_dev_broadsword"],
       "classFeatures": [
         { "level": 1, "name": "Aegis Guard", "type": "passive", "desc": "+2 Armor Class." }
       ]
@@ -20,6 +21,7 @@
       "description": "A stealth operative specialized in lockpicking and scouting.",
       "primaryAttributes": ["agility", "perception"],
       "statBonuses": { "agility": 1, "perception": 1 },
+      "startingEquipment": ["item_dev_iron_lockpick"],
       "classFeatures": [
         { "level": 1, "name": "Lockpick Mastery", "type": "passive", "desc": "+3 on lockpicking." }
       ]

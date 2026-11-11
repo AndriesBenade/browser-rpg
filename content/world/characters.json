@@ -299,7 +299,7 @@
       "isMerchant": true,
       "merchantInventory": [
         { "itemId": "item_healing_draught", "price": 15, "stock": 5 },
-        { "itemId": "item_bronze_xiphos_001", "price": 25, "stock": 3 },
+        { "itemId": "item_xiphos_001", "price": 25, "stock": 3 },
         { "itemId": "item_hoplite_spaulders", "price": 28, "stock": 2 },
         { "itemId": "item_toolkit_engineering", "price": 35, "stock": 1 }
       ],

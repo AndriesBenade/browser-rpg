@@ -167,13 +167,19 @@ NPCs are registered in `content/world/characters.json` or inside an adventure pa
 
 ### Supported Choice Node Outcomes:
 - `setFlags`: `{ "flag_name": true / false }`
-- `giveItem`: `"item_id"`
-- `giveDrachmae`: integer
-- `awardXP`: integer
-- `updateQuest`: `{ "questId": "...", "objectiveId": "...", "completed": true }`
-- `completeQuest`: `"quest_id"`
+- `giveItem`: `"item_id"` (given once per save, and only if the hero does not already carry it)
+- `giveDrachmae`: integer (given once per save)
+- `awardXP`: integer (given once per save; also grants renown = XP / 10)
+- `updateQuest`: `{ "questId": "...", "objectiveId": "...", "completed": true }` — objectives of later quest stages may be used; the quest moves to that stage
+- `startQuest`: `"quest_id"` (no effect if already started)
+- `completeQuest`: `"quest_id"` — completes **that** quest (the tutorial quest additionally shows its victory screen)
 - `addJournalKnowledge`: `{ "title": "...", "text": "..." }`
 - `addJournalChronicle`: `{ "title": "...", "text": "..." }`
+
+One-time rewards are recorded in the save (`worldState.dialogueRewardsClaimed`), so revisiting a node or reloading the page never pays out twice.
+
+### Linking NPCs to dialogue
+An NPC opens the tree named by `dialogueTreeId` **or** `dialogueId`. NPCs without an authored tree still get a simple conversation generated from their `description`, their `knowledge` ids (matched to entries in `mythology.json`) and, for merchants, their `merchantInventory`.
 
 ---
 
@@ -296,6 +302,9 @@ Puzzles are declared in the `puzzles` array. The engine's generic `PuzzleEngine`
 ## 7. Creating Combat Encounters
 
 Encounters are declared in the `encounters` array. When triggered, the engine initializes turn-based combat with tactical options (Shield Block, Feint, Strike) and automatically dispatches victory outcomes.
+
+* An encounter is offered only while its `triggerCondition` (`flag` / `expected`) holds.
+* Once won, an encounter is **one-time** unless it sets `"repeatable": true`; a repeatable encounter comes back after `cooldownHours` (or, without a cooldown, when its creature respawns). Make farmable fights repeatable on purpose and give them a cooldown.
 
 ### Encounter Schema Example:
 ```json
@@ -423,7 +432,8 @@ To guarantee offline play:
 1. When you add new items, locations, creatures, or lore to JSON files in `content/`, also update the embedded compact fallback data in `index.html`:
    - `loadEmbeddedFallbackContent()`: Contains compact JSON arrays for locations, creatures, items, and deities.
    - `getEmbeddedFallbackAdventure()`: Contains compact JSON for the active adventure.
-2. The engine's test suite automatically verifies that all locations, creatures, and items exist in both external JSON files and the embedded fallback.
+2. `tests/behaviour_tests.js` ("Dual content") verifies that the embedded Dev campaign has the same location, NPC, creature, item and quest ids as its JSON files, that the embedded Greek items are a subset of `items.json`, and that every embedded class starting item exists in the embedded catalog.
+3. The embedded Greek fallback is intentionally a **reduced subset** (no crafting toolkits or materials, fewer items). For full play serve the folder over HTTP (`python server.py`).
 
 ---
 
@@ -435,7 +445,8 @@ Before committing new content:
 - [ ] Ancient literary source cited (`author`, `work`, `passage`).
 - [ ] Connect new locations back to existing locations so the player can travel to and from them.
 - [ ] Plain-English outcomes used in action narratives (no raw D&D calculation formulas).
-- [ ] Run the test suite: `node tests/engine_tests.js` to ensure 100% test passing!
+- [ ] Run the test suites: `npm test` (legacy + behaviour tests, no dependencies) and, if Playwright is installed, `npm run test:browser`.
+- [ ] Run **Validate Campaign** on the campaign screen: it now also reports item ids referenced by loot tables, creature loot, merchant stock and class/background starting equipment that do not exist.
 
 ---
 
@@ -456,7 +467,9 @@ To author a new campaign or adventure world:
    - `quests.json`: Linear or branching quests with objective stages and alternate death failovers.
    - `encounters.json`: Boss encounters with intro prose, cooldown hours, and victory triggers.
    - `dialogues.json`: Decoupled conversation trees with conditional node branches.
-   - `events.json`: Consequence rules and scheduled delayed world events.
+   - `events.json`: World events that react to `FLAG_SET`, `ITEM_ACQUIRED` or `ENTITY_DEATH` (see CONTENT_SCHEMA §23). Manifest `consequenceRules` cover the same triggers.
+
+> **file:// mode:** the Dev campaign also exists as an embedded copy inside `index.html`. After editing any of the files above, run `npm run sync:embedded` (`node scripts/sync-embedded-dev-content.js`). `npm test` fails while the copy is out of date.
 
 ### 12.2 Using the Campaign Content Validation Engine
 The engine includes a built-in static validator:
@@ -645,7 +658,7 @@ In `world/quests.json`:
 ### 14.3 Configuring Creature & Boss Respawns
 In `world/creatures.json`:
 - Set `"respawnHours": <hours>` (e.g. 12 for wolves/boars, 72 for legendary beasts).
-- Bosses marked with `"isBoss": true` and `"repeatable": true` will respawn according to `respawnHours` using event-driven scheduling.
+- Bosses marked with `"isBoss": true` respawn according to `respawnHours` using event-driven scheduling. Their encounter (in `encounters.json`) must set `"repeatable": true` (and usually `cooldownHours`) to be fought again; non-repeatable encounters are one-time.
 - Unique relics listed in loot tables are awarded only on the first victory; subsequent victories award level-scaled drachmae to prevent item duplication exploits.
 
 ### 14.4 Defining Moral Choices & Alignment Consequences

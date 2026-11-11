@@ -4,6 +4,13 @@
 
 ---
 
+> **Implementation status (v4.1 audit, 2026-11-11):** the module names below (`StateManager`, `RulesEngine`, …) describe the
+> intended separation of concerns. In the current code all of them live as method groups inside one class,
+> `GreekMythologyEngine`, in `index.html`. Save recovery is simpler than §1.2 describes: an unreadable save slot is
+> skipped with a console error (the game still starts) and older saves are upgraded by `migrateState()`; there is no
+> checksum or recovery dialog. Testing: `npm test` runs the legacy suite and `tests/behaviour_tests.js`, which exercises
+> the real engine and content (see §3).
+
 ## 1. Code Standards & Architecture Guidelines
 
 ### 1.1 Modularity & Single-HTML Deliverable
@@ -51,6 +58,11 @@ This project demands strict adherence to authentic classical traditions. Generic
 ## 3. Testing & Verification Protocol
 
 Before certifying any stage:
+0. **Run the suites:** `npm test` (no dependencies) and, if Playwright is available, `npm run test:browser`. Prefer adding
+   tests to `tests/behaviour_tests.js`: they run the real engine from `index.html` with the real JSON content, unlike the
+   mock-based tests in `tests/engine_tests.js`. After editing Dev campaign JSON, run `npm run sync:embedded` so the
+   embedded `file://` copy in `index.html` matches (`npm test` checks this).
+   When changing the save structure, bump `GreekMythologyEngine.SAVE_VERSION` and extend `migrateState()`; never drop fields.
 1. **Automated Unit Tests:**
    - Execute logic verification on `RulesEngine` (attribute modifiers, d20 probability distribution, skill check bounds).
    - Test `StateManager` immutability and IndexedDB save/load cycle round-tripping.

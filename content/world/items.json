@@ -57,6 +57,7 @@
         "damageMin": 3,
         "damageMax": 7,
         "damageType": "piercing",
+        "ranged": true,
         "reachBonus": 5,
         "attributeRequirement": { "agility": 12 }
       },
@@ -732,6 +733,13 @@
         "note": "Cadmus sowed the teeth of the sacred dragon of Ares into the Boeotian earth to sprout the Spartoi."
       }
     },
-    { "id": "mat_papyrus_reeds", "name": "Egyptian Papyrus Reeds", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 0.5, "valueDrachmae": 6, "description": "Cross-laminated river reed sheets pressed into resilient parchment scrolls." }
+    { "id": "mat_papyrus_reeds", "name": "Egyptian Papyrus Reeds", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 0.5, "valueDrachmae": 6, "description": "Cross-laminated river reed sheets pressed into resilient parchment scrolls." },
+    {"id": "item_bronze_dagger", "name": "Bronze Leaf Dagger", "ancientGreek": "ἐγχειρίδιον", "category": "weapon", "slot": "main_hand", "rarity": "common", "weightKg": 0.5, "valueDrachmae": 12, "stats": {"damageMin": 2, "damageMax": 6, "damageType": "piercing", "reachBonus": 0, "attributeRequirement": {"agility": 10}}, "description": "A short leaf-shaped bronze blade worn at the belt, favoured by scouts and cutpurses."},
+    {"id": "item_staff_olive_wood", "name": "Olive-Wood Staff", "ancientGreek": "βακτηρία", "category": "weapon", "slot": "main_hand", "rarity": "common", "weightKg": 1.6, "valueDrachmae": 6, "stats": {"damageMin": 2, "damageMax": 6, "damageType": "bludgeoning", "reachBonus": 1}, "description": "A seasoned staff of wild olive carried by seers, pilgrims and wandering sages."},
+    {"id": "item_sickle_bronze", "name": "Bronze Harvest Sickle", "ancientGreek": "δρέπανον", "category": "weapon", "slot": "main_hand", "rarity": "common", "weightKg": 0.7, "valueDrachmae": 10, "stats": {"damageMin": 3, "damageMax": 6, "damageType": "slashing", "reachBonus": 0}, "description": "A curved bronze sickle used in rites of the harvest and the mysteries."},
+    {"id": "item_trident_bronze", "name": "Bronze Fishing Trident", "ancientGreek": "τρίαινα", "category": "weapon", "slot": "main_hand", "rarity": "common", "weightKg": 2.0, "valueDrachmae": 22, "stats": {"damageMin": 4, "damageMax": 9, "damageType": "piercing", "reachBonus": 1, "attributeRequirement": {"strength": 11}}, "description": "A three-pronged bronze spear of the Aegean fishermen, sacred to Poseidon."},
+    {"id": "item_lockpick_bronze", "name": "Bronze Lockpicks", "ancientGreek": "κλειδία", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 0.2, "valueDrachmae": 15, "description": "A roll of thin bronze picks and tension wires for coaxing open tumbler locks."},
+    {"id": "item_torches", "name": "Pitch-Pine Torches", "ancientGreek": "δαΐδες", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 1.0, "valueDrachmae": 3, "description": "A bundle of resin-soaked pine torches for exploring caves and labyrinths."},
+    {"id": "item_scholarly_parchment", "name": "Scholar's Papyrus Scrolls", "ancientGreek": "βιβλία", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 0.4, "valueDrachmae": 8, "description": "Rolled papyrus scrolls, reed pens and soot ink for recording discoveries and arguments."}
   ]
 }
