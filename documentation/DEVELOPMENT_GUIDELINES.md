@@ -63,6 +63,8 @@ Before certifying any stage:
    mock-based tests in `tests/engine_tests.js`. After editing Dev campaign JSON, run `npm run sync:embedded` so the
    embedded `file://` copy in `index.html` matches (`npm test` checks this).
    When changing the save structure, bump `GreekMythologyEngine.SAVE_VERSION` and extend `migrateState()`; never drop fields.
+   Every new D20 check must go through `checkSkill()` or `resolveD20()` + `applyCriticalEffects()` (ENGINE_ARCHITECTURE §7.11);
+   never test a raw `rollD20()` result against a DC or for 1/20.
 1. **Automated Unit Tests:**
    - Execute logic verification on `RulesEngine` (attribute modifiers, d20 probability distribution, skill check bounds).
    - Test `StateManager` immutability and IndexedDB save/load cycle round-tripping.

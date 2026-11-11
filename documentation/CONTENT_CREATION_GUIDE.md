@@ -304,6 +304,7 @@ Puzzles are declared in the `puzzles` array. The engine's generic `PuzzleEngine`
 Encounters are declared in the `encounters` array. When triggered, the engine initializes turn-based combat with tactical options (Shield Block, Feint, Strike) and automatically dispatches victory outcomes.
 
 * An encounter is offered only while its `triggerCondition` (`flag` / `expected`) holds.
+* Every attack roll uses the shared D20 rules: natural 20 / natural 1 are critical for the hero and for creatures alike (CONTENT_SCHEMA §24).
 * Once won, an encounter is **one-time** unless it sets `"repeatable": true`; a repeatable encounter comes back after `cooldownHours` (or, without a cooldown, when its creature respawns). Make farmable fights repeatable on purpose and give them a cooldown.
 
 ### Encounter Schema Example:

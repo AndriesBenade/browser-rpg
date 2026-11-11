@@ -289,7 +289,10 @@
       height: 100%;
       min-height: 0;
       max-height: 100%;
-      overflow: hidden;
+      /* Views that fit keep their own inner scroll panes; taller content (e.g. the campaign
+         screen on a laptop) scrolls instead of being cut off. */
+      overflow-y: auto;
+      overflow-x: hidden;
       animation: fadeIn 0.2s ease-in-out;
     }
 
@@ -315,7 +318,7 @@
       max-height: 100%;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-y: auto; /* card views without an inner scroll pane (crafting) scroll on small screens */
       box-shadow: var(--shadow-depth);
     }
 
@@ -3341,7 +3344,7 @@
      */
     class GreekMythologyEngine {
       /** Version written into save files; bump when the save structure changes (see migrateState). */
-      static get SAVE_VERSION() { return "1.5.0"; }
+      static get SAVE_VERSION() { return "1.6.0"; }
       /** Number of save slots offered in the UI. */
       static get SAVE_SLOT_COUNT() { return 3; }
 
@@ -3732,6 +3735,8 @@
               ranged_combat: 1,
               stealth: 1,
               persuasion: 2,
+              // Separate from persuasion so mastery (Reliable Talent) in one does not cover the other.
+              deception: 2,
               survival: 2,
               tracking: 2,
               perception: 2,
@@ -4522,6 +4527,8 @@
         p.skills = Object.assign({}, p.skills || fresh.player.skills);
         // Skills added in later versions (v1.5.0: athletics). Heroes whose background trained the
         // skill receive the +2 they were promised at creation.
+        // v1.6.0: deception became its own skill (it used to roll persuasion); keep the hero's odds.
+        if (typeof p.skills.deception !== "number") p.skills.deception = typeof p.skills.persuasion === "number" ? p.skills.persuasion : 2;
         if (typeof p.skills.athletics !== "number") {
           p.skills.athletics = (Array.isArray(p.proficiencies) && p.proficiencies.includes("athletics")) ? 2 : 0;
         }
@@ -5770,6 +5777,122 @@
       }
 
       /**
+       * Shared D20 rules. Campaigns may override any part with `d20Rules` in campaign.json
+       * (CONTENT_SCHEMA §24): criticals on/off, the natural values, Reliable Talent settings and
+       * per-activity critical outcomes.
+       */
+      getD20Rules() {
+        const c = (this.activeCampaign && this.activeCampaign.d20Rules) || {};
+        const rt = c.reliableTalent || {};
+        return {
+          criticals: c.criticals !== false,
+          critSuccess: c.criticalSuccessOn || 20,
+          critFailure: c.criticalFailureOn || 1,
+          outcomes: c.criticalOutcomes || {},
+          rt: {
+            enabled: rt.enabled !== false,
+            minimum: rt.minimumRoll || 6,
+            threshold: rt.defaultThreshold || 8,
+            thresholds: rt.thresholds || {},
+            eligible: Array.isArray(rt.eligibleSkills) ? rt.eligibleSkills : null,
+            combat: Array.isArray(rt.combatSkills) ? rt.combatSkills : ["melee_combat", "ranged_combat"]
+          }
+        };
+      }
+
+      /** Skill rank that unlocks Reliable Talent for one skill, or null if the skill can never have it. */
+      getReliableTalentThreshold(skill) {
+        const rt = this.getD20Rules().rt;
+        if (!rt.enabled || !skill || rt.combat.includes(skill) || (rt.eligible && !rt.eligible.includes(skill))) return null;
+        return rt.thresholds[skill] !== undefined ? rt.thresholds[skill] : rt.threshold;
+      }
+
+      hasReliableTalent(skill) {
+        const t = this.getReliableTalentThreshold(skill);
+        const rank = this.state.player.skills && this.state.player.skills[skill];
+        return t !== null && typeof rank === "number" && rank >= t;
+      }
+
+      /**
+       * THE D20 resolution used by every check: skill checks, attacks, feints, escapes, crafting and
+       * NPC/creature attacks. Criticals are read from the NATURAL die, never from the modified total.
+       * opts: { modifier, dc, skill (the player's skill, for Reliable Talent), natural (pre-rolled) }
+       */
+      resolveD20(opts = {}) {
+        const r = this.getD20Rules();
+        const natural = opts.natural !== undefined ? opts.natural : this.rollD20();
+        // Reliable Talent: on a mastered skill a natural 1-5 counts as 6 (so it cannot be a critical failure).
+        const reliable = !!(opts.skill && natural < r.rt.minimum && this.hasReliableTalent(opts.skill));
+        const effective = reliable ? r.rt.minimum : natural;
+        const modifier = opts.modifier || 0;
+        const total = effective + modifier;
+        const isCriticalSuccess = r.criticals && natural >= r.critSuccess;
+        const isCriticalFailure = r.criticals && !reliable && natural <= r.critFailure;
+        const success = opts.dc === undefined ? null : (isCriticalSuccess || (!isCriticalFailure && total >= opts.dc));
+        return { natural, effective, modifier, total, dc: opts.dc, success, reliable, isCriticalSuccess, isCriticalFailure,
+          critical: isCriticalSuccess ? "success" : (isCriticalFailure ? "failure" : null) };
+      }
+
+      /**
+       * Default consequences of critical rolls, per activity (the effect comes on top of the ordinary
+       * success or failure). Generic keys are applied by applyCriticalEffects: text, loseStamina, minutes,
+       * disposition/reputation (towards ctx.npcId), discovery (location cache) and any outcome key
+       * (awardXP, giveItem, setFlags, ...). Other keys are read by the activity itself (e.g. lootMultiplier).
+       */
+      static get CRITICAL_EFFECTS() {
+        return {
+          exploration: { success: { discovery: true }, failure: { loseStamina: 2, minutes: 15, text: "A careless misstep costs you time and breath (-2 Stamina, 15 minutes)." } },
+          heave: { success: { discovery: true }, failure: { loseStamina: 3, text: "You wrench your back against the dead weight (-3 Stamina)." } },
+          lockpick: { success: { spareTool: true, text: "The mechanism yields so cleanly that you salvage a spare pick from it." }, failure: { breakTool: true, springTrap: true } },
+          pickpocket: { success: { lootMultiplier: 2, text: "Your fingers find a second, heavier purse." }, failure: { caught: true } },
+          persuasion: { success: { disposition: 10, reputation: 3, text: "Your words strike a deep chord; they will remember this (+10 extra Disposition)." }, failure: { disposition: -10, text: "Your words land badly and give offence (-10 Disposition)." } },
+          deception: { success: { disposition: 5, text: "They believe you so completely that they start to confide in you (+5 Disposition)." }, failure: { disposition: -10, reputation: -5, text: "Your story falls apart in front of witnesses (-10 extra Disposition, reputation suffers)." } },
+          puzzle: { success: { awardXP: 25, text: "A flash of insight lights up the whole problem." }, failure: { loseStamina: 2, text: "Doubt gnaws at you after the mistake (-2 Stamina)." } },
+          crafting: { success: { masterwork: true }, failure: { damageMaterial: 1, text: "The work goes badly wrong and ruins one of your primary materials." } },
+          hunting: { success: { awardXP: 15, text: "An exceptional hunt: the quarry yields far more than expected." }, failure: { minutes: 30, text: "You startle the quarry and lose its trail (30 minutes wasted)." } },
+          gathering: { success: { awardXP: 10, text: "You find an especially fine specimen." }, failure: { minutes: 20, text: "You trample the best growth; nothing worth taking remains (20 minutes wasted)." } },
+          attack: { success: {}, failure: { enemyBonus: 2 } },
+          feint: { success: { playerBonus: 2 }, failure: { enemyBonus: 2 } },
+          flee: { success: { restoreStamina: 2 }, failure: { enemyBonus: 2 } },
+          enemy_attack: { success: { extraDamage: 4 }, failure: { playerBonus: 2 } }
+        };
+      }
+
+      /** "Critical Success" / "Critical Failure" (Greek names in the default campaign). */
+      getCriticalLabel(kind) {
+        const greek = this.usesDefaultContentFallbacks();
+        if (kind === "success") return greek ? "Legendary Triumph (Arete)" : "Critical Success";
+        return greek ? "Sudden Misfortune (Ate)" : "Critical Failure";
+      }
+
+      /**
+       * Apply the consequence of a critical roll. Priority: ctx.override (e.g. an action's own
+       * criticalSuccess / criticalFailure) > campaign d20Rules.criticalOutcomes[activity] > engine default.
+       * Returns the effect object so the activity can apply its own mechanics. ctx.silent: only return it
+       * (combat writes its own log).
+       */
+      applyCriticalEffects(activity, roll, ctx = {}) {
+        if (!roll || !roll.critical) return {};
+        const kind = roll.critical;
+        const defaults = GreekMythologyEngine.CRITICAL_EFFECTS;
+        const fx = (ctx.override && ctx.override[kind]) || (this.getD20Rules().outcomes[activity] || {})[kind]
+          || (defaults[activity] || defaults.exploration)[kind] || {};
+        if (ctx.silent) return fx;
+        const v = this.state.player.vitals;
+        if (fx.loseStamina) v.stamina = Math.max(0, v.stamina - fx.loseStamina);
+        if (ctx.npcId && fx.disposition) this.setNpcDisposition(ctx.npcId, this.getNpcDisposition(ctx.npcId) + fx.disposition);
+        if (ctx.npcId && fx.reputation) {
+          const npc = this.getCharacter(ctx.npcId);
+          const faction = npc && (npc.factionId || npc.faction);
+          if (faction) this.modifyFactionReputation(faction, fx.reputation, this.getCriticalLabel(kind));
+        }
+        if (fx.discovery) this.triggerCriticalSuccessDiscovery(activity, ctx.label);
+        this.applyActionOutcome(Object.assign({ speaker: this.getCriticalLabel(kind), cssClass: kind === "success" ? "entry-discovery" : "entry-ate" }, fx));
+        if (fx.minutes) this.advanceTime(0, fx.minutes);
+        return fx;
+      }
+
+      /**
        * Roll a damage expression: "NdM", "NdM+K", "NdM-K", "dM" or a flat number ("5").
        * (The previous inline parser ignored "-K" and read a flat "5" as 5d6.)
        */
@@ -5969,9 +6092,12 @@
         this.renderAll();
       }
 
-      checkSkill(skillName, attributeName, dc, label = "Skill Check") {
-        const d20 = this.rollD20();
-        
+      /**
+       * Player skill check through the shared D20 resolver (criticals, Reliable Talent).
+       * opts.activity picks the critical consequences (default "exploration"); opts.npcId targets
+       * social consequences; opts.criticalOverride = { success, failure } replaces them for one action.
+       */
+      checkSkill(skillName, attributeName, dc, label = "Skill Check", opts = {}) {
         // D&D Rule: Perception is a substat governed by Wisdom
         let effectiveAttr = attributeName;
         if (effectiveAttr === "perception" || skillName === "perception") {
@@ -5999,7 +6125,7 @@
             traits.some(t => t && ((t.id === "vigilant") || (t.name && (t.name.includes("Vigilant") || t.name.includes("Wayfarer")))))) {
           traitBonus += 2;
         }
-        // Silver-Tongued Orator: +2 on persuasion/deception (both resolve through the persuasion skill)
+        // Silver-Tongued Orator: +2 on persuasion and deception checks
         if ((skillName === "persuasion" || skillName === "deception") && this.hasTrait("eloquent")) {
           traitBonus += 2;
         }
@@ -6035,11 +6161,10 @@
         }
 
         const bonusTotal = attrMod + (skillRank * 2) + traitBonus + featBonus + equipBonus;
-        const total = d20 + bonusTotal;
-
-        const isArete = d20 === 20;
-        const isAte = d20 === 1;
-        const success = isArete || (!isAte && total >= dc);
+        const roll = this.resolveD20({ modifier: bonusTotal, dc, skill: skillName });
+        const { total, success, natural: d20 } = roll;
+        const isArete = roll.isCriticalSuccess;
+        const isAte = roll.isCriticalFailure;
 
         let outcomeClass = success ? "outcome-success" : "outcome-failure";
         let badgeText = success ? "Success" : "Setback";
@@ -6048,17 +6173,17 @@
 
         if (isArete) {
           outcomeClass = "outcome-arete";
-          badgeText = "Legendary Triumph (Arete)";
+          badgeText = this.getCriticalLabel("success");
           outcomeTitle = "Peak heroic mastery and divine inspiration.";
           outcomeDesc = "Your actions achieve an exceptional triumph far exceeding ordinary mortal limits.";
         } else if (isAte) {
           outcomeClass = "outcome-ate";
-          badgeText = "Sudden Misfortune (Ate)";
+          badgeText = this.getCriticalLabel("failure");
           outcomeTitle = "An ill-omened misstep.";
           outcomeDesc = "A sudden tremor or ill-timed slip betrays your effort, thwarting the action before it can succeed.";
         } else if (success) {
           outcomeTitle = "Your capability overcomes the challenge.";
-          outcomeDesc = `Drawing upon your honed ${skillName.replace(/_/g, " ")} and natural ${effectiveAttr}, you successfully overcome the resistance.`;
+          outcomeDesc = `Drawing upon your honed ${String(skillName || effectiveAttr).replace(/_/g, " ")} and natural ${effectiveAttr}, you successfully overcome the resistance.`;
         } else {
           outcomeTitle = "The obstacle proves too demanding.";
           outcomeDesc = "Despite your efforts, the conditions demand greater finesse or power than you could summon at this moment.";
@@ -6072,18 +6197,17 @@
             </div>
             <div class="check-outcome-description">
               <strong>${outcomeTitle}</strong> ${outcomeDesc}
+              <div style="font-size: 0.78rem; opacity: 0.8;">🎲 ${d20}${roll.reliable ? ` → ${roll.effective} (Reliable Talent)` : ""} ${bonusTotal >= 0 ? "+" : "−"} ${Math.abs(bonusTotal)} = ${total} vs DC ${dc}</div>
             </div>
           </div>
         `;
 
         this.appendTranscriptHtml(checkHtml);
 
-        // Outside combat: Natural 20 Arete triggers location-appropriate discovery & loot!
-        if (isArete) {
-          this.triggerCriticalSuccessDiscovery(skillName, label);
-        }
+        // Critical consequences for this activity (natural 20 / natural 1), e.g. a discovery cache when exploring.
+        const fx = this.applyCriticalEffects(opts.activity || "exploration", roll, { npcId: opts.npcId, label, override: opts.criticalOverride });
 
-        return { success, isArete, isAte, total, d20, bonusTotal, dc };
+        return { success, isArete, isAte, total, d20, bonusTotal, dc, effective: roll.effective, reliable: roll.reliable, critical: roll.critical, fx };
       }
 
       /* =========================================================================
@@ -6175,7 +6299,10 @@
 
         if (hType === "skill_check" && action.skillCheck) {
           const sc = action.skillCheck;
-          const check = this.checkSkill(sc.skill, sc.attribute, sc.dc, sc.name || "Skill Check");
+          const check = this.checkSkill(sc.skill, sc.attribute, sc.dc, sc.name || "Skill Check", {
+            activity: sc.activity || "exploration", npcId: sc.npcId,
+            criticalOverride: (sc.criticalSuccess || sc.criticalFailure) ? { success: sc.criticalSuccess, failure: sc.criticalFailure } : null
+          });
           const outcome = check.success ? sc.success : sc.failure;
           if (outcome) {
             this.applyActionOutcome(outcome);
@@ -7065,12 +7192,13 @@
         // Each attempt takes time, so failed picks cannot be retried for free while quest clocks are frozen.
         this.performActivity("lockpicking");
         const dc = this.getObjectLockDc(obj);
-        const check = this.checkSkill("stealth", "agility", dc, `Lockpick Attempt on ${obj.name}`);
+        const check = this.checkSkill("stealth", "agility", dc, `Lockpick Attempt on ${obj.name}`, { activity: "lockpick" });
+        const fx = check.fx || {};
 
         if (check.isAte) {
           const fc = obj.failureConsequence || {};
           if (fc.message) this.logTranscript("Ate Fumble", fc.message, "entry-ate");
-          if (fc.breakToolOnAte !== false) {
+          if (fx.breakTool && fc.breakToolOnAte !== false) {
             const toolItem = (obj.requiredToolId && this.hasItem(obj.requiredToolId))
               ? obj.requiredToolId
               : (this.state.player.inventory.find(i => i.itemId.includes("lockpick") || i.itemId.includes("tools"))?.itemId || "item_lockpick_iron");
@@ -7078,11 +7206,16 @@
             this.logTranscript("Ate Fumble", `SNAP! Your lockpick catches against a hardened tumbler pin and snaps cleanly in two! The broken tool is ruined.`, "entry-ate");
             if (this.showToast) this.showToast("item", "Lockpick Broken!", "negative", "💥", "Tool snapped in mechanism");
           }
-          if (obj.isTrapped || obj.trap) {
+          if (fx.springTrap && (obj.isTrapped || obj.trap)) {
             this.triggerObjectTrap(obj);
           }
         } else if (check.isArete || check.success) {
           this.logTranscript("Success", `CLICK! The internal tumblers shift and the lock on ${obj.name} swings open!`, "entry-discovery");
+          if (fx.spareTool) {
+            const tool = (obj.requiredToolId && this.hasItem(obj.requiredToolId)) ? obj.requiredToolId
+              : (this.state.player.inventory.find(i => i.itemId.includes("lockpick")) || {}).itemId;
+            if (tool) this.addItem(tool, 1);
+          }
           this.markObjectOpened(obj);
           this.awardObjectOpenXP(obj, 35, `Picked Lock: ${obj.name}`);
           if (this.showToast) this.showToast("discovery", `Unlocked: ${obj.name}`, "positive", "🔓", "Lock bypassed successfully");
@@ -7125,7 +7258,7 @@
         if (!obj || this.isObjectOpen(obj)) return;
         this.performActivity("heave");
         const dc = obj.heaveDc || obj.requiredScore || 13;
-        const check = this.checkSkill("athletics", obj.requiredAttribute || "strength", dc, `Heave ${obj.name}`);
+        const check = this.checkSkill("athletics", obj.requiredAttribute || "strength", dc, `Heave ${obj.name}`, { activity: "heave" });
         if (check.isArete || check.success) {
           this.logTranscript("Success", `With an immense heave of heroic muscle, you shift ${obj.name} aside, clearing the path!`, "entry-discovery");
           this.markObjectOpened(obj);
@@ -7245,9 +7378,10 @@
         const wisScore = (npc.attributes && npc.attributes.wisdom) ? npc.attributes.wisdom : 12;
         const dc = 11 + Math.floor((wisScore - 10) / 2);
 
-        const check = this.checkSkill("stealth", "agility", dc, `Pickpocket Attempt on ${npc.name}`);
+        const check = this.checkSkill("stealth", "agility", dc, `Pickpocket Attempt on ${npc.name}`, { activity: "pickpocket", npcId: npc.id });
+        const fx = check.fx || {};
 
-        if (check.isAte) {
+        if (check.isAte && fx.caught) {
           this.logTranscript("Caught Red-Handed", `ATE! Your fingers fumble against ${npc.name}'s belt! ${npc.name} spins around shouting: "THIEF! GUARDS, ARREST THIS SCOUNDREL!"`, "entry-ate");
           const victimFaction = npc.factionId || npc.faction;
           if (victimFaction) this.modifyFactionReputation(victimFaction, -15, `Caught pickpocketing ${npc.name}`);
@@ -7255,7 +7389,7 @@
             this.confirmOrStartAttackEntity(npc.id, "npc");
           }, 800);
         } else if (check.isArete || check.success) {
-          const stolenDrachmae = Math.floor(Math.random() * 12) + 6;
+          const stolenDrachmae = (Math.floor(Math.random() * 12) + 6) * (fx.lootMultiplier || 1);
           if (!this.state.player.currencies) this.state.player.currencies = { drachmae: 0, obols: 0 };
           this.state.player.currencies.drachmae += stolenDrachmae;
           this.awardXP(25, `Pickpocket: ${npc.name}`);
@@ -7423,17 +7557,17 @@
         this.performActivity("social_interaction");
         const disposition = this.getNpcDisposition(npcId);
         const dc = disposition < 0 ? 14 : 11;
-        const check = this.checkSkill("persuasion", "charisma", dc, `Persuade ${npc.name}`);
+        const check = this.checkSkill("persuasion", "charisma", dc, `Persuade ${npc.name}`, { activity: "persuasion", npcId });
 
         if (check.isArete || check.success) {
-          const newDisposition = this.setNpcDisposition(npcId, disposition + 10);
+          const newDisposition = this.setNpcDisposition(npcId, this.getNpcDisposition(npcId) + 10);
           this.awardXP(30, `Persuaded ${npc.name}`);
           this.logTranscript("Civic Eloquence", `Your measured words sway ${npc.name}, winning their goodwill and respect (+10 Disposition).`, "entry-discovery");
           if (this.showToast) this.showToast("discovery", `Persuaded ${npc.name}`, "positive", "🗣️", "+10 Disposition");
-          return { success: true, roll: check.total, d20: check.d20, dc, disposition: newDisposition };
+          return { success: true, roll: check.total, d20: check.d20, dc, disposition: newDisposition, critical: check.critical };
         } else {
           this.logTranscript("Rhetorical Misfire", `${npc.name} shakes their head, unmoved by your appeals.`, "entry-prose");
-          return { success: false, roll: check.total, d20: check.d20, dc, disposition };
+          return { success: false, roll: check.total, d20: check.d20, dc, disposition: this.getNpcDisposition(npcId), critical: check.critical };
         }
       }
 
@@ -7454,17 +7588,17 @@
 
         this.performActivity("social_interaction");
         const dc = 12 + Math.floor(((npc.attributes && npc.attributes.wisdom ? npc.attributes.wisdom : 12) - 10) / 2);
-        const check = this.checkSkill("persuasion", "charisma", dc, `Deceive ${npc.name}`);
+        const check = this.checkSkill("deception", "charisma", dc, `Deceive ${npc.name}`, { activity: "deception", npcId });
 
         if (check.isArete || check.success) {
           this.awardXP(25, `Deceived ${npc.name}`);
           this.logTranscript("Deceptive Guile", `You weave a cunning half-truth that ${npc.name} accepts without question.`, "entry-discovery");
           if (this.showToast) this.showToast("discovery", `Deceived ${npc.name}`, "positive", "🎭", "Ruse succeeded");
-          return { success: true, roll: check.total, d20: check.d20, dc };
+          return { success: true, roll: check.total, d20: check.d20, dc, critical: check.critical };
         } else {
           this.setNpcDisposition(npcId, this.getNpcDisposition(npcId) - 10);
           this.logTranscript("Ruse Exposed", `${npc.name} narrows their eyes: "Do you take me for a fool? Your tale rings hollow!" (-10 Disposition).`, "entry-ate");
-          return { success: false, roll: check.total, d20: check.d20, dc };
+          return { success: false, roll: check.total, d20: check.d20, dc, critical: check.critical };
         }
       }
 
@@ -8872,7 +9006,7 @@
         if (choice === "drakon" || choice === "known_answer" || choice === "solved") {
           solve();
         } else if (choice === "skill_check") {
-          const check = this.checkSkill((puzzle && puzzle.deductionSkill) || "mythology_lore", (puzzle && puzzle.deductionAttribute) || "wisdom", (puzzle && puzzle.deductionDc) || 12, "Riddle Deduction");
+          const check = this.checkSkill((puzzle && puzzle.deductionSkill) || "mythology_lore", (puzzle && puzzle.deductionAttribute) || "wisdom", (puzzle && puzzle.deductionDc) || 12, "Riddle Deduction", { activity: "puzzle" });
           if (check.success) {
             solve();
           } else {
@@ -9386,7 +9520,6 @@
 
         // --- 1. PLAYER TURN ---
         if (actionType === "thrust") {
-          const d20 = this.rollD20();
           const weapon = this.getEquippedWeapon();
           const ranged = this.isRangedWeapon(weapon);
           // Ranged weapons use Agility + Ranged Combat; everything else Strength + Melee Combat.
@@ -9394,7 +9527,6 @@
           const meleeSkill = (ranged ? player.skills.ranged_combat : player.skills.melee_combat) || 0;
           const exhaustionPenalty = isExhausted ? -2 : 0;
           const lionBonus = (player.feats && player.feats.includes("lion_prowess")) ? 1 : 0;
-          const attackRoll = d20 + strMod + meleeSkill + exhaustionPenalty + lionBonus;
 
           const weaponName = weapon ? weapon.name : "Unarmed Strike";
           const ws = (weapon && weapon.stats) || {};
@@ -9403,8 +9535,12 @@
           const maxDmg = Number.isFinite(ws.damageMax) ? Math.max(ws.damageMax, minDmg) : Math.max(3, minDmg);
 
           const targetAC = c.enemy.armorClass - (c.feintActive ? 2 : 0);
+          // Shared resolver: combat skills never get Reliable Talent; criticals come from the natural die.
+          const roll = this.resolveD20({ modifier: strMod + meleeSkill + exhaustionPenalty + lionBonus + (c.playerBonus || 0), dc: targetAC });
+          const fx = this.applyCriticalEffects("attack", roll, { silent: true });
+          c.playerBonus = 0;
 
-          if (d20 === 20) {
+          if (roll.isCriticalSuccess) {
             let dmg = (maxDmg * 2) + strMod + 4;
             if (player.feats && player.feats.includes("hydra_bane")) dmg += 2;
             c.enemy.hp -= dmg;
@@ -9435,9 +9571,10 @@
             if (this.showToast) {
               this.showToast("currency", `+${bonusDrachmae} Silver Drachmae`, "positive", "🪙", "Battlefield spoils recovered!");
             }
-          } else if (d20 === 1) {
-            feed.innerHTML += `<div style="color: #f0896e;"><strong>ATE! (Sudden Misfortune):</strong> Your foot slips on the loose limestone scree; your thrust goes completely wide!</div>`;
-          } else if (attackRoll >= targetAC) {
+          } else if (roll.isCriticalFailure) {
+            c.enemyBonus = fx.enemyBonus || 0;
+            feed.innerHTML += `<div style="color: #f0896e;"><strong>${this.getCriticalLabel("failure")}:</strong> Your footing slips and your strike goes wide, leaving you open${c.enemyBonus ? ` (enemy +${c.enemyBonus} to hit this round)` : ""}!</div>`;
+          } else if (roll.success) {
             const baseRoll = Math.floor(Math.random() * (maxDmg - minDmg + 1)) + minDmg;
             let dmg = Math.max(1, baseRoll + strMod);
             if (player.feats && player.feats.includes("hydra_bane")) dmg += 2;
@@ -9458,9 +9595,16 @@
           c.shieldBonus = shieldACBonus;
           feed.innerHTML += `<div style="color: var(--lapis-bright);"><strong>Shield Stance!</strong> You brace your aspis shield firmly against incoming attacks (+${shieldACBonus} Armor Class &bull; -2 Stamina)${shieldACBonus === 6 ? " <em style='color:#ffe680;'>(Aegis of Pallas)</em>" : ""}.</div>`;
         } else if (actionType === "feint") {
-          const d20 = this.rollD20();
-          const agiMod = this.getModifier(player.attributes.agility);
-          if (d20 + agiMod >= 11) {
+          const roll = this.resolveD20({ modifier: this.getModifier(player.attributes.agility), dc: 11 });
+          const fx = this.applyCriticalEffects("feint", roll, { silent: true });
+          if (roll.isCriticalSuccess && fx.playerBonus) {
+            c.playerBonus = fx.playerBonus;
+            feed.innerHTML += `<div style="color: #ffe680;"><strong>${this.getCriticalLabel("success")}:</strong> The feint completely wrong-foots your foe (your next strike +${fx.playerBonus}).</div>`;
+          } else if (roll.isCriticalFailure && fx.enemyBonus) {
+            c.enemyBonus = fx.enemyBonus;
+            feed.innerHTML += `<div style="color: #f0896e;"><strong>${this.getCriticalLabel("failure")}:</strong> You over-commit to the feint and expose your flank (enemy +${fx.enemyBonus} to hit this round).</div>`;
+          }
+          if (roll.success) {
             c.feintActive = true;
             feed.innerHTML += `<div style="color: var(--parchment);"><strong>Tactical Feint!</strong> You feint to the flank, throwing the predator off balance! (Enemy AC -2 and Enemy Attack -3 this round).</div>`;
           } else {
@@ -9506,10 +9650,11 @@
           c.shieldBraced = true;
           feed.innerHTML += `<div style="color: #ffe680;"><strong>Divine Invocation!</strong> You shout a holy hymn to Hermes Enodios! A sudden gust of mountain wind deflects claws and restores 5 Stamina! (+4 AC)</div>`;
         } else if (actionType === "flee") {
-          const d20 = this.rollD20();
-          const agiMod = this.getModifier(player.attributes.agility);
-          if (d20 + agiMod >= 10) {
+          const roll = this.resolveD20({ modifier: this.getModifier(player.attributes.agility), dc: 10 });
+          const fx = this.applyCriticalEffects("flee", roll, { silent: true });
+          if (roll.success) {
             c.ended = true;
+            if (roll.isCriticalSuccess && fx.restoreStamina) player.vitals.stamina = Math.min(player.vitals.maxStamina, player.vitals.stamina + fx.restoreStamina);
             feed.innerHTML += `<div style="color: #ff9d82;">You disengage with a swift roll across the limestone floor and retreat back to safety!</div>`;
             setTimeout(() => {
               document.getElementById("combat-modal").style.display = "none";
@@ -9518,7 +9663,8 @@
             }, 1000);
             return;
           } else {
-            feed.innerHTML += `<div style="color: #f0896e;">You turn to flee, but loose scree gives way beneath your greaves! The beast cuts off your retreat!</div>`;
+            if (roll.isCriticalFailure && fx.enemyBonus) c.enemyBonus = fx.enemyBonus;
+            feed.innerHTML += `<div style="color: #f0896e;">You turn to flee, but loose scree gives way beneath your greaves! The beast cuts off your retreat!${roll.isCriticalFailure && fx.enemyBonus ? ` <strong>${this.getCriticalLabel("failure")}:</strong> you stumble (enemy +${fx.enemyBonus} to hit this round).` : ""}</div>`;
           }
         }
 
@@ -9571,16 +9717,17 @@
 
         // --- 3. ENEMY TURN ---
         const enemyAction = c.enemy.actions[Math.floor(Math.random() * c.enemy.actions.length)];
-        const enemyD20 = this.rollD20();
         const enemyAttackBonus = (enemyAction.attackBonus || 3) + (c.enemy.enraged ? 3 : 0);
         const feintPenalty = c.feintActive ? 3 : 0;
-        const enemyRoll = enemyD20 + enemyAttackBonus - feintPenalty;
-
         const playerAC = this.getPlayerArmorClass() + (c.shieldBraced ? (c.shieldBonus || 4) : 0);
+        // Creatures and NPCs use the same resolver and critical rules as the hero.
+        const enemyRoll = this.resolveD20({ modifier: enemyAttackBonus - feintPenalty + (c.enemyBonus || 0), dc: playerAC });
+        const enemyFx = this.applyCriticalEffects("enemy_attack", enemyRoll, { silent: true });
+        c.enemyBonus = 0;
 
-        if (enemyD20 === 20 || (enemyD20 !== 1 && enemyRoll >= playerAC)) {
+        if (enemyRoll.success) {
           let dmg = enemyAction.damage ? this.rollDamageExpression(enemyAction.damage) : 4;
-          if (enemyD20 === 20) dmg += 4;
+          if (enemyRoll.isCriticalSuccess) dmg += enemyFx.extraDamage || 0;
 
           let ironMitigationNotice = "";
           if (player.feats && player.feats.includes("laconian_iron")) {
@@ -9594,7 +9741,10 @@
           }
 
           player.vitals.health = Math.max(0, player.vitals.health - dmg);
-          feed.innerHTML += `<div style="color: #f0896e;">The ${c.enemy.name} uses <strong>${enemyAction.name}</strong>! ${enemyAction.description} You suffer <strong>${dmg} damage</strong>!${ironMitigationNotice}</div>`;
+          feed.innerHTML += `<div style="color: #f0896e;">${enemyRoll.isCriticalSuccess ? `<strong>Critical hit!</strong> ` : ""}The ${c.enemy.name} uses <strong>${enemyAction.name}</strong>! ${enemyAction.description} You suffer <strong>${dmg} damage</strong>!${ironMitigationNotice}</div>`;
+        } else if (enemyRoll.isCriticalFailure) {
+          c.playerBonus = enemyFx.playerBonus || 0;
+          feed.innerHTML += `<div style="color: #85e39d;">The ${c.enemy.name} fumbles its <strong>${enemyAction.name}</strong> and loses its balance${c.playerBonus ? ` (your next strike +${c.playerBonus})` : ""}!</div>`;
         } else {
           feed.innerHTML += `<div style="color: #85e39d;">The ${c.enemy.name} lunges with <strong>${enemyAction.name}</strong>, but your defenses hold firm—its strike glances harmlessly off your armor!</div>`;
         }
@@ -11073,7 +11223,8 @@
         }
 
         const linksContainer = document.getElementById("side-travel-links");
-        linksContainer.innerHTML = loc.connections.map(conn => {
+        // Same rule as the travel cards and the map: closed roads (requiresFlag) are not offered.
+        linksContainer.innerHTML = (loc.connections || []).filter(conn => this.isConnectionOpen(conn)).map(conn => {
           const target = this.getLocation(conn.targetLocationId);
           return `
             <button class="nav-btn" style="text-align: left; justify-content: space-between;" onclick="window.engine.showTravelModal(window.engine.getLocation('${conn.targetLocationId}'))">
@@ -11154,13 +11305,17 @@
         const skillsContainer = document.getElementById("sheet-skills-list");
         skillsContainer.innerHTML = Object.entries(p.skills).map(([skill, rank]) => {
           const isPerception = skill === "perception";
+          const rtAt = this.getReliableTalentThreshold(skill);
+          const rtHtml = rtAt === null ? "" : (rank >= rtAt
+            ? ` <em style="color: var(--laurel-bright); font-size: 0.7rem;" title="Natural rolls of 1-5 count as 6 for this skill">★ Reliable</em>`
+            : ` <em style="color: var(--marble-dim); font-size: 0.68rem;" title="Reliable Talent unlocks at rank ${rtAt}">(${rank}/${rtAt})</em>`);
           return `
             <div style="background: #19181e; padding: 0.4rem 0.65rem; border-radius: 3px; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; ${isPerception ? 'border-left: 2px solid #ffe680;' : ''}">
               <span style="color: var(--parchment);">
                 ${skill.replace("_", " ").toUpperCase()}
                 ${isPerception ? `<em style="color: #ffe680; font-size: 0.72rem; margin-left: 0.3rem;">(Wis Substat: ${perceptionBonus >= 0 ? "+" + perceptionBonus : perceptionBonus})</em>` : ""}
               </span>
-              <strong style="color: var(--bronze-bright);">Rank ${rank}</strong>
+              <strong style="color: var(--bronze-bright);">Rank ${rank}${rtHtml}</strong>
             </div>
           `;
         }).join("");
@@ -11716,17 +11871,19 @@
         const bonus = (minigameBonus !== null ? minigameBonus : (this.craftingMinigameBonus || 0));
         const baseDC = template.baseDC || 12;
 
-        const d20 = this.rollD20();
-        const totalRoll = d20 + attrMod + bonus;
+        // Shared D20 resolution: a minigame bonus is a modifier, so it never turns a natural 1 into a success.
+        const roll = this.resolveD20({ modifier: attrMod + bonus, dc: baseDC });
+        const totalRoll = roll.total;
+        const fx = this.applyCriticalEffects("crafting", roll);
 
         this.craftingMinigameBonus = 0; // consumed
 
-        if (totalRoll >= baseDC) {
-          // Materials are only consumed by a successful craft ("Failures never destroy materials").
+        if (roll.success) {
+          // Materials are consumed by a successful craft; ordinary failures keep them (critical failures: see below).
           Object.entries(needed).forEach(([id, n]) => this.removeItem(id, n));
           const margin = totalRoll - baseDC;
           let quality = { name: "Standard", bonus: 1, valueMult: 1.25, rarity: "common" };
-          if (margin >= 10 || d20 === 20) {
+          if (margin >= 10 || fx.masterwork) {
             quality = { name: "Masterwork", bonus: 3, valueMult: 2.5, rarity: "rare" };
           } else if (margin >= 5) {
             quality = { name: "Superior", bonus: 2, valueMult: 1.75, rarity: "uncommon" };
@@ -11745,14 +11902,17 @@
             this.showToast("loot", `Crafted: ${craftedItem.name}`, "positive", "🔨", `${quality.name} Quality (Roll ${totalRoll} vs DC ${baseDC})`);
           }
 
-          this.lastCraftResult = { success: true, item: craftedItem, roll: totalRoll, dc: baseDC, quality };
+          this.lastCraftResult = { success: true, item: craftedItem, roll: totalRoll, dc: baseDC, quality, critical: roll.critical };
           this.renderCraftingView();
           return this.lastCraftResult;
         } else {
+          // Ordinary failures keep the materials; a critical failure ruins some of the first primary material.
+          const ruined = (roll.isCriticalFailure && fx.damageMaterial) ? Math.min(fx.damageMaterial, this.getItemQuantity(mat1.id)) : 0;
+          if (ruined > 0) this.removeItem(mat1.id, ruined);
           if (this.showToast) {
-            this.showToast("info", `Crafting Attempt Unsuccessful (Roll ${totalRoll} vs DC ${baseDC})`, "warning", "🔨", "Materials preserved / salvaged");
+            this.showToast("info", `Crafting Attempt Unsuccessful (Roll ${totalRoll} vs DC ${baseDC})`, "warning", "🔨", ruined ? `${ruined} ${mat1.name} ruined` : "Materials preserved / salvaged");
           }
-          this.lastCraftResult = { success: false, roll: totalRoll, dc: baseDC, reason: "Roll below DC" };
+          this.lastCraftResult = { success: false, roll: totalRoll, dc: baseDC, reason: roll.isCriticalFailure ? "Critical failure" : "Roll below DC", critical: roll.critical, ruined };
           this.renderCraftingView();
           return this.lastCraftResult;
         }

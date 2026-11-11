@@ -915,3 +915,56 @@ These fields are supported by the engine as of v4.1. Where two spellings exist i
 
 ### Dev campaign and `file://` mode
 * After editing any file in `content/campaigns/dev_test_campaign/world/`, run `node scripts/sync-embedded-dev-content.js` (or `npm run sync:embedded`) to regenerate the embedded copy used under `file://`. `npm test` fails while they differ.
+
+---
+
+## 24. D20 Criticals & Reliable Talent (`campaign.json` → `d20Rules`, actions)
+
+All fields are optional; the defaults are shown.
+
+```json
+{
+  "d20Rules": {
+    "criticals": true,
+    "criticalSuccessOn": 20,
+    "criticalFailureOn": 1,
+    "reliableTalent": {
+      "enabled": true,
+      "minimumRoll": 6,
+      "defaultThreshold": 8,
+      "thresholds": { "persuasion": 8, "stealth": 9 },
+      "eligibleSkills": null,
+      "combatSkills": ["melee_combat", "ranged_combat"]
+    },
+    "criticalOutcomes": {
+      "persuasion": {
+        "success": { "disposition": 15, "text": "They are utterly won over." },
+        "failure": { "disposition": -15, "reputation": -5, "text": "You insult their family." }
+      }
+    }
+  }
+}
+```
+* `criticals: false` turns critical successes and failures off for the campaign (rolls are then compared with the DC only).
+* `eligibleSkills: null` means every non-combat skill can gain Reliable Talent; give an array to restrict it. A threshold is the skill **rank** required. Combat skills never qualify.
+* `criticalOutcomes[activity].success|failure` **replaces** the engine default for that activity (see ENGINE_ARCHITECTURE §7.11 for the activity names and defaults). Keys:
+  * any outcome key: `text`, `speaker`, `awardXP`, `giveItem`, `giveDrachmae`, `setFlags`, `updateQuest`, `restoreHealth`, …;
+  * `loseStamina`, `minutes` (time lost), `disposition` / `reputation` (social checks: towards the NPC and the NPC's faction), `discovery` (the location's natural-20 cache);
+  * activity mechanics: `lootMultiplier` (pickpocket), `spareTool`, `breakTool`, `springTrap` (lockpick), `caught` (pickpocket), `masterwork`, `damageMaterial` (crafting), `enemyBonus`, `playerBonus`, `extraDamage`, `restoreStamina` (combat: attack, feint, flee, enemy_attack).
+
+Content `skill_check` actions can choose the activity and their own critical outcomes:
+```json
+{
+  "handlerType": "skill_check",
+  "skillCheck": {
+    "skill": "survival", "attribute": "wisdom", "dc": 13, "name": "Track the stag",
+    "activity": "hunting",
+    "success": { "text": "You find the stag." },
+    "failure": { "text": "The trail goes cold." },
+    "criticalSuccess": { "giveItem": "item_dried_figs_bread", "text": "You also find a forager's cache." },
+    "criticalFailure": { "minutes": 60, "text": "You spook the herd and lose an hour." }
+  }
+}
+```
+`npcId` may be added to a social `skill_check` so `disposition` / `reputation` effects target that NPC. A skill check without `skill` (attribute only) works as a saving throw; it has criticals but no Reliable Talent.
+

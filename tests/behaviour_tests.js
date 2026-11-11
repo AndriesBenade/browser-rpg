@@ -571,9 +571,11 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.strictEqual(blocked.success, false);
     assert.ok(!engine.state.player.inventory.some(i => String(i.itemId).startsWith('crafted_')));
     engine.addItem('mat_cypriot_bronze', 2);
+    fixedRoll(engine, 2); // an ordinary failure (a natural 1 is a critical failure, tested separately)
     const failed = engine.craftItem('template_sword', 'mat_cypriot_bronze', 'mat_cypriot_bronze', null, 0);
     assert.strictEqual(failed.success, false);
-    assert.strictEqual(engine.getItemQuantity('mat_cypriot_bronze'), 2, 'materials preserved on failure');
+    assert.strictEqual(failed.critical, null);
+    assert.strictEqual(engine.getItemQuantity('mat_cypriot_bronze'), 2, 'materials preserved on an ordinary failure');
   });
 
   // ---------------------------------------------------------------------------
@@ -1080,6 +1082,180 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.currentCraftingProfession = 'metalworking';
     engine.renderCraftingView();
     assert.strictEqual(env.el('crafting-fieldcraft-badge').innerText, 'd20 + 3 (Strength)');
+  });
+
+  // ---------------------------------------------------------------------------
+  // Universal D20 criticals & Reliable Talent
+  // ---------------------------------------------------------------------------
+  const rollSeq = (engine, values) => { const q = [...values]; engine.rollD20 = () => (q.length ? q.shift() : 10); };
+
+  await test('D20: criticals come from the natural die, never from the modified total', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const r = (natural, modifier, dc) => plain(engine.resolveD20({ natural, modifier, dc }));
+    let x = r(1, 15, 5);
+    assert.ok(x.isCriticalFailure && x.success === false, 'natural 1 + 15 is a critical failure even against DC 5');
+    x = r(20, 2, 30);
+    assert.ok(x.isCriticalSuccess && x.success === true, 'natural 20 + 2 is a critical success even against DC 30');
+    x = r(10, 8, 15);
+    assert.ok(!x.critical && x.total === 18 && x.success, 'natural 10 + 8 = ordinary 18');
+    x = r(10, 10, 25);
+    assert.ok(!x.isCriticalSuccess && x.total === 20, 'a modified total of 20 is not a critical success');
+    x = r(2, -1, 5);
+    assert.ok(!x.isCriticalFailure && x.total === 1 && x.success === false, 'a modified total of 1 is an ordinary failure');
+  });
+
+  await test('D20: Reliable Talent lifts natural 1-5 to 6 on a mastered non-combat skill only', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.skills.persuasion = engine.getReliableTalentThreshold('persuasion');
+    p.skills.deception = 2;
+    p.skills.melee_combat = 30;
+    assert.strictEqual(engine.getReliableTalentThreshold('melee_combat'), null, 'combat skills never qualify');
+    for (let n = 1; n <= 20; n++) {
+      const x = engine.resolveD20({ natural: n, modifier: 0, dc: 10, skill: 'persuasion' });
+      assert.strictEqual(x.effective, n < 6 ? 6 : n, `natural ${n}`);
+      assert.strictEqual(x.isCriticalFailure, false, `no critical failure at natural ${n}`);
+      assert.strictEqual(x.isCriticalSuccess, n === 20);
+    }
+    assert.strictEqual(engine.resolveD20({ natural: 1, dc: 10, skill: 'deception' }).isCriticalFailure, true, 'deception is not covered by persuasion mastery');
+    assert.strictEqual(engine.resolveD20({ natural: 1, dc: 10, skill: 'melee_combat' }).isCriticalFailure, true, 'combat skill rolls keep critical failures');
+    // Through the real persuasion action: a natural 3 is treated as 6 and cannot fumble
+    fixedRoll(engine, 3);
+    const before = engine.getNpcDisposition('npc_dev_merchant_lycus');
+    const res = engine.attemptPersuadeNpc('npc_dev_merchant_lycus');
+    assert.strictEqual(res.critical, null);
+    assert.ok(engine.getNpcDisposition('npc_dev_merchant_lycus') >= before, 'no critical-failure offence');
+    // A failed check is still possible against a hard DC (no automatic success)
+    p.skills.persuasion = engine.getReliableTalentThreshold('persuasion');
+    assert.strictEqual(engine.resolveD20({ natural: 1, modifier: 0, dc: 40, skill: 'persuasion' }).success, false);
+  });
+
+  await test('D20: critical consequences are contextual (social, stealing, lockpicking, exploration, crafting)', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const npc = 'npc_dev_merchant_lycus';
+    // Persuasion: critical success = ordinary +10 plus an extra +10
+    const d0 = engine.getNpcDisposition(npc);
+    fixedRoll(engine, 20);
+    engine.attemptPersuadeNpc(npc);
+    assert.strictEqual(engine.getNpcDisposition(npc) - d0, 20);
+    // Deception: critical failure = ordinary -10 plus an extra -10 and a reputation loss
+    engine.advanceTime(5, 0);
+    const d1 = engine.getNpcDisposition(npc);
+    const rep0 = engine.getFactionReputation('faction_dev_haven');
+    fixedRoll(engine, 1);
+    const dec = engine.attemptDeceiveNpc(npc);
+    assert.strictEqual(dec.critical, 'failure');
+    assert.strictEqual(engine.getNpcDisposition(npc) - d1, -20);
+    assert.ok(engine.getFactionReputation('faction_dev_haven') < rep0);
+    // Pickpocket: a critical success doubles the haul
+    const npc2 = 'npc_dev_guard_captain';
+    const purse0 = engine.state.player.currencies.drachmae;
+    rollSeq(engine, [20]);
+    const realRandom = env.sandbox.Math.random;
+    env.sandbox.Math.random = () => 0; // minimum base haul (6)
+    try { engine.attemptPickpocket(npc2); } finally { env.sandbox.Math.random = realRandom; }
+    assert.strictEqual(engine.state.player.currencies.drachmae - purse0, 12, 'minimum haul 6, doubled');
+    // Exploration: a critical failure costs stamina and time on top of the failure
+    const st0 = engine.state.player.vitals.stamina, t0 = engine.getTotalInGameMinutes();
+    fixedRoll(engine, 1);
+    const chk = engine.checkSkill('investigation', 'intelligence', 5, 'Test');
+    assert.ok(chk.isAte && !chk.success);
+    assert.strictEqual(st0 - engine.state.player.vitals.stamina, 2);
+    assert.strictEqual(engine.getTotalInGameMinutes() - t0, 15);
+    // Ordinary failure: no extra consequence
+    const st1 = engine.state.player.vitals.stamina;
+    fixedRoll(engine, 2);
+    const ord = engine.checkSkill('investigation', 'intelligence', 99, 'Test');
+    assert.ok(!ord.success && !ord.critical && engine.state.player.vitals.stamina === st1);
+    // Lockpicking: a critical failure snaps the pick
+    const door = engine.getInteractiveObject('obj_treasury_iron_door');
+    engine.state.worldState.currentLocationId = door.locationId;
+    engine.addItem('item_dev_iron_lockpick', 1);
+    const picks = engine.getItemQuantity('item_dev_iron_lockpick');
+    fixedRoll(engine, 1);
+    engine.attemptLockpick(door.id);
+    assert.strictEqual(engine.getItemQuantity('item_dev_iron_lockpick'), picks - 1);
+  });
+
+  await test('D20: crafting criticals use the natural die even with a minigame bonus', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    engine.addItem('item_toolkit_smithing', 1);
+    engine.addItem('mat_cypriot_bronze', 4);
+    engine.state.player.attributes.strength = 30; // +10, would beat the DC on any roll
+    fixedRoll(engine, 1);
+    const bad = engine.craftItem('template_sword', 'mat_cypriot_bronze', 'mat_cypriot_bronze', null, 3);
+    assert.strictEqual(bad.success, false, 'a natural 1 fails despite +13');
+    assert.strictEqual(bad.critical, 'failure');
+    assert.strictEqual(engine.getItemQuantity('mat_cypriot_bronze'), 3, 'one material ruined');
+    engine.state.player.attributes.strength = 3; // -4
+    fixedRoll(engine, 20);
+    const good = engine.craftItem('template_sword', 'mat_cypriot_bronze', 'mat_cypriot_bronze', null, 0);
+    assert.ok(good.success && good.quality.name === 'Masterwork', 'a natural 20 is a masterwork even with a penalty');
+  });
+
+  await test('D20: creatures and the hero share combat criticals; Reliable Talent never applies to attacks', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.skills.melee_combat = 40;
+    const brute = { id: 'x', name: 'Test Brute', vitals: { health: 999, maxHealth: 999 }, armorClass: 5, actions: [{ name: 'Smash', attackBonus: 0, damage: '1' }] };
+    p.vitals.health = p.vitals.maxHealth = 100;
+    engine.startCombat(brute);
+    rollSeq(engine, [1, 1]); // hero fumbles (despite +40), creature fumbles
+    engine.combatAction('thrust');
+    assert.strictEqual(engine.combatSession.enemy.hp, 999, 'natural 1 misses even with a huge modifier');
+    assert.strictEqual(engine.combatSession.playerBonus, 2, 'creature fumble gives the hero +2 on the next strike');
+    rollSeq(engine, [10, 20]); // hero hits normally, creature crits
+    engine.combatAction('thrust');
+    assert.strictEqual(p.vitals.health, 100 - (1 + 4), 'creature critical hit: +4 damage');
+    rollSeq(engine, [1, 10]);
+    engine.combatAction('thrust');
+    assert.strictEqual(engine.combatSession.enemyBonus, 0, 'the hero\'s fumble bonus is used by the next enemy attack');
+  });
+
+  await test('D20: campaigns configure criticals, Reliable Talent skills and thresholds; mastery survives save/load', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    engine.activeCampaign = Object.assign({}, engine.activeCampaign, { d20Rules: {
+      reliableTalent: { eligibleSkills: ['stealth'], thresholds: { stealth: 3 } },
+      criticalOutcomes: { exploration: { failure: { loseStamina: 5, text: 'Custom fumble.' } } }
+    } });
+    const p = engine.state.player;
+    p.skills.stealth = 3; p.skills.persuasion = 20;
+    assert.strictEqual(engine.hasReliableTalent('stealth'), true);
+    assert.strictEqual(engine.hasReliableTalent('persuasion'), false, 'only the configured skills qualify');
+    const st0 = p.vitals.stamina;
+    fixedRoll(engine, 1);
+    engine.checkSkill('investigation', 'intelligence', 10, 'Test');
+    assert.strictEqual(st0 - p.vitals.stamina, 5, 'campaign outcome replaces the default');
+    // A content action can define its own critical outcome
+    const before = engine.state.player.currencies.drachmae;
+    fixedRoll(engine, 20);
+    engine.executeGenericAction({ handlerType: 'skill_check', skillCheck: { skill: 'investigation', attribute: 'intelligence', dc: 10, criticalSuccess: { giveDrachmae: 7 } } });
+    assert.strictEqual(engine.state.player.currencies.drachmae - before, 7);
+    // Criticals can be switched off by a campaign
+    engine.activeCampaign = Object.assign({}, engine.activeCampaign, { d20Rules: { criticals: false } });
+    assert.strictEqual(engine.resolveD20({ natural: 1, modifier: 20, dc: 10 }).success, true);
+    // Save / load keeps the ranks (Reliable Talent is derived from them); old saves get a deception skill
+    await engine.saveGameSilently(1);
+    const engine2 = new env.Engine(); env.sandbox.engine = engine2; await engine2.init();
+    assert.strictEqual(engine2.state.player.skills.stealth, 3);
+    const old = JSON.parse(JSON.stringify(engine2.state)); old.version = '1.5.0'; delete old.player.skills.deception; old.player.skills.persuasion = 7;
+    assert.strictEqual(engine2.migrateState(old).player.skills.deception, 7, 'deception inherits the persuasion rank it used to roll');
+    // Default threshold reached through level-ups shows on the character sheet
+    engine2.state.player.skills.medicine = engine2.getReliableTalentThreshold('medicine');
+    engine2.renderCharacterSheet();
+    assert.ok(env.el('sheet-skills-list').innerHTML.includes('Reliable'));
   });
 
   // ---------------------------------------------------------------------------

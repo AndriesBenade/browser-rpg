@@ -213,9 +213,7 @@ The system uses a **d20 + Attribute Modifier + Skill Rank vs Target Difficulty C
     - *Moderate (DC 13):* Professional task requiring training (identifying a temple inscription).
     - *Hard (DC 16):* Formidable challenge (noticing subtle hoofprints in heavy rain).
     - *Heroic (DC 20):* Feat of legendary calibre (recalling an esoteric hymn to Hecate).
-- **Critical Rolls:**
-  - Natural 20 = *Arete* (Excellence / Critical Triumph with narrative flourish).
-  - Natural 1 = *Ate* (Blind Ruin / Critical Misfortune with consequential setback).
+- **Critical Rolls:** natural 20 = critical success (*Arete*), natural 1 = critical failure (*Ate*), decided on the natural die by the shared resolver. See §7.11 for the implementation, consequences and Reliable Talent.
 - **Controlled Probability:** Dice rolls utilise a deterministic pseudo-random seed generator that can be seeded during unit testing for 100% reproducible test suites.
 
 ---
@@ -428,8 +426,8 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 ### 7.6 Recipe-Free Crafting
 * Professions (Greek): metalworking, artifice, textiles, alchemy, stonework, music, scribing — each requires its toolkit item.
 * Materials expose `hardness`, `durability`, `flexibility`, `heatResistance`, `magicalAffinity`, `purity`.
-* Check: `d20 + governing attribute modifier + Forge Strike bonus (0–3)` vs template `baseDC`. Quality: Standard, Superior (margin ≥ 5), Masterwork (margin ≥ 10 or natural 20).
-* `craftItem()` validates the toolkit and material quantities itself. **Materials are consumed only on success**; a failed attempt still takes the crafting time.
+* Check (shared resolver, §7.11): `d20 + governing attribute modifier + Forge Strike bonus (0–3)` vs template `baseDC`. Quality: Standard, Superior (margin ≥ 5), Masterwork (margin ≥ 10 or natural 20). A natural 1 always fails, even with a large bonus.
+* `craftItem()` validates the toolkit and material quantities itself. **Materials are consumed only on success**; an ordinary failure keeps them, a **critical failure ruins one unit of the first primary material**. Every attempt takes the crafting time.
 * Generated items use `stats.defenseBonus` for armour and are stored in the save at `worldState.dynamicItems`, so they survive reloads.
 
 ### 7.7 Minigames
@@ -450,12 +448,38 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * **Opening objects**: picking, key, heave and mechanism all go through `markObjectOpened()`, which applies the object's authored `unlockOutcome` (flags, quest updates, XP, text) exactly once. If `unlockOutcome.awardXP` is set it replaces the generic 35 XP award. `failureConsequence.message` is shown on a fumble and `breakToolOnAte: false` keeps the tool. **Not implemented**: `failureConsequence.alertNpcId`, `trap.disarmDC` (there is no disarm action).
 
 ### 7.10 Travel & Exploration
-* The action deck offers a travel card for **every open road** from the current location; arriving at a place discovers it. Unexplored destinations are labelled "(unexplored)" and are also clickable on the map. (Previously only already-discovered places were offered, which left 15–16 of 19 Greek locations and 4 of 5 Dev locations unreachable.)
-* A road is closed while its `requiresFlag` is unset (or its `requiresNotFlag` is set); `executeTravel()` and the map enforce this too.
+* The action deck offers a travel card for **every open road** from the current location; arriving at a place discovers it. Unexplored destinations are labelled "(unexplored)" and are also clickable on the map. (Previously the cards and the map offered only discovered places while the sidebar list offered every road; all three now use the same rule.)
+* A road is closed while its `requiresFlag` is unset (or its `requiresNotFlag` is set); `executeTravel()`, the map and the sidebar list enforce this too.
 * Wilderness ambushes pick the creature first (`pickAmbush()`), so the narration names the actual creature; the Greek wolf prose is only used for the Greek wolf.
 * NPCs without an authored dialogue tree get a generated conversation from their `description`, `knowledge` (matched against mythology entries) and merchant stock. NPCs may reference their tree with `dialogueTreeId` or `dialogueId`.
 
 ---
+
+### 7.11 D20 Criticals & Reliable Talent (save v1.6.0)
+* **One resolver.** Every D20 roll that is a check goes through `resolveD20({ modifier, dc, skill, natural })`: player skill checks (`checkSkill()`), attacks, feints, escapes, crafting, and creature/NPC attacks. It returns `natural`, `effective`, `total`, `success`, `reliable`, `isCriticalSuccess`, `isCriticalFailure` and `critical` ("success" / "failure" / null). Criticals are decided on the **natural** die: natural 1 + 15 is still a critical failure, natural 20 + 2 is still a critical success, and a modified total of 20 is just a 20. A critical success always succeeds and a critical failure always fails. Hard restrictions (missing tools, closed roads, cooldowns) are checked *before* rolling, so a natural 20 never bypasses them.
+* **Not checks:** the rest/travel ambush rolls are encounter-table rolls ("ambush on 1–4"), not checks, and are not critical-aware. Hunting, herb mixing, shield clash and astragaloi are timing/dice minigames without a D20; their bonuses are modifiers (e.g. Forge Strike), so they can never turn a natural 1 into a success.
+* **Consequences** come on top of the ordinary success or failure and depend on the activity (`applyCriticalEffects(activity, roll, ctx)`; defaults in `GreekMythologyEngine.CRITICAL_EFFECTS`):
+
+| Activity | Critical success | Critical failure |
+|---|---|---|
+| `exploration` (default for skill checks) | location discovery cache (once per location) | −2 Stamina, 15 minutes lost |
+| `heave` | discovery cache | −3 Stamina |
+| `lockpick` | salvage a spare pick | pick breaks, trap springs |
+| `pickpocket` | double haul | caught: reputation −15, the victim attacks |
+| `persuasion` | +10 extra disposition, +3 faction reputation | −10 disposition (an ordinary failure changes nothing) |
+| `deception` | +5 disposition | −10 extra disposition, −5 faction reputation |
+| `puzzle` (riddle deduction) | +25 XP | −2 Stamina |
+| `crafting` | Masterwork quality | one primary material ruined |
+| `hunting`, `gathering` (for content checks) | +15 / +10 XP | 30 / 20 minutes lost |
+| `attack` (hero) | existing critical damage + battlefield spoils | enemy +2 to hit this round |
+| `feint` | next strike +2 | enemy +2 to hit this round |
+| `flee` | escape and +2 Stamina | enemy +2 to hit this round |
+| `enemy_attack` (creatures, NPCs) | +4 damage | the hero's next strike +2 |
+
+  Priority: an action's own `criticalSuccess` / `criticalFailure` > the campaign's `d20Rules.criticalOutcomes[activity]` > the engine default. Effects are mild and never kill the hero.
+* **Reliable Talent.** A *non-combat* skill whose rank reaches its threshold (default **8**, configurable per skill) treats natural 1–5 as 6 for that skill only: no critical failures, natural 20 still a critical success, all normal modifiers still added, so hard DCs can still be failed. `melee_combat` and `ranged_combat` never qualify (attacks never pass a skill to the resolver). Rank is the skill points in that skill, so it is saved with the hero and nothing extra is stored. With the default progression a hero starts with at most rank 5 in a non-combat skill (base 2, background +2, origin +1) and gains 2 skill points per level, so rank 8 needs at least two level-ups put entirely into one skill. The character sheet shows `★ Reliable` or the progress (e.g. `5/8`).
+* **Deception** is its own skill (it used to roll persuasion), so mastery in one does not cover the other. Old saves give deception the persuasion rank it used to roll (no change in odds).
+* **New D20 content** uses `checkSkill(skill, attribute, dc, label, { activity, npcId, criticalOverride })`, or `skill_check` actions with optional `activity`, `criticalSuccess`, `criticalFailure` (CONTENT_SCHEMA §24). New engine activities call `resolveD20()` and `applyCriticalEffects()`; never compare raw `rollD20()` results.
 
 ## 8. World Time, Event Scheduler, Living World and Morality (Engine v4.0.0, corrected in v4.1 audit)
 
@@ -499,7 +523,8 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 
 ---
 
-## 9. Save Format & Migration (v1.5.0)
+## 9. Save Format & Migration (v1.6.0)
+* v1.6.0: `player.skills.deception` (migrated from the persuasion rank).
 * Saves are written to IndexedDB (`GreekMythologyRPG_DB`/`saves`), falling back to `localStorage` (`gm_save_slot_<n>`). `gm_last_slot` remembers the slot of the game in play and the game resumes from it on start. Autosaves (`autosave()`) write to the slot of the game in play: a game loaded from Slot 2 keeps autosaving to Slot 2.
 * **Slot safety (v1.5.0)**: a new game (Launch Campaign, Restart) or an imported save first autosaves the current game, then goes to the **first slot without a hero** (`findSlotForNewGame()`); if all 3 slots are in use the player is asked before the current game's slot is replaced. Imports never reuse the slot number stored inside the file. *Save* into another game's slot asks for confirmation; *Load* of another slot saves the current game first. The slot list shows each slot's hero, level, campaign and save time.
 * A level-up that was pending when the game was saved is offered again after loading (`checkPendingLevelUp()`).

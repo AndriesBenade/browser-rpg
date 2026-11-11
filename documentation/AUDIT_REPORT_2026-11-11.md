@@ -1,6 +1,6 @@
 # Independent Project Audit — Browser RPG (Engine v4.1)
 
-> **Two passes.** Part 1 (sections A–H below) is the first audit pass. **Part 2** (at the end) is a second, independent pass made the same day. It re-checked Part 1's changes and continued into areas Part 1 had not covered. Part 2 found two more critical problems: save slots being overwritten, and most of the world map being unreachable. Items in Part 1 §F that Part 2 resolved are marked ✅.
+> **Two passes.** Part 1 (sections A–H below) is the first audit pass. **Part 2** (at the end) is a second, independent pass made the same day. It re-checked Part 1's changes and continued into areas Part 1 had not covered. Part 2 found critical save-slot overwrite problems. It also found inconsistent travel rules, re-rated High after a correction: an earlier version of this report wrongly said most of the map was unreachable. Items in Part 1 §F that Part 2 resolved are marked ✅.
 
 **Date:** 2026-11-11 · **Scope:** the whole repository (`index.html` engine and UI, all content packs, tests, documentation)
 **Approach:** read the engine end to end, then verified behaviour by running the real engine (Node VM harness with the real JSON content, plus headless Chrome over HTTP and `file://`). Every fix is covered by a regression test. No gameplay features were added beyond completing behaviour the game already presents to the player.
@@ -112,7 +112,7 @@ The most serious problems were at the **boundaries between systems**: campaign l
 4. **NPCs who "yield and flee"** at 25 % HP are recorded as killed (permanent death, hubris, inquest). Changing this is a design decision.
 5. **Rarity vocabulary:** loot caps apply only to `epic/legendary/mythic`. Greek items use `exceptional/consecrated`, which are uncapped, and tier 4–5 Greek monsters are not flagged `isBoss`. Decide the mapping before tuning drop rates.
 6. **Crafting balance:** a standard crafted bronze sword (≈ 8–12 damage) beats most found weapons, including the "exceptional" Cyclopean Dory (7–14 at the low end). Consider damping material bonuses.
-7. **Dev campaign content gaps:** 7 of 8 Dev quests have no content path to completion, and `resolveMoralChoice()` has no UI entry point. *(Part 2: partly an engine problem: most locations were unreachable and object `unlockOutcome`s were ignored. Now 3 of 8 can be completed; see Part 2 §F.)*
+7. **Dev campaign content gaps:** 7 of 8 Dev quests have no content path to completion, and `resolveMoralChoice()` has no UI entry point. *(Part 2: partly an engine problem: object `unlockOutcome`s were ignored, so e.g. the grotto never opened properly. Now 3 of 8 can be completed; see Part 2 §F.)*
 8. **`file://` mode** uses a reduced Greek content subset (no toolkits or materials, so no crafting). Use `python server.py` for full play.
 9. **Not configurable per campaign:** calendar length, origin/trait effects beyond attributes/skills/piety/reputation/morale (e.g. "Swift Mountain Movement", "+3 vs fear", which have no underlying system), morale in combat.
 10. ✅ Lockpicking and heaving now take time (Part 2). Objects inside rooms (e.g. the vault coffer) are still not gated behind their doors.
@@ -148,7 +148,7 @@ The most serious problems were at the **boundaries between systems**: campaign l
 Part 1's fixes held up: I found no regressions in its diff. Its tests, however, only exercised the paths it had looked at. Part 2 found problems in the flows between screens and in how content is wired up:
 
 * **Save safety.** Starting or importing a game could silently overwrite another saved hero.
-* **Reachability.** Travel only offered places already discovered, so most of both campaigns' maps could never be visited.
+* **Travel consistency.** The three travel controls (action cards, map, sidebar) followed different rules, and none enforced road predicates.
 * **Content registration.** Three documented content features were loaded but never executed: `events.json` world events, interactive-object `unlockOutcome`, and encounter `repeatable` / `triggerCondition`.
 
 The documentation also described several formats the engine never read. With these fixed, both campaigns are fully traversable and the shipped content now does what its data says. The project is in a stable state for continued development. The main structural risk is still the single 12,000-line `index.html` (see Part 1 §G1).
@@ -160,7 +160,7 @@ The documentation also described several formats the engine never read. With the
 |---|---------|----------|
 | P2-C1 | **Starting a new game overwrote saves.** *Launch Campaign* mid-game replaced the running game with no confirmation, and the new hero autosaved into Slot 1. In the reproduction, a Greek game in Slot 1 was replaced by the Dev hero. *Restart* did the same. | Reproduced in the harness and in Chrome |
 | P2-C2 | **Importing a save overwrote an unrelated slot.** The import reused the `saveSlot` number stored inside the file, so the next autosave replaced whatever game was in that slot on this machine. | Reproduced: "PreciousSlot2" was overwritten |
-| P2-C3 | **Most of the world was unreachable.** Travel cards and the map offered only already-discovered places, and almost nothing discovers new places. Reachable through the UI: **3 of 19 Greek locations** (plus the cave during the tutorial) and **1 of 5 Dev locations**. Every Dev quest outside Haven was impossible. | Breadth-first search over the real travel cards |
+| P2-C3 | *(Re-rated High)* **Travel rules were inconsistent between the three travel controls.** *(Corrected 2026-11-11: an earlier version of this report said most of the world was unreachable. That was wrong: the story sidebar's "Travel Pathways" list offered every road.)* The action cards and the map offered only discovered places. The sidebar offered every road but ignored road predicates (`requiresFlag`), so the fissure cave and the Dev Sunken Grotto could be entered before their paths were known. On screens 900 px wide or narrower the sidebar is hidden, and there undiscovered places could not be reached at all. | Breadth-first search over the travel cards; sidebar code review |
 
 ### High
 | # | Problem |
@@ -230,7 +230,7 @@ Still open from Part 1 §F: 1 (class features), 2 (merchant trading), 3 (module 
 
 New or refined:
 1. **Five Dev quests still have no content path to completion:** the boar menace turn-in, merchant delivery, urgent rescue, the bandit alliance (`resolveMoralChoice()` has no UI entry) and ancient ruins. Their objectives are referenced by no content. Sunstone, heist and grotto can now be completed.
-2. **With travel opened up, the whole Greek map is reachable from the start.** Recommended-level warnings ("Heroic Peril") still apply. The crag overlook → fissure cave road has no `requiresFlag`, so the cave can be reached before the tutorial reveals it. Add a predicate if that is not intended.
+2. **The whole Greek map is reachable from the start** (through every travel control, as the sidebar already allowed on wide screens). Recommended-level warnings ("Heroic Peril") still apply. The crag overlook → fissure cave road has no `requiresFlag`, so the cave can be reached before the tutorial reveals it. Add a predicate if that is not intended.
 3. **Quest `rewards` are descriptive, not granted automatically.** Both campaigns grant rewards in the turn-in outcome, so automatic granting would pay them twice. The heist and grotto quests therefore pay only the XP authored on their objects. This is now documented.
 4. Random-encounter types `peaceful` and `discovery` (Dev: travelling tinker, roadside altar) are loaded but never triggered. Only `combat` entries are used for ambushes.
 5. Item `attributeRequirement` is shown in tooltips but not enforced. Stats such as `moraleBonus`, `staminaBonus`, `coldResistance` and `blockChance` are descriptive only.
