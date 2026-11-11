@@ -442,3 +442,73 @@ The RPG engine is completely decoupled from any single mythology, setting, or ge
 ### 7.9 NPC Defensive Behavior & Social Anti-Exploit Cooldowns
 * **Wounded NPC Behavior**: When living NPCs drop below 25% HP in combat, they evaluate surrender, yielding, or fleeing (`fleeing: true`).
 * **Social Anti-Exploit System**: `attemptPersuadeNpc()` and `attemptDeceiveNpc()` enforce persistent cooldown timestamps in `state.worldState.socialCooldowns`, blocking repetitive exploit farming.
+
+---
+
+## 8. Dynamic World Time, Event-Driven Scheduler, Living World, and Morality Engine (Engine v4.0.0)
+
+### 8.1 Centralized World-Time Engine
+* **Unified Time Progression**: In-game time advances strictly as a consequence of player actions and deliberate choices:
+  * Minutes, hours, days, months (30 days/month), and years (12 months/year).
+  * `getTotalInGameMinutes()` and `getTotalInGameHours()` calculate monotonic chronological timestamps.
+  * `formatInGameTime()` provides formatted temporal strings for journals, chronicles, and UI presentation.
+* **Configurable Activity Durations**: Activities consume time configured per campaign in `campaign.json` (`activityDurations`):
+  * Travel between waypoints (e.g. 120 minutes base, reduced by 20% with *Hermes' Swift Stride* feat).
+  * Combat encounters (15 minutes).
+  * Short rest (60 minutes), full rest (480 minutes / 8 hours), healing treatments (120 minutes).
+  * Crafting items (base 60 minutes).
+  * Interface interactions (viewing inventory, character sheet, journal, map) consume **0 minutes** to eliminate interface penalties.
+
+### 8.2 Event-Driven Priority Scheduler
+* **Zero Polling Loops / Zero Continuous Timers**:
+  * The world-time and event engine operates without `setInterval`, `setTimeout`, or polling loops for game time.
+  * Time advances exclusively when the player performs activities (`advanceTime(minutes)`).
+* **Sorted Chronological Execution**:
+  * Events are maintained in an ordered array sorted ascending by `triggerTimestamp`.
+  * New events are inserted via binary search ($O(\log n)$) to maintain strict chronological order.
+* **Memory Pruning & Duplicate Prevention**:
+  * Executed one-time events are automatically pruned from `state.worldState.scheduledEvents` to prevent memory accumulation in long-running saves.
+  * Unique execution history is tracked in `state.worldState.executedEventIds`, guaranteeing events can never trigger twice.
+  * Large time jumps (e.g. 8-hour rests) process all intermediate due events in exact chronological sequence.
+* **API Interface**:
+  * `scheduleEvent(event)`: Registers a scheduled event with automatic insertion sort.
+  * `cancelScheduledEvent(eventId)`: Cancels pending events (e.g. when quests complete before deadlines).
+  * `rescheduleEvent(eventId, newTimestamp)`: Modifies trigger time for delayed consequences.
+  * `processScheduledEvents()`: Dispatches due events and prunes completed entries.
+
+### 8.3 Time-Sensitive Quests & Deteriorating World States
+* **Quest-Specific Temporal Autonomy**: Quests independently define their time sensitivity:
+  * **Deadlines**: Quests declare `deadlineHours` from acceptance. Exceeding deadlines fails or escalates the quest (e.g. hostages executed, rivals claiming relics).
+  * **Milestone Warnings**: Intermediate events trigger at configured thresholds (e.g. 24h warning, 36h stage escalation).
+  * **Early Completion Bonuses**: Completing quests well before deadlines awards bonus XP and drachmae.
+  * **Timeless Quests**: Ancient ruins, exploration, and mythological codex quests do not enforce arbitrary deadlines.
+
+### 8.4 Creature & Boss Respawns
+* **Data-Driven Respawn Rules**:
+  * Standard creatures declare `respawnHours` (e.g. 12–24 hours).
+  * Boss creatures declare extended `respawnHours` (e.g. 48–168 hours).
+  * When slain, the engine calculates `triggerTimestamp = currentTimestamp + (respawnHours * 60)` and schedules a `"creature_respawn"` event.
+* **Anti-Exploit Relic Preservation**:
+  * Unique relics and artifacts dropped on initial boss defeats are recorded in `state.worldState.grantedUniqueItems`.
+  * Respawned boss defeats grant level-scaled drachmae and consumable supplies, strictly preventing relic duplication exploits.
+
+### 8.5 Permanent NPC Death & Murder Inquests
+* **Non-Respawning Living Entities**:
+  * NPCs, merchants, and named story characters are classified as unique mortals. When slain, their ID is permanently registered in `state.worldState.permanentNpcDeaths`.
+  * NPCs never respawn under any circumstance, and creature respawn handlers explicitly reject permanent NPC IDs.
+* **Living Consequence Cascade**:
+  * Killing an NPC terminates associated active contracts and quests with failover narratives.
+  * The engine schedules a delayed murder inquest event (e.g. 24 hours later) adjusting regional security, merchant prices, and faction standings.
+
+### 8.6 Morality & Karma Architecture
+* **Virtue (*Arete*) vs Hubris (*Miasma*)**:
+  * Tracks separate cumulative values: `player.morality.virtue` and `player.morality.hubris`.
+  * Net morality score is calculated as `score = virtue - hubris`.
+* **Dynamic Alignment Tiers**:
+  * **Heroic**: Net score $\ge +40$. Favored by gods, honored by citizens, discounts at merchants.
+  * **Pragmatic**: Net score between $-15$ and $+39$. Balanced survivalist, standard reactions.
+  * **Ruthless**: Net score between $-40$ and $-16$. Feared, shunned by holy sanctuaries, heightened guard suspicion.
+  * **Villainous**: Net score $\le -41$. Accursed with *miasma*, hunted by mercenaries, barred from sacred temples.
+* **Multi-Path Quest Resolutions**:
+  * Quests offer divergent choices yielding distinct moral outcomes (e.g. sparing defeated foes, taking ransoms, or executing prisoners).
+

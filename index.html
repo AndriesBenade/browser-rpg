@@ -2651,6 +2651,9 @@
 
             <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Divine Standing (Piety)</h3>
             <div id="sheet-piety-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem;"></div>
+
+            <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Moral Alignment & Deeds</h3>
+            <div id="sheet-morality-block" style="font-size: 0.85rem;"></div>
           </div>
         </div>
       </div>
@@ -3740,6 +3743,12 @@
               artemis: 0,
               poseidon: 0
             },
+            morality: {
+              virtue: 10,
+              hubris: 0,
+              score: 10,
+              alignment: "heroic"
+            },
             currencies: { drachmae: 45, obols: 4 },
             renown: 10,
             inventory: [
@@ -3758,6 +3767,7 @@
             flags: {},
             npcStates: {},
             deadEntities: {},
+            permanentNpcDeaths: {},
             lootedEntities: {},
             unlockedObjects: {},
             factions: {
@@ -3770,6 +3780,7 @@
             defeatedEncounters: {},
             grantedUniqueItems: {},
             scheduledEvents: [],
+            executedEventIds: {},
             consequencesLog: [],
             quests: {},
             journal: {
@@ -4612,7 +4623,7 @@
       loadEmbeddedDevTestContent() {
         this.world.locations = [{"id":"loc_dev_haven","name":"Haven of the Crossways","ancientName":"Portus Asyli","region":"The Central Marches","recommendedLevel":1,"coordinates":{"x":300,"y":300},"terrain":"paved_road","buildings":[{"id":"bld_haven_apothecary","name":"Lycus' Fine Goods & Wares","isOpen":true,"ownerId":"npc_dev_merchant_lycus"},{"id":"bld_haven_guardhouse","name":"Haven Watch Post","isOpen":true,"ownerId":"npc_dev_guard_captain"},{"id":"bld_haven_treasury","name":"The High Vault","isOpen":false,"requiresLockpick":true}],"connections":[{"targetLocationId":"loc_dev_whispering_woods","name":"The Old Forest Trail","distanceKm":4,"travelHours":1,"staminaCost":3,"terrain":"rocky_scrubland","dangerRating":1},{"targetLocationId":"loc_dev_ancient_crypt","name":"Road to the Sunken Crypt","distanceKm":6.5,"travelHours":2,"staminaCost":5,"terrain":"mountain_trail","dangerRating":2},{"targetLocationId":"loc_dev_obsidian_crag","name":"The Jagged Ascent","distanceKm":10,"travelHours":3,"staminaCost":8,"terrain":"mountain_trail","dangerRating":4}],"narrative":{"overview":"Haven of the Crossways is a fortified settlement set amidst limestone ridges. Cobblestone pathways link timber-framed houses, a lively merchant stall, and the imposing town watch house.","shortDescription":"A bustling crossroads settlement fortified by stout wooden palisades."},"presentNPCs":["npc_dev_merchant_lycus","npc_dev_guard_captain","npc_dev_elena_scholar"],"presentItems":["item_dev_iron_lockpick"]},{"id":"loc_dev_whispering_woods","name":"The Whispering Woods","ancientName":"Silva Murmuris","region":"The Central Marches","recommendedLevel":1,"coordinates":{"x":200,"y":250},"terrain":"rocky_scrubland","connections":[{"targetLocationId":"loc_dev_haven","name":"The Haven Road","distanceKm":4,"travelHours":1,"staminaCost":3,"terrain":"paved_road","dangerRating":1},{"targetLocationId":"loc_dev_sunken_grotto","name":"Overgrown Fern Hollow","distanceKm":3,"travelHours":1,"staminaCost":4,"terrain":"rocky_scrubland","dangerRating":2,"requiresFlag":"discovered_sunken_grotto"}],"narrative":{"overview":"Towering ancient pines and dense briars cast cool, dappled shadows across the mossy floor. The air rustles with wild boar foraging in the undergrowth.","shortDescription":"A verdant, windswept pine forest sheltering game and hidden hollows."},"presentCreatures":["creature_dev_wild_boar","creature_dev_forest_wolf"],"presentItems":["item_dev_forest_berries"]},{"id":"loc_dev_ancient_crypt","name":"The Sunken Crypt of Karas","ancientName":"Crypta Karatis","region":"The Desolate Lowlands","recommendedLevel":2,"coordinates":{"x":420,"y":380},"terrain":"mountain_cave","connections":[{"targetLocationId":"loc_dev_haven","name":"Highway to Haven","distanceKm":6.5,"travelHours":2,"staminaCost":5,"terrain":"paved_road","dangerRating":1}],"narrative":{"overview":"Chilly mist seeps from the shattered archway of the sunken crypt. Dark stone sepulchers flank an archaic sanctuary hall where an ancient warlord slumbers.","shortDescription":"A subterranean limestone crypt heavy with cold subterranean mist."},"presentCreatures":["creature_dev_crypt_boss"],"presentItems":["item_dev_crypt_torch"]},{"id":"loc_dev_obsidian_crag","name":"The Obsidian Crags","ancientName":"Rupes Atra","region":"Highland Peaks","recommendedLevel":4,"coordinates":{"x":500,"y":180},"terrain":"mountain_trail","connections":[{"targetLocationId":"loc_dev_haven","name":"Descent to Haven","distanceKm":10,"travelHours":3,"staminaCost":8,"terrain":"mountain_trail","dangerRating":4}],"narrative":{"overview":"Razor-sharp black obsidian pinnacles rise into freezing winds. Lethal shadow beasts stalk the high passes, hunting any mortal foolish enough to climb without heroic armament.","shortDescription":"Treacherous obsidian pinnacles shrouded in howling winds."},"presentCreatures":["creature_dev_shadow_stalker"]},{"id":"loc_dev_sunken_grotto","name":"The Sunken Grotto","ancientName":"Antrum Ocultum","region":"The Central Marches","recommendedLevel":2,"coordinates":{"x":150,"y":180},"terrain":"mountain_cave","connections":[{"targetLocationId":"loc_dev_whispering_woods","name":"Path Back to the Pines","distanceKm":3,"travelHours":1,"staminaCost":4,"terrain":"rocky_scrubland","dangerRating":1}],"narrative":{"overview":"A secluded subterranean pool lit by bioluminescent moss clinging to limestone stalactites. The water reflects shimmering veins of silver ore.","shortDescription":"A tranquil subterranean grotto with glowing limestone pools."},"presentItems":["item_dev_silver_chalice"]}];
         this.world.characters = [{"id":"npc_dev_merchant_lycus","name":"Merchant Lycus","title":"Purveyor of Fine Goods","locationId":"loc_dev_haven","faction":"faction_dev_haven","disposition":20,"isMerchant":true,"dialogueId":"dialogue_dev_lycus","lootTableId":"loot_dev_merchant_lycus","vitals":{"health":16,"maxHealth":16},"combatStats":{"armorClass":11,"attackBonus":2,"damage":"1d4+1","xpReward":25,"actions":[{"name":"Bronze Dagger Slash","attackBonus":2,"damage":"1d4+1","damageType":"piercing"}]},"merchantInventory":[{"itemId":"item_dev_iron_lockpick","price":10,"stock":5},{"itemId":"item_dev_healing_draught","price":15,"stock":3},{"itemId":"item_dev_trail_rations","price":5,"stock":8}],"description":"A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests."},{"id":"npc_dev_guard_captain","name":"Captain Valerius","title":"Commander of the Haven Watch","locationId":"loc_dev_haven","faction":"faction_dev_guards","disposition":10,"isGuard":true,"dialogueId":"dialogue_dev_captain","lootTableId":"loot_dev_guard_captain","vitals":{"health":28,"maxHealth":28},"combatStats":{"armorClass":15,"attackBonus":4,"damage":"1d8+2","xpReward":60,"actions":[{"name":"Heavy Broadsword Slash","attackBonus":4,"damage":"1d8+2","damageType":"slashing"}]},"description":"An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword."},{"id":"npc_dev_elena_scholar","name":"Scholar Elena","title":"Antiquarian of the Sunken Marches","locationId":"loc_dev_haven","faction":"faction_dev_haven","disposition":30,"isQuestGiver":true,"dialogueId":"dialogue_dev_elena","lootTableId":"loot_dev_scholar_elena","vitals":{"health":14,"maxHealth":14},"combatStats":{"armorClass":10,"attackBonus":1,"damage":"1d4","xpReward":20,"actions":[{"name":"Parchment Quell & Dagger","attackBonus":1,"damage":"1d4","damageType":"piercing"}]},"description":"A sharp-eyed scholar surrounded by rolled parchment scrolls and brass astrolabes, studying the lost Sunstone."},{"id":"npc_dev_bandit_renegade","name":"Renegade Silas","title":"Outlaw Scout","locationId":"loc_dev_whispering_woods","faction":"faction_dev_outlaws","disposition":-10,"dialogueId":"dialogue_dev_bandit","lootTableId":"loot_dev_bandit","vitals":{"health":20,"maxHealth":20},"combatStats":{"armorClass":12,"attackBonus":3,"damage":"1d6+2","xpReward":45,"actions":[{"name":"Hunting Knife Stab","attackBonus":3,"damage":"1d6+2","damageType":"piercing"}]},"description":"A lean, hooded archer lurking in the shadows of the pine branches."}];
-        this.world.creatures = [{"id":"creature_dev_wild_boar","name":"Wild Bristle Boar","tier":1,"level":1,"isAnimal":true,"xpReward":35,"vitals":{"health":18,"maxHealth":18,"morale":8},"armorClass":12,"lootTableId":"loot_dev_wild_boar","actions":[{"name":"Goring Tusk Thrust","attackBonus":3,"damage":"1d6+2","damageType":"piercing"},{"name":"Muddy Trample","attackBonus":2,"damage":"1d4+1","damageType":"bludgeoning"}]},{"id":"creature_dev_forest_wolf","name":"Grey Timber Wolf","tier":1,"level":1,"isAnimal":true,"xpReward":40,"vitals":{"health":16,"maxHealth":16,"morale":10},"armorClass":13,"lootTableId":"loot_dev_forest_wolf","actions":[{"name":"Snapping Jaws","attackBonus":4,"damage":"1d6+2","damageType":"piercing"}]},{"id":"creature_dev_shadow_stalker","name":"Obsidian Shadow Stalker","tier":4,"level":4,"isMonster":true,"xpReward":220,"vitals":{"health":55,"maxHealth":55,"morale":16},"armorClass":15,"lootTableId":"loot_dev_shadow_stalker","actions":[{"name":"Obsidian Talon Rend","attackBonus":6,"damage":"2d8+3","damageType":"slashing"},{"name":"Shadow Vapor Breath","attackBonus":5,"damage":"2d6+2","damageType":"necrotic"}]},{"id":"creature_dev_crypt_boss","name":"Lord Karas the Undying","title":"Ancient Warlord of the Sunken Crypt","tier":3,"level":3,"isBoss":true,"repeatable":true,"respawnHours":24,"xpReward":180,"vitals":{"health":60,"maxHealth":60,"morale":20},"armorClass":14,"lootTableId":"loot_dev_crypt_boss","bossPhases":[{"phase":1,"name":"Shield of the Tombs","healthThreshold":0.5,"banner":"Lord Karas raises an archaic iron crest shield, deflecting incoming blows!"},{"phase":2,"name":"Enraged Chthonic Fury","healthThreshold":0,"enrage":true,"damageBonus":3,"banner":"Lord Karas roars with otherworldly rage as dark green spectral flames engulf his greatsword!"}],"actions":[{"name":"Crypt Cleaver","attackBonus":5,"damage":"1d10+3","damageType":"slashing"},{"name":"Grave Chill Wave","attackBonus":4,"damage":"2d6+2","damageType":"cold"}]}];
+        this.world.creatures = [{"id":"creature_dev_wild_boar","name":"Wild Bristle Boar","tier":1,"level":1,"isAnimal":true,"respawnHours":12,"xpReward":35,"vitals":{"health":18,"maxHealth":18,"morale":8},"armorClass":12,"lootTableId":"loot_dev_wild_boar","actions":[{"name":"Goring Tusk Thrust","attackBonus":3,"damage":"1d6+2","damageType":"piercing"},{"name":"Muddy Trample","attackBonus":2,"damage":"1d4+1","damageType":"bludgeoning"}]},{"id":"creature_dev_forest_wolf","name":"Grey Timber Wolf","tier":1,"level":1,"isAnimal":true,"respawnHours":12,"xpReward":40,"vitals":{"health":16,"maxHealth":16,"morale":10},"armorClass":13,"lootTableId":"loot_dev_forest_wolf","actions":[{"name":"Snapping Jaws","attackBonus":4,"damage":"1d6+2","damageType":"piercing"}]},{"id":"creature_dev_shadow_stalker","name":"Obsidian Shadow Stalker","tier":4,"level":4,"isMonster":true,"respawnHours":48,"xpReward":220,"vitals":{"health":55,"maxHealth":55,"morale":16},"armorClass":15,"lootTableId":"loot_dev_shadow_stalker","actions":[{"name":"Obsidian Talon Rend","attackBonus":6,"damage":"2d8+3","damageType":"slashing"},{"name":"Shadow Vapor Breath","attackBonus":5,"damage":"2d6+2","damageType":"necrotic"}]},{"id":"creature_dev_crypt_boss","name":"Lord Karas the Undying","title":"Ancient Warlord of the Sunken Crypt","tier":3,"level":3,"isBoss":true,"repeatable":true,"respawnHours":24,"xpReward":180,"vitals":{"health":60,"maxHealth":60,"morale":20},"armorClass":14,"lootTableId":"loot_dev_crypt_boss","bossPhases":[{"phase":1,"name":"Shield of the Tombs","healthThreshold":0.5,"banner":"Lord Karas raises an archaic iron crest shield, deflecting incoming blows!"},{"phase":2,"name":"Enraged Chthonic Fury","healthThreshold":0,"enrage":true,"damageBonus":3,"banner":"Lord Karas roars with otherworldly rage as dark green spectral flames engulf his greatsword!"}],"actions":[{"name":"Crypt Cleaver","attackBonus":5,"damage":"1d10+3","damageType":"slashing"},{"name":"Grave Chill Wave","attackBonus":4,"damage":"2d6+2","damageType":"cold"}]}];
         this.world.items = [{"id":"item_dev_iron_lockpick","name":"Slender Iron Lockpick","category":"tool","slot":"accessory","rarity":"common","weightKg":0.1,"valueDrachmae":10,"description":"A tempered iron tension wrench and pick suited for delicate mechanical locks."},{"id":"item_dev_treasury_key","name":"Heavy Brass Vault Key","category":"key","rarity":"rare","weightKg":0.2,"valueDrachmae":25,"description":"An ornate brass key engraved with the Haven crest, unlocking the High Vault."},{"id":"item_dev_crypt_key","name":"Rusted Iron Crypt Key","category":"key","rarity":"uncommon","weightKg":0.3,"valueDrachmae":15,"description":"An archaic iron skeleton key recovered from the wilderness."},{"id":"item_dev_sunstone_relic","name":"Radiant Sunstone of Haven","category":"relic","rarity":"legendary","isUnique":true,"weightKg":0.5,"valueDrachmae":200,"description":"An ancient radiant amber crystal pulsing with solar warmth. The legendary artifact sought by Scholar Elena."},{"id":"item_dev_elena_journal","name":"Scholar Elena's Research Journal","category":"document","rarity":"rare","isUnique":true,"weightKg":0.4,"valueDrachmae":20,"description":"Handwritten parchment notes detailing the secret mechanism of the Sunken Crypt where the Sunstone is hidden."},{"id":"item_dev_healing_draught","name":"Apothecary Healing Draught","category":"consumable","rarity":"common","weightKg":0.3,"valueDrachmae":15,"effect":{"restoreHealth":10},"description":"A glass vial of brewed dittany, willow bark, and honey that rapidly stitches flesh."},{"id":"item_dev_trail_rations","name":"Smoked Meat & Hardtack","category":"consumable","rarity":"common","weightKg":0.5,"valueDrachmae":5,"effect":{"restoreStamina":8},"description":"Durable traveling provisions that revive weary muscles."},{"id":"item_dev_forest_berries","name":"Wild Mountain Blackberries","category":"consumable","rarity":"common","weightKg":0.2,"valueDrachmae":2,"effect":{"restoreStamina":4},"description":"Plump wild berries gathered from the brambles of the Whispering Woods."},{"id":"item_dev_boar_tusk","name":"Curved Boar Tusk","category":"material","rarity":"common","weightKg":0.4,"valueDrachmae":8,"description":"A razor-sharp ivory tusk prize from a wild boar."},{"id":"item_dev_boar_meat","name":"Fresh Boar Haunch","category":"consumable","rarity":"common","weightKg":1,"valueDrachmae":6,"effect":{"restoreHealth":6,"restoreStamina":6},"description":"A hearty cut of fresh game suitable for roasting over campfires."},{"id":"item_dev_wolf_pelt","name":"Thick Grey Wolf Pelt","category":"material","rarity":"common","weightKg":1.2,"valueDrachmae":12,"description":"A thick winter wolf fur pelt valued by furriers and cloak makers."},{"id":"item_dev_chthonic_crystal","name":"Flawless Obsidian Crystal","category":"material","rarity":"exceptional","weightKg":0.8,"valueDrachmae":75,"description":"An extremely rare crystalline growth harvested from high obsidian crags."},{"id":"item_dev_silver_chalice","name":"Ancient Silver Liturgical Chalice","category":"treasure","rarity":"rare","weightKg":0.6,"valueDrachmae":50,"description":"An exquisite silver chalice recovered from the Sunken Grotto."},{"id":"item_dev_crypt_torch","name":"Pitch-Soaked Cedar Torch","category":"utility","rarity":"common","weightKg":0.5,"valueDrachmae":3,"description":"A resinous torch that burns brightly in subterranean passages."},{"id":"item_dev_broadsword","name":"Haven Watch Broadsword","category":"weapon","slot":"main_hand","rarity":"uncommon","weightKg":1.8,"valueDrachmae":35,"stats":{"damageMin":4,"damageMax":10,"damageType":"slashing"},"description":"A double-edged forged steel broadsword issued to Haven guards."}];
         this.world.lootTables = [{"id":"loot_dev_merchant_lycus","name":"Merchant Lycus Personal Possessions","currency":{"min":35,"max":50},"entries":[{"itemId":"item_dev_iron_lockpick","chance":0.8,"minQuantity":1,"maxQuantity":3},{"itemId":"item_dev_healing_draught","chance":0.6,"minQuantity":1,"maxQuantity":2},{"itemId":"item_dev_trail_rations","chance":0.9,"minQuantity":2,"maxQuantity":4}]},{"id":"loot_dev_guard_captain","name":"Captain Valerius Arms & Regalia","currency":{"min":20,"max":35},"entries":[{"itemId":"item_dev_treasury_key","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1},{"itemId":"item_dev_broadsword","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_scholar_elena","name":"Scholar Elena Satchel & Notes","currency":{"min":10,"max":20},"entries":[{"itemId":"item_dev_elena_journal","chance":1,"guaranteed":true,"isUnique":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_bandit","name":"Renegade Silas Stash","currency":{"min":12,"max":25},"entries":[{"itemId":"item_dev_iron_lockpick","chance":0.5,"minQuantity":1,"maxQuantity":1},{"itemId":"item_dev_trail_rations","chance":0.75,"minQuantity":1,"maxQuantity":2}]},{"id":"loot_dev_wild_boar","name":"Wild Boar Spoils","entries":[{"itemId":"item_dev_boar_meat","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":2},{"itemId":"item_dev_boar_tusk","chance":0.7,"minQuantity":1,"maxQuantity":2}]},{"id":"loot_dev_forest_wolf","name":"Wolf Pelts & Bones","entries":[{"itemId":"item_dev_wolf_pelt","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_shadow_stalker","name":"Shadow Stalker Crystals","currency":{"min":25,"max":40},"entries":[{"itemId":"item_dev_chthonic_crystal","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_crypt_boss","name":"Lord Karas Sepulcher Spoils","currency":{"min":80,"max":120},"entries":[{"itemId":"item_dev_sunstone_relic","chance":1,"guaranteed":true,"isUnique":true,"minQuantity":1,"maxQuantity":1}],"repeatCurrency":{"min":35,"max":50},"repeatEntries":[{"itemId":"item_dev_healing_draught","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]}];
         this.world.interactiveObjects = [{"id":"obj_treasury_iron_door","locationId":"loc_dev_haven","name":"Ironbound Vault Door","type":"door","locked":true,"isPickable":true,"lockDifficulty":12,"requiredKeyId":"item_dev_treasury_key","requiredToolId":"item_dev_iron_lockpick","description":"A reinforced oak and banded-iron portal securing the Haven High Vault.","failureConsequence":{"breakToolOnAte":true,"alertNpcId":"npc_dev_guard_captain","message":"A loud metallic clang echoes down the cobblestones as your pick jams in the tumblers!"},"unlockOutcome":{"setFlags":{"treasury_door_unlocked":true},"transcript":{"speaker":"Physical Interaction","text":"With a satisfying click of heavy brass tumblers, the ironbound door creaks inward, granting access to the interior vault!","style":"entry-discovery"},"awardXP":25}},{"id":"obj_trapped_coffer","locationId":"loc_dev_haven","name":"Gilded Treasury Strongbox","type":"container","locked":true,"isPickable":true,"lockDifficulty":14,"requiredToolId":"item_dev_iron_lockpick","description":"A cedar coffer bound in brass filigree, sitting upon a stone pedestal inside the vault.","trap":{"name":"Spring-Loaded Bronze Dart","disarmDC":13,"damage":6,"description":"A tensioned wire connected to a pressurized dart launcher inside the lock housing."},"contents":{"drachmae":60,"items":["item_dev_silver_chalice"]},"unlockOutcome":{"setFlags":{"treasury_coffer_unlocked":true},"transcript":{"speaker":"Physical Interaction","text":"The lock springs open! Inside lies a velvet-lined cache containing 60 silver drachmae and an ancient silver chalice!","style":"entry-discovery"},"awardXP":35}},{"id":"obj_boulder_seal","locationId":"loc_dev_whispering_woods","name":"Massive Overgrown Granite Boulder","type":"obstacle","locked":true,"isPickable":false,"unpickableReason":"A colossal solid granite boulder has no mechanical lock or keyhole. It cannot be lockpicked!","requiredAttribute":"strength","requiredScore":14,"description":"A monolithic boulder choked with ivy, completely sealing an arched fissure in the cliffside.","unlockOutcome":{"setFlags":{"discovered_sunken_grotto":true},"transcript":{"speaker":"Feat of Power","text":"Bracing your shoulders against the massive stone, you heave with all your might. With a grinding crunch, the boulder rolls aside, revealing the hidden passage to the Sunken Grotto!","style":"entry-discovery"},"awardXP":30}},{"id":"obj_crypt_sarcophagus","locationId":"loc_dev_ancient_crypt","name":"Lord Karas' Marble Sarcophagus","type":"container","locked":false,"isPickable":false,"description":"A carved marble tomb relief depicting the warlord Karas holding a solar emblem.","contents":{"drachmae":25,"items":["item_dev_crypt_torch"]}}];
@@ -4672,7 +4683,7 @@
         this.currentAdventure = {
           id: "adv_dev_test",
           title: "Developer Verification Adventure",
-          quests: [{"id":"quest_dev_sunstone_relic","title":"The Lost Sunstone of Haven","category":"Main Quest","summary":"Scholar Elena seeks the ancient radiant Sunstone buried in the sepulcher of Lord Karas within the Sunken Crypt.","currentStage":"inquire_scholar","stages":{"inquire_scholar":{"description":"Speak with Scholar Elena at Haven settlement or locate her research notes.","objectives":[{"id":"obj_speak_elena","text":"Consult Scholar Elena about the lost crypt.","completed":false}]},"explore_crypt":{"description":"Journey to the Sunken Crypt and defeat Lord Karas to recover the Sunstone.","objectives":[{"id":"obj_defeat_karas","text":"Vanquish Lord Karas the Undying.","completed":false},{"id":"obj_recover_sunstone","text":"Retrieve the Radiant Sunstone of Haven.","completed":false}]},"return_or_keep":{"description":"Deliver the Sunstone to Elena for a scholarly reward, or retain it as an artifact of power.","objectives":[{"id":"obj_resolve_sunstone","text":"Deliver the relic to Elena or claim its power.","completed":false}]},"completed":{"description":"The mystery of the Sunstone has been resolved.","objectives":[{"id":"obj_quest_done","text":"Sunstone quest concluded.","completed":true}]}},"alternatePathways":{"onNpcDeath":{"npcId":"npc_dev_elena_scholar","setStage":"explore_crypt","completeObjective":"obj_speak_elena","narrative":"With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."}},"rewards":{"experience":250,"drachmae":60,"renown":25}},{"id":"quest_dev_boar_menace","title":"The Bristle Boar Menace","category":"Side Quest","summary":"Captain Valerius has posted a bounty for hunting ferocious wild boars in the Whispering Woods.","currentStage":"hunt_boar","stages":{"hunt_boar":{"description":"Venture into the Whispering Woods and slay a wild bristle boar.","objectives":[{"id":"obj_slay_boar","text":"Defeat a wild boar in the Whispering Woods.","completed":false}]},"return_captain":{"description":"Report your victory to Captain Valerius in Haven.","objectives":[{"id":"obj_turnin_boar","text":"Collect bounty from Captain Valerius.","completed":false}]},"completed":{"description":"The boar bounty has been collected.","objectives":[{"id":"obj_boar_done","text":"Bounty rewarded.","completed":true}]}},"rewards":{"experience":100,"drachmae":25}},{"id":"quest_dev_treasury_heist","title":"The High Vault Infiltration","category":"Optional Quest","summary":"Infiltrate Haven's High Vault by picking the lock or obtaining the key, and claim the treasures within.","currentStage":"infiltrate_vault","stages":{"infiltrate_vault":{"description":"Unlock or pick the High Vault door in Haven.","objectives":[{"id":"obj_unlock_vault","text":"Bypass the ironbound vault door.","completed":false},{"id":"obj_loot_coffer","text":"Loot the gilded strongbox inside the vault.","completed":false}]},"completed":{"description":"Successfully looted the High Vault.","objectives":[{"id":"obj_heist_done","text":"Vault emptied.","completed":true}]}},"rewards":{"experience":150}},{"id":"quest_dev_grotto_mystery","title":"The Secret of the Sunken Grotto","category":"Discovery Quest","summary":"Discover the hidden passage behind the overgrown granite boulder in the Whispering Woods.","currentStage":"discover_grotto","stages":{"discover_grotto":{"description":"Roll aside the monolithic boulder and explore the hidden cavern.","objectives":[{"id":"obj_move_boulder","text":"Move the granite boulder.","completed":false}]},"completed":{"description":"The Sunken Grotto has been charted.","objectives":[{"id":"obj_grotto_charted","text":"Grotto discovered.","completed":true}]}},"rewards":{"experience":75,"drachmae":15}},{"id":"quest_dev_merchant_delivery","title":"Lycus' Caravan Contract","category":"Faction Quest","summary":"Merchant Lycus entrusted you with a business delivery to the outlying homesteads.","currentStage":"active_delivery","stages":{"active_delivery":{"description":"Ensure the goods reach their destination safely.","objectives":[{"id":"obj_carry_goods","text":"Deliver goods for Lycus.","completed":false}]},"completed":{"description":"Contract fulfilled.","objectives":[{"id":"obj_delivery_done","text":"Delivery completed.","completed":true}]}},"failableConditions":{"onNpcDeath":{"npcId":"npc_dev_merchant_lycus","reason":"Merchant Lycus was slain. The delivery contract is null and void."}},"rewards":{"experience":80,"drachmae":30}}],
+          quests: [{"id":"quest_dev_sunstone_relic","title":"The Lost Sunstone of Haven","category":"Main Quest","summary":"Scholar Elena seeks the ancient radiant Sunstone buried in the sepulcher of Lord Karas within the Sunken Crypt.","currentStage":"inquire_scholar","stages":{"inquire_scholar":{"description":"Speak with Scholar Elena at Haven settlement or locate her research notes.","objectives":[{"id":"obj_speak_elena","text":"Consult Scholar Elena about the lost crypt.","completed":false}]},"explore_crypt":{"description":"Journey to the Sunken Crypt and defeat Lord Karas to recover the Sunstone.","objectives":[{"id":"obj_defeat_karas","text":"Vanquish Lord Karas the Undying.","completed":false},{"id":"obj_recover_sunstone","text":"Retrieve the Radiant Sunstone of Haven.","completed":false}]},"return_or_keep":{"description":"Deliver the Sunstone to Elena for a scholarly reward, or retain it as an artifact of power.","objectives":[{"id":"obj_resolve_sunstone","text":"Deliver the relic to Elena or claim its power.","completed":false}]},"completed":{"description":"The mystery of the Sunstone has been resolved.","objectives":[{"id":"obj_quest_done","text":"Sunstone quest concluded.","completed":true}]}},"alternatePathways":{"onNpcDeath":{"npcId":"npc_dev_elena_scholar","setStage":"explore_crypt","completeObjective":"obj_speak_elena","narrative":"With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."}},"rewards":{"experience":250,"drachmae":60,"renown":25}},{"id":"quest_dev_boar_menace","title":"The Bristle Boar Menace","category":"Side Quest","summary":"Captain Valerius has posted a bounty for hunting ferocious wild boars in the Whispering Woods.","currentStage":"hunt_boar","stages":{"hunt_boar":{"description":"Venture into the Whispering Woods and slay a wild bristle boar.","objectives":[{"id":"obj_slay_boar","text":"Defeat a wild boar in the Whispering Woods.","completed":false}]},"return_captain":{"description":"Report your victory to Captain Valerius in Haven.","objectives":[{"id":"obj_turnin_boar","text":"Collect bounty from Captain Valerius.","completed":false}]},"completed":{"description":"The boar bounty has been collected.","objectives":[{"id":"obj_boar_done","text":"Bounty rewarded.","completed":true}]}},"rewards":{"experience":100,"drachmae":25}},{"id":"quest_dev_treasury_heist","title":"The High Vault Infiltration","category":"Optional Quest","summary":"Infiltrate Haven's High Vault by picking the lock or obtaining the key, and claim the treasures within.","currentStage":"infiltrate_vault","stages":{"infiltrate_vault":{"description":"Unlock or pick the High Vault door in Haven.","objectives":[{"id":"obj_unlock_vault","text":"Bypass the ironbound vault door.","completed":false},{"id":"obj_loot_coffer","text":"Loot the gilded strongbox inside the vault.","completed":false}]},"completed":{"description":"Successfully looted the High Vault.","objectives":[{"id":"obj_heist_done","text":"Vault emptied.","completed":true}]}},"rewards":{"experience":150}},{"id":"quest_dev_grotto_mystery","title":"The Secret of the Sunken Grotto","category":"Discovery Quest","summary":"Discover the hidden passage behind the overgrown granite boulder in the Whispering Woods.","currentStage":"discover_grotto","stages":{"discover_grotto":{"description":"Roll aside the monolithic boulder and explore the hidden cavern.","objectives":[{"id":"obj_move_boulder","text":"Move the granite boulder.","completed":false}]},"completed":{"description":"The Sunken Grotto has been charted.","objectives":[{"id":"obj_grotto_charted","text":"Grotto discovered.","completed":true}]}},"rewards":{"experience":75,"drachmae":15}},{"id":"quest_dev_merchant_delivery","title":"Lycus' Caravan Contract","category":"Faction Quest","summary":"Merchant Lycus entrusted you with a business delivery to the outlying homesteads.","currentStage":"active_delivery","stages":{"active_delivery":{"description":"Ensure the goods reach their destination safely.","objectives":[{"id":"obj_carry_goods","text":"Deliver goods for Lycus.","completed":false}]},"completed":{"description":"Contract fulfilled.","objectives":[{"id":"obj_delivery_done","text":"Delivery completed.","completed":true}]}},"failableConditions":{"onNpcDeath":{"npcId":"npc_dev_merchant_lycus","reason":"Merchant Lycus was slain. The delivery contract is null and void."}},"rewards":{"experience":80,"drachmae":30}},{"id":"quest_dev_urgent_rescue","title":"Hostage of the Obsidian Crag","category":"Time-Sensitive Quest","summary":"Bandits have seized an apprentice artificer. Rescue the captive before they are moved deep into the caves.","timeSensitive":true,"deadlineHours":48,"earlyCompletionBonus":{"hoursThreshold":24,"drachmae":40,"virtue":10,"narrative":"Rescued the apprentice swiftly before any harm could befall them!"},"timeMilestones":[{"hours":24,"action":"warn","narrative":"Scouts report bandit lookouts have doubled at the Obsidian Crag. Time is growing short!"},{"hours":48,"action":"escalate","mutateStage":"stage_hostage_moved","setFlags":{"hostage_moved_deep":true},"narrative":"The deadline expired! The captive has been dragged deeper into the cavern, guarded by heavier reinforcements."}],"currentStage":"rescue_crag","stages":{"rescue_crag":{"description":"Reach the Obsidian Crag and rescue the captive apprentice.","objectives":[{"id":"obj_free_apprentice","text":"Free the apprentice at the crags.","completed":false}]},"stage_hostage_moved":{"description":"The apprentice was relocated to the Sunken Grotto. Infiltrate the subterranean cavern.","objectives":[{"id":"obj_free_apprentice_grotto","text":"Free the apprentice from the deep grotto.","completed":false}]},"completed":{"description":"The apprentice was brought back to Haven safely.","objectives":[{"id":"obj_rescue_done","text":"Apprentice safe.","completed":true}]}},"rewards":{"experience":150,"drachmae":50,"virtue":15}},{"id":"quest_dev_bandit_alliance","title":"The Renegade's Bargain","category":"Morality Quest","summary":"Renegade Silas offers a lucrative deal: turn him in to Captain Valerius, accept his hush money, or assassinate the Captain.","timeSensitive":false,"currentStage":"confront_silas","moralPaths":{"heroic":{"id":"path_arrest_silas","label":"Arrest Silas & Turn Him Over to the Guard","virtue":20,"hubris":0,"reputation":{"faction_dev_guards":25,"faction_dev_outlaws":-40},"rewards":{"experience":120,"drachmae":30}},"pragmatic":{"id":"path_accept_bribe","label":"Accept Silas' Bribe & Misdirect the Patrol","virtue":0,"hubris":5,"reputation":{"faction_dev_guards":-5,"faction_dev_outlaws":15},"rewards":{"experience":90,"drachmae":60}},"villainous":{"id":"path_assassinate_captain","label":"Ally with Silas & Eliminate Captain Valerius","virtue":0,"hubris":35,"reputation":{"faction_dev_guards":-60,"faction_dev_outlaws":50,"faction_dev_haven":-30},"rewards":{"experience":200,"drachmae":100}}},"stages":{"confront_silas":{"description":"Decide the fate of Renegade Silas.","objectives":[{"id":"obj_decide_silas","text":"Resolve the standoff with Silas.","completed":false}]},"completed":{"description":"The bargain with Silas has reached its final resolution.","objectives":[{"id":"obj_silas_concluded","text":"Fate of Silas decided.","completed":true}]}},"rewards":{"experience":100}},{"id":"quest_dev_ancient_ruins","title":"The Whispering Monoliths","category":"Timeless Exploration","summary":"Explore the ancient stone monoliths scattered through the wilderness. This quest has no time limit.","timeSensitive":false,"currentStage":"examine_stones","stages":{"examine_stones":{"description":"Chart the ancient monoliths when convenient.","objectives":[{"id":"obj_read_monolith","text":"Examine the weathered inscription.","completed":false}]},"completed":{"description":"The monolith runes have been recorded.","objectives":[{"id":"obj_monolith_done","text":"Runes recorded.","completed":true}]}},"rewards":{"experience":50,"drachmae":10}}],
           dialogues: {"dialogue_dev_lycus":{"greeting":"Welcome to my stall, traveler! Lycus has the finest goods in Haven—durable lockpicks, healing draughts, and hearty rations.","nodes":{"root":{"text":"Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.","choices":[{"label":"Show me what you have for sale.","target":"node_browse"},{"label":"Any work for a wandering hero?","target":"node_quest"},{"label":"Farewell, Lycus.","target":"exit"}]},"node_browse":{"text":"Inspect my goods freely! Everything is guaranteed genuine Haven quality.","choices":[{"label":"Back to inquiries.","target":"root"}]},"node_quest":{"text":"I need a trustworthy courier to take on a delivery contract. Take this assignment and I will pay handsomely upon completion.","setFlags":{"accepted_lycus_contract":true},"startQuest":"quest_dev_merchant_delivery","choices":[{"label":"I accept the contract.","target":"root"}]}}},"dialogue_dev_captain":{"greeting":"Halt and declare your business in Haven. The Watch keeps a sharp eye on all strangers.","nodes":{"root":{"text":"Captain Valerius stands rigid in iron chainmail, eyeing you with professional scrutiny.","choices":[{"label":"I heard there is a bounty on wild boars.","target":"node_boar_bounty"},{"label":"Has anyone breached the High Vault recently?","target":"node_vault_warning"},{"label":"As you were, Captain.","target":"exit"}]},"node_boar_bounty":{"text":"Indeed. The bristle boars in the Whispering Woods have grown bold and aggressive. Bring one down and Haven will pay you in good silver.","startQuest":"quest_dev_boar_menace","choices":[{"label":"Consider it done.","target":"root"}]},"node_vault_warning":{"text":"The High Vault is sealed under strict Watch decree. Anyone caught tampering with the iron lock will face immediate execution. Do not test our patience.","choices":[{"label":"Understood, Captain.","target":"root"}]}}},"dialogue_dev_elena":{"greeting":"Greetings, traveler. If you have an eye for ancient history, pray lend your ear to my inquiry.","nodes":{"root":{"text":"Elena adjusts her spectacles and unrolls a map of the Sunken Crypt.","choices":[{"label":"Tell me of this Sunstone you seek.","target":"node_sunstone_lore"},{"label":"I will venture into the crypt for you.","target":"node_accept_sunstone"},{"label":"I have recovered the Sunstone!","target":"node_complete_sunstone","condition":{"hasItem":"item_dev_sunstone_relic"}},{"label":"Until later, Elena.","target":"exit"}]},"node_sunstone_lore":{"text":"Centuries ago, Lord Karas drew down solar fire into a radiant amber stone. When his dynasty fell, he was entombed with it in the Sunken Crypt. I seek it to restore Haven's lost chronicles.","choices":[{"label":"A noble goal.","target":"root"}]},"node_accept_sunstone":{"text":"May the light guide your blade! The crypt lies southeast of Haven. Beware the guardian Karas; death has not dulled his steel.","startQuest":"quest_dev_sunstone_relic","choices":[{"label":"I will return with the relic.","target":"root"}]},"node_complete_sunstone":{"text":"Unbelievable! The true Radiant Sunstone! You have achieved what a dozen expeditions failed to accomplish. Take this scholarly purse with Haven's deepest gratitude!","completeQuest":"quest_dev_sunstone_relic","consumeItem":"item_dev_sunstone_relic","giveDrachmae":60,"awardXP":250,"choices":[{"label":"It was my honor, Elena.","target":"root"}]}}},"dialogue_dev_bandit":{"greeting":"Step lightly, traveler. These woods belong to those swift enough to take what they want.","nodes":{"root":{"text":"Silas twirls a wicked hunting dagger between scarred knuckles.","choices":[{"label":"Stand down, or taste cold steel.","target":"node_threat"},{"label":"What do you know of the hidden grotto nearby?","target":"node_grotto_hint"},{"label":"I'm moving on.","target":"exit"}]},"node_threat":{"text":"Big words for a stranger far from the safety of Haven's walls! Walk away while your purse is still in your belt.","choices":[{"label":"Back down.","target":"root"}]},"node_grotto_hint":{"text":"Follow the overgrown fern trail east until you hit the cliff. There's a colossal granite boulder blocking a cave. Move the stone, and you'll find where the ancients washed silver.","addJournalKnowledge":{"title":"Silas' Clue to the Grotto","text":"Silas mentioned a huge granite boulder in the woods sealing a subterranean silver cavern."},"choices":[{"label":"A useful secret.","target":"root"}]}}}},
           encounters: [{"id":"enc_dev_crypt_boss","locationId":"loc_dev_ancient_crypt","creatureId":"creature_dev_crypt_boss","isBoss":true,"repeatable":true,"cooldownHours":24,"introProse":"From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!","victoryOutcome":{"text":"Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!","setFlags":{"defeated_lord_karas":true},"updateQuest":{"questId":"quest_dev_sunstone_relic","objectiveId":"obj_defeat_karas","completed":true},"awardXP":180,"addJournalChronicle":{"title":"Vanquished Lord Karas","text":"Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."}}},{"id":"enc_dev_wild_boar","locationId":"loc_dev_whispering_woods","creatureId":"creature_dev_wild_boar","introProse":"A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!","victoryOutcome":{"text":"You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.","setFlags":{"slain_dev_boar":true},"updateQuest":{"questId":"quest_dev_boar_menace","objectiveId":"obj_slay_boar","completed":true},"awardXP":35}},{"id":"enc_dev_shadow_stalker","locationId":"loc_dev_obsidian_crag","creatureId":"creature_dev_shadow_stalker","introProse":"A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!","victoryOutcome":{"text":"The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.","awardXP":220}}],
           contextActions: []
@@ -4708,6 +4719,28 @@
         this.world.professions = [];
         this.world.materials = [];
         this.world.craftingTemplates = [];
+        this.world.quests = this.currentAdventure.quests;
+        this.activeCampaign = {
+          id: "campaign_dev_test",
+          activityDurations: {
+            travel: "connection",
+            combat: 15,
+            rest_short: 60,
+            rest_sacred: 120,
+            rest_long: 480,
+            crafting: 120,
+            hunting: 90,
+            foraging: 45,
+            investigation: 30,
+            dialogue: 5
+          },
+          respawnRules: {
+            creatureNormalHours: 12,
+            creatureRareHours: 48,
+            bossHours: 24,
+            preventNpcRespawn: true
+          }
+        };
 
         this.buildContentMaps();
       }
@@ -5047,8 +5080,27 @@
                 stage: initialStageKey,
                 objectives: objectivesMap,
                 completed: false,
+                failed: false,
+                acceptedAtMinutes: this.getTotalInGameMinutes(),
                 category: q.category || "Heroic Quest"
               };
+
+              if (q.timeSensitive && Array.isArray(q.timeMilestones)) {
+                q.timeMilestones.forEach(m => {
+                  this.scheduleEvent({
+                    id: `quest_ms_${q.id}_${m.hours}`,
+                    type: "quest_deadline",
+                    questId: q.id,
+                    inHours: m.hours,
+                    payload: {
+                      mutateStage: m.mutateStage,
+                      setFlags: m.setFlags,
+                      failQuest: m.action === "fail",
+                      narrative: m.narrative
+                    }
+                  });
+                });
+              }
             }
           });
         } else if (!this.state.worldState.quests["quest_tutorial_stolen_ram"]) {
@@ -5712,6 +5764,16 @@
         if (cond.type === "min_level") {
           return (this.state.player.level || 1) >= cond.level;
         }
+        if (cond.type === "morality_alignment" || cond.requiresMorality) {
+          const req = cond.alignment || cond.requiresMorality;
+          return this.getMoralityAlignment() === req;
+        }
+        if (cond.type === "min_virtue") {
+          return (this.state.player.morality?.virtue || 0) >= cond.value;
+        }
+        if (cond.type === "min_hubris") {
+          return (this.state.player.morality?.hubris || 0) >= cond.value;
+        }
         return true;
       }
 
@@ -5723,6 +5785,7 @@
         if (action.requiresFlag && !this.state.worldState.flags[action.requiresFlag]) return false;
         if (action.requiresNotFlag && this.state.worldState.flags[action.requiresNotFlag]) return false;
         if (action.requiresItem && !this.hasItem(action.requiresItem)) return false;
+        if (action.requiresMorality && this.getMoralityAlignment() !== action.requiresMorality) return false;
         
         // Multi-condition array
         if (Array.isArray(action.conditions)) {
@@ -5813,8 +5876,22 @@
         }
         if (outcome.completeQuest) {
           if (this.state.worldState.quests[outcome.completeQuest]) {
-            this.state.worldState.quests[outcome.completeQuest].completed = true;
+            this.completeQuest(outcome.completeQuest);
           }
+        }
+
+        if (outcome.morality) {
+          this.modifyMorality(outcome.morality.virtue || 0, outcome.morality.hubris || 0, outcome.morality.reason || "Action Consequence");
+        }
+        if (outcome.virtue) {
+          this.modifyMorality(outcome.virtue, 0, outcome.moralityReason || "Noble Action");
+        }
+        if (outcome.hubris) {
+          this.modifyMorality(0, outcome.hubris, outcome.moralityReason || "Transgression");
+        }
+
+        if (outcome.scheduleEvent) {
+          this.scheduleEvent(outcome.scheduleEvent);
         }
 
         if (outcome.addJournalKnowledge) {
@@ -6912,42 +6989,530 @@
         });
       }
 
-      getTotalInGameHours() {
+      getTotalInGameMinutes() {
         const t = this.state.worldState.time;
-        return (t.year * 365 * 24) + (t.month * 30 * 24) + (t.day * 24) + t.hour;
+        const days = (t.year * 365) + (t.month * 30) + t.day;
+        return (days * 24 + t.hour) * 60 + (t.minute || 0);
+      }
+
+      getTotalInGameHours() {
+        return this.getTotalInGameMinutes() / 60;
+      }
+
+      formatInGameTime() {
+        const t = this.state.worldState.time;
+        const period = this.getTimePeriod ? this.getTimePeriod(t.hour) : (t.hour < 12 ? "Morning" : t.hour < 18 ? "Afternoon" : "Night");
+        const hrStr = String(t.hour).padStart(2, "0");
+        const minStr = String(t.minute || 0).padStart(2, "0");
+        return `Year ${t.year}, Month ${t.month}, Day ${t.day} — ${hrStr}:${minStr} (${period})`;
+      }
+
+      isPermanentNpc(entityId) {
+        if (!entityId) return false;
+        if (this.state.worldState.permanentNpcDeaths && this.state.worldState.permanentNpcDeaths[entityId]) return true;
+        const c = this.getCharacter(entityId);
+        if (c) return true;
+        if (entityId.startsWith("npc_")) return true;
+        return false;
+      }
+
+      getActivityDuration(activityType, context = {}) {
+        const campaign = this.activeCampaign;
+        const customDurations = campaign && campaign.activityDurations ? campaign.activityDurations : {};
+        let minutes = 0;
+
+        switch (activityType) {
+          case "travel":
+            if (context.travelMinutes !== undefined) {
+              minutes = context.travelMinutes;
+            } else if (context.travelHours !== undefined) {
+              minutes = Math.round(context.travelHours * 60);
+            } else {
+              minutes = 60;
+            }
+            if (this.state.player.feats && this.state.player.feats.includes("hermes_swift_stride")) {
+              minutes = Math.max(15, Math.round(minutes * 0.8));
+            }
+            break;
+          case "combat":
+            minutes = customDurations.combat !== undefined ? customDurations.combat : 15;
+            break;
+          case "rest_short":
+            minutes = customDurations.rest_short !== undefined ? customDurations.rest_short : 60;
+            break;
+          case "rest_sacred":
+            minutes = customDurations.rest_sacred !== undefined ? customDurations.rest_sacred : 120;
+            break;
+          case "rest_long":
+            minutes = customDurations.rest_long !== undefined ? customDurations.rest_long : 480;
+            break;
+          case "crafting":
+            minutes = context.craftingMinutes || customDurations.crafting || 120;
+            const intMod = this.getModifier(this.state.player.attributes.intelligence || 10);
+            if (intMod > 0) {
+              minutes = Math.max(30, Math.round(minutes * (1 - intMod * 0.05)));
+            }
+            break;
+          case "hunting":
+            minutes = customDurations.hunting !== undefined ? customDurations.hunting : 90;
+            if (this.state.player.skills && this.state.player.skills.tracking >= 2) {
+              minutes = Math.max(30, minutes - 20);
+            }
+            break;
+          case "foraging":
+            minutes = customDurations.foraging !== undefined ? customDurations.foraging : 45;
+            break;
+          case "investigation":
+            minutes = customDurations.investigation !== undefined ? customDurations.investigation : 30;
+            break;
+          case "social_interaction":
+            minutes = customDurations.social_interaction !== undefined ? customDurations.social_interaction : 15;
+            break;
+          case "dialogue":
+            minutes = customDurations.dialogue !== undefined ? customDurations.dialogue : 5;
+            break;
+          case "ui_menu":
+          case "inspect_inventory":
+          case "view_character":
+          case "view_map":
+          default:
+            minutes = 0;
+            break;
+        }
+        return minutes;
+      }
+
+      performActivity(activityType, context = {}) {
+        const durationMinutes = this.getActivityDuration(activityType, context);
+        if (durationMinutes > 0) {
+          this.advanceTime(0, durationMinutes);
+        }
+        return durationMinutes;
+      }
+
+      scheduleEvent(eventConfig) {
+        if (!this.state.worldState.scheduledEvents) {
+          this.state.worldState.scheduledEvents = [];
+        }
+        if (!this.state.worldState.executedEventIds) {
+          this.state.worldState.executedEventIds = {};
+        }
+
+        const currentTotal = this.getTotalInGameMinutes();
+        let triggerTimeMinutes = eventConfig.triggerTimeMinutes;
+        if (triggerTimeMinutes === undefined) {
+          if (eventConfig.inHours !== undefined) {
+            triggerTimeMinutes = currentTotal + Math.round(eventConfig.inHours * 60);
+          } else if (eventConfig.inMinutes !== undefined) {
+            triggerTimeMinutes = currentTotal + eventConfig.inMinutes;
+          } else if (eventConfig.triggerHour !== undefined) {
+            triggerTimeMinutes = Math.round(eventConfig.triggerHour * 60);
+          } else {
+            triggerTimeMinutes = currentTotal + 60;
+          }
+        }
+
+        const id = eventConfig.id || `evt_${eventConfig.type || "world_event"}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        this.cancelScheduledEvent(id);
+
+        const event = {
+          id,
+          type: eventConfig.type || "world_event",
+          triggerTimeMinutes,
+          createdAtMinutes: currentTotal,
+          targetId: eventConfig.targetId || null,
+          locationId: eventConfig.locationId || null,
+          questId: eventConfig.questId || null,
+          recurrenceMinutes: eventConfig.recurrenceMinutes || null,
+          conditions: eventConfig.conditions || null,
+          payload: eventConfig.payload || eventConfig.outcomes || null,
+          setFlags: eventConfig.setFlags || null,
+          text: eventConfig.text || null,
+          title: eventConfig.title || null,
+          status: "pending",
+          executed: false
+        };
+
+        // Binary search insertion for O(log n) chronological ordering
+        const events = this.state.worldState.scheduledEvents;
+        let low = 0;
+        let high = events.length;
+        while (low < high) {
+          const mid = (low + high) >>> 1;
+          const midTime = events[mid].triggerTimeMinutes !== undefined ? events[mid].triggerTimeMinutes : (events[mid].triggerHour * 60);
+          if (midTime < triggerTimeMinutes) {
+            low = mid + 1;
+          } else {
+            high = mid;
+          }
+        }
+        events.splice(low, 0, event);
+        return id;
+      }
+
+      cancelScheduledEvent(eventId) {
+        if (!this.state.worldState.scheduledEvents) return false;
+        const idx = this.state.worldState.scheduledEvents.findIndex(e => e.id === eventId);
+        if (idx !== -1) {
+          this.state.worldState.scheduledEvents.splice(idx, 1);
+          return true;
+        }
+        return false;
+      }
+
+      rescheduleEvent(eventId, newTriggerMinutes) {
+        const events = this.state.worldState.scheduledEvents || [];
+        const idx = events.findIndex(e => e.id === eventId);
+        if (idx === -1) return false;
+        const evt = events.splice(idx, 1)[0];
+        evt.triggerTimeMinutes = newTriggerMinutes;
+        evt.status = "pending";
+        evt.executed = false;
+        this.scheduleEvent(evt);
+        return true;
+      }
+
+      getTimeUntilEvent(eventId) {
+        const events = this.state.worldState.scheduledEvents || [];
+        const evt = events.find(e => e.id === eventId);
+        if (!evt) return null;
+        const evtTime = evt.triggerTimeMinutes !== undefined ? evt.triggerTimeMinutes : (evt.triggerHour * 60);
+        const diff = evtTime - this.getTotalInGameMinutes();
+        return {
+          totalMinutes: Math.max(0, diff),
+          hours: Math.floor(Math.max(0, diff) / 60),
+          minutes: Math.max(0, diff) % 60
+        };
       }
 
       processScheduledEvents() {
-        const currentHours = this.getTotalInGameHours();
-        const pending = [];
-        const triggered = [];
+        if (!this.state.worldState.scheduledEvents) {
+          this.state.worldState.scheduledEvents = [];
+        }
+        if (!this.state.worldState.executedEventIds) {
+          this.state.worldState.executedEventIds = {};
+        }
 
-        (this.state.worldState.scheduledEvents || []).forEach(evt => {
-          if (evt.triggerHour <= currentHours) {
-            triggered.push(evt);
+        const currentMinutes = this.getTotalInGameMinutes();
+        const events = this.state.worldState.scheduledEvents;
+        const dueEvents = [];
+        const remainingEvents = [];
+
+        for (let i = 0; i < events.length; i++) {
+          const evt = events[i];
+          const evtMinutes = evt.triggerTimeMinutes !== undefined ? evt.triggerTimeMinutes : (evt.triggerHour * 60);
+          if (evtMinutes <= currentMinutes && evt.status !== "executed" && evt.status !== "cancelled") {
+            dueEvents.push(evt);
           } else {
-            pending.push(evt);
+            remainingEvents.push(evt);
           }
+        }
+
+        this.state.worldState.scheduledEvents = remainingEvents;
+
+        dueEvents.sort((a, b) => {
+          const aM = a.triggerTimeMinutes !== undefined ? a.triggerTimeMinutes : (a.triggerHour * 60);
+          const bM = b.triggerTimeMinutes !== undefined ? b.triggerTimeMinutes : (b.triggerHour * 60);
+          return aM - bM;
         });
 
-        this.state.worldState.scheduledEvents = pending;
+        const recurringToRequeue = [];
 
-        triggered.forEach(evt => {
-          if (evt.setFlags) {
-            Object.assign(this.state.worldState.flags, evt.setFlags);
+        for (const evt of dueEvents) {
+          if (this.state.worldState.executedEventIds[evt.id] && !evt.recurrenceMinutes) {
+            continue;
           }
-          if (evt.text) {
-            this.logTranscript("World Event", evt.text, "entry-consequence");
+
+          if (evt.conditions) {
+            if (evt.conditions.requiresFlag && !this.state.worldState.flags[evt.conditions.requiresFlag]) continue;
+            if (evt.conditions.requiresNotFlag && this.state.worldState.flags[evt.conditions.requiresNotFlag]) continue;
+            if (evt.conditions.npcAlive && this.state.worldState.deadEntities[evt.conditions.npcAlive]) continue;
           }
-          if (evt.title) {
-            this.addJournalEntry("chronicle", evt.title, evt.text || "A scheduled world event unfolded.");
+
+          this.dispatchScheduledEvent(evt);
+
+          evt.executed = true;
+          evt.status = "executed";
+          this.state.worldState.executedEventIds[evt.id] = this.getTotalInGameMinutes();
+
+          if (evt.recurrenceMinutes && evt.recurrenceMinutes > 0) {
+            evt.triggerTimeMinutes += evt.recurrenceMinutes;
+            evt.status = "pending";
+            evt.executed = false;
+            recurringToRequeue.push(evt);
           }
-        });
+        }
+
+        for (const rec of recurringToRequeue) {
+          this.scheduleEvent(rec);
+        }
+      }
+
+      dispatchScheduledEvent(evt) {
+        switch (evt.type) {
+          case "creature_respawn": {
+            const targetId = evt.targetId;
+            if (this.isPermanentNpc(targetId)) return;
+            if (this.state.worldState.deadEntities[targetId]) {
+              delete this.state.worldState.deadEntities[targetId];
+            }
+            if (evt.locationId === this.state.worldState.currentLocationId) {
+              const creat = this.getCreature(targetId);
+              const name = creat ? creat.name : "wild creature";
+              this.logTranscript("Ecology", `A prowling ${name} has migrated back into the surrounding territory.`, "entry-discovery");
+            }
+            break;
+          }
+          case "boss_respawn": {
+            const targetId = evt.targetId;
+            if (this.state.worldState.encounterCooldowns) {
+              delete this.state.worldState.encounterCooldowns[targetId];
+            }
+            if (this.state.worldState.deadEntities[targetId]) {
+              delete this.state.worldState.deadEntities[targetId];
+            }
+            this.logTranscript("Ominous Stirring", `Ancient echoes resound through the chamber: a fallen boss has arisen once more!`, "entry-consequence");
+            break;
+          }
+          case "quest_deadline": {
+            const qId = evt.questId || (evt.payload && evt.payload.questId);
+            const q = this.state.worldState.quests[qId];
+            if (q && !q.completed && !q.failed) {
+              if (evt.payload && evt.payload.mutateStage) {
+                q.stage = evt.payload.mutateStage;
+              }
+              if (evt.payload && evt.payload.failQuest) {
+                q.failed = true;
+              }
+              if (evt.payload && evt.payload.setFlags) {
+                Object.assign(this.state.worldState.flags, evt.payload.setFlags);
+              }
+              const text = evt.text || (evt.payload && evt.payload.narrative) || `A quest deadline has passed for ${q.title}!`;
+              this.logTranscript("Deadline Passed", text, "entry-consequence");
+              this.addJournalEntry("chronicle", `Deadline: ${q.title}`, text);
+            }
+            break;
+          }
+          case "quest_stage": {
+            const qId = evt.questId || (evt.payload && evt.payload.questId);
+            const q = this.state.worldState.quests[qId];
+            if (q && !q.completed && !q.failed) {
+              if (evt.payload && evt.payload.newStage) {
+                q.stage = evt.payload.newStage;
+              }
+              if (evt.payload && evt.payload.objectiveId) {
+                this.updateQuestObjective(qId, evt.payload.objectiveId, true);
+              }
+            }
+            break;
+          }
+          case "npc_event": {
+            if (evt.targetId && this.state.worldState.deadEntities[evt.targetId]) return;
+            if (evt.text) {
+              this.logTranscript("NPC Rumor", evt.text, "entry-prose");
+            }
+            break;
+          }
+          case "world_event":
+          case "consequence":
+          default: {
+            if (evt.setFlags) {
+              Object.assign(this.state.worldState.flags, evt.setFlags);
+            }
+            if (evt.payload && evt.payload.setFlags) {
+              Object.assign(this.state.worldState.flags, evt.payload.setFlags);
+            }
+            if (evt.payload && evt.payload.modifyReputation) {
+              if (Array.isArray(evt.payload.modifyReputation)) {
+                evt.payload.modifyReputation.forEach(r => {
+                  this.modifyFactionReputation(r.factionId, r.delta, r.reason || evt.title || "Scheduled Event");
+                });
+              } else {
+                for (const [fId, delta] of Object.entries(evt.payload.modifyReputation)) {
+                  this.modifyFactionReputation(fId, delta, evt.title || "Scheduled Event");
+                }
+              }
+            }
+            if (evt.text) {
+              this.logTranscript("World Event", evt.text, "entry-consequence");
+            }
+            if (evt.title) {
+              this.addJournalEntry("chronicle", evt.title, evt.text || "A scheduled world event unfolded.");
+            }
+            break;
+          }
+        }
+      }
+
+      getMoralityAlignment() {
+        const m = this.state.player.morality || { virtue: 0, hubris: 0, score: 0, alignment: "pragmatic" };
+        const score = (m.virtue || 0) - (m.hubris || 0);
+        if (score >= 30) return "heroic";
+        if (score >= -15) return "pragmatic";
+        if (score >= -40) return "ruthless";
+        return "villainous";
+      }
+
+      modifyMorality(virtueDelta = 0, hubrisDelta = 0, reason = "") {
+        if (!this.state.player.morality) {
+          this.state.player.morality = { virtue: 0, hubris: 0, score: 0, alignment: "pragmatic" };
+        }
+        const m = this.state.player.morality;
+        const oldAlignment = this.getMoralityAlignment();
+        m.virtue = Math.max(0, (m.virtue || 0) + virtueDelta);
+        m.hubris = Math.max(0, (m.hubris || 0) + hubrisDelta);
+        m.score = m.virtue - m.hubris;
+        m.alignment = this.getMoralityAlignment();
+
+        if (this.showToast && (virtueDelta !== 0 || hubrisDelta !== 0)) {
+          if (virtueDelta > 0) this.showToast("info", `+${virtueDelta} Virtue (Arete)`, "positive", "🕊️", reason);
+          if (hubrisDelta > 0) this.showToast("info", `+${hubrisDelta} Hubris (Miasma)`, "negative", "⚡", reason);
+          if (oldAlignment !== m.alignment) {
+            this.showToast("info", `Moral Alignment: ${m.alignment.toUpperCase()}`, "info", "⚖️", `Shifted from ${oldAlignment}`);
+          }
+        }
+        return m;
+      }
+
+      getMoralitySummary() {
+        const m = this.state.player.morality || { virtue: 0, hubris: 0, score: 0, alignment: "pragmatic" };
+        const alignment = this.getMoralityAlignment();
+        const titles = {
+          heroic: "Revered Hero (Arete & Dike)",
+          pragmatic: "Pragmatic Wayfarer",
+          ruthless: "Ruthless Enforcer",
+          villainous: "Notorious Outlaw (Chthonic Miasma)"
+        };
+        return {
+          alignment,
+          title: titles[alignment] || "Pragmatic Wayfarer",
+          virtue: m.virtue || 0,
+          hubris: m.hubris || 0,
+          score: m.score || 0
+        };
+      }
+
+      resolveMoralChoice(questId, pathKey) {
+        const questDef = (this.world.quests || []).find(q => q.id === questId);
+        if (!questDef || !questDef.moralPaths || !questDef.moralPaths[pathKey]) return false;
+        const path = questDef.moralPaths[pathKey];
+        const qState = this.state.worldState.quests[questId];
+        if (!qState) return false;
+
+        this.modifyMorality(path.virtue || 0, path.hubris || 0, path.label);
+
+        if (path.reputation) {
+          for (const [factionId, delta] of Object.entries(path.reputation)) {
+            this.modifyFactionReputation(factionId, delta, path.label);
+          }
+        }
+
+        if (path.rewards) {
+          if (path.rewards.experience) this.awardXP(path.rewards.experience, path.label);
+          if (path.rewards.drachmae) this.addDrachmae(path.rewards.drachmae);
+        }
+
+        qState.completed = true;
+        qState.chosenPath = pathKey;
+        this.logTranscript("Moral Path", `You chose: ${path.label}. Consequences applied.`, "entry-consequence");
+        this.addJournalEntry("chronicle", `Decision: ${questDef.title}`, `Chose ${path.label}.`);
+        this.renderAll();
+        return true;
+      }
+
+      startQuest(questId) {
+        const quests = (this.world.quests || []);
+        const qDef = quests.find(q => q.id === questId) || (this.currentAdventure?.quests || []).find(q => q.id === questId);
+        if (!qDef) return;
+
+        const initialStageKey = qDef.currentStage || (qDef.stages ? Object.keys(qDef.stages)[0] : "stage_01");
+        const stageObj = qDef.stages && qDef.stages[initialStageKey] ? qDef.stages[initialStageKey] : null;
+        const objectivesMap = {};
+
+        if (stageObj && Array.isArray(stageObj.objectives)) {
+          stageObj.objectives.forEach(obj => {
+            objectivesMap[obj.id] = { text: obj.text, completed: false, optional: !!obj.optional };
+          });
+        } else if (qDef.objectives) {
+          Object.assign(objectivesMap, qDef.objectives);
+        }
+
+        this.state.worldState.quests[qDef.id] = {
+          id: qDef.id,
+          title: qDef.title,
+          stage: initialStageKey,
+          objectives: objectivesMap,
+          completed: false,
+          failed: false,
+          acceptedAtMinutes: this.getTotalInGameMinutes(),
+          category: qDef.category || "Heroic Quest"
+        };
+
+        if (qDef.timeSensitive && Array.isArray(qDef.timeMilestones)) {
+          qDef.timeMilestones.forEach(m => {
+            this.scheduleEvent({
+              id: `quest_ms_${qDef.id}_${m.hours}`,
+              type: "quest_deadline",
+              questId: qDef.id,
+              inHours: m.hours,
+              payload: {
+                mutateStage: m.mutateStage,
+                setFlags: m.setFlags,
+                failQuest: m.action === "fail",
+                narrative: m.narrative
+              }
+            });
+          });
+        }
+      }
+
+      completeQuest(questId) {
+        const q = this.state.worldState.quests[questId];
+        if (!q) return;
+        q.completed = true;
+
+        if (this.state.worldState.scheduledEvents) {
+          this.state.worldState.scheduledEvents = this.state.worldState.scheduledEvents.filter(e => e.questId !== questId && !e.id.startsWith(`quest_ms_${questId}`));
+        }
+
+        const qDef = (this.world.quests || []).find(x => x.id === questId);
+        if (qDef && qDef.earlyCompletionBonus && q.acceptedAtMinutes) {
+          const elapsedHours = (this.getTotalInGameMinutes() - q.acceptedAtMinutes) / 60;
+          if (elapsedHours <= qDef.earlyCompletionBonus.hoursThreshold) {
+            if (qDef.earlyCompletionBonus.drachmae) this.addDrachmae(qDef.earlyCompletionBonus.drachmae);
+            if (qDef.earlyCompletionBonus.virtue) this.modifyMorality(qDef.earlyCompletionBonus.virtue, 0, "Swift Quest Completion");
+            this.logTranscript("Early Completion Bonus", qDef.earlyCompletionBonus.narrative || "Completed with exceptional haste! Awarded early bonus.", "entry-discovery");
+          }
+        }
       }
 
       handleNpcDeath(npcId) {
         const npc = this.getCharacter(npcId);
         const name = npc ? npc.name : npcId;
+
+        // 1. Permanent NPC Death Registration (Guarantees NPCs NEVER respawn)
+        if (!this.state.worldState.permanentNpcDeaths) {
+          this.state.worldState.permanentNpcDeaths = {};
+        }
+        this.state.worldState.permanentNpcDeaths[npcId] = {
+          timeMinutes: this.getTotalInGameMinutes(),
+          locationId: this.state.worldState.currentLocationId,
+          name: name
+        };
+        this.state.worldState.deadEntities[npcId] = true;
+
+        // 2. Murder of a living NPC awards Hubris (Moral Consequence)
+        this.modifyMorality(0, 15, `Slaying of ${name}`);
+
+        // 3. Schedule official murder inquest 24 hours later
+        this.scheduleEvent({
+          id: `inquest_${npcId}_${Date.now()}`,
+          type: "world_event",
+          inHours: 24,
+          title: `Inquest: ${name}`,
+          text: `Authorities and kin have convened an official inquest into the slaying of ${name}!`,
+          setFlags: { [`inquest_${npcId}`]: true }
+        });
 
         if (npc && npc.factionId) {
           this.modifyFactionReputation(npc.factionId, -25, `Killed ${name}`);
@@ -8075,23 +8640,50 @@
         const enemy = c.enemy;
         this.combatSession = null;
 
-        // 1. Mark dead entity
+        // 1. Advance in-game time for combat engagement
+        this.performActivity("combat");
+
+        // 2. Mark dead entity
         this.state.worldState.deadEntities[enemy.id] = true;
 
-        // 2. Track encounter defeat count and cooldown timestamp
+        // 3. Track encounter defeat count and cooldown timestamp
         const encId = enemy.encounterId || enemy.id;
         this.state.worldState.defeatedEncounters[encId] = (this.state.worldState.defeatedEncounters[encId] || 0) + 1;
         this.state.worldState.encounterCooldowns[encId] = this.getTotalInGameHours();
 
-        // 3. Resolve multi-table loot and anti-exploit
+        // 4. Resolve multi-table loot and anti-exploit
         this.resolveEntityLoot(enemy);
 
-        // 4. Handle NPC death quest failover and consequence if NPC
+        // 5. Handle NPC death quest failover and consequence if NPC
         if (enemy.isNpc) {
           this.handleNpcDeath(enemy.id);
+        } else {
+          // Schedule event-driven creature respawn for non-NPCs
+          const creatDef = this.getCreature(enemy.id);
+          const respawnHours = (creatDef && creatDef.respawnHours) || enemy.respawnHours || (enemy.tier === 1 ? 12 : enemy.tier === 2 ? 24 : enemy.tier === 3 ? 48 : enemy.tier === 4 ? 96 : 168);
+          if (respawnHours > 0) {
+            this.scheduleEvent({
+              id: `respawn_${enemy.id}_${Date.now()}`,
+              type: "creature_respawn",
+              targetId: enemy.id,
+              locationId: this.state.worldState.currentLocationId,
+              inHours: respawnHours
+            });
+          }
+
+          if (enemy.isBoss || enemy.encounterId) {
+            const enc = (this.world.encounters || []).find(e => e.id === encId);
+            const cooldown = (enc && enc.cooldownHours) || enemy.respawnHours || 24;
+            this.scheduleEvent({
+              id: `boss_respawn_${encId}_${Date.now()}`,
+              type: "boss_respawn",
+              targetId: encId,
+              inHours: cooldown
+            });
+          }
         }
 
-        // 5. Fire world consequence event
+        // 6. Fire world consequence event
         this.emitEvent("ENTITY_DEATH", {
           entityId: enemy.id,
           isNpc: !!enemy.isNpc,
@@ -8099,7 +8691,7 @@
           locationId: this.state.worldState.currentLocationId
         });
 
-        // 6. Custom encounter outcome or fallback
+        // 7. Custom encounter outcome or fallback
         if (this._activeEncounter && this._activeEncounter.victoryOutcome) {
           this.applyActionOutcome(this._activeEncounter.victoryOutcome);
           this._activeEncounter = null;
@@ -8717,7 +9309,7 @@
           player.vitals.health = Math.max(1, player.vitals.health - healthLoss);
         }
 
-        this.advanceTime(conn.travelHours, 0);
+        this.performActivity("travel", { travelHours: conn.travelHours, travelMinutes: conn.travelMinutes });
 
         this.state.worldState.currentLocationId = targetLoc.id;
         if (this.showToast) {
@@ -8773,8 +9365,8 @@
         const oldHour = t.hour;
         const oldDay = t.day;
 
-        t.minute += minutes;
-        t.hour += hours;
+        const totalMinutesToAdd = (hours * 60) + (minutes || 0);
+        t.minute = (t.minute || 0) + totalMinutesToAdd;
         while (t.minute >= 60) {
           t.minute -= 60;
           t.hour += 1;
@@ -8782,6 +9374,14 @@
         while (t.hour >= 24) {
           t.hour -= 24;
           t.day += 1;
+        }
+        while (t.day > 30) {
+          t.day -= 30;
+          t.month += 1;
+        }
+        while (t.month > 12) {
+          t.month -= 12;
+          t.year += 1;
         }
 
         this.processTimeConsequences(hours, minutes, oldHour, oldDay);
@@ -8859,6 +9459,15 @@
             this.showToast("item", `-${quantity} ${it.name}`, "negative", "🎒", "Item removed");
           }
         }
+      }
+
+      addDrachmae(amount) {
+        if (!this.state.player.currencies) this.state.player.currencies = { drachmae: 0, obols: 0 };
+        this.state.player.currencies.drachmae = (this.state.player.currencies.drachmae || 0) + amount;
+        if (this.showToast) {
+          this.showToast("loot", `+${amount} Drachmae`, "positive", "🪙", "Silver Currency");
+        }
+        return this.state.player.currencies.drachmae;
       }
 
       buildContentMaps() {
@@ -9433,6 +10042,26 @@
             </div>
           `;
         }).join("");
+
+        const moralityContainer = document.getElementById("sheet-morality-block");
+        if (moralityContainer) {
+          const m = this.getMoralitySummary();
+          let color = "#e0be36";
+          if (m.alignment === "heroic") color = "var(--laurel-bright)";
+          if (m.alignment === "villainous" || m.alignment === "ruthless") color = "var(--terracotta-bright)";
+          moralityContainer.innerHTML = `
+            <div style="background: rgba(30, 28, 35, 0.7); border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.5rem 0.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <span style="font-family: var(--font-heading); color: ${color}; font-size: 0.95rem;">⚖️ ${m.title}</span>
+                <span style="font-size: 0.8rem; color: var(--parchment);">Score: <strong>${m.score >= 0 ? "+" + m.score : m.score}</strong></span>
+              </div>
+              <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: #b8b1a2;">
+                <span>🕊️ Virtue (Arete): <strong style="color: var(--laurel-bright);">${m.virtue}</strong></span>
+                <span>⚡ Hubris (Miasma): <strong style="color: var(--terracotta-bright);">${m.hubris}</strong></span>
+              </div>
+            </div>
+          `;
+        }
       }
 
       renderQuests() {
@@ -9568,6 +10197,18 @@
       getCreature(creatureId) {
         if (!this._creatureMap) this.buildContentMaps();
         return this._creatureMap.get(creatureId) || null;
+      }
+
+      getCreatureRespawnHours(creatureDef) {
+        if (!creatureDef) return 0;
+        if (creatureDef.isNpc || this.isPermanentNpc(creatureDef.id)) return 0;
+        if (creatureDef.respawnHours !== undefined && creatureDef.respawnHours !== null) return creatureDef.respawnHours;
+        const tier = creatureDef.tier || 1;
+        if (tier === 1) return 12;
+        if (tier === 2) return 24;
+        if (tier === 3) return 48;
+        if (tier === 4) return 96;
+        return 168;
       }
 
       getDomElement(id) {
@@ -9858,6 +10499,9 @@
         if (mat1) this.removeItem(mat1.id, 1);
         if (mat2) this.removeItem(mat2.id, 1);
         if (supp) this.removeItem(supp.id, 1);
+
+        // Advance in-game time for artisan crafting activity
+        this.performActivity("crafting", { craftingMinutes: template.craftingMinutes || 120 });
 
         const p = this.state.player;
         const attr = (prof && prof.governingAttribute) ? prof.governingAttribute : "strength";

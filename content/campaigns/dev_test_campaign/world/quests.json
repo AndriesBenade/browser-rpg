@@ -158,6 +158,137 @@
         "experience": 80,
         "drachmae": 30
       }
+    },
+    {
+      "id": "quest_dev_urgent_rescue",
+      "title": "Hostage of the Obsidian Crag",
+      "category": "Time-Sensitive Quest",
+      "summary": "Bandits have seized an apprentice artificer. Slay the guards or negotiate before the captive is moved to a distant stronghold.",
+      "timeSensitive": true,
+      "deadlineHours": 48,
+      "earlyCompletionBonus": {
+        "hoursThreshold": 24,
+        "drachmae": 40,
+        "virtue": 10,
+        "narrative": "Rescued the apprentice swiftly before any harm could befall them!"
+      },
+      "timeMilestones": [
+        {
+          "hours": 24,
+          "action": "warn",
+          "narrative": "Scouts report bandit lookouts have doubled at the Obsidian Crag. Time is growing short!"
+        },
+        {
+          "hours": 48,
+          "action": "escalate",
+          "mutateStage": "stage_hostage_moved",
+          "setFlags": { "hostage_moved_deep": true },
+          "narrative": "The deadline expired! The captive has been dragged deeper into the cavern, guarded by heavier reinforcements."
+        }
+      ],
+      "currentStage": "rescue_crag",
+      "stages": {
+        "rescue_crag": {
+          "description": "Reach the Obsidian Crag and rescue the captive apprentice.",
+          "objectives": [
+            { "id": "obj_free_apprentice", "text": "Free the apprentice at the crags.", "completed": false }
+          ]
+        },
+        "stage_hostage_moved": {
+          "description": "The apprentice was relocated to the Sunken Grotto. Infiltrate the subterranean cavern.",
+          "objectives": [
+            { "id": "obj_free_apprentice_grotto", "text": "Free the apprentice from the deep grotto.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The apprentice was brought back to Haven safely.",
+          "objectives": [
+            { "id": "obj_rescue_done", "text": "Apprentice safe.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 150,
+        "drachmae": 50,
+        "virtue": 15
+      }
+    },
+    {
+      "id": "quest_dev_bandit_alliance",
+      "title": "The Renegade's Bargain",
+      "category": "Morality Quest",
+      "summary": "Renegade Silas offers a lucrative deal: turn him in to Captain Valerius, accept his hush money, or assassinate the Captain.",
+      "timeSensitive": false,
+      "currentStage": "confront_silas",
+      "moralPaths": {
+        "heroic": {
+          "id": "path_arrest_silas",
+          "label": "Arrest Silas & Turn Him Over to the Guard",
+          "virtue": 20,
+          "hubris": 0,
+          "reputation": { "faction_dev_guards": 25, "faction_dev_outlaws": -40 },
+          "rewards": { "experience": 120, "drachmae": 30 }
+        },
+        "pragmatic": {
+          "id": "path_accept_bribe",
+          "label": "Accept Silas' Bribe & Misdirect the Patrol",
+          "virtue": 0,
+          "hubris": 5,
+          "reputation": { "faction_dev_guards": -5, "faction_dev_outlaws": 15 },
+          "rewards": { "experience": 90, "drachmae": 60 }
+        },
+        "villainous": {
+          "id": "path_assassinate_captain",
+          "label": "Ally with Silas & Eliminate Captain Valerius",
+          "virtue": 0,
+          "hubris": 35,
+          "reputation": { "faction_dev_guards": -60, "faction_dev_outlaws": 50, "faction_dev_haven": -30 },
+          "rewards": { "experience": 200, "drachmae": 100 }
+        }
+      },
+      "stages": {
+        "confront_silas": {
+          "description": "Decide the fate of Renegade Silas.",
+          "objectives": [
+            { "id": "obj_decide_silas", "text": "Resolve the standoff with Silas.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The bargain with Silas has reached its final resolution.",
+          "objectives": [
+            { "id": "obj_silas_concluded", "text": "Fate of Silas decided.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 100
+      }
+    },
+    {
+      "id": "quest_dev_ancient_ruins",
+      "title": "The Whispering Monoliths",
+      "category": "Timeless Exploration",
+      "summary": "Explore the ancient stone monoliths scattered through the wilderness. This quest has no time limit.",
+      "timeSensitive": false,
+      "currentStage": "examine_stones",
+      "stages": {
+        "examine_stones": {
+          "description": "Chart the ancient monoliths when convenient.",
+          "objectives": [
+            { "id": "obj_read_monolith", "text": "Examine the weathered inscription.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The monolith runes have been recorded.",
+          "objectives": [
+            { "id": "obj_monolith_done", "text": "Runes recorded.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 50,
+        "drachmae": 10
+      }
     }
   ]
 }

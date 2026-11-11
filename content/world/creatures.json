@@ -5,6 +5,7 @@
       "name": "Cithaeronian Timber Wolf",
       "ancientGreek": "λύκος",
       "tier": 1,
+      "respawnHours": 12,
       "xpReward": 40,
       "mythologicalSource": {
         "author": "Pausanias",
@@ -51,6 +52,7 @@
       "name": "Chthonic Cave Beast",
       "ancientGreek": "θὴρ χθόνιος",
       "tier": 1,
+      "respawnHours": 12,
       "xpReward": 75,
       "mythologicalSource": {
         "author": "Hesiod",
@@ -96,6 +98,7 @@
       "name": "Wild Parnassian Satyr",
       "ancientGreek": "σάτυρος",
       "tier": 2,
+      "respawnHours": 24,
       "xpReward": 85,
       "mythologicalSource": {
         "author": "Strabo",
@@ -141,6 +144,7 @@
       "name": "Stymphalian Razor-Bird",
       "ancientGreek": "Στυμφαλὶς ὄρνις",
       "tier": 2,
+      "respawnHours": 24,
       "xpReward": 90,
       "mythologicalSource": {
         "author": "Pausanias",
@@ -186,6 +190,7 @@
       "name": "Kabeiroi Bronze Automaton",
       "ancientGreek": "χάλκεος θεράπων",
       "tier": 2,
+      "respawnHours": 24,
       "xpReward": 95,
       "mythologicalSource": {
         "author": "Pausanias",
@@ -231,6 +236,7 @@
       "name": "The Lycanthrope of Mount Lykaion",
       "ancientGreek": "λυκάνθρωπος",
       "tier": 3,
+      "respawnHours": 48,
       "xpReward": 125,
       "mythologicalSource": {
         "author": "Plato",
@@ -276,6 +282,7 @@
       "name": "Boar of Mount Erymanthos",
       "ancientGreek": "Ἐρυμάνθιος κάπρος",
       "tier": 3,
+      "respawnHours": 48,
       "xpReward": 130,
       "mythologicalSource": {
         "author": "Apollodorus",
@@ -321,6 +328,7 @@
       "name": "Harpy of the Whirlwind (Podarge)",
       "ancientGreek": "Ἅρπυια",
       "tier": 3,
+      "respawnHours": 48,
       "xpReward": 120,
       "mythologicalSource": {
         "author": "Hesiod",
@@ -366,6 +374,7 @@
       "name": "Empousa the Blood-Drinker",
       "ancientGreek": "Ἔμπουσα",
       "tier": 3,
+      "respawnHours": 48,
       "xpReward": 140,
       "mythologicalSource": {
         "author": "Aristophanes",
@@ -411,6 +420,7 @@
       "name": "The Sphinx of Thebes",
       "ancientGreek": "Σφίγξ (Φίξ)",
       "tier": 4,
+      "respawnHours": 96,
       "xpReward": 250,
       "mythologicalSource": {
         "author": "Hesiod",
@@ -464,6 +474,7 @@
       "name": "The Ismenian Dragon of Ares",
       "ancientGreek": "Δράκων Ἰσμήνιος",
       "tier": 4,
+      "respawnHours": 96,
       "xpReward": 280,
       "mythologicalSource": {
         "author": "Ovid",
@@ -517,6 +528,7 @@
       "name": "The Lernaean Hydra",
       "ancientGreek": "Λερναία Ὕδρα",
       "tier": 5,
+      "respawnHours": 168,
       "xpReward": 400,
       "mythologicalSource": {
         "author": "Hesiod",

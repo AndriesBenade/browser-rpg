@@ -31,6 +31,36 @@
     "dialogues": "content/campaigns/dev_test_campaign/world/dialogues.json",
     "events": "content/campaigns/dev_test_campaign/world/events.json"
   },
+  "activityDurations": {
+    "travel": "connection",
+    "combat": 15,
+    "rest_short": 60,
+    "rest_sacred": 120,
+    "rest_long": 480,
+    "crafting": 120,
+    "hunting": 90,
+    "foraging": 45,
+    "investigation": 30,
+    "social_interaction": 15,
+    "dialogue": 5
+  },
+  "respawnRules": {
+    "creatureNormalHours": 12,
+    "creatureRareHours": 48,
+    "bossHours": 24,
+    "preventNpcRespawn": true
+  },
+  "moralityConfig": {
+    "enabled": true,
+    "virtueLabel": "Virtue & Honor",
+    "hubrisLabel": "Infamy & Corruption",
+    "tiers": {
+      "heroic": 30,
+      "pragmatic": -15,
+      "ruthless": -40,
+      "villainous": -100
+    }
+  },
   "factions": [
     {
       "id": "faction_dev_haven",

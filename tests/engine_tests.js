@@ -2179,6 +2179,400 @@ runTest("NPC Interactivity: Wounded NPCs attempt to yield/flee below 25% HP and 
   assert.ok(engine.combatSession.enemy.fleeing || engine.combatSession.enemy.surrendered || engine.combatSession.enemy.hp <= 0, "NPC below 25% HP should attempt to yield/flee or perish");
 });
 
+// -----------------------------------------------------------------------------
+// 47. Dynamic World Time & Configurable Activity Durations
+// -----------------------------------------------------------------------------
+runTest("Dynamic World Time: Activities consume appropriate in-game time, abilities modify duration, non-time interactions take 0 time", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  const initialMinutes = engine.getTotalInGameMinutes();
+
+  // 1. Rest durations
+  engine.performActivity("rest_short");
+  assert.equal(engine.getTotalInGameMinutes(), initialMinutes + 60, "Short rest must advance exactly 60 minutes");
+
+  engine.performActivity("rest_sacred");
+  assert.equal(engine.getTotalInGameMinutes(), initialMinutes + 180, "Sacred rest must advance exactly 120 minutes");
+
+  engine.performActivity("rest_long");
+  assert.equal(engine.getTotalInGameMinutes(), initialMinutes + 660, "Long rest must advance exactly 480 minutes (8 hours)");
+
+  // 2. Combat duration
+  const preCombat = engine.getTotalInGameMinutes();
+  engine.performActivity("combat");
+  assert.equal(engine.getTotalInGameMinutes(), preCombat + 15, "Combat engagement must advance 15 minutes");
+
+  // 3. Travel duration & Ability modifier (hermes_swift_stride reduces by 20%)
+  const travelDurationStandard = engine.getActivityDuration("travel", { travelHours: 2 });
+  assert.equal(travelDurationStandard, 120, "Standard 2 hour travel must calculate 120 minutes");
+
+  engine.state.player.feats.push("hermes_swift_stride");
+  const travelDurationSwift = engine.getActivityDuration("travel", { travelHours: 2 });
+  assert.equal(travelDurationSwift, 96, "Hermes Swift Stride feat must reduce travel time by 20% (96 min)");
+
+  // 4. Crafting duration
+  const craftDuration = engine.getActivityDuration("crafting", { craftingMinutes: 120 });
+  assert.ok(craftDuration <= 120 && craftDuration >= 30, "Crafting duration must calculate appropriate time");
+
+  // 5. Non-time interactions consume exactly 0 minutes
+  const preUI = engine.getTotalInGameMinutes();
+  engine.performActivity("ui_menu");
+  engine.performActivity("inspect_inventory");
+  engine.performActivity("view_character");
+  assert.equal(engine.getTotalInGameMinutes(), preUI, "UI menu inspection must consume exactly 0 in-game minutes");
+
+  // 6. Calendar Rollover across days, months, and years
+  engine.advanceTime(24 * 30 * 12, 0); // Advance 1 year
+  const t = engine.state.worldState.time;
+  assert.ok(t.year >= 2, "Calendar must roll over correctly to subsequent year");
+});
+
+// -----------------------------------------------------------------------------
+// 48. Event-Driven EventScheduler Architecture
+// -----------------------------------------------------------------------------
+runTest("Event-Driven Scheduler: Chronological execution, duplicate prevention, cancellation, rescheduling, zero polling loops", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  const executionLog = [];
+  const startMin = engine.getTotalInGameMinutes();
+
+  // Schedule 3 events out of order
+  const ev3 = engine.scheduleEvent({
+    id: "evt_late",
+    triggerTimeMinutes: startMin + 120,
+    type: "test_event",
+    payload: { action: () => executionLog.push("late") }
+  });
+
+  const ev1 = engine.scheduleEvent({
+    id: "evt_early",
+    triggerTimeMinutes: startMin + 30,
+    type: "test_event",
+    payload: { action: () => executionLog.push("early") }
+  });
+
+  const ev2 = engine.scheduleEvent({
+    id: "evt_mid",
+    triggerTimeMinutes: startMin + 60,
+    type: "test_event",
+    payload: { action: () => executionLog.push("mid") }
+  });
+
+  // Verify binary search insertion maintained strict chronological sorting
+  const events = engine.state.worldState.scheduledEvents;
+  assert.equal(events[0].id, "evt_early");
+  assert.equal(events[1].id, "evt_mid");
+  assert.equal(events[2].id, "evt_late");
+
+  // Advance time partially (45 minutes) -> only early event should execute
+  engine.advanceTime(0, 45);
+  assert.ok(engine.state.worldState.executedEventIds["evt_early"], "Early event must execute when time arrives");
+  assert.ok(!engine.state.worldState.executedEventIds["evt_mid"], "Mid event must not execute prematurely");
+  assert.ok(!engine.state.worldState.executedEventIds["evt_late"], "Late event must not execute prematurely");
+
+  // Test Rescheduling: reschedule 'late' to startMin + 50
+  engine.rescheduleEvent("evt_late", startMin + 50);
+  const lateEvt = engine.state.worldState.scheduledEvents.find(e => e.id === "evt_late");
+  assert.equal(lateEvt.triggerTimeMinutes, startMin + 50, "Event must reschedule to new timestamp");
+
+  // Test Cancellation: schedule a temporary event and cancel it
+  const cancelId = engine.scheduleEvent({
+    id: "evt_cancel_me",
+    triggerTimeMinutes: startMin + 55,
+    type: "test_event"
+  });
+  assert.ok(engine.state.worldState.scheduledEvents.some(e => e.id === cancelId));
+  const cancelled = engine.cancelScheduledEvent(cancelId);
+  assert.equal(cancelled, true, "Cancellation must return true");
+  assert.ok(!engine.state.worldState.scheduledEvents.some(e => e.id === cancelId), "Cancelled event must be removed from queue");
+
+  // Derived time remaining (Zero intervals)
+  const remaining = engine.getTimeUntilEvent("evt_mid");
+  assert.ok(remaining && remaining.totalMinutes === 15, "Derived time remaining must equal 15 minutes");
+
+  // Advance time through all remaining events (leap 60 minutes)
+  engine.advanceTime(1, 0);
+  assert.ok(engine.state.worldState.executedEventIds["evt_mid"], "Mid event must execute");
+  assert.ok(engine.state.worldState.executedEventIds["evt_late"], "Rescheduled late event must execute");
+
+  // Duplicate prevention check: advancing more time must not re-trigger executed events
+  engine.advanceTime(5, 0);
+  assert.ok(engine.state.worldState.scheduledEvents.every(e => e.id !== "evt_early" && e.id !== "evt_mid"), "One-time events must be pruned after execution");
+});
+
+// -----------------------------------------------------------------------------
+// 49. Quest-Specific Time Consequences (Time-Sensitive vs Timeless)
+// -----------------------------------------------------------------------------
+runTest("Quest Time Consequences: Urgent quests deteriorate or branch on missed deadlines; early completion awards bonus; timeless quests remain unaffected", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // 1. Time-Sensitive Quest: Urgent Rescue
+  engine.startQuest("quest_dev_urgent_rescue");
+  const urgentQ = engine.state.worldState.quests["quest_dev_urgent_rescue"];
+  assert.ok(urgentQ, "Urgent rescue quest must be active");
+  assert.equal(urgentQ.stage, "rescue_crag");
+
+  // Verify deadline event was registered with the event scheduler
+  const deadlineEvt = engine.state.worldState.scheduledEvents.find(e => e.questId === "quest_dev_urgent_rescue" && e.type === "quest_deadline");
+  assert.ok(deadlineEvt, "Event scheduler must register deadline milestone for time-sensitive quest");
+
+  // Advancing time past deadline (49 hours) -> triggers captive relocation / stage mutation
+  engine.advanceTime(49, 0);
+  assert.equal(urgentQ.stage, "stage_hostage_moved", "Missed deadline must mutate quest stage to hostage relocated");
+  assert.ok(engine.state.worldState.flags["hostage_moved_deep"], "Missed deadline must set world consequence flag");
+
+  // 2. Early Completion Bonus verification
+  engine.startQuest("quest_dev_urgent_rescue");
+  const urgentQ2 = engine.state.worldState.quests["quest_dev_urgent_rescue"];
+  urgentQ2.stage = "rescue_crag";
+  const preDrachmae = engine.state.player.currencies.drachmae || 0;
+  const preVirtue = engine.state.player.morality.virtue;
+
+  // Complete within 12 hours (well under the 24 hour early bonus threshold)
+  engine.advanceTime(12, 0);
+  engine.completeQuest("quest_dev_urgent_rescue");
+  assert.equal(urgentQ2.completed, true);
+  assert.ok((engine.state.player.currencies.drachmae || 0) > preDrachmae, "Swift completion must award early completion drachmae bonus");
+  assert.ok(engine.state.player.morality.virtue > preVirtue, "Swift completion must award early virtue bonus");
+
+  // 3. Timeless Quest: Ancient Ruins exploration remains unaffected by passage of time
+  engine.startQuest("quest_dev_ancient_ruins");
+  const timelessQ = engine.state.worldState.quests["quest_dev_ancient_ruins"];
+  assert.ok(timelessQ, "Timeless quest must be active");
+
+  // Advance 2 weeks (336 hours)
+  engine.advanceTime(336, 0);
+  assert.equal(timelessQ.stage, "examine_stones", "Timeless quest stage must not be degraded by passage of time");
+  assert.equal(timelessQ.failed, false, "Timeless quest must never fail due to elapsed time");
+});
+
+// -----------------------------------------------------------------------------
+// 50. Event-Driven Creature & Boss Respawning
+// -----------------------------------------------------------------------------
+runTest("Creature & Boss Respawn: Defeated creatures and bosses respawn via event-driven scheduler; unique relics are never duplicated", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // 1. Defeat a normal creature (Wild Boar, respawnHours = 12)
+  engine.startCombatWithEntity("creature_dev_wild_boar", "creature");
+  assert.ok(engine.combatSession, "Combat session must be active");
+  engine.handleCombatVictory();
+
+  assert.ok(engine.state.worldState.deadEntities["creature_dev_wild_boar"], "Killed boar must be recorded as dead");
+
+  // Verify creature_respawn event was scheduled
+  const respawnEvt = engine.state.worldState.scheduledEvents.find(e => e.type === "creature_respawn" && e.targetId === "creature_dev_wild_boar");
+  assert.ok(respawnEvt, "Must register creature_respawn event with scheduler");
+
+  // Advance time by 6 hours -> creature must still be dead
+  engine.advanceTime(6, 0);
+  assert.ok(engine.state.worldState.deadEntities["creature_dev_wild_boar"], "Creature must remain dead before respawn time arrives");
+
+  // Advance time past respawn time (+7 hours, total 13h) -> creature respawns!
+  engine.advanceTime(7, 0);
+  assert.ok(!engine.state.worldState.deadEntities["creature_dev_wild_boar"], "Creature must be restored from deadEntities upon respawn event");
+
+  // 2. Boss Respawn & Anti-Exploit Relic Protection
+  engine.startCombatWithEntity("creature_dev_crypt_boss", "creature");
+  engine.handleCombatVictory();
+
+  assert.ok(engine.hasItem("item_dev_sunstone_relic"), "First boss defeat must award unique Sunstone relic");
+  assert.ok(engine.state.worldState.grantedUniqueItems["item_dev_sunstone_relic"], "Relic must be tracked in grantedUniqueItems");
+
+  const bossRespawnEvt = engine.state.worldState.scheduledEvents.find(e => e.type === "boss_respawn");
+  assert.ok(bossRespawnEvt, "Must register boss_respawn event with scheduler");
+
+  // Advance time past boss respawn (25 hours)
+  engine.advanceTime(25, 0);
+  assert.ok(engine.checkEncounterCooldown("enc_dev_crypt_boss"), "Boss encounter cooldown must be cleared after respawn event executes");
+
+  // Defeat boss a second time -> anti-exploit must suppress duplicate relic!
+  const preDrachmae = engine.state.player.currencies.drachmae || 0;
+  engine.startCombatWithEntity("creature_dev_crypt_boss", "creature");
+  engine.handleCombatVictory();
+
+  const sunstoneCount = engine.state.player.inventory.filter(i => i.itemId === "item_dev_sunstone_relic").reduce((sum, i) => sum + i.quantity, 0);
+  assert.equal(sunstoneCount, 1, "Repeat boss kill must NEVER grant duplicate unique relic");
+  assert.ok((engine.state.player.currencies.drachmae || 0) > preDrachmae, "Repeat boss kill must award replacement repeat currency");
+});
+
+// -----------------------------------------------------------------------------
+// 51. Permanent NPC Death & World Consequences
+// -----------------------------------------------------------------------------
+runTest("Permanent NPC Death: NPCs never respawn, death is persistently recorded, triggers quest failover and scheduled murder inquest", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  const preHubris = engine.state.player.morality.hubris;
+
+  // Start Lycus' delivery contract before slaying him
+  engine.startQuest("quest_dev_merchant_delivery");
+  assert.ok(engine.state.worldState.quests["quest_dev_merchant_delivery"], "Merchant delivery contract should be active");
+
+  // Slay Merchant Lycus
+  engine.startCombatWithEntity("npc_dev_merchant_lycus", "npc");
+  engine.handleCombatVictory();
+
+  // 1. Permanent Death Record
+  assert.ok(engine.state.worldState.permanentNpcDeaths["npc_dev_merchant_lycus"], "NPC death must be recorded in permanentNpcDeaths");
+  assert.ok(engine.isPermanentNpc("npc_dev_merchant_lycus"), "isPermanentNpc must return true");
+
+  // 2. Moral consequence: slaying innocent NPC awards Hubris
+  assert.ok(engine.state.player.morality.hubris > preHubris, "Slaying NPC must award Hubris (Miasma)");
+
+  // 3. Quest consequence: Lycus' contract failed
+  const deliveryQ = engine.state.worldState.quests["quest_dev_merchant_delivery"];
+  assert.ok(deliveryQ && deliveryQ.failed, "Lycus' death must fail his active delivery contract");
+
+  // 4. Scheduled murder inquest 24h later
+  const inquestEvt = engine.state.worldState.scheduledEvents.find(e => e.type === "world_event" && e.id.startsWith("inquest_npc_dev_merchant_lycus"));
+  assert.ok(inquestEvt, "Slaying NPC must schedule an official murder inquest event");
+
+  // 5. Advance time by 30 days (720 hours) -> verify NPC NEVER respawns!
+  engine.advanceTime(720, 0);
+  assert.ok(engine.state.worldState.deadEntities["npc_dev_merchant_lycus"], "NPC must remain permanently dead after weeks of elapsed time");
+  assert.ok(!engine.state.worldState.scheduledEvents.some(e => e.type === "creature_respawn" && e.targetId === "npc_dev_merchant_lycus"), "NPC must NEVER be queued for creature respawn");
+});
+
+// -----------------------------------------------------------------------------
+// 52. Morality, Karma & Multi-Path Quest Alignment
+// -----------------------------------------------------------------------------
+runTest("Morality & Quest Alignment: Virtue, Hubris, dynamic alignment tiers, and multi-path moral choices with divergent outcomes", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // 1. Morality Mechanics
+  const m = engine.state.player.morality;
+  assert.ok(m && typeof m.virtue === "number" && typeof m.hubris === "number", "Player must track virtue and hubris");
+
+  // High virtue awards Heroic tier
+  engine.modifyMorality(40, 0, "Altruistic deeds");
+  assert.equal(engine.getMoralityAlignment(), "heroic", "Net score >= 30 must yield 'heroic' alignment");
+
+  // High hubris awards Villainous tier
+  engine.modifyMorality(0, 100, "Atrocities and hubris");
+  assert.equal(engine.getMoralityAlignment(), "villainous", "Net score <= -41 must yield 'villainous' alignment");
+
+  // 2. Multi-Path Quest Choice: The Renegade's Bargain
+  engine.startQuest("quest_dev_bandit_alliance");
+  const banditQ = engine.state.worldState.quests["quest_dev_bandit_alliance"];
+  assert.ok(banditQ, "Bandit alliance quest must be active");
+
+  // Test Heroic Resolution: Arrest Silas
+  const preGuardsRep = engine.getFactionReputation("faction_dev_guards");
+  engine.resolveMoralChoice("quest_dev_bandit_alliance", "heroic");
+  assert.equal(banditQ.completed, true);
+  assert.equal(banditQ.chosenPath, "heroic");
+  assert.ok(engine.getFactionReputation("faction_dev_guards") > preGuardsRep, "Heroic resolution must improve town guard standing");
+
+  // Test Villainous Resolution on fresh instance
+  const engine2 = new GreekMythologyEngine();
+  engine2.loadEmbeddedDevTestContent();
+  engine2.startQuest("quest_dev_bandit_alliance");
+  const preOutlawsRep = engine2.getFactionReputation("faction_dev_outlaws");
+  const preHubrisVal = engine2.state.player.morality.hubris;
+
+  engine2.resolveMoralChoice("quest_dev_bandit_alliance", "villainous");
+  assert.ok(engine2.getFactionReputation("faction_dev_outlaws") > preOutlawsRep, "Villainous path must improve outlaw syndicate reputation");
+  assert.ok(engine2.state.player.morality.hubris > preHubrisVal, "Villainous path must award significant Hubris");
+});
+
+// -----------------------------------------------------------------------------
+// 53. Campaign Integration & Configurable Rules
+// -----------------------------------------------------------------------------
+runTest("Campaign Integration: Campaigns independently configure calendars, activity durations, respawn rules, and morality parameters", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  // Greek Mythology campaign defaults
+  assert.ok(engine.world.locations.length >= 19, "Hellenic campaign must load full geography");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_cithaeron_wolf", tier: 1 }) === 12, "Tier 1 creature must have 12h respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_sphinx_thebes", tier: 4 }) === 96, "Tier 4 mythological beast must have 96h respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_lernaean_hydra", tier: 5 }) === 168, "Tier 5 legendary hydra must have 168h (1 week) respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "npc_daidalos_shepherd", isNpc: true }) === 0, "NPCs must NEVER have respawn hours");
+
+  // Dev Test Campaign overrides
+  const devEngine = new GreekMythologyEngine();
+  devEngine.loadEmbeddedDevTestContent();
+  assert.equal(devEngine.activeCampaign.id, "campaign_dev_test");
+  assert.equal(devEngine.activeCampaign.respawnRules.bossHours, 24, "Dev test campaign can independently set boss respawn to 24 hours");
+});
+
+// -----------------------------------------------------------------------------
+// 54. Save / Load Persistence of World-Time, Events & State
+// -----------------------------------------------------------------------------
+runTest("Save & Load Persistence: Scheduled events, permanent NPC deaths, morality, and time serialize cleanly and prevent duplicate execution", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // Advance time, slay an NPC, schedule an event, modify morality
+  engine.advanceTime(14, 30);
+  engine.startCombatWithEntity("npc_dev_bandit_renegade", "npc");
+  engine.handleCombatVictory();
+
+  engine.modifyMorality(25, 10, "Complex moral deeds");
+  const testEvtId = engine.scheduleEvent({
+    id: "evt_persist_test",
+    inHours: 48,
+    type: "world_event",
+    setFlags: { flag_persisted_event: true }
+  });
+
+  // Serialize save state
+  const serialized = JSON.stringify(engine.state);
+  assert.ok(serialized.includes("evt_persist_test"), "Save state must contain scheduled events");
+  assert.ok(serialized.includes("npc_dev_bandit_renegade"), "Save state must contain permanent NPC death");
+  assert.ok(serialized.includes("morality"), "Save state must contain player morality");
+
+  // Load into fresh engine
+  const restoredEngine = new GreekMythologyEngine();
+  restoredEngine.loadEmbeddedDevTestContent();
+  restoredEngine.state = JSON.parse(serialized);
+
+  // Verify restored state
+  assert.equal(restoredEngine.state.worldState.time.hour, engine.state.worldState.time.hour);
+  assert.ok(restoredEngine.state.worldState.permanentNpcDeaths["npc_dev_bandit_renegade"]);
+  assert.equal(restoredEngine.state.player.morality.virtue, engine.state.player.morality.virtue);
+
+  // Advance time on restored engine -> verify event fires exactly once
+  restoredEngine.advanceTime(50, 0);
+  assert.ok(restoredEngine.state.worldState.flags["flag_persisted_event"], "Restored event must execute upon time advance");
+  assert.ok(restoredEngine.state.worldState.executedEventIds["evt_persist_test"], "Event must be recorded in executedEventIds to prevent duplicate execution");
+});
+
+// -----------------------------------------------------------------------------
+// 55. Project Optimisation, Memory Efficiency & Zero Polling
+// -----------------------------------------------------------------------------
+runTest("Project Optimisation: Event pruning prevents memory accumulation, fast binary insertion, zero continuous intervals or polling loops", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // 1. Verify scheduler pruning of completed events
+  for (let i = 0; i < 20; i++) {
+    engine.scheduleEvent({
+      id: `evt_batch_${i}`,
+      inMinutes: i * 5,
+      type: "world_event"
+    });
+  }
+
+  assert.equal(engine.state.worldState.scheduledEvents.length, 20, "20 events must be registered");
+
+  // Advance time past all 20 events (120 minutes)
+  engine.advanceTime(0, 120);
+
+  // Executed one-time events must be pruned from scheduledEvents array
+  assert.equal(engine.state.worldState.scheduledEvents.length, 0, "Executed events must be pruned to avoid unbounded array growth");
+
+  // 2. Zero intervals check: ensure world-time has no active setInterval countdown loops or continuous polling
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(!html.includes("setInterval(() => this.advanceTime"), "World time must NOT use setInterval countdown loops");
+  assert.ok(!html.includes("setInterval(() => this.processScheduledEvents"), "Event scheduler must NOT use setInterval continuous polling");
+});
+
 console.log("\n=================================================================");
 console.log(`SUMMARY: ${passedTests} / ${totalTests} TESTS PASSED SUCCESSFULLY`);
 console.log("=================================================================");

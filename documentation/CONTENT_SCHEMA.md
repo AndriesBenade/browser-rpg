@@ -716,3 +716,135 @@ Reusable equipment archetypes defining base stats, slot occupancy, DC checks, an
   ]
 }
 ```
+
+---
+
+## 19. Dynamic World Time & Activity Durations Schema (`campaign.json`)
+
+Campaign manifests configure calendar parameters and time consumption (in minutes) for player activities.
+
+```json
+{
+  "activityDurations": {
+    "travel_short": 60,
+    "travel_medium": 120,
+    "travel_long": 240,
+    "combat_encounter": 15,
+    "rest_short": 60,
+    "rest_full": 480,
+    "craft_item": 60,
+    "gather_resources": 45,
+    "search_location": 30,
+    "npc_conversation": 5,
+    "menu_interaction": 0
+  }
+}
+```
+
+---
+
+## 20. Respawn Rules Schema (`campaign.json` & `creatures.json`)
+
+Campaign manifests declare global respawn guidelines, while individual creature declarations define exact respawn intervals.
+
+### Campaign Manifest (`campaign.json`):
+```json
+{
+  "respawnRules": {
+    "creatureRespawnEnabled": true,
+    "bossRespawnEnabled": true,
+    "minCreatureHours": 12,
+    "maxCreatureHours": 48,
+    "minBossHours": 24,
+    "maxBossHours": 168,
+    "allowNpcRespawn": false
+  }
+}
+```
+
+### Creature Declaration (`creatures.json`):
+```json
+{
+  "id": "creature_nemean_lion",
+  "name": "Spawn of Orthrus (Nemean Beast)",
+  "tier": 5,
+  "level": 6,
+  "isMonster": true,
+  "isBoss": true,
+  "repeatable": true,
+  "respawnHours": 72,
+  "xpReward": 350
+}
+```
+
+---
+
+## 21. Morality & Alignment Configuration Schema (`campaign.json`)
+
+Campaign manifests configure morality terminology, initial starting balances, and tier thresholds.
+
+```json
+{
+  "moralityConfig": {
+    "virtueLabel": "Arete (Virtue)",
+    "hubrisLabel": "Hubris (Miasma)",
+    "initialVirtue": 10,
+    "initialHubris": 0,
+    "alignmentTiers": {
+      "heroic": { "minScore": 40, "title": "Heroic Exemplar" },
+      "pragmatic": { "minScore": -15, "title": "Pragmatic Wanderer" },
+      "ruthless": { "minScore": -40, "title": "Ruthless Opportunist" },
+      "villainous": { "minScore": -999, "title": "Cursed Villain" }
+    }
+  }
+}
+```
+
+---
+
+## 22. Time-Sensitive Quests Schema (`quests.json`)
+
+Quests can define deadlines, intermediate escalation milestones, early completion bonuses, and multi-path moral resolutions.
+
+```json
+{
+  "id": "quest_dev_urgent_rescue",
+  "name": "Hostage at the Forgotten Watchtower",
+  "category": "urgent",
+  "deadlineHours": 48,
+  "earlyCompletionBonusHours": 24,
+  "earlyCompletionReward": {
+    "xp": 100,
+    "currency": 50,
+    "title": "Swift Liberator"
+  },
+  "milestones": [
+    {
+      "hoursElapsed": 24,
+      "event": "hostage_guard_doubled",
+      "notification": "Rumors reach you that the captors have fortified their guard watch!"
+    },
+    {
+      "hoursElapsed": 36,
+      "event": "hostage_transferred",
+      "notification": "A scout reports the hostage has been moved into the lower dungeon cells!"
+    }
+  ],
+  "moralChoices": [
+    {
+      "id": "choice_spare_bandit_leader",
+      "name": "Accept surrender and ransom",
+      "virtue": 15,
+      "hubris": 0,
+      "reward": { "currency": 40 }
+    },
+    {
+      "id": "choice_execute_bandit_leader",
+      "name": "Execute without trial",
+      "virtue": 0,
+      "hubris": 20,
+      "reward": { "xp": 50 }
+    }
+  ]
+}
+```

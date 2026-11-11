@@ -599,3 +599,71 @@ When building a new campaign:
 3. Provide embedded fallback data in `index.html` (e.g. `loadEmbeddedFallbackContent()` or dedicated method) if offline `file:///` support is desired.
 4. Run `node tests/engine_tests.js` to verify integrity.
 5. Launch the game and select your campaign from `#view-campaign-select`!
+
+---
+
+## 14. Dynamic World Time, Timed Quests, Respawns, and Morality Authoring Guide
+
+### 14.1 Configuring Activity Durations per Campaign
+In `content/campaigns/<campaign_id>/campaign.json`, define the `activityDurations` object with durations in minutes:
+```json
+{
+  "activityDurations": {
+    "travel_short": 60,
+    "travel_medium": 120,
+    "travel_long": 240,
+    "combat_encounter": 15,
+    "rest_short": 60,
+    "rest_full": 480,
+    "craft_item": 60,
+    "gather_resources": 45,
+    "search_location": 30,
+    "npc_conversation": 5,
+    "menu_interaction": 0
+  }
+}
+```
+*Note: Menu interactions and inventory browsing take 0 minutes so players can read lore and manage gear without penalizing in-game time.*
+
+### 14.2 Authoring Time-Sensitive Quests
+In `world/quests.json`:
+- **Urgent Quests**: Add `"deadlineHours": <number>` and optionally `"earlyCompletionBonusHours": <number>`.
+- **Milestones**: Add intermediate notifications and status changes that occur after specific elapsed hours.
+- **Timeless Quests**: Simply omit `deadlineHours` to allow the player to pursue the quest at their own pace without arbitrary penalties.
+
+```json
+{
+  "id": "quest_courier_urgent",
+  "name": "Urgent Message to Delphi",
+  "category": "urgent",
+  "deadlineHours": 36,
+  "earlyCompletionBonusHours": 18,
+  "earlyCompletionReward": { "xp": 75, "currency": 30 }
+}
+```
+
+### 14.3 Configuring Creature & Boss Respawns
+In `world/creatures.json`:
+- Set `"respawnHours": <hours>` (e.g. 12 for wolves/boars, 72 for legendary beasts).
+- Bosses marked with `"isBoss": true` and `"repeatable": true` will respawn according to `respawnHours` using event-driven scheduling.
+- Unique relics listed in loot tables are awarded only on the first victory; subsequent victories award level-scaled drachmae to prevent item duplication exploits.
+
+### 14.4 Defining Moral Choices & Alignment Consequences
+In `campaign.json`, configure the `moralityConfig` labels and starting balances.
+In quests and dialogues, grant Virtue (*Arete*) or Hubris (*Miasma*) through outcome payloads or dialogue choices:
+```json
+{
+  "text": "Mercy: Spare the trembling captive and bandage his wounds.",
+  "outcome": {
+    "transcript": "You cut his bonds and offer water. He swears gratitude by the Styx.",
+    "virtue": 15,
+    "hubris": 0
+  }
+}
+```
+
+### 14.5 Permanent NPC Death Rule
+- Living NPCs (`npcs` in `characters.json`) are unique mortal entities.
+- Slaying an NPC permanently records their death in `worldState.permanentNpcDeaths`.
+- NPCs never respawn. Any quest tied to a slain NPC triggers alternative failovers or journal updates, and the engine schedules a delayed murder investigation event.
+
