@@ -1,0 +1,29 @@
+{
+  "interactiveObjects": [
+    {
+      "id": "obj_cithaeron_fissure_portal",
+      "locationId": "loc_cithaeron_fissure_cave",
+      "name": "The Cadmean Stone Portal",
+      "type": "door",
+      "locked": true,
+      "isPickable": false,
+      "unpickableReason": "A monumental limestone slab counterweighted with ancient gears. It has no keyhole and cannot be picked; it yields only to the spoken name of the guardian.",
+      "description": "A heavy stone slab inscribed with archaic Cadmean letters and a coiled serpent relief."
+    },
+    {
+      "id": "obj_hermaion_offering_box",
+      "locationId": "loc_cithaeron_crossroads",
+      "name": "Wayfarer's Stone Offering Box",
+      "type": "container",
+      "locked": false,
+      "isPickable": false,
+      "description": "A hollowed limestone niche beneath the Hermaion cairn where pious travelers leave gifts.",
+      "contents": {
+        "drachmae": 6,
+        "items": [
+          "item_dried_figs_bread"
+        ]
+      }
+    }
+  ]
+}

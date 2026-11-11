@@ -1,0 +1,96 @@
+{
+  "characters": [
+    {
+      "id": "npc_dev_merchant_lycus",
+      "name": "Merchant Lycus",
+      "title": "Purveyor of Fine Goods",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_haven",
+      "disposition": 20,
+      "isMerchant": true,
+      "dialogueId": "dialogue_dev_lycus",
+      "lootTableId": "loot_dev_merchant_lycus",
+      "vitals": { "health": 16, "maxHealth": 16 },
+      "combatStats": {
+        "armorClass": 11,
+        "attackBonus": 2,
+        "damage": "1d4+1",
+        "xpReward": 25,
+        "actions": [
+          { "name": "Bronze Dagger Slash", "attackBonus": 2, "damage": "1d4+1", "damageType": "piercing" }
+        ]
+      },
+      "merchantInventory": [
+        { "itemId": "item_dev_iron_lockpick", "price": 10, "stock": 5 },
+        { "itemId": "item_dev_healing_draught", "price": 15, "stock": 3 },
+        { "itemId": "item_dev_trail_rations", "price": 5, "stock": 8 }
+      ],
+      "description": "A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests."
+    },
+    {
+      "id": "npc_dev_guard_captain",
+      "name": "Captain Valerius",
+      "title": "Commander of the Haven Watch",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_guards",
+      "disposition": 10,
+      "isGuard": true,
+      "dialogueId": "dialogue_dev_captain",
+      "lootTableId": "loot_dev_guard_captain",
+      "vitals": { "health": 28, "maxHealth": 28 },
+      "combatStats": {
+        "armorClass": 15,
+        "attackBonus": 4,
+        "damage": "1d8+2",
+        "xpReward": 60,
+        "actions": [
+          { "name": "Heavy Broadsword Slash", "attackBonus": 4, "damage": "1d8+2", "damageType": "slashing" }
+        ]
+      },
+      "description": "An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword."
+    },
+    {
+      "id": "npc_dev_elena_scholar",
+      "name": "Scholar Elena",
+      "title": "Antiquarian of the Sunken Marches",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_haven",
+      "disposition": 30,
+      "isQuestGiver": true,
+      "dialogueId": "dialogue_dev_elena",
+      "lootTableId": "loot_dev_scholar_elena",
+      "vitals": { "health": 14, "maxHealth": 14 },
+      "combatStats": {
+        "armorClass": 10,
+        "attackBonus": 1,
+        "damage": "1d4",
+        "xpReward": 20,
+        "actions": [
+          { "name": "Parchment Quell & Dagger", "attackBonus": 1, "damage": "1d4", "damageType": "piercing" }
+        ]
+      },
+      "description": "A sharp-eyed scholar surrounded by rolled parchment scrolls and brass astrolabes, studying the lost Sunstone."
+    },
+    {
+      "id": "npc_dev_bandit_renegade",
+      "name": "Renegade Silas",
+      "title": "Outlaw Scout",
+      "locationId": "loc_dev_whispering_woods",
+      "faction": "faction_dev_outlaws",
+      "disposition": -10,
+      "dialogueId": "dialogue_dev_bandit",
+      "lootTableId": "loot_dev_bandit",
+      "vitals": { "health": 20, "maxHealth": 20 },
+      "combatStats": {
+        "armorClass": 12,
+        "attackBonus": 3,
+        "damage": "1d6+2",
+        "xpReward": 45,
+        "actions": [
+          { "name": "Hunting Knife Stab", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" }
+        ]
+      },
+      "description": "A lean, hooded archer lurking in the shadows of the pine branches."
+    }
+  ]
+}

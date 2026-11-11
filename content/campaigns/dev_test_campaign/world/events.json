@@ -1,0 +1,37 @@
+{
+  "events": [
+    {
+      "id": "event_dev_guard_alert",
+      "name": "Haven Guard Murder Investigation",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "merchant_lycus_dead",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": { "haven_under_curfew": true },
+        "transcript": {
+          "speaker": "Town Crier",
+          "text": "Oyez! By order of Captain Valerius, Haven is placed under dusk curfew following the murder of Merchant Lycus! Watch patrols are doubled!",
+          "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_dev_sunstone_radiance",
+      "name": "The Sunstone Resonates",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_dev_sunstone_relic"
+      },
+      "outcomes": {
+        "transcript": {
+          "speaker": "Ancient Relic",
+          "text": "The Sunstone warms in your grasp, casting golden ripples of solar light across the ancient stones. Its power restores your vitality (+10 Health).",
+          "style": "entry-discovery"
+        },
+        "restoreHealth": 10
+      }
+    }
+  ]
+}

@@ -335,3 +335,48 @@ Listeners evaluate conditions and execute side effects (mutating game state, log
 | **Natural Language Parser complexity without AI** | Implement robust rule-based intent/entity matching with synonym dictionaries, fuzzy matching, and helpful context-sensitive fallbacks. Abstract the parser behind an async interface so a local or remote LLM can be swapped in without touching game logic. |
 | **IndexedDB browser quota & private browsing limits** | Provide fallback serialization to LocalStorage for small save payloads, plus instant file download/upload (.json) save migration. |
 | **Large Adventure Packs memory footprint** | Lazy-load adventure stages and asset references; index dialogue trees by node key rather than parsing full trees into memory at once. |
+
+---
+
+## 6. Campaign Framework & Living World Architecture (Engine v2.0.0 Overhaul)
+
+### 6.1 Content-Driven Campaign Framework
+The engine functions as a campaign-agnostic virtual machine. Entirely new settings and genres are supported via modular JSON packages without core engine changes:
+* **Campaign Manifest (`campaign.json`)**: Declares metadata (`id`, `name`, `version`, `genre`, `startingLocationId`, `startingTime`), modular component paths (`locations`, `characters`, `creatures`, `items`, `lootTables`, `interactiveObjects`, `factions`, `quests`, `encounters`, `dialogues`, `events`), and consequence rules.
+* **Dual Loading Strategy**: Supports network-based asynchronous `fetch` when hosted on web servers as well as synchronous embedded fallbacks (`loadEmbeddedFallbackContent()` for Greek Mythology and `loadEmbeddedDevTestContent()` for Developer Verification Campaign) for local `file:///` execution.
+* **Campaign Startup Flow**: 1. Guide hints &rarr; 2. Campaign Selection & Configuration (`#view-campaign-select`) &rarr; 3. Character Creation Wizard &rarr; 4. Game Begins.
+* **Custom Campaign Profiles**: Save and reload personalized module configurations (`saveCustomCampaignProfile`, `loadCustomCampaignProfile`) stored under `rpg_campaign_profile_<id>`.
+
+### 6.2 Campaign Content Validation Engine
+The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine audits campaign packages prior to or during runtime:
+* **Structural Schemas**: Validates required metadata, starting location, coordinate types, vitals, and dice notation.
+* **Referential Integrity**: Verifies that connection targets exist, creature/NPC loot tables reference valid tables, items in drops/shops exist, and quest prerequisite chains are satisfied.
+* **Circular Quest Dependency Detection**: Executes depth-first search graph traversal across prerequisite chains, detecting cycles and generating explicit diagnostic reports.
+* **Logic & Safety Audits**: Warns on thematic and mechanical anomalies (e.g., flagging unpickable physical obstacles such as boulders mistakenly marked `isPickable: true`).
+* **Visual Audit Modal**: Integrated in-engine via `#validation-modal`.
+
+### 6.3 Complete Freedom to Interact With Living Entities
+* **Universal Combat Engagement**: Players are free to initiate combat with ANY living entity in the world (friendly NPCs, merchants, guards, quest-givers, animals, monsters, bosses) via `startCombatWithEntity(entityId, type)`.
+* **Action Deck Integration**: Contextual actions dynamically surface `Speak`, `Attack`, and `Pickpocket` cards for all present living entities.
+* **Permanent Death Persistence**: Slain entities are logged in `state.worldState.deadEntities`, disabling subsequent dialogue and pruning exploration cards.
+* **Non-Linear Quest Failovers**: Key NPC deaths evaluate `alternatePathways` (e.g., slaying Elena drops her research journal and transitions the Sunstone quest directly to independent crypt exploration).
+
+### 6.4 Multi-Table Loot Resolution & Anti-Exploit Protection
+* **Data-Driven Drop Tables**: Probability rolls, guaranteed drops, and variable currency ranges.
+* **Anti-Exploit Relic Tracking**: Prevents duplicate unique relic acquisition on repeat boss kills via `state.worldState.grantedUniqueItems`. If a unique relic has already been awarded, repeat defeats suppress the duplicate drop and grant `repeatCurrency` or `repeatEntries` instead.
+
+### 6.5 Interactive Physical Objects & Lockpicking Mechanics
+* **Interactive Environmental Entities**: Doors, containers, obstacles, shrines, and mechanisms tracked in `state.worldState.unlockedObjects`.
+* **Lockpicking Requirements**: Requires physical tools (`item_lockpick_set`, `item_dev_iron_lockpick`, `item_thieves_tools`).
+* **Tabletop Resolution & Consequences**: D20 skill check vs DC. Ate (Nat 1) breaks and destroys the lockpick.
+* **Physical Obstacles vs Mechanical Locks**: Boulders and cave-ins are flagged `isPickable: false` and cannot be lockpicked; they must be cleared via `heaveObstacle` requiring raw Strength.
+* **Traps & Key Bypass**: Trapped containers inflict spring needle damage on failed picks or Ate fumbles. Keys (`unlockWithKey`) safely unlock mechanisms without dice checks or trap hazards.
+
+### 6.6 Multi-Phase Boss Combat & Cooldowns
+* **Dynamic Enraged Phase**: Bosses enter second phases (`enraged: true`) upon dropping below configurable health thresholds (e.g., 50% HP), gaining +3 attack bonuses and increased damage output.
+* **Respawn Cooldown Hours**: Defeated repeatable encounters record defeat timestamps in `state.worldState.encounterCooldowns`. Respawn eligibility is enforced by `checkEncounterCooldown(encounterId)` comparing total in-game elapsed hours against `cooldownHours`.
+
+### 6.7 Factions, Consequences & Scheduled Simulation
+* **Dynamic Faction Standing**: Tracks numerical reputation per faction, mapped to standing tiers: *Hostile* ($\le -25$), *Unfriendly* ($< 0$), *Neutral* ($< 20$), *Friendly* ($< 50$), and *Honored* ($\ge 50$).
+* **Consequence Rule Engine**: `emitEvent(name, payload)` processes `consequenceRules` defined in campaign manifests, mutating world flags, adjusting faction reputations, and scheduling delayed world events (`scheduledEvents`).
+* **Scheduled Event Dispatch**: Scheduled events trigger automatically when total in-game hours elapse during rest or travel.

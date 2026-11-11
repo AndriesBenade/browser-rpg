@@ -353,3 +353,236 @@ Locations represent both points on the vector campaign map and rich narrative ex
   "failureHint": "A scholar of mythology or an investigator with knowledge of Theban lore might recall the guardian Cadmus conquered before founding the city."
 }
 ```
+
+---
+
+## 9. Campaign Manifest Schema (`campaign.json`)
+
+The campaign manifest defines the master configuration for an entire campaign or world setting.
+
+```json
+{
+  "id": "campaign_custom_world",
+  "name": "Chronicles of the Aegean Horizon",
+  "version": "1.0.0",
+  "engineVersion": ">=1.0.0",
+  "author": "World Designer",
+  "description": "Comprehensive campaign setting spanning mainland poleis and maritime archipelagos.",
+  "genre": "classical_mythology",
+  "isDefault": true,
+  "isTestCampaign": false,
+  "startingLocationId": "loc_cithaeron_crossroads",
+  "startingTime": {
+    "hour": 8,
+    "minute": 0,
+    "day": 1,
+    "month": 1,
+    "year": 1
+  },
+  "modules": {
+    "locations": "content/world/locations.json",
+    "characters": "content/world/characters.json",
+    "creatures": "content/world/creatures.json",
+    "items": "content/world/items.json",
+    "lootTables": "content/world/loot_tables.json",
+    "interactiveObjects": "content/world/interactive_objects.json",
+    "factions": "content/world/factions.json",
+    "quests": "content/adventures/tutorial.json",
+    "encounters": "content/world/encounters.json",
+    "dialogues": "content/world/dialogues.json",
+    "events": "content/world/events.json"
+  },
+  "factions": [
+    {
+      "id": "faction_athenian_assembly",
+      "name": "Athenian Citizen Assembly",
+      "description": "Democratically inclined citizens and hoplites of Attica.",
+      "defaultReputation": 0
+    }
+  ],
+  "consequenceRules": [
+    {
+      "id": "rule_kill_guard",
+      "event": "ENTITY_DEATH",
+      "conditions": { "targetEntityId": "npc_athenian_gate_guard" },
+      "outcomes": {
+        "setFlags": { "athens_gate_locked": true },
+        "modifyReputation": { "faction_athenian_assembly": -50 },
+        "transcript": "The city watch sounds war trumpets! Gate checkpoints are sealed."
+      }
+    }
+  ],
+  "settings": {
+    "allowAnyEntityCombat": true,
+    "lockpickingEnabled": true,
+    "livingWorldSimulation": true
+  }
+}
+```
+
+---
+
+## 10. Interactive Objects Schema (`interactive_objects.json`)
+
+Environmental obstacles, lockable doors, trapped coffers, and physical mechanisms.
+
+```json
+{
+  "interactiveObjects": [
+    {
+      "id": "obj_temple_vault_door",
+      "locationId": "loc_athens_acropolis",
+      "name": "Banded Bronze Sanctuary Portal",
+      "type": "door", // door | container | obstacle | shrine | mechanism
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 14,
+      "requiredKeyId": "item_key_sanctuary_bronze",
+      "requiredToolId": "item_iron_lockpick",
+      "description": "A reinforced portal inscribed with the owl of Athena.",
+      "failureConsequence": {
+        "breakToolOnAte": true,
+        "alertNpcId": "npc_temple_guard",
+        "message": "The bronze tumbler resists violently, jamming your tension wrench!"
+      },
+      "unlockOutcome": {
+        "setFlags": { "sanctuary_vault_open": true },
+        "awardXP": 25
+      }
+    },
+    {
+      "id": "obj_cliff_boulder",
+      "locationId": "loc_cithaeron_pass",
+      "name": "Granite Cliff Rockfall",
+      "type": "obstacle",
+      "locked": true,
+      "isPickable": false,
+      "unpickableReason": "A solid granite mass has no lock cylinder; lockpicks cannot budge stone!",
+      "requiredAttribute": "strength",
+      "requiredScore": 14,
+      "unlockOutcome": {
+        "setFlags": { "pass_cleared": true },
+        "awardXP": 30
+      }
+    },
+    {
+      "id": "obj_trapped_chest",
+      "locationId": "loc_sunken_grotto",
+      "name": "Ironbound Coffer of the Ancients",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 13,
+      "trap": {
+        "name": "Pressurized Bronze Needle",
+        "disarmDC": 12,
+        "damage": 6
+      },
+      "contents": {
+        "drachmae": 45,
+        "items": ["item_silver_chalice"]
+      }
+    }
+  ]
+}
+```
+
+---
+
+## 11. Multi-Table Loot Schema (`loot_tables.json`)
+
+Dynamic loot resolution tables supporting drop chances, guaranteed awards, and anti-exploit repeat rewards.
+
+```json
+{
+  "lootTables": [
+    {
+      "id": "loot_hydra_sepulcher",
+      "name": "Lernaean Hydra Hoard",
+      "currency": { "min": 50, "max": 100 },
+      "entries": [
+        {
+          "itemId": "item_hydra_bile_relic",
+          "chance": 1.0,
+          "guaranteed": true,
+          "isUnique": true,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_healing_draught",
+          "chance": 0.75,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "repeatCurrency": { "min": 25, "max": 40 },
+      "repeatEntries": [
+        {
+          "itemId": "item_hardened_scales",
+          "chance": 1.0,
+          "minQuantity": 2,
+          "maxQuantity": 4
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## 12. Factions Schema (`factions.json`)
+
+Living world factions, initial dispositions, and reputation threshold parameters.
+
+```json
+{
+  "factions": [
+    {
+      "id": "faction_haven_free_citizens",
+      "name": "Haven Free Citizens",
+      "description": "Merchants, artisans, and farmers cultivating the valley plains.",
+      "defaultReputation": 15,
+      "thresholds": {
+        "hostile": -25,
+        "unfriendly": -1,
+        "neutral": 0,
+        "friendly": 20,
+        "honored": 50
+      }
+    }
+  ]
+}
+```
+
+---
+
+## 13. Consequence Rules & World Events Schema (`events.json`)
+
+Event-driven consequences and scheduled delayed events.
+
+```json
+{
+  "events": [
+    {
+      "id": "event_merchant_investigation",
+      "name": "Haven Watch Murder Inquest",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "merchant_lycus_dead",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": { "haven_curfew_active": true },
+        "transcript": {
+          "speaker": "Town Crier",
+          "text": "By decree of the Captain, night curfew is enforced throughout Haven!",
+          "style": "entry-consequence"
+        }
+      }
+    }
+  ]
+}
+```
+```

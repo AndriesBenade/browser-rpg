@@ -1,0 +1,163 @@
+{
+  "quests": [
+    {
+      "id": "quest_dev_sunstone_relic",
+      "title": "The Lost Sunstone of Haven",
+      "category": "Main Quest",
+      "summary": "Scholar Elena seeks the ancient radiant Sunstone buried in the sepulcher of Lord Karas within the Sunken Crypt.",
+      "currentStage": "inquire_scholar",
+      "stages": {
+        "inquire_scholar": {
+          "description": "Speak with Scholar Elena at Haven settlement or locate her research notes.",
+          "objectives": [
+            { "id": "obj_speak_elena", "text": "Consult Scholar Elena about the lost crypt.", "completed": false }
+          ]
+        },
+        "explore_crypt": {
+          "description": "Journey to the Sunken Crypt and defeat Lord Karas to recover the Sunstone.",
+          "objectives": [
+            { "id": "obj_defeat_karas", "text": "Vanquish Lord Karas the Undying.", "completed": false },
+            { "id": "obj_recover_sunstone", "text": "Retrieve the Radiant Sunstone of Haven.", "completed": false }
+          ]
+        },
+        "return_or_keep": {
+          "description": "Deliver the Sunstone to Elena for a scholarly reward, or retain it as an artifact of power.",
+          "objectives": [
+            { "id": "obj_resolve_sunstone", "text": "Deliver the relic to Elena or claim its power.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The mystery of the Sunstone has been resolved.",
+          "objectives": [
+            { "id": "obj_quest_done", "text": "Sunstone quest concluded.", "completed": true }
+          ]
+        }
+      },
+      "alternatePathways": {
+        "onNpcDeath": {
+          "npcId": "npc_dev_elena_scholar",
+          "setStage": "explore_crypt",
+          "completeObjective": "obj_speak_elena",
+          "narrative": "With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."
+        }
+      },
+      "rewards": {
+        "experience": 250,
+        "drachmae": 60,
+        "renown": 25
+      }
+    },
+    {
+      "id": "quest_dev_boar_menace",
+      "title": "The Bristle Boar Menace",
+      "category": "Side Quest",
+      "summary": "Captain Valerius has posted a bounty for hunting ferocious wild boars in the Whispering Woods.",
+      "currentStage": "hunt_boar",
+      "stages": {
+        "hunt_boar": {
+          "description": "Venture into the Whispering Woods and slay a wild bristle boar.",
+          "objectives": [
+            { "id": "obj_slay_boar", "text": "Defeat a wild boar in the Whispering Woods.", "completed": false }
+          ]
+        },
+        "return_captain": {
+          "description": "Report your victory to Captain Valerius in Haven.",
+          "objectives": [
+            { "id": "obj_turnin_boar", "text": "Collect bounty from Captain Valerius.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The boar bounty has been collected.",
+          "objectives": [
+            { "id": "obj_boar_done", "text": "Bounty rewarded.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 100,
+        "drachmae": 25
+      }
+    },
+    {
+      "id": "quest_dev_treasury_heist",
+      "title": "The High Vault Infiltration",
+      "category": "Optional Quest",
+      "summary": "Infiltrate Haven's High Vault by picking the lock or obtaining the key, and claim the treasures within.",
+      "currentStage": "infiltrate_vault",
+      "stages": {
+        "infiltrate_vault": {
+          "description": "Unlock or pick the High Vault door in Haven.",
+          "objectives": [
+            { "id": "obj_unlock_vault", "text": "Bypass the ironbound vault door.", "completed": false },
+            { "id": "obj_loot_coffer", "text": "Loot the gilded strongbox inside the vault.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "Successfully looted the High Vault.",
+          "objectives": [
+            { "id": "obj_heist_done", "text": "Vault emptied.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 150
+      }
+    },
+    {
+      "id": "quest_dev_grotto_mystery",
+      "title": "The Secret of the Sunken Grotto",
+      "category": "Discovery Quest",
+      "summary": "Discover the hidden passage behind the overgrown granite boulder in the Whispering Woods.",
+      "currentStage": "discover_grotto",
+      "stages": {
+        "discover_grotto": {
+          "description": "Roll aside the monolithic boulder and explore the hidden cavern.",
+          "objectives": [
+            { "id": "obj_move_boulder", "text": "Move the granite boulder.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "The Sunken Grotto has been charted.",
+          "objectives": [
+            { "id": "obj_grotto_charted", "text": "Grotto discovered.", "completed": true }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 75,
+        "drachmae": 15
+      }
+    },
+    {
+      "id": "quest_dev_merchant_delivery",
+      "title": "Lycus' Caravan Contract",
+      "category": "Faction Quest",
+      "summary": "Merchant Lycus entrusted you with a business delivery to the outlying homesteads.",
+      "currentStage": "active_delivery",
+      "stages": {
+        "active_delivery": {
+          "description": "Ensure the goods reach their destination safely.",
+          "objectives": [
+            { "id": "obj_carry_goods", "text": "Deliver goods for Lycus.", "completed": false }
+          ]
+        },
+        "completed": {
+          "description": "Contract fulfilled.",
+          "objectives": [
+            { "id": "obj_delivery_done", "text": "Delivery completed.", "completed": true }
+          ]
+        }
+      },
+      "failableConditions": {
+        "onNpcDeath": {
+          "npcId": "npc_dev_merchant_lycus",
+          "reason": "Merchant Lycus was slain. The delivery contract is null and void."
+        }
+      },
+      "rewards": {
+        "experience": 80,
+        "drachmae": 30
+      }
+    }
+  ]
+}

@@ -436,3 +436,43 @@ Before committing new content:
 - [ ] Connect new locations back to existing locations so the player can travel to and from them.
 - [ ] Plain-English outcomes used in action narratives (no raw D&D calculation formulas).
 - [ ] Run the test suite: `node tests/engine_tests.js` to ensure 100% test passing!
+
+---
+
+## 12. Authoring a Full Campaign & Using the Campaign Validation Engine
+
+### 12.1 Campaign Directory Structure
+To author a new campaign or adventure world:
+1. Create a directory under `content/campaigns/<campaign_id>/`.
+2. Place a `campaign.json` manifest in the folder.
+3. Organize modular content files (recommended under `content/campaigns/<campaign_id>/world/`):
+   - `locations.json`: Waypoints, connections, coordinates, and ambient prose.
+   - `characters.json`: Living NPCs, merchants, guards, dispositions, and combat stats.
+   - `creatures.json`: Bestiary entries, boss phase thresholds, and combat actions.
+   - `items.json`: Equipment, relics, keys, and lockpicking tools.
+   - `loot_tables.json`: Drop chance tables, guaranteed drops, and repeat kill currency.
+   - `interactive_objects.json`: Doors, trapped chests, shrines, and unpickable obstacles.
+   - `factions.json`: Faction identities, initial reputations, and threshold parameters.
+   - `quests.json`: Linear or branching quests with objective stages and alternate death failovers.
+   - `encounters.json`: Boss encounters with intro prose, cooldown hours, and victory triggers.
+   - `dialogues.json`: Decoupled conversation trees with conditional node branches.
+   - `events.json`: Consequence rules and scheduled delayed world events.
+
+### 12.2 Using the Campaign Content Validation Engine
+The engine includes a built-in static validator:
+```javascript
+const validation = GreekMythologyEngine.validateCampaign(manifest, content);
+if (!validation.valid) {
+  console.error("Campaign has critical errors:", validation.errors);
+}
+if (validation.warnings.length > 0) {
+  console.warn("Campaign warnings:", validation.warnings);
+}
+```
+Validation checks performed:
+1. **Structural Schemas**: Required metadata (`id`, `name`, `version`, `modules`), starting location, coordinate types, vitals, and actions.
+2. **Referential Integrity**: All connection targets, NPC locations, drop items, shop stocks, and quest prerequisites must exist.
+3. **Circular Quest Dependencies**: Identifies recursive or looping prerequisites in quests using graph cycle detection.
+4. **Physical Logic Audits**: Flags mechanical incongruities (e.g. unpickable boulders erroneously configured as pickable).
+
+In-game, players and creators can inspect campaign validity anytime via the **Campaign Validator Modal** (`window.engine.runComprehensiveCampaignValidation()`).

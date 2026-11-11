@@ -1,0 +1,22 @@
+{
+  "id": "campaign_broken_fixture",
+  "name": "Deliberately Broken Campaign Fixture",
+  "version": "0.1.0",
+  "engineVersion": ">=99.0.0",
+  "author": "QA Test Harness",
+  "description": "Malformed test fixture designed to trigger comprehensive validator warnings and errors.",
+  "startingLocationId": "loc_non_existent_place",
+  "modules": {
+    "locations": "content/campaigns/fixtures/broken_locations.json",
+    "characters": "content/campaigns/fixtures/broken_characters.json"
+  },
+  "consequenceRules": [
+    {
+      "id": "broken_rule_1",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_completely_missing"
+      }
+    }
+  ]
+}

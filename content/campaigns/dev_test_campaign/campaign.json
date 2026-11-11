@@ -1,0 +1,111 @@
+{
+  "id": "campaign_dev_test",
+  "name": "Developer Verification Campaign",
+  "version": "1.0.0",
+  "engineVersion": ">=1.0.0",
+  "author": "Engine Systems Architect",
+  "description": "Comprehensive testbed campaign engineered to exercise all core RPG systems: open-world freedom, NPC combat and death, multi-table loot, lockpicking, interactive objects, multi-phase bosses, faction dynamics, and persistent world consequences.",
+  "genre": "fantasy_sandbox",
+  "isDefault": false,
+  "isTestCampaign": true,
+  "startingLocationId": "loc_dev_haven",
+  "startingTime": {
+    "hour": 9,
+    "minute": 0,
+    "day": 1,
+    "month": 1,
+    "year": 1
+  },
+  "modules": {
+    "locations": "content/campaigns/dev_test_campaign/world/locations.json",
+    "characters": "content/campaigns/dev_test_campaign/world/characters.json",
+    "creatures": "content/campaigns/dev_test_campaign/world/creatures.json",
+    "items": "content/campaigns/dev_test_campaign/world/items.json",
+    "lootTables": "content/campaigns/dev_test_campaign/world/loot_tables.json",
+    "interactiveObjects": "content/campaigns/dev_test_campaign/world/interactive_objects.json",
+    "factions": "content/campaigns/dev_test_campaign/world/factions.json",
+    "quests": "content/campaigns/dev_test_campaign/world/quests.json",
+    "encounters": "content/campaigns/dev_test_campaign/world/encounters.json",
+    "dialogues": "content/campaigns/dev_test_campaign/world/dialogues.json",
+    "events": "content/campaigns/dev_test_campaign/world/events.json"
+  },
+  "factions": [
+    {
+      "id": "faction_dev_haven",
+      "name": "Haven Free Citizens",
+      "description": "Townsfolk, traders, and artisans of the Haven settlement.",
+      "defaultReputation": 15
+    },
+    {
+      "id": "faction_dev_guards",
+      "name": "Haven Town Watch",
+      "description": "Armed constabulary enforcing law, order, and tax collection in Haven.",
+      "defaultReputation": 10
+    },
+    {
+      "id": "faction_dev_outlaws",
+      "name": "Shadow Syndicate",
+      "description": "Renegades, smugglers, and bandits operating from the ruined crypt.",
+      "defaultReputation": -30
+    }
+  ],
+  "consequenceRules": [
+    {
+      "id": "rule_merchant_murder",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_dev_merchant_lycus"
+      },
+      "outcomes": {
+        "setFlags": {
+          "merchant_lycus_dead": true,
+          "haven_shop_closed": true
+        },
+        "modifyReputation": {
+          "faction_dev_haven": -50,
+          "faction_dev_guards": -60
+        },
+        "failQuest": "quest_dev_merchant_delivery",
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Merchant Lycus falls dead in a pool of blood! The shop's heavy iron shutters slam shut permanently. Word spreads rapidly: Haven Watch Captain is conducting a murder investigation!",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Murder of Merchant Lycus",
+          "text": "Slew the prominent Haven merchant Lycus. The shop is shuttered and the town watch is on high alert."
+        }
+      }
+    },
+    {
+      "id": "rule_questgiver_murder",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_dev_elena_scholar"
+      },
+      "outcomes": {
+        "setFlags": {
+          "elena_scholar_dead": true
+        },
+        "modifyReputation": {
+          "faction_dev_haven": -30
+        },
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Scholar Elena drops lifeless. Her research journal rolls across the floor. You can search her body to discover the notes she was guarding, unlocking an alternate path for the Sunstone quest!",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Death of Scholar Elena",
+          "text": "Scholar Elena was slain. Her research notes on the Sunstone can be retrieved directly from her belongings."
+        }
+      }
+    }
+  ],
+  "settings": {
+    "allowAnyEntityCombat": true,
+    "lockpickingEnabled": true,
+    "randomEncountersEnabled": true,
+    "livingWorldSimulation": true
+  }
+}

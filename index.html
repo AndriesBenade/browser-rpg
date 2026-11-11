@@ -595,108 +595,156 @@
     }
 
     /* =========================================================================
-       1. ALWAYS-VISIBLE PERSISTENT CUSTOM HEROIC ACTION BAR
+       1. CAMPAIGN SELECTION, CONFIGURATION & VALIDATION INTERFACE
        ========================================================================= */
-    .persistent-action-bar-container {
-      flex-shrink: 0;
+    .campaign-select-container {
+      max-width: 980px;
+      margin: 0 auto;
       width: 100%;
-      background: linear-gradient(180deg, #1b1922 0%, #111017 100%);
-      border: 1px solid var(--border-meander);
-      border-radius: 6px;
-      box-shadow: 0 -2px 14px rgba(0,0,0,0.4), 0 0 10px rgba(179, 139, 60, 0.15);
-      padding: 0.45rem 0.65rem;
-      z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 1.25rem;
+      padding: 1.2rem;
     }
 
-    .persistent-action-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      width: 100%;
+    .campaign-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.1rem;
     }
 
-    .action-bar-prefix {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(179, 139, 60, 0.15);
-      border: 1px solid var(--bronze-dark);
-      border-radius: 4px;
-      padding: 0.35rem 0.6rem;
-      color: #ffe680;
-      font-family: var(--font-heading);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .action-input-wrapper {
-      flex: 1 1 auto;
-      min-width: 0;
-      background: #0d0c10;
-      border: 1px solid #3c3426;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .action-input-wrapper:focus-within {
-      border-color: var(--bronze-bright);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
-    }
-
-    .persistent-action-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.92rem;
-      padding: 0.45rem 0.75rem;
-      outline: none;
-    }
-
-    .persistent-action-input::placeholder {
-      color: #7a7485;
-      font-style: italic;
-      font-size: 0.85rem;
-    }
-
-    .btn-persistent-submit {
-      background: linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%);
-      border: 1px solid var(--bronze-bright);
-      border-radius: 4px;
-      color: #1a160d;
-      font-family: var(--font-heading);
-      font-size: 0.8rem;
-      font-weight: bold;
-      padding: 0.45rem 0.95rem;
+    .campaign-card {
+      background: #14131a;
+      border: 1px solid var(--border-meander);
+      border-radius: 6px;
+      padding: 1.2rem;
       cursor: pointer;
       display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
-      transition: all 0.2s ease;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: all 0.22s ease;
+      position: relative;
     }
 
-    .btn-persistent-submit:hover {
-      background: linear-gradient(180deg, var(--bronze-bright) 0%, var(--bronze) 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+    .campaign-card:hover {
+      border-color: var(--bronze-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
     }
 
-    .btn-submit-hint {
-      font-size: 0.65rem;
-      opacity: 0.7;
-      font-family: monospace;
-      padding: 0.05rem 0.25rem;
-      background: rgba(0,0,0,0.25);
+    .campaign-card.selected {
+      border-color: #ffd700;
+      background: linear-gradient(180deg, #1d1a24 0%, #15131b 100%);
+      box-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
+    }
+
+    .campaign-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .campaign-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #ffe680;
+      line-height: 1.3;
+    }
+
+    .campaign-card-genre {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--bronze-bright);
+      border: 1px solid var(--bronze-dark);
+      padding: 0.15rem 0.45rem;
       border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .campaign-card-desc {
+      font-size: 0.88rem;
+      color: var(--marble-dim);
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .campaign-card-meta {
+      font-size: 0.78rem;
+      color: var(--marble-dark);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 0.55rem;
+    }
+
+    .campaign-config-panel {
+      background: #111016;
+      border: 1px solid var(--border-meander);
+      border-radius: 6px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .validation-panel {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .validation-panel.valid {
+      background: rgba(45, 90, 39, 0.2);
+      border: 1px solid var(--laurel-bright);
+      color: #a3e6a1;
+    }
+
+    .validation-panel.invalid {
+      background: rgba(179, 66, 36, 0.2);
+      border: 1px solid var(--terracotta-bright);
+      color: #ff9d82;
+    }
+
+    .validation-badge {
+      display: inline-block;
+      font-weight: bold;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      margin-right: 0.4rem;
+    }
+
+    .validation-badge.ok { background: #2d5a27; color: #fff; }
+    .validation-badge.error { background: #b33c1b; color: #fff; }
+    .validation-badge.warning { background: #b38b3c; color: #111; }
+
+    .module-accordion-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+    }
+
+    .module-item-checkbox {
+      background: #181720;
+      border: 1px solid #2e2938;
+      border-radius: 4px;
+      padding: 0.45rem 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--marble-light);
+      cursor: pointer;
+    }
+
+    .module-item-checkbox input {
+      accent-color: var(--bronze-bright);
     }
 
     /* =========================================================================
@@ -2280,6 +2328,7 @@
       <button class="nav-btn" data-view="view-settings">Settings</button>
       <button class="nav-btn special-btn" onclick="window.engine.openDevNotesModal()" title="View Developer & AI Collaboration Hand-Off Notes">📜 Dev Notes</button>
       <button class="nav-btn special-btn" onclick="window.engine.startWalkthrough(true)">Guide & Help</button>
+      <button class="nav-btn special-btn" onclick="window.engine.openCampaignSelectView()" title="Campaign & World Management">🗺️ Campaigns</button>
       <button class="nav-btn special-btn" onclick="window.engine.openCharacterCreationWizard()">New Hero</button>
     </nav>
   </header>
@@ -2333,6 +2382,30 @@
        ========================================================================= -->
   <main class="engine-container">
     <div class="viewports-stage" id="viewports-stage">
+
+    <!-- -1. CAMPAIGN SELECTION & CONFIGURATION VIEWPORT -->
+    <div class="viewport" id="view-campaign-select">
+      <div class="campaign-select-container">
+        <div style="text-align: center; border-bottom: 1px solid var(--border-meander); padding-bottom: 1rem;">
+          <h1 style="font-family: var(--font-heading); color: #ffe680; font-size: 1.6rem; margin-bottom: 0.35rem;">Campaign &amp; World Configuration</h1>
+          <p style="color: var(--marble-dim); font-size: 0.92rem; max-width: 680px; margin: 0 auto;">Select an established interactive world, customize included regions, creatures, and questlines, or configure custom campaign packages.</p>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h3 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.1rem; margin: 0;">Available Campaigns</h3>
+            <span style="font-size: 0.8rem; color: var(--marble-dark);" id="campaign-count-indicator">2 Campaigns Installed</span>
+          </div>
+          <div class="campaign-grid" id="campaign-cards-grid">
+            <!-- Dynamic campaign cards rendered here -->
+          </div>
+        </div>
+
+        <div class="campaign-config-panel" id="campaign-config-details" style="display: none;">
+          <!-- Active campaign details, validation banner, module toggles, profile save/load -->
+        </div>
+      </div>
+    </div>
 
     <!-- 0. CHARACTER CREATION WIZARD VIEWPORT -->
     <div class="viewport" id="view-char-creation">
@@ -2717,33 +2790,14 @@
             <button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="window.engine.openDevNotesModal()">📜 Developer & AI Notes</button>
             <button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="window.engine.startWalkthrough(true)">Relaunch Interface Guide</button>
             <button class="nav-btn" style="border-color: var(--terracotta); color: var(--terracotta-bright);" onclick="window.engine.restartAdventure()">Restart Tutorial</button>
+            <button class="nav-btn" style="border-color: #ffd700; color: #ffe680; font-weight: bold;" onclick="window.engine.openCampaignSelectView()">🗺️ Manage Campaigns &amp; Worlds</button>
+            <button class="nav-btn" style="border-color: var(--laurel); color: var(--laurel-bright);" onclick="window.engine.runComprehensiveCampaignValidation()">🔍 Validate Active Campaign</button>
             <button class="nav-btn" style="border-color: #c94a4a; color: #ff7878; font-weight: bold;" onclick="window.engine.deleteAllSavedContent()">🗑️ Delete All Saved Content &amp; Reset Fresh</button>
           </div>
         </div>
       </div>
     </div>
     </div> <!-- /viewports-stage -->
-
-    <!-- =========================================================================
-         ALWAYS-VISIBLE HEROIC CUSTOM ACTION BAR (GLOBAL CONSOLE)
-         ========================================================================= -->
-    <div class="persistent-action-bar-container" id="persistent-action-bar">
-      <form id="custom-action-form" class="persistent-action-bar" onsubmit="event.preventDefault(); window.engine.handleCustomAction();">
-        <div class="action-bar-prefix">
-          <span class="action-prefix-icon">⚡</span>
-          <span class="action-prefix-label">HEROIC ACTION</span>
-        </div>
-        <div class="action-input-wrapper">
-          <input type="text" id="custom-action-input" class="persistent-action-input" 
-                 placeholder="Enter any custom action at any time (e.g. examine stones, offer wine, search bushes, climb cliff...)" 
-                 autocomplete="off" aria-label="Heroic Custom Action Input">
-        </div>
-        <button type="submit" class="btn-persistent-submit" id="btn-submit-action">
-          <span>Attempt Action</span>
-          <span class="btn-submit-hint">↵ Enter</span>
-        </button>
-      </form>
-    </div>
 
   </main>
 
@@ -2776,7 +2830,7 @@
       </div>
       <div class="walkthrough-highlight-box" id="wt-step-highlight"></div>
       <div class="walkthrough-controls">
-        <button class="nav-btn" id="wt-btn-skip" onclick="window.engine.skipWalkthrough()">Skip to Character Creation</button>
+        <button class="nav-btn" id="wt-btn-skip" onclick="window.engine.skipWalkthrough()">Skip to Campaign Selection</button>
         <div style="display: flex; gap: 0.5rem;">
           <button class="nav-btn" id="wt-btn-prev" onclick="window.engine.prevWalkthroughStep()">Previous</button>
           <button class="btn-classical" id="wt-btn-next" onclick="window.engine.nextWalkthroughStep()">Next Step &rarr;</button>
@@ -3077,6 +3131,46 @@
   </div>
 
   <!-- =========================================================================
+       CAMPAIGN VALIDATION DIAGNOSTICS MODAL
+       ========================================================================= -->
+  <div class="inpage-modal-overlay" id="validation-modal" style="display: none;">
+    <div class="victory-modal-card" style="max-width: 720px; text-align: left; border-color: var(--bronze-bright);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.65rem; margin-bottom: 0.85rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #ffe680; font-size: 1.25rem; margin: 0;" id="validation-modal-title">Campaign Validation Diagnostics</h2>
+          <div style="font-size: 0.8rem; color: var(--marble-dim);" id="validation-modal-subtitle">Structural, Reference, Logic &amp; Compatibility Verification</div>
+        </div>
+        <button class="nav-btn" onclick="document.getElementById('validation-modal').style.display='none'">✕ Close</button>
+      </div>
+      <div id="validation-modal-body" style="max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+        <!-- Injected diagnostic cards -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       INTERACTIVE PHYSICAL OBJECT & LOCKPICKING MODAL
+       ========================================================================= -->
+  <div class="inpage-modal-overlay" id="interactive-object-modal" style="display: none;">
+    <div class="victory-modal-card" style="max-width: 580px; text-align: left; border-color: var(--bronze);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.65rem; margin-bottom: 0.85rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #ffe680; font-size: 1.2rem; margin: 0;" id="obj-modal-title">Interactive Object</h2>
+          <div style="font-size: 0.8rem; color: var(--bronze-bright);" id="obj-modal-subtitle">Mechanical Lock &bull; DC 12</div>
+        </div>
+        <button class="nav-btn" onclick="document.getElementById('interactive-object-modal').style.display='none'">✕ Close</button>
+      </div>
+      <div id="obj-modal-desc" style="color: var(--marble-light); font-size: 0.9rem; line-height: 1.55; margin-bottom: 0.85rem;"></div>
+      <div id="obj-modal-mechanic" style="background: #14131b; border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.85rem; margin-bottom: 0.85rem;">
+        <!-- Details, tool requirement, trap warnings, lock stats -->
+      </div>
+      <div id="obj-modal-actions" style="display: flex; flex-direction: column; gap: 0.45rem;">
+        <!-- Dynamic choice buttons: pick lock, use key, force open, examine, loot -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        CORE GAME ENGINE SCRIPT (VANILLA ES6+)
        ========================================================================= -->
   <script>
@@ -3086,10 +3180,22 @@
      */
     class GreekMythologyEngine {
       constructor() {
-        this.version = "1.2.0";
+        this.version = "1.3.0";
         this.dbName = "GreekMythologyRPG_DB";
         this.dbVersion = 1;
         this.db = null;
+
+        // Campaign Framework
+        this.campaigns = new Map();
+        this.activeCampaignId = "campaign_greek_mythology";
+        this.activeCampaign = null;
+        this.campaignCustomConfigs = {};
+        this.lootTables = [];
+        this.interactiveObjects = [];
+        this.factions = [];
+        this.consequenceRules = [];
+        this.randomEncounters = [];
+        this.activeInteractiveObject = null;
 
         // Content Databases
         this.world = {
@@ -3098,7 +3204,13 @@
           creatures: [],
           items: [],
           deities: [],
-          mythology: []
+          mythology: [],
+          lootTables: [],
+          interactiveObjects: [],
+          factions: [],
+          encounters: [],
+          quests: [],
+          events: []
         };
 
         this.currentAdventure = null;
@@ -3138,9 +3250,9 @@
             highlight: "Check your Journal under Knowledge & Clues when confronting ancient inscriptions or mysteries."
           },
           {
-            title: "Create Your Hero",
-            text: "Now, let us forge your champion. Choose your homeland origin, background, custom attributes, and traits before taking your first steps upon Mount Cithaeron.",
-            highlight: "Click 'Next Step' to launch Character Creation!"
+            title: "Campaign & World Selection",
+            text: "Before forging your champion, choose your campaign world, inspect installed content packs, or customize included regions, creatures, and questlines.",
+            highlight: "Click 'Next Step' to launch Campaign Selection and configure your world!"
           }
         ];
 
@@ -3466,11 +3578,26 @@
             ]
           },
           worldState: {
+            campaignId: "campaign_greek_mythology",
             currentLocationId: "loc_cithaeron_crossroads",
             discoveredLocations: ["loc_cithaeron_crossroads", "loc_shrine_hermes_strophaios", "loc_plataea_outskirts"],
             time: { hour: 8, minute: 30, day: 12, month: 4, year: 1 },
             flags: {},
             npcStates: {},
+            deadEntities: {},
+            lootedEntities: {},
+            unlockedObjects: {},
+            factions: {
+              faction_plataea: { reputation: 10 },
+              faction_theban_guard: { reputation: 0 },
+              faction_delphic_amphictyony: { reputation: 15 },
+              faction_hermes_cult: { reputation: 5 }
+            },
+            encounterCooldowns: {},
+            defeatedEncounters: {},
+            grantedUniqueItems: {},
+            scheduledEvents: [],
+            consequencesLog: [],
             quests: {},
             journal: {
               chronicle: [],
@@ -3487,6 +3614,7 @@
       async init() {
         console.log("Initializing Greek Mythology RPG Engine v" + this.version);
         await this.initIndexedDB();
+        await this.loadCampaignManifests();
         await this.loadContent();
         this.setupNavigation();
         this.setupEventListeners();
@@ -3496,6 +3624,9 @@
         const existingSave = await this.loadGameSilently(1);
         if (existingSave && existingSave.hasCompletedCreation) {
           this.state = existingSave;
+          if (existingSave.worldState && existingSave.worldState.campaignId) {
+            this.activeCampaignId = existingSave.worldState.campaignId;
+          }
           this.logTranscript("System", `Welcome back, ${this.state.player.name}. Continued from Slot 1.`, "entry-discovery");
           this.renderAll();
         } else {
@@ -3525,7 +3656,7 @@
         document.getElementById("wt-btn-prev").disabled = (this.walkthroughStep === 0);
         const nextBtn = document.getElementById("wt-btn-next");
         if (this.walkthroughStep === this.walkthroughSteps.length - 1) {
-          nextBtn.innerText = "Create Character &rarr;";
+          nextBtn.innerText = "Configure Campaign &rarr;";
         } else {
           nextBtn.innerText = "Next Step &rarr;";
         }
@@ -3537,7 +3668,7 @@
           this.renderWalkthroughStep();
         } else {
           this.skipWalkthrough();
-          this.openCharacterCreationWizard();
+          this.openCampaignSelectView();
         }
       }
 
@@ -3552,7 +3683,7 @@
         this.state.hasCompletedOnboarding = true;
         document.getElementById("walkthrough-overlay").style.display = "none";
         if (!this.state.hasCompletedCreation) {
-          this.openCharacterCreationWizard();
+          this.openCampaignSelectView();
         }
         this.saveGameSilently();
       }
@@ -4042,45 +4173,263 @@
         this.openCharacterCreationWizard();
       }
 
+
       /* =========================================================================
-         CONTENT LOADER (External JSONs with resilient embedded fallbacks)
+         CAMPAIGN ARCHITECTURE & DYNAMIC MODULE LOADER
          ========================================================================= */
+      async loadCampaignManifests() {
+        const manifests = [
+          {
+            id: "campaign_greek_mythology",
+            name: "Hellas: Mythos of the Heroic Age",
+            version: "1.0.0",
+            engineVersion: ">=1.0.0",
+            author: "Classical Mythos Design Guild",
+            description: "Experience authentic classical Greece in the Heroic Age. Journey across Boeotia, Phocis, Argolis, and Arcadia, confronting mythical beasts and seeking divine favour.",
+            genre: "classical_mythology",
+            isDefault: true,
+            startingLocationId: "loc_cithaeron_crossroads",
+            startingTime: { hour: 8, minute: 30, day: 12, month: 4, year: 1 },
+            manifestPath: "content/campaigns/greek_mythology/campaign.json",
+            modules: {
+              locations: "content/world/locations.json",
+              characters: "content/world/characters.json",
+              creatures: "content/world/creatures.json",
+              items: "content/world/items.json",
+              lootTables: "content/world/loot_tables.json",
+              interactiveObjects: "content/world/interactive_objects.json",
+              deities: "content/world/deities.json",
+              mythology: "content/world/mythology.json",
+              glossary: "content/world/glossary.json",
+              adventures: ["content/adventures/tutorial.json"]
+            }
+          },
+          {
+            id: "campaign_dev_test",
+            name: "Developer Verification Campaign",
+            version: "1.0.0",
+            engineVersion: ">=1.0.0",
+            author: "Engine Systems Architect",
+            description: "Comprehensive testbed campaign engineered to exercise all core RPG systems: open-world freedom, NPC combat and death, multi-table loot, lockpicking, interactive objects, multi-phase bosses, faction dynamics, and persistent world consequences.",
+            genre: "fantasy_sandbox",
+            isDefault: false,
+            isTestCampaign: true,
+            startingLocationId: "loc_dev_haven",
+            startingTime: { hour: 9, minute: 0, day: 1, month: 1, year: 1 },
+            manifestPath: "content/campaigns/dev_test_campaign/campaign.json",
+            modules: {
+              locations: "content/campaigns/dev_test_campaign/world/locations.json",
+              characters: "content/campaigns/dev_test_campaign/world/characters.json",
+              creatures: "content/campaigns/dev_test_campaign/world/creatures.json",
+              items: "content/campaigns/dev_test_campaign/world/items.json",
+              lootTables: "content/campaigns/dev_test_campaign/world/loot_tables.json",
+              interactiveObjects: "content/campaigns/dev_test_campaign/world/interactive_objects.json",
+              factions: "content/campaigns/dev_test_campaign/world/factions.json",
+              quests: "content/campaigns/dev_test_campaign/world/quests.json",
+              encounters: "content/campaigns/dev_test_campaign/world/encounters.json",
+              dialogues: "content/campaigns/dev_test_campaign/world/dialogues.json",
+              events: "content/campaigns/dev_test_campaign/world/events.json"
+            }
+          }
+        ];
+
+        for (const m of manifests) {
+          try {
+            const fetched = await fetch(m.manifestPath).then(r => r.json()).catch(() => null);
+            if (fetched && fetched.id) {
+              this.registerCampaign(fetched);
+            } else {
+              this.registerCampaign(m);
+            }
+          } catch (e) {
+            this.registerCampaign(m);
+          }
+        }
+
+        if (!this.activeCampaignId || !this.campaigns.has(this.activeCampaignId)) {
+          this.activeCampaignId = "campaign_greek_mythology";
+        }
+        this.activeCampaign = this.campaigns.get(this.activeCampaignId);
+      }
+
+      registerCampaign(manifest) {
+        if (!manifest || !manifest.id) return;
+        this.campaigns.set(manifest.id, manifest);
+      }
+
       async loadContent() {
-        try {
-          const [locRes, charRes, creatRes, itemRes, deitRes, mythRes, advRes, glossRes] = await Promise.all([
-            fetch("content/world/locations.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/characters.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/creatures.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/items.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/deities.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/mythology.json").then(r => r.json()).catch(() => null),
-            fetch("content/adventures/tutorial.json").then(r => r.json()).catch(() => null),
-            fetch("content/world/glossary.json").then(r => r.json()).catch(() => null)
-          ]);
+        const campaign = this.campaigns.get(this.activeCampaignId) || this.campaigns.get("campaign_greek_mythology");
+        this.activeCampaign = campaign;
+        const modules = (campaign && campaign.modules) ? campaign.modules : {};
 
-          if (locRes && locRes.locations) this.world.locations = locRes.locations;
-          if (charRes && charRes.characters) this.world.characters = charRes.characters;
-          if (creatRes && creatRes.creatures) this.world.creatures = creatRes.creatures;
-          if (itemRes && itemRes.items) this.world.items = itemRes.items;
-          if (deitRes && deitRes.deities) this.world.deities = deitRes.deities;
-          if (mythRes && mythRes.loreEntries) this.world.mythology = mythRes.loreEntries;
-          if (advRes) this.currentAdventure = advRes;
-          if (glossRes && glossRes.glossary) this.registerGlossaryTerms(glossRes.glossary);
-        } catch (e) {
-          console.warn("Could not load external JSON packs, falling back to embedded baseline", e);
+        if (this.activeCampaignId === "campaign_dev_test") {
+          try {
+            const [locRes, charRes, creatRes, itemRes, lootRes, objRes, factRes, questRes, encRes, diaRes, evtRes] = await Promise.all([
+              fetch(modules.locations || "content/campaigns/dev_test_campaign/world/locations.json").then(r => r.json()).catch(() => null),
+              fetch(modules.characters || "content/campaigns/dev_test_campaign/world/characters.json").then(r => r.json()).catch(() => null),
+              fetch(modules.creatures || "content/campaigns/dev_test_campaign/world/creatures.json").then(r => r.json()).catch(() => null),
+              fetch(modules.items || "content/campaigns/dev_test_campaign/world/items.json").then(r => r.json()).catch(() => null),
+              fetch(modules.lootTables || "content/campaigns/dev_test_campaign/world/loot_tables.json").then(r => r.json()).catch(() => null),
+              fetch(modules.interactiveObjects || "content/campaigns/dev_test_campaign/world/interactive_objects.json").then(r => r.json()).catch(() => null),
+              fetch(modules.factions || "content/campaigns/dev_test_campaign/world/factions.json").then(r => r.json()).catch(() => null),
+              fetch(modules.quests || "content/campaigns/dev_test_campaign/world/quests.json").then(r => r.json()).catch(() => null),
+              fetch(modules.encounters || "content/campaigns/dev_test_campaign/world/encounters.json").then(r => r.json()).catch(() => null),
+              fetch(modules.dialogues || "content/campaigns/dev_test_campaign/world/dialogues.json").then(r => r.json()).catch(() => null),
+              fetch(modules.events || "content/campaigns/dev_test_campaign/world/events.json").then(r => r.json()).catch(() => null)
+            ]);
+
+            this.world.locations = (locRes && locRes.locations) || [];
+            this.world.characters = (charRes && charRes.characters) || [];
+            this.world.creatures = (creatRes && creatRes.creatures) || [];
+            this.world.items = (itemRes && itemRes.items) || [];
+            this.world.lootTables = (lootRes && lootRes.lootTables) || [];
+            this.world.interactiveObjects = (objRes && objRes.interactiveObjects) || [];
+            this.world.factions = (factRes && factRes.factions) || [];
+            this.world.encounters = (encRes && encRes.encounters) || [];
+            this.world.events = (evtRes && evtRes.events) || [];
+
+            const questList = (questRes && questRes.quests) || [];
+            const dialogueMap = (diaRes && diaRes.dialogues) || {};
+            const encounterList = (encRes && encRes.encounters) || [];
+
+            this.currentAdventure = {
+              id: "adv_dev_test",
+              title: "Developer Verification Adventure",
+              quests: questList,
+              dialogues: dialogueMap,
+              encounters: encounterList,
+              contextActions: []
+            };
+          } catch (e) {
+            console.warn("Could not load external Dev Test Campaign JSONs, falling back to embedded baseline", e);
+          }
+
+          if (!this.world.locations || this.world.locations.length === 0) {
+            this.loadEmbeddedDevTestContent();
+          }
+        } else {
+          // Classical Greek Campaign
+          try {
+            const [locRes, charRes, creatRes, itemRes, deitRes, mythRes, advRes, glossRes, lootRes, objRes] = await Promise.all([
+              fetch(modules.locations || "content/world/locations.json").then(r => r.json()).catch(() => null),
+              fetch(modules.characters || "content/world/characters.json").then(r => r.json()).catch(() => null),
+              fetch(modules.creatures || "content/world/creatures.json").then(r => r.json()).catch(() => null),
+              fetch(modules.items || "content/world/items.json").then(r => r.json()).catch(() => null),
+              fetch(modules.deities || "content/world/deities.json").then(r => r.json()).catch(() => null),
+              fetch(modules.mythology || "content/world/mythology.json").then(r => r.json()).catch(() => null),
+              fetch((modules.adventures && modules.adventures[0]) || "content/adventures/tutorial.json").then(r => r.json()).catch(() => null),
+              fetch(modules.glossary || "content/world/glossary.json").then(r => r.json()).catch(() => null),
+              fetch(modules.lootTables || "content/world/loot_tables.json").then(r => r.json()).catch(() => null),
+              fetch(modules.interactiveObjects || "content/world/interactive_objects.json").then(r => r.json()).catch(() => null)
+            ]);
+
+            if (locRes && locRes.locations) this.world.locations = locRes.locations;
+            if (charRes && charRes.characters) this.world.characters = charRes.characters;
+            if (creatRes && creatRes.creatures) this.world.creatures = creatRes.creatures;
+            if (itemRes && itemRes.items) this.world.items = itemRes.items;
+            if (deitRes && deitRes.deities) this.world.deities = deitRes.deities;
+            if (mythRes && mythRes.loreEntries) this.world.mythology = mythRes.loreEntries;
+            if (advRes) this.currentAdventure = advRes;
+            if (glossRes && glossRes.glossary) this.registerGlossaryTerms(glossRes.glossary);
+            if (lootRes && lootRes.lootTables) this.world.lootTables = lootRes.lootTables;
+            if (objRes && objRes.interactiveObjects) this.world.interactiveObjects = objRes.interactiveObjects;
+          } catch (e) {
+            console.warn("Could not load external JSON packs, falling back to embedded baseline", e);
+          }
+
+          if (this.world.locations.length === 0) {
+            this.loadEmbeddedFallbackContent();
+          }
+          if (!this.currentAdventure) {
+            this.currentAdventure = this.getEmbeddedFallbackAdventure();
+          }
+          if (this.glossary.length === 0) {
+            this.registerGlossaryTerms(this.getFallbackGlossary());
+          }
         }
 
-        if (this.world.locations.length === 0) {
-          this.loadEmbeddedFallbackContent();
-        }
-        if (!this.currentAdventure) {
-          this.currentAdventure = this.getEmbeddedFallbackAdventure();
-        }
-        if (this.glossary.length === 0) {
-          this.registerGlossaryTerms(this.getFallbackGlossary());
-        }
+        // Synchronize instance shortcuts
+        this.lootTables = this.world.lootTables || [];
+        this.interactiveObjects = this.world.interactiveObjects || [];
+        this.factions = (campaign && campaign.factions) || this.world.factions || [];
+        this.consequenceRules = (campaign && campaign.consequenceRules) || [];
+        this.randomEncounters = (campaign && campaign.randomEncounters) || (this.world.encounters && this.world.encounters.filter(e => e.type === "random_travel")) || [];
+
         this.buildContentMaps();
       }
+
+      loadEmbeddedDevTestContent() {
+        this.world.locations = [{"id":"loc_dev_haven","name":"Haven of the Crossways","ancientName":"Portus Asyli","region":"The Central Marches","recommendedLevel":1,"coordinates":{"x":300,"y":300},"terrain":"paved_road","buildings":[{"id":"bld_haven_apothecary","name":"Lycus' Fine Goods & Wares","isOpen":true,"ownerId":"npc_dev_merchant_lycus"},{"id":"bld_haven_guardhouse","name":"Haven Watch Post","isOpen":true,"ownerId":"npc_dev_guard_captain"},{"id":"bld_haven_treasury","name":"The High Vault","isOpen":false,"requiresLockpick":true}],"connections":[{"targetLocationId":"loc_dev_whispering_woods","name":"The Old Forest Trail","distanceKm":4,"travelHours":1,"staminaCost":3,"terrain":"rocky_scrubland","dangerRating":1},{"targetLocationId":"loc_dev_ancient_crypt","name":"Road to the Sunken Crypt","distanceKm":6.5,"travelHours":2,"staminaCost":5,"terrain":"mountain_trail","dangerRating":2},{"targetLocationId":"loc_dev_obsidian_crag","name":"The Jagged Ascent","distanceKm":10,"travelHours":3,"staminaCost":8,"terrain":"mountain_trail","dangerRating":4}],"narrative":{"overview":"Haven of the Crossways is a fortified settlement set amidst limestone ridges. Cobblestone pathways link timber-framed houses, a lively merchant stall, and the imposing town watch house.","shortDescription":"A bustling crossroads settlement fortified by stout wooden palisades."},"presentNPCs":["npc_dev_merchant_lycus","npc_dev_guard_captain","npc_dev_elena_scholar"],"presentItems":["item_dev_iron_lockpick"]},{"id":"loc_dev_whispering_woods","name":"The Whispering Woods","ancientName":"Silva Murmuris","region":"The Central Marches","recommendedLevel":1,"coordinates":{"x":200,"y":250},"terrain":"rocky_scrubland","connections":[{"targetLocationId":"loc_dev_haven","name":"The Haven Road","distanceKm":4,"travelHours":1,"staminaCost":3,"terrain":"paved_road","dangerRating":1},{"targetLocationId":"loc_dev_sunken_grotto","name":"Overgrown Fern Hollow","distanceKm":3,"travelHours":1,"staminaCost":4,"terrain":"rocky_scrubland","dangerRating":2,"requiresFlag":"discovered_sunken_grotto"}],"narrative":{"overview":"Towering ancient pines and dense briars cast cool, dappled shadows across the mossy floor. The air rustles with wild boar foraging in the undergrowth.","shortDescription":"A verdant, windswept pine forest sheltering game and hidden hollows."},"presentCreatures":["creature_dev_wild_boar","creature_dev_forest_wolf"],"presentItems":["item_dev_forest_berries"]},{"id":"loc_dev_ancient_crypt","name":"The Sunken Crypt of Karas","ancientName":"Crypta Karatis","region":"The Desolate Lowlands","recommendedLevel":2,"coordinates":{"x":420,"y":380},"terrain":"mountain_cave","connections":[{"targetLocationId":"loc_dev_haven","name":"Highway to Haven","distanceKm":6.5,"travelHours":2,"staminaCost":5,"terrain":"paved_road","dangerRating":1}],"narrative":{"overview":"Chilly mist seeps from the shattered archway of the sunken crypt. Dark stone sepulchers flank an archaic sanctuary hall where an ancient warlord slumbers.","shortDescription":"A subterranean limestone crypt heavy with cold subterranean mist."},"presentCreatures":["creature_dev_crypt_boss"],"presentItems":["item_dev_crypt_torch"]},{"id":"loc_dev_obsidian_crag","name":"The Obsidian Crags","ancientName":"Rupes Atra","region":"Highland Peaks","recommendedLevel":4,"coordinates":{"x":500,"y":180},"terrain":"mountain_trail","connections":[{"targetLocationId":"loc_dev_haven","name":"Descent to Haven","distanceKm":10,"travelHours":3,"staminaCost":8,"terrain":"mountain_trail","dangerRating":4}],"narrative":{"overview":"Razor-sharp black obsidian pinnacles rise into freezing winds. Lethal shadow beasts stalk the high passes, hunting any mortal foolish enough to climb without heroic armament.","shortDescription":"Treacherous obsidian pinnacles shrouded in howling winds."},"presentCreatures":["creature_dev_shadow_stalker"]},{"id":"loc_dev_sunken_grotto","name":"The Sunken Grotto","ancientName":"Antrum Ocultum","region":"The Central Marches","recommendedLevel":2,"coordinates":{"x":150,"y":180},"terrain":"mountain_cave","connections":[{"targetLocationId":"loc_dev_whispering_woods","name":"Path Back to the Pines","distanceKm":3,"travelHours":1,"staminaCost":4,"terrain":"rocky_scrubland","dangerRating":1}],"narrative":{"overview":"A secluded subterranean pool lit by bioluminescent moss clinging to limestone stalactites. The water reflects shimmering veins of silver ore.","shortDescription":"A tranquil subterranean grotto with glowing limestone pools."},"presentItems":["item_dev_silver_chalice"]}];
+        this.world.characters = [{"id":"npc_dev_merchant_lycus","name":"Merchant Lycus","title":"Purveyor of Fine Goods","locationId":"loc_dev_haven","faction":"faction_dev_haven","disposition":20,"isMerchant":true,"dialogueId":"dialogue_dev_lycus","lootTableId":"loot_dev_merchant_lycus","vitals":{"health":16,"maxHealth":16},"combatStats":{"armorClass":11,"attackBonus":2,"damage":"1d4+1","xpReward":25,"actions":[{"name":"Bronze Dagger Slash","attackBonus":2,"damage":"1d4+1","damageType":"piercing"}]},"merchantInventory":[{"itemId":"item_dev_iron_lockpick","price":10,"stock":5},{"itemId":"item_dev_healing_draught","price":15,"stock":3},{"itemId":"item_dev_trail_rations","price":5,"stock":8}],"description":"A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests."},{"id":"npc_dev_guard_captain","name":"Captain Valerius","title":"Commander of the Haven Watch","locationId":"loc_dev_haven","faction":"faction_dev_guards","disposition":10,"isGuard":true,"dialogueId":"dialogue_dev_captain","lootTableId":"loot_dev_guard_captain","vitals":{"health":28,"maxHealth":28},"combatStats":{"armorClass":15,"attackBonus":4,"damage":"1d8+2","xpReward":60,"actions":[{"name":"Heavy Broadsword Slash","attackBonus":4,"damage":"1d8+2","damageType":"slashing"}]},"description":"An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword."},{"id":"npc_dev_elena_scholar","name":"Scholar Elena","title":"Antiquarian of the Sunken Marches","locationId":"loc_dev_haven","faction":"faction_dev_haven","disposition":30,"isQuestGiver":true,"dialogueId":"dialogue_dev_elena","lootTableId":"loot_dev_scholar_elena","vitals":{"health":14,"maxHealth":14},"combatStats":{"armorClass":10,"attackBonus":1,"damage":"1d4","xpReward":20,"actions":[{"name":"Parchment Quell & Dagger","attackBonus":1,"damage":"1d4","damageType":"piercing"}]},"description":"A sharp-eyed scholar surrounded by rolled parchment scrolls and brass astrolabes, studying the lost Sunstone."},{"id":"npc_dev_bandit_renegade","name":"Renegade Silas","title":"Outlaw Scout","locationId":"loc_dev_whispering_woods","faction":"faction_dev_outlaws","disposition":-10,"dialogueId":"dialogue_dev_bandit","lootTableId":"loot_dev_bandit","vitals":{"health":20,"maxHealth":20},"combatStats":{"armorClass":12,"attackBonus":3,"damage":"1d6+2","xpReward":45,"actions":[{"name":"Hunting Knife Stab","attackBonus":3,"damage":"1d6+2","damageType":"piercing"}]},"description":"A lean, hooded archer lurking in the shadows of the pine branches."}];
+        this.world.creatures = [{"id":"creature_dev_wild_boar","name":"Wild Bristle Boar","tier":1,"level":1,"isAnimal":true,"xpReward":35,"vitals":{"health":18,"maxHealth":18,"morale":8},"armorClass":12,"lootTableId":"loot_dev_wild_boar","actions":[{"name":"Goring Tusk Thrust","attackBonus":3,"damage":"1d6+2","damageType":"piercing"},{"name":"Muddy Trample","attackBonus":2,"damage":"1d4+1","damageType":"bludgeoning"}]},{"id":"creature_dev_forest_wolf","name":"Grey Timber Wolf","tier":1,"level":1,"isAnimal":true,"xpReward":40,"vitals":{"health":16,"maxHealth":16,"morale":10},"armorClass":13,"lootTableId":"loot_dev_forest_wolf","actions":[{"name":"Snapping Jaws","attackBonus":4,"damage":"1d6+2","damageType":"piercing"}]},{"id":"creature_dev_shadow_stalker","name":"Obsidian Shadow Stalker","tier":4,"level":4,"isMonster":true,"xpReward":220,"vitals":{"health":55,"maxHealth":55,"morale":16},"armorClass":15,"lootTableId":"loot_dev_shadow_stalker","actions":[{"name":"Obsidian Talon Rend","attackBonus":6,"damage":"2d8+3","damageType":"slashing"},{"name":"Shadow Vapor Breath","attackBonus":5,"damage":"2d6+2","damageType":"necrotic"}]},{"id":"creature_dev_crypt_boss","name":"Lord Karas the Undying","title":"Ancient Warlord of the Sunken Crypt","tier":3,"level":3,"isBoss":true,"repeatable":true,"respawnHours":24,"xpReward":180,"vitals":{"health":60,"maxHealth":60,"morale":20},"armorClass":14,"lootTableId":"loot_dev_crypt_boss","bossPhases":[{"phase":1,"name":"Shield of the Tombs","healthThreshold":0.5,"banner":"Lord Karas raises an archaic iron crest shield, deflecting incoming blows!"},{"phase":2,"name":"Enraged Chthonic Fury","healthThreshold":0,"enrage":true,"damageBonus":3,"banner":"Lord Karas roars with otherworldly rage as dark green spectral flames engulf his greatsword!"}],"actions":[{"name":"Crypt Cleaver","attackBonus":5,"damage":"1d10+3","damageType":"slashing"},{"name":"Grave Chill Wave","attackBonus":4,"damage":"2d6+2","damageType":"cold"}]}];
+        this.world.items = [{"id":"item_dev_iron_lockpick","name":"Slender Iron Lockpick","category":"tool","slot":"accessory","rarity":"common","weightKg":0.1,"valueDrachmae":10,"description":"A tempered iron tension wrench and pick suited for delicate mechanical locks."},{"id":"item_dev_treasury_key","name":"Heavy Brass Vault Key","category":"key","rarity":"rare","weightKg":0.2,"valueDrachmae":25,"description":"An ornate brass key engraved with the Haven crest, unlocking the High Vault."},{"id":"item_dev_crypt_key","name":"Rusted Iron Crypt Key","category":"key","rarity":"uncommon","weightKg":0.3,"valueDrachmae":15,"description":"An archaic iron skeleton key recovered from the wilderness."},{"id":"item_dev_sunstone_relic","name":"Radiant Sunstone of Haven","category":"relic","rarity":"legendary","isUnique":true,"weightKg":0.5,"valueDrachmae":200,"description":"An ancient radiant amber crystal pulsing with solar warmth. The legendary artifact sought by Scholar Elena."},{"id":"item_dev_elena_journal","name":"Scholar Elena's Research Journal","category":"document","rarity":"rare","isUnique":true,"weightKg":0.4,"valueDrachmae":20,"description":"Handwritten parchment notes detailing the secret mechanism of the Sunken Crypt where the Sunstone is hidden."},{"id":"item_dev_healing_draught","name":"Apothecary Healing Draught","category":"consumable","rarity":"common","weightKg":0.3,"valueDrachmae":15,"effect":{"restoreHealth":10},"description":"A glass vial of brewed dittany, willow bark, and honey that rapidly stitches flesh."},{"id":"item_dev_trail_rations","name":"Smoked Meat & Hardtack","category":"consumable","rarity":"common","weightKg":0.5,"valueDrachmae":5,"effect":{"restoreStamina":8},"description":"Durable traveling provisions that revive weary muscles."},{"id":"item_dev_forest_berries","name":"Wild Mountain Blackberries","category":"consumable","rarity":"common","weightKg":0.2,"valueDrachmae":2,"effect":{"restoreStamina":4},"description":"Plump wild berries gathered from the brambles of the Whispering Woods."},{"id":"item_dev_boar_tusk","name":"Curved Boar Tusk","category":"material","rarity":"common","weightKg":0.4,"valueDrachmae":8,"description":"A razor-sharp ivory tusk prize from a wild boar."},{"id":"item_dev_boar_meat","name":"Fresh Boar Haunch","category":"consumable","rarity":"common","weightKg":1,"valueDrachmae":6,"effect":{"restoreHealth":6,"restoreStamina":6},"description":"A hearty cut of fresh game suitable for roasting over campfires."},{"id":"item_dev_wolf_pelt","name":"Thick Grey Wolf Pelt","category":"material","rarity":"common","weightKg":1.2,"valueDrachmae":12,"description":"A thick winter wolf fur pelt valued by furriers and cloak makers."},{"id":"item_dev_chthonic_crystal","name":"Flawless Obsidian Crystal","category":"material","rarity":"exceptional","weightKg":0.8,"valueDrachmae":75,"description":"An extremely rare crystalline growth harvested from high obsidian crags."},{"id":"item_dev_silver_chalice","name":"Ancient Silver Liturgical Chalice","category":"treasure","rarity":"rare","weightKg":0.6,"valueDrachmae":50,"description":"An exquisite silver chalice recovered from the Sunken Grotto."},{"id":"item_dev_crypt_torch","name":"Pitch-Soaked Cedar Torch","category":"utility","rarity":"common","weightKg":0.5,"valueDrachmae":3,"description":"A resinous torch that burns brightly in subterranean passages."},{"id":"item_dev_broadsword","name":"Haven Watch Broadsword","category":"weapon","slot":"main_hand","rarity":"uncommon","weightKg":1.8,"valueDrachmae":35,"stats":{"damageMin":4,"damageMax":10,"damageType":"slashing"},"description":"A double-edged forged steel broadsword issued to Haven guards."}];
+        this.world.lootTables = [{"id":"loot_dev_merchant_lycus","name":"Merchant Lycus Personal Possessions","currency":{"min":35,"max":50},"entries":[{"itemId":"item_dev_iron_lockpick","chance":0.8,"minQuantity":1,"maxQuantity":3},{"itemId":"item_dev_healing_draught","chance":0.6,"minQuantity":1,"maxQuantity":2},{"itemId":"item_dev_trail_rations","chance":0.9,"minQuantity":2,"maxQuantity":4}]},{"id":"loot_dev_guard_captain","name":"Captain Valerius Arms & Regalia","currency":{"min":20,"max":35},"entries":[{"itemId":"item_dev_treasury_key","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1},{"itemId":"item_dev_broadsword","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_scholar_elena","name":"Scholar Elena Satchel & Notes","currency":{"min":10,"max":20},"entries":[{"itemId":"item_dev_elena_journal","chance":1,"guaranteed":true,"isUnique":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_bandit","name":"Renegade Silas Stash","currency":{"min":12,"max":25},"entries":[{"itemId":"item_dev_iron_lockpick","chance":0.5,"minQuantity":1,"maxQuantity":1},{"itemId":"item_dev_trail_rations","chance":0.75,"minQuantity":1,"maxQuantity":2}]},{"id":"loot_dev_wild_boar","name":"Wild Boar Spoils","entries":[{"itemId":"item_dev_boar_meat","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":2},{"itemId":"item_dev_boar_tusk","chance":0.7,"minQuantity":1,"maxQuantity":2}]},{"id":"loot_dev_forest_wolf","name":"Wolf Pelts & Bones","entries":[{"itemId":"item_dev_wolf_pelt","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_shadow_stalker","name":"Shadow Stalker Crystals","currency":{"min":25,"max":40},"entries":[{"itemId":"item_dev_chthonic_crystal","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]},{"id":"loot_dev_crypt_boss","name":"Lord Karas Sepulcher Spoils","currency":{"min":80,"max":120},"entries":[{"itemId":"item_dev_sunstone_relic","chance":1,"guaranteed":true,"isUnique":true,"minQuantity":1,"maxQuantity":1}],"repeatCurrency":{"min":35,"max":50},"repeatEntries":[{"itemId":"item_dev_healing_draught","chance":1,"guaranteed":true,"minQuantity":1,"maxQuantity":1}]}];
+        this.world.interactiveObjects = [{"id":"obj_treasury_iron_door","locationId":"loc_dev_haven","name":"Ironbound Vault Door","type":"door","locked":true,"isPickable":true,"lockDifficulty":12,"requiredKeyId":"item_dev_treasury_key","requiredToolId":"item_dev_iron_lockpick","description":"A reinforced oak and banded-iron portal securing the Haven High Vault.","failureConsequence":{"breakToolOnAte":true,"alertNpcId":"npc_dev_guard_captain","message":"A loud metallic clang echoes down the cobblestones as your pick jams in the tumblers!"},"unlockOutcome":{"setFlags":{"treasury_door_unlocked":true},"transcript":{"speaker":"Physical Interaction","text":"With a satisfying click of heavy brass tumblers, the ironbound door creaks inward, granting access to the interior vault!","style":"entry-discovery"},"awardXP":25}},{"id":"obj_trapped_coffer","locationId":"loc_dev_haven","name":"Gilded Treasury Strongbox","type":"container","locked":true,"isPickable":true,"lockDifficulty":14,"requiredToolId":"item_dev_iron_lockpick","description":"A cedar coffer bound in brass filigree, sitting upon a stone pedestal inside the vault.","trap":{"name":"Spring-Loaded Bronze Dart","disarmDC":13,"damage":6,"description":"A tensioned wire connected to a pressurized dart launcher inside the lock housing."},"contents":{"drachmae":60,"items":["item_dev_silver_chalice"]},"unlockOutcome":{"setFlags":{"treasury_coffer_unlocked":true},"transcript":{"speaker":"Physical Interaction","text":"The lock springs open! Inside lies a velvet-lined cache containing 60 silver drachmae and an ancient silver chalice!","style":"entry-discovery"},"awardXP":35}},{"id":"obj_boulder_seal","locationId":"loc_dev_whispering_woods","name":"Massive Overgrown Granite Boulder","type":"obstacle","locked":true,"isPickable":false,"unpickableReason":"A colossal solid granite boulder has no mechanical lock or keyhole. It cannot be lockpicked!","requiredAttribute":"strength","requiredScore":14,"description":"A monolithic boulder choked with ivy, completely sealing an arched fissure in the cliffside.","unlockOutcome":{"setFlags":{"discovered_sunken_grotto":true},"transcript":{"speaker":"Feat of Power","text":"Bracing your shoulders against the massive stone, you heave with all your might. With a grinding crunch, the boulder rolls aside, revealing the hidden passage to the Sunken Grotto!","style":"entry-discovery"},"awardXP":30}},{"id":"obj_crypt_sarcophagus","locationId":"loc_dev_ancient_crypt","name":"Lord Karas' Marble Sarcophagus","type":"container","locked":false,"isPickable":false,"description":"A carved marble tomb relief depicting the warlord Karas holding a solar emblem.","contents":{"drachmae":25,"items":["item_dev_crypt_torch"]}}];
+        this.world.factions = [{"id":"faction_dev_haven","name":"Haven Free Citizens","description":"Townsfolk, traders, and artisans of the Haven settlement.","defaultReputation":15,"thresholds":{"hostile":-25,"unfriendly":-1,"neutral":0,"friendly":25,"revered":75}},{"id":"faction_dev_guards","name":"Haven Town Watch","description":"Armed constabulary enforcing law, order, and tax collection in Haven.","defaultReputation":10,"thresholds":{"hostile":-20,"unfriendly":-1,"neutral":0,"friendly":30,"revered":80}},{"id":"faction_dev_outlaws","name":"Shadow Syndicate","description":"Renegades, smugglers, and bandits operating from the ruined crypt.","defaultReputation":-30,"thresholds":{"hostile":-10,"unfriendly":0,"neutral":10,"friendly":40,"revered":80}}];
+        this.factions = this.world.factions;
+        this.lootTables = this.world.lootTables;
+        this.interactiveObjects = this.world.interactiveObjects;
+        this.consequenceRules = [
+          {
+            id: "rule_merchant_murder",
+            event: "ENTITY_DEATH",
+            conditions: { targetEntityId: "npc_dev_merchant_lycus" },
+            outcomes: {
+              setFlags: { merchant_lycus_dead: true, haven_shop_closed: true },
+              modifyReputation: [
+                { factionId: "faction_dev_haven", delta: -50, reason: "Murder of Merchant Lycus" },
+                { factionId: "faction_dev_guards", delta: -60, reason: "Murder of Merchant Lycus" }
+              ],
+              scheduleEvent: {
+                id: "event_curfew",
+                delayHours: 4,
+                title: "Haven Watch Curfew Enforced",
+                text: "Town watch horns sound across Haven! Dusk curfew is enforced following Merchant Lycus' murder.",
+                setFlags: { dev_haven_curfew_active: true }
+              },
+              transcript: "Merchant Lycus falls dead! The shop shutters slam shut. Haven Watch begins a murder investigation!",
+              addJournalChronicle: {
+                title: "Murder of Merchant Lycus",
+                text: "Slew the prominent Haven merchant Lycus. The shop is shuttered and the town watch is on high alert."
+              }
+            }
+          },
+          {
+            id: "rule_questgiver_murder",
+            event: "ENTITY_DEATH",
+            conditions: { targetEntityId: "npc_dev_elena_scholar" },
+            outcomes: {
+              setFlags: { elena_scholar_dead: true },
+              modifyReputation: [
+                { factionId: "faction_dev_haven", delta: -30, reason: "Murder of Scholar Elena" }
+              ],
+              transcript: "Scholar Elena drops lifeless. Her research journal rolls across the floor.",
+              addJournalChronicle: {
+                title: "Death of Scholar Elena",
+                text: "Scholar Elena was slain. Her research notes on the Sunstone can be retrieved directly from her belongings."
+              }
+            }
+          }
+        ];
+        if (Array.isArray(this.world.factions)) {
+          this.world.factions.forEach(f => {
+            this.state.worldState.factions[f.id] = { reputation: f.defaultReputation !== undefined ? f.defaultReputation : 0 };
+          });
+        }
+        this.world.encounters = [{"id":"enc_dev_crypt_boss","locationId":"loc_dev_ancient_crypt","creatureId":"creature_dev_crypt_boss","isBoss":true,"repeatable":true,"cooldownHours":24,"introProse":"From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!","victoryOutcome":{"text":"Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!","setFlags":{"defeated_lord_karas":true},"updateQuest":{"questId":"quest_dev_sunstone_relic","objectiveId":"obj_defeat_karas","completed":true},"awardXP":180,"addJournalChronicle":{"title":"Vanquished Lord Karas","text":"Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."}}},{"id":"enc_dev_wild_boar","locationId":"loc_dev_whispering_woods","creatureId":"creature_dev_wild_boar","introProse":"A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!","victoryOutcome":{"text":"You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.","setFlags":{"slain_dev_boar":true},"updateQuest":{"questId":"quest_dev_boar_menace","objectiveId":"obj_slay_boar","completed":true},"awardXP":35}},{"id":"enc_dev_shadow_stalker","locationId":"loc_dev_obsidian_crag","creatureId":"creature_dev_shadow_stalker","introProse":"A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!","victoryOutcome":{"text":"The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.","awardXP":220}}];
+        this.world.events = [{"id":"event_dev_guard_alert","name":"Haven Guard Murder Investigation","trigger":"FLAG_SET","conditions":{"flag":"merchant_lycus_dead","expected":true},"outcomes":{"setFlags":{"haven_under_curfew":true},"transcript":{"speaker":"Town Crier","text":"Oyez! By order of Captain Valerius, Haven is placed under dusk curfew following the murder of Merchant Lycus! Watch patrols are doubled!","style":"entry-consequence"}}},{"id":"event_dev_sunstone_radiance","name":"The Sunstone Resonates","trigger":"ITEM_ACQUIRED","conditions":{"itemId":"item_dev_sunstone_relic"},"outcomes":{"transcript":{"speaker":"Ancient Relic","text":"The Sunstone warms in your grasp, casting golden ripples of solar light across the ancient stones. Its power restores your vitality (+10 Health).","style":"entry-discovery"},"restoreHealth":10}}];
+        this.currentAdventure = {
+          id: "adv_dev_test",
+          title: "Developer Verification Adventure",
+          quests: [{"id":"quest_dev_sunstone_relic","title":"The Lost Sunstone of Haven","category":"Main Quest","summary":"Scholar Elena seeks the ancient radiant Sunstone buried in the sepulcher of Lord Karas within the Sunken Crypt.","currentStage":"inquire_scholar","stages":{"inquire_scholar":{"description":"Speak with Scholar Elena at Haven settlement or locate her research notes.","objectives":[{"id":"obj_speak_elena","text":"Consult Scholar Elena about the lost crypt.","completed":false}]},"explore_crypt":{"description":"Journey to the Sunken Crypt and defeat Lord Karas to recover the Sunstone.","objectives":[{"id":"obj_defeat_karas","text":"Vanquish Lord Karas the Undying.","completed":false},{"id":"obj_recover_sunstone","text":"Retrieve the Radiant Sunstone of Haven.","completed":false}]},"return_or_keep":{"description":"Deliver the Sunstone to Elena for a scholarly reward, or retain it as an artifact of power.","objectives":[{"id":"obj_resolve_sunstone","text":"Deliver the relic to Elena or claim its power.","completed":false}]},"completed":{"description":"The mystery of the Sunstone has been resolved.","objectives":[{"id":"obj_quest_done","text":"Sunstone quest concluded.","completed":true}]}},"alternatePathways":{"onNpcDeath":{"npcId":"npc_dev_elena_scholar","setStage":"explore_crypt","completeObjective":"obj_speak_elena","narrative":"With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."}},"rewards":{"experience":250,"drachmae":60,"renown":25}},{"id":"quest_dev_boar_menace","title":"The Bristle Boar Menace","category":"Side Quest","summary":"Captain Valerius has posted a bounty for hunting ferocious wild boars in the Whispering Woods.","currentStage":"hunt_boar","stages":{"hunt_boar":{"description":"Venture into the Whispering Woods and slay a wild bristle boar.","objectives":[{"id":"obj_slay_boar","text":"Defeat a wild boar in the Whispering Woods.","completed":false}]},"return_captain":{"description":"Report your victory to Captain Valerius in Haven.","objectives":[{"id":"obj_turnin_boar","text":"Collect bounty from Captain Valerius.","completed":false}]},"completed":{"description":"The boar bounty has been collected.","objectives":[{"id":"obj_boar_done","text":"Bounty rewarded.","completed":true}]}},"rewards":{"experience":100,"drachmae":25}},{"id":"quest_dev_treasury_heist","title":"The High Vault Infiltration","category":"Optional Quest","summary":"Infiltrate Haven's High Vault by picking the lock or obtaining the key, and claim the treasures within.","currentStage":"infiltrate_vault","stages":{"infiltrate_vault":{"description":"Unlock or pick the High Vault door in Haven.","objectives":[{"id":"obj_unlock_vault","text":"Bypass the ironbound vault door.","completed":false},{"id":"obj_loot_coffer","text":"Loot the gilded strongbox inside the vault.","completed":false}]},"completed":{"description":"Successfully looted the High Vault.","objectives":[{"id":"obj_heist_done","text":"Vault emptied.","completed":true}]}},"rewards":{"experience":150}},{"id":"quest_dev_grotto_mystery","title":"The Secret of the Sunken Grotto","category":"Discovery Quest","summary":"Discover the hidden passage behind the overgrown granite boulder in the Whispering Woods.","currentStage":"discover_grotto","stages":{"discover_grotto":{"description":"Roll aside the monolithic boulder and explore the hidden cavern.","objectives":[{"id":"obj_move_boulder","text":"Move the granite boulder.","completed":false}]},"completed":{"description":"The Sunken Grotto has been charted.","objectives":[{"id":"obj_grotto_charted","text":"Grotto discovered.","completed":true}]}},"rewards":{"experience":75,"drachmae":15}},{"id":"quest_dev_merchant_delivery","title":"Lycus' Caravan Contract","category":"Faction Quest","summary":"Merchant Lycus entrusted you with a business delivery to the outlying homesteads.","currentStage":"active_delivery","stages":{"active_delivery":{"description":"Ensure the goods reach their destination safely.","objectives":[{"id":"obj_carry_goods","text":"Deliver goods for Lycus.","completed":false}]},"completed":{"description":"Contract fulfilled.","objectives":[{"id":"obj_delivery_done","text":"Delivery completed.","completed":true}]}},"failableConditions":{"onNpcDeath":{"npcId":"npc_dev_merchant_lycus","reason":"Merchant Lycus was slain. The delivery contract is null and void."}},"rewards":{"experience":80,"drachmae":30}}],
+          dialogues: {"dialogue_dev_lycus":{"greeting":"Welcome to my stall, traveler! Lycus has the finest goods in Haven—durable lockpicks, healing draughts, and hearty rations.","nodes":{"root":{"text":"Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.","choices":[{"label":"Show me what you have for sale.","target":"node_browse"},{"label":"Any work for a wandering hero?","target":"node_quest"},{"label":"Farewell, Lycus.","target":"exit"}]},"node_browse":{"text":"Inspect my goods freely! Everything is guaranteed genuine Haven quality.","choices":[{"label":"Back to inquiries.","target":"root"}]},"node_quest":{"text":"I need a trustworthy courier to take on a delivery contract. Take this assignment and I will pay handsomely upon completion.","setFlags":{"accepted_lycus_contract":true},"startQuest":"quest_dev_merchant_delivery","choices":[{"label":"I accept the contract.","target":"root"}]}}},"dialogue_dev_captain":{"greeting":"Halt and declare your business in Haven. The Watch keeps a sharp eye on all strangers.","nodes":{"root":{"text":"Captain Valerius stands rigid in iron chainmail, eyeing you with professional scrutiny.","choices":[{"label":"I heard there is a bounty on wild boars.","target":"node_boar_bounty"},{"label":"Has anyone breached the High Vault recently?","target":"node_vault_warning"},{"label":"As you were, Captain.","target":"exit"}]},"node_boar_bounty":{"text":"Indeed. The bristle boars in the Whispering Woods have grown bold and aggressive. Bring one down and Haven will pay you in good silver.","startQuest":"quest_dev_boar_menace","choices":[{"label":"Consider it done.","target":"root"}]},"node_vault_warning":{"text":"The High Vault is sealed under strict Watch decree. Anyone caught tampering with the iron lock will face immediate execution. Do not test our patience.","choices":[{"label":"Understood, Captain.","target":"root"}]}}},"dialogue_dev_elena":{"greeting":"Greetings, traveler. If you have an eye for ancient history, pray lend your ear to my inquiry.","nodes":{"root":{"text":"Elena adjusts her spectacles and unrolls a map of the Sunken Crypt.","choices":[{"label":"Tell me of this Sunstone you seek.","target":"node_sunstone_lore"},{"label":"I will venture into the crypt for you.","target":"node_accept_sunstone"},{"label":"I have recovered the Sunstone!","target":"node_complete_sunstone","condition":{"hasItem":"item_dev_sunstone_relic"}},{"label":"Until later, Elena.","target":"exit"}]},"node_sunstone_lore":{"text":"Centuries ago, Lord Karas drew down solar fire into a radiant amber stone. When his dynasty fell, he was entombed with it in the Sunken Crypt. I seek it to restore Haven's lost chronicles.","choices":[{"label":"A noble goal.","target":"root"}]},"node_accept_sunstone":{"text":"May the light guide your blade! The crypt lies southeast of Haven. Beware the guardian Karas; death has not dulled his steel.","startQuest":"quest_dev_sunstone_relic","choices":[{"label":"I will return with the relic.","target":"root"}]},"node_complete_sunstone":{"text":"Unbelievable! The true Radiant Sunstone! You have achieved what a dozen expeditions failed to accomplish. Take this scholarly purse with Haven's deepest gratitude!","completeQuest":"quest_dev_sunstone_relic","consumeItem":"item_dev_sunstone_relic","giveDrachmae":60,"awardXP":250,"choices":[{"label":"It was my honor, Elena.","target":"root"}]}}},"dialogue_dev_bandit":{"greeting":"Step lightly, traveler. These woods belong to those swift enough to take what they want.","nodes":{"root":{"text":"Silas twirls a wicked hunting dagger between scarred knuckles.","choices":[{"label":"Stand down, or taste cold steel.","target":"node_threat"},{"label":"What do you know of the hidden grotto nearby?","target":"node_grotto_hint"},{"label":"I'm moving on.","target":"exit"}]},"node_threat":{"text":"Big words for a stranger far from the safety of Haven's walls! Walk away while your purse is still in your belt.","choices":[{"label":"Back down.","target":"root"}]},"node_grotto_hint":{"text":"Follow the overgrown fern trail east until you hit the cliff. There's a colossal granite boulder blocking a cave. Move the stone, and you'll find where the ancients washed silver.","addJournalKnowledge":{"title":"Silas' Clue to the Grotto","text":"Silas mentioned a huge granite boulder in the woods sealing a subterranean silver cavern."},"choices":[{"label":"A useful secret.","target":"root"}]}}}},
+          encounters: [{"id":"enc_dev_crypt_boss","locationId":"loc_dev_ancient_crypt","creatureId":"creature_dev_crypt_boss","isBoss":true,"repeatable":true,"cooldownHours":24,"introProse":"From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!","victoryOutcome":{"text":"Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!","setFlags":{"defeated_lord_karas":true},"updateQuest":{"questId":"quest_dev_sunstone_relic","objectiveId":"obj_defeat_karas","completed":true},"awardXP":180,"addJournalChronicle":{"title":"Vanquished Lord Karas","text":"Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."}}},{"id":"enc_dev_wild_boar","locationId":"loc_dev_whispering_woods","creatureId":"creature_dev_wild_boar","introProse":"A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!","victoryOutcome":{"text":"You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.","setFlags":{"slain_dev_boar":true},"updateQuest":{"questId":"quest_dev_boar_menace","objectiveId":"obj_slay_boar","completed":true},"awardXP":35}},{"id":"enc_dev_shadow_stalker","locationId":"loc_dev_obsidian_crag","creatureId":"creature_dev_shadow_stalker","introProse":"A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!","victoryOutcome":{"text":"The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.","awardXP":220}}],
+          contextActions: []
+        };
+        this.buildContentMaps();
+      }
+
+
 
       loadEmbeddedFallbackContent() {
         this.world.locations = [
@@ -5153,6 +5502,986 @@
         }
       }
 
+
+      /* =========================================================================
+         CAMPAIGN SELECTION, CONFIGURATION & PROFILE MANAGEMENT
+         ========================================================================= */
+      openCampaignSelectView() {
+        this.switchView("view-campaign-select");
+        this.renderCampaignSelectView();
+      }
+
+      renderCampaignSelectView() {
+        const grid = document.getElementById("campaign-cards-grid");
+        const countIndicator = document.getElementById("campaign-count-indicator");
+        const configPanel = document.getElementById("campaign-config-details");
+        if (!grid) return;
+
+        const campaignList = Array.from(this.campaigns.values());
+        if (countIndicator) {
+          countIndicator.innerText = `${campaignList.length} Campaigns Installed`;
+        }
+
+        grid.innerHTML = campaignList.map(camp => {
+          const isSelected = camp.id === this.activeCampaignId;
+          const genreBadge = camp.genre ? camp.genre.replace('_', ' ').toUpperCase() : "RPG";
+          return `
+            <div class="campaign-card ${isSelected ? 'selected' : ''}" onclick="window.engine.selectCampaign('${camp.id}')">
+              <div class="campaign-card-header">
+                <div>
+                  <h3 class="campaign-card-title">${camp.name}</h3>
+                  <div class="campaign-card-author">By ${camp.author || 'Author'} &bull; v${camp.version || '1.0.0'}</div>
+                </div>
+                <span class="campaign-genre-badge">${genreBadge}</span>
+              </div>
+              <p class="campaign-card-desc">${camp.description || ''}</p>
+              <div class="campaign-card-meta">
+                <span>📍 Start: ${camp.startingLocationId || 'loc_start'}</span>
+                <span>${camp.isTestCampaign ? '🧪 Test Campaign' : '📜 Heroic Setting'}</span>
+              </div>
+              <div style="margin-top: 0.75rem; display: flex; justify-content: flex-end;">
+                <button class="nav-btn ${isSelected ? 'btn-classical' : ''}" style="font-size: 0.78rem;">
+                  ${isSelected ? '✓ Selected' : 'Select Campaign'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const activeCamp = this.campaigns.get(this.activeCampaignId);
+        if (configPanel && activeCamp) {
+          configPanel.style.display = "block";
+          const mods = activeCamp.modules || {};
+          const modEntries = Object.entries(mods);
+
+          configPanel.innerHTML = `
+            <div style="border-bottom: 1px solid var(--border-meander); padding-bottom: 0.75rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="font-family: var(--font-heading); color: #ffe680; font-size: 1.25rem; margin: 0;">${activeCamp.name} Configuration</h2>
+                <div style="font-size: 0.8rem; color: var(--bronze-bright);">Engine: ${activeCamp.engineVersion || '>=1.0.0'} &bull; Starting: ${activeCamp.startingLocationId}</div>
+              </div>
+              <div style="display: flex; gap: 0.45rem;">
+                <button class="nav-btn" onclick="window.engine.runComprehensiveCampaignValidation('${activeCamp.id}')" title="Validate campaign integrity">
+                  🔍 Validate Campaign
+                </button>
+                <button class="btn-classical" onclick="window.engine.confirmCampaignSelection()" title="Confirm selection and proceed to Character Creation">
+                  Launch Campaign &rarr;
+                </button>
+              </div>
+            </div>
+
+            <h4 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; margin-bottom: 0.4rem;">Included Campaign Modules</h4>
+            <div class="campaign-modules-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.45rem; margin-bottom: 1rem;">
+              ${modEntries.map(([modKey, modPath]) => {
+                const pathStr = Array.isArray(modPath) ? modPath.join(', ') : modPath;
+                return `
+                  <div class="module-item-checkbox">
+                    <input type="checkbox" id="mod-chk-${modKey}" checked onchange="window.engine.toggleCampaignModule('${modKey}', this.checked)">
+                    <label for="mod-chk-${modKey}">
+                      <strong>${modKey.toUpperCase()}</strong>
+                      <div style="font-size: 0.72rem; color: var(--marble-dim); text-overflow: ellipsis; overflow: hidden;">${pathStr}</div>
+                    </label>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+
+            <div style="background: #15141c; border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #ded7c6; font-size: 0.85rem;">Custom Campaign Profiles:</strong>
+                <div style="font-size: 0.75rem; color: var(--marble-dim);">Save customized module selections for quick reloading.</div>
+              </div>
+              <div style="display: flex; gap: 0.45rem; align-items: center;">
+                <input type="text" id="profile-name-input" class="form-input" placeholder="Profile name..." style="width: 140px; padding: 0.25rem 0.45rem; font-size: 0.8rem;">
+                <button class="nav-btn" style="font-size: 0.75rem;" onclick="window.engine.saveCustomCampaignProfile(document.getElementById('profile-name-input').value)">Save Profile</button>
+                <button class="nav-btn" style="font-size: 0.75rem;" onclick="window.engine.loadCustomCampaignProfile(document.getElementById('profile-name-input').value)">Load Profile</button>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      selectCampaign(campaignId) {
+        if (!this.campaigns.has(campaignId)) return;
+        this.activeCampaignId = campaignId;
+        this.activeCampaign = this.campaigns.get(campaignId);
+        this.renderCampaignSelectView();
+      }
+
+      toggleCampaignModule(modKey, isChecked) {
+        if (!this.campaignCustomConfigs[this.activeCampaignId]) {
+          this.campaignCustomConfigs[this.activeCampaignId] = {};
+        }
+        this.campaignCustomConfigs[this.activeCampaignId][modKey] = isChecked;
+      }
+
+      saveCustomCampaignProfile(name) {
+        const profName = (name || "").trim();
+        if (!profName) {
+          alert("Please enter a profile name.");
+          return;
+        }
+        const cfg = this.campaignCustomConfigs[this.activeCampaignId] || {};
+        localStorage.setItem(`gm_campaign_profile_${this.activeCampaignId}_${profName}`, JSON.stringify(cfg));
+        if (this.showToast) this.showToast("profile", `Profile '${profName}' saved!`, "positive", "💾");
+      }
+
+      loadCustomCampaignProfile(name) {
+        const profName = (name || "").trim();
+        if (!profName) {
+          alert("Please enter a profile name.");
+          return;
+        }
+        const raw = localStorage.getItem(`gm_campaign_profile_${this.activeCampaignId}_${profName}`);
+        if (!raw) {
+          alert(`Profile '${profName}' not found in local storage.`);
+          return;
+        }
+        try {
+          const cfg = JSON.parse(raw);
+          this.campaignCustomConfigs[this.activeCampaignId] = cfg;
+          Object.entries(cfg).forEach(([k, v]) => {
+            const chk = document.getElementById(`mod-chk-${k}`);
+            if (chk) chk.checked = !!v;
+          });
+          if (this.showToast) this.showToast("profile", `Profile '${profName}' loaded!`, "info", "📂");
+        } catch (e) {
+          alert("Failed to parse profile data.");
+        }
+      }
+
+      async confirmCampaignSelection() {
+        await this.loadContent();
+
+        // Initialize state for active campaign
+        this.state.worldState.campaignId = this.activeCampaignId;
+        const startLoc = this.activeCampaign.startingLocationId || "loc_cithaeron_crossroads";
+        this.state.worldState.currentLocationId = startLoc;
+        if (!this.state.worldState.discoveredLocations.includes(startLoc)) {
+          this.state.worldState.discoveredLocations.push(startLoc);
+        }
+
+        if (this.activeCampaign.startingTime) {
+          Object.assign(this.state.worldState.time, this.activeCampaign.startingTime);
+        }
+
+        // Initialize factions
+        if (Array.isArray(this.activeCampaign.factions)) {
+          this.activeCampaign.factions.forEach(f => {
+            if (!this.state.worldState.factions[f.id]) {
+              this.state.worldState.factions[f.id] = { reputation: f.defaultReputation !== undefined ? f.defaultReputation : 0 };
+            }
+          });
+        }
+
+        this.startAdventure();
+        this.renderAll();
+
+        // Switch to character creation wizard
+        this.openCharacterCreationWizard();
+      }
+
+      /* =========================================================================
+         CAMPAIGN VALIDATION ENGINE
+         ========================================================================= */
+      static validateCampaign(manifest, content = {}) {
+        const errors = [];
+        const warnings = [];
+        const info = [];
+
+        if (!manifest || typeof manifest !== "object") {
+          errors.push("Manifest is null, undefined, or not a JSON object.");
+          return { valid: false, errors, warnings, info };
+        }
+
+        // 1. Structural Manifest Validation
+        if (!manifest.id || typeof manifest.id !== "string") {
+          errors.push("Manifest missing required string property: 'id'.");
+        } else if (!/^[a-zA-Z0-9_\-]+$/.test(manifest.id)) {
+          warnings.push(`Campaign id '${manifest.id}' contains non-standard characters.`);
+        }
+
+        if (!manifest.name || typeof manifest.name !== "string") {
+          errors.push("Manifest missing required string property: 'name'.");
+        }
+
+        if (!manifest.version || typeof manifest.version !== "string") {
+          errors.push("Manifest missing required string property: 'version'.");
+        }
+
+        if (!manifest.startingLocationId || typeof manifest.startingLocationId !== "string") {
+          errors.push("Manifest missing required property: 'startingLocationId'.");
+        }
+
+        // Engine compatibility check
+        if (manifest.engineVersion) {
+          const engineVersion = "1.3.0";
+          info.push(`Engine compatibility check: campaign specifies '${manifest.engineVersion}', running on v${engineVersion}.`);
+        } else {
+          warnings.push("Manifest does not declare 'engineVersion' constraint.");
+        }
+
+        // 2. Locations Validation & Circular/Dangling Connections
+        const locations = content.locations || [];
+        const locationMap = new Map();
+        locations.forEach(l => {
+          if (l.id) locationMap.set(l.id, l);
+          else errors.push("Encountered location without 'id'.");
+        });
+
+        if (locations.length === 0) {
+          errors.push("Campaign contains 0 locations.");
+        } else {
+          info.push(`Validated ${locations.length} world locations.`);
+        }
+
+        if (manifest.startingLocationId && locations.length > 0) {
+          if (!locationMap.has(manifest.startingLocationId)) {
+            errors.push(`Starting location '${manifest.startingLocationId}' does not exist in locations dataset.`);
+          }
+        }
+
+        locations.forEach(loc => {
+          if (!loc.name) errors.push(`Location '${loc.id}' missing 'name'.`);
+          if (!loc.coordinates || typeof loc.coordinates.x !== "number" || typeof loc.coordinates.y !== "number") {
+            errors.push(`Location '${loc.id}' has invalid or missing coordinates.`);
+          }
+          if (!loc.narrative || !loc.narrative.overview) {
+            warnings.push(`Location '${loc.id}' missing narrative.overview.`);
+          }
+          if (Array.isArray(loc.connections)) {
+            loc.connections.forEach(conn => {
+              if (!conn.targetLocationId) {
+                errors.push(`Location '${loc.id}' has a connection missing 'targetLocationId'.`);
+              } else if (!locationMap.has(conn.targetLocationId)) {
+                errors.push(`Location '${loc.id}' connects to nonexistent target location '${conn.targetLocationId}'.`);
+              }
+              if (conn.travelHours !== undefined && conn.travelHours <= 0) {
+                warnings.push(`Connection from '${loc.id}' to '${conn.targetLocationId}' has travelHours <= 0.`);
+              }
+              if (conn.staminaCost !== undefined && conn.staminaCost < 0) {
+                errors.push(`Connection from '${loc.id}' to '${conn.targetLocationId}' has negative staminaCost.`);
+              }
+            });
+          }
+        });
+
+        // 3. Characters / Living Entities Validation
+        const characters = content.characters || [];
+        characters.forEach(char => {
+          if (!char.id) errors.push("Encountered character without 'id'.");
+          if (!char.name) errors.push(`Character '${char.id}' missing 'name'.`);
+          if (char.locationId && !locationMap.has(char.locationId)) {
+            warnings.push(`Character '${char.id}' assigned to nonexistent location '${char.locationId}'.`);
+          }
+        });
+        info.push(`Validated ${characters.length} characters.`);
+
+        // 4. Creatures Validation
+        const creatures = content.creatures || [];
+        creatures.forEach(creat => {
+          if (!creat.id) errors.push("Encountered creature without 'id'.");
+          if (!creat.name) errors.push(`Creature '${creat.id}' missing 'name'.`);
+          if (!creat.vitals || typeof creat.vitals.health !== "number" || creat.vitals.health <= 0) {
+            errors.push(`Creature '${creat.id}' missing positive vitals.health.`);
+          }
+        });
+        info.push(`Validated ${creatures.length} creatures.`);
+
+        // 5. Items Validation
+        const items = content.items || [];
+        const itemMap = new Map();
+        items.forEach(it => {
+          if (it.id) itemMap.set(it.id, it);
+          else errors.push("Encountered item without 'id'.");
+          if (!it.name) errors.push(`Item '${it.id}' missing 'name'.`);
+        });
+        info.push(`Validated ${items.length} items.`);
+
+        // 6. Loot Tables Validation
+        const lootTables = content.lootTables || [];
+        lootTables.forEach(lt => {
+          if (!lt.id) errors.push("Encountered loot table without 'id'.");
+          if (Array.isArray(lt.entries)) {
+            lt.entries.forEach(ent => {
+              if (ent.chance !== undefined && (ent.chance < 0 || ent.chance > 1)) {
+                errors.push(`Loot table '${lt.id}' entry has invalid chance ${ent.chance} (must be 0..1).`);
+              }
+            });
+          }
+        });
+        info.push(`Validated ${lootTables.length} loot tables.`);
+
+        // 7. Interactive Objects Validation (Pickable & Obstacle Logic)
+        const interactiveObjects = content.interactiveObjects || [];
+        interactiveObjects.forEach(obj => {
+          if (!obj.id) errors.push("Interactive object missing 'id'.");
+          if (!obj.name) errors.push(`Interactive object '${obj.id}' missing 'name'.`);
+          if (obj.locationId && !locationMap.has(obj.locationId)) {
+            errors.push(`Interactive object '${obj.id}' references nonexistent location '${obj.locationId}'.`);
+          }
+          if (obj.type === "obstacle" && obj.isPickable === true) {
+            warnings.push(`Physical obstacle '${obj.id}' marked isPickable: true (boulders should not be lockpickable).`);
+          }
+        });
+        info.push(`Validated ${interactiveObjects.length} interactive objects.`);
+
+        // 8. Quests & Circular Dependencies
+        const quests = content.quests || [];
+        const questMap = new Map();
+        quests.forEach(q => {
+          if (q.id) questMap.set(q.id, q);
+          else errors.push("Encountered quest without 'id'.");
+        });
+
+        quests.forEach(q => {
+          if (!q.title) errors.push(`Quest '${q.id}' missing 'title'.`);
+          if (Array.isArray(q.prerequisites)) {
+            const visited = new Set([q.id]);
+            const checkCycle = (prereqId) => {
+              if (visited.has(prereqId)) {
+                errors.push(`Circular quest dependency detected: '${q.id}' -> '${prereqId}'.`);
+                return;
+              }
+              visited.add(prereqId);
+              const pq = questMap.get(prereqId);
+              if (pq && Array.isArray(pq.prerequisites)) {
+                pq.prerequisites.forEach(checkCycle);
+              }
+            };
+            q.prerequisites.forEach(prereqId => {
+              if (!questMap.has(prereqId)) {
+                warnings.push(`Quest '${q.id}' references nonexistent prerequisite '${prereqId}'.`);
+              } else {
+                checkCycle(prereqId);
+              }
+            });
+          }
+        });
+        info.push(`Validated ${quests.length} quests.`);
+
+        // 9. Factions Validation
+        const factions = content.factions || manifest.factions || [];
+        factions.forEach(f => {
+          if (!f.id) errors.push("Faction entry missing 'id'.");
+          if (!f.name) errors.push(`Faction '${f.id}' missing 'name'.`);
+        });
+        info.push(`Validated ${factions.length} factions.`);
+
+        return {
+          valid: errors.length === 0,
+          errors,
+          warnings,
+          info
+        };
+      }
+
+      async runComprehensiveCampaignValidation(campaignId) {
+        const cId = campaignId || this.activeCampaignId;
+        const manifest = this.campaigns.get(cId);
+        if (!manifest) return;
+
+        const content = {
+          locations: this.world.locations,
+          characters: this.world.characters,
+          creatures: this.world.creatures,
+          items: this.world.items,
+          lootTables: this.world.lootTables || this.lootTables,
+          interactiveObjects: this.world.interactiveObjects || this.interactiveObjects,
+          factions: this.world.factions || this.factions,
+          quests: this.world.quests || (this.currentAdventure && this.currentAdventure.quests) || [],
+          consequenceRules: this.consequenceRules || manifest.consequenceRules || []
+        };
+
+        const result = GreekMythologyEngine.validateCampaign(manifest, content);
+
+        const modal = document.getElementById("validation-modal");
+        const titleEl = document.getElementById("val-report-title");
+        const errBadge = document.getElementById("val-error-count");
+        const warnBadge = document.getElementById("val-warning-count");
+        const infoBadge = document.getElementById("val-info-count");
+        const listEl = document.getElementById("val-report-list");
+
+        if (titleEl) titleEl.innerText = `Validation Report: ${manifest.name}`;
+        if (errBadge) {
+          errBadge.innerText = `${result.errors.length} Errors`;
+          errBadge.style.display = result.errors.length > 0 ? "inline-block" : "none";
+        }
+        if (warnBadge) {
+          warnBadge.innerText = `${result.warnings.length} Warnings`;
+          warnBadge.style.display = result.warnings.length > 0 ? "inline-block" : "none";
+        }
+        if (infoBadge) {
+          infoBadge.innerText = `${result.info.length} Info`;
+          infoBadge.style.display = result.info.length > 0 ? "inline-block" : "none";
+        }
+
+        let reportHtml = "";
+        if (result.valid) {
+          reportHtml += `
+            <div style="background: rgba(46, 125, 50, 0.15); border-left: 3px solid var(--laurel-bright); padding: 0.65rem 0.85rem; border-radius: 4px; margin-bottom: 0.75rem;">
+              <strong style="color: #85e39d;">✓ Campaign Validation Passed!</strong>
+              <div style="color: #ded7c6; font-size: 0.82rem; margin-top: 0.2rem;">All structural schemas, referential connections, and entity mechanics are valid and compatible.</div>
+            </div>
+          `;
+        }
+
+        result.errors.forEach(err => {
+          reportHtml += `
+            <div class="val-issue-item error">
+              <span class="val-issue-icon">❌</span>
+              <div>
+                <strong>Validation Error</strong>
+                <div style="color: #ff9d82; font-size: 0.82rem;">${err}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        result.warnings.forEach(w => {
+          reportHtml += `
+            <div class="val-issue-item warning">
+              <span class="val-issue-icon">⚠️</span>
+              <div>
+                <strong>Validation Warning</strong>
+                <div style="color: #ffe680; font-size: 0.82rem;">${w}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        result.info.forEach(inf => {
+          reportHtml += `
+            <div class="val-issue-item info">
+              <span class="val-issue-icon">ℹ️</span>
+              <div>
+                <strong>Information</strong>
+                <div style="color: #90caf9; font-size: 0.82rem;">${inf}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        if (listEl) listEl.innerHTML = reportHtml;
+        if (modal) modal.style.display = "flex";
+      }
+
+      /* =========================================================================
+         INTERACTIVE ENVIRONMENTAL OBJECTS & LOCKPICKING ENGINE
+         ========================================================================= */
+      openInteractiveObjectModal(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj) return;
+        this.activeInteractiveObject = obj;
+
+        const modal = document.getElementById("interactive-object-modal");
+        const titleEl = document.getElementById("obj-modal-title");
+        const subEl = document.getElementById("obj-modal-subtitle");
+        const descEl = document.getElementById("obj-modal-desc");
+        const mechEl = document.getElementById("obj-modal-mechanic");
+        const actionsEl = document.getElementById("obj-modal-actions");
+
+        if (titleEl) titleEl.innerText = obj.name;
+        if (subEl) subEl.innerText = `${(obj.type || 'Object').toUpperCase()} &bull; ${obj.isPickable === false ? 'Solid Barrier' : 'Lock DC ' + (obj.lockDc || 12)}`;
+        if (descEl) descEl.innerText = obj.description || "An environmental obstacle or container.";
+
+        let mechHtml = "";
+        if (obj.isPickable === false) {
+          mechHtml = `
+            <div style="color: #ffe680; font-weight: bold; margin-bottom: 0.35rem;">⚠️ Geological / Solid Barrier</div>
+            <div style="font-size: 0.82rem; color: #ded7c6;">This obstruction is solid mass (boulder, portcullis, or rockfall) rather than a keyed tumbler. Lockpicking tools have no purchase on solid rock. Heavy leverage or great physical Athletics is required.</div>
+          `;
+        } else {
+          const hasKey = obj.keyRequired && this.hasItem(obj.keyRequired);
+          const hasTool = this.hasItem("item_lockpick_set") || this.hasItem("item_lockpick_bronze") || this.hasItem("item_lockpick_iron");
+          mechHtml = `
+            <div style="font-size: 0.82rem; color: #ded7c6; display: flex; flex-direction: column; gap: 0.25rem;">
+              <div>Lock Mechanism: <strong>Tumbler Lock (DC ${obj.lockDc || 12})</strong></div>
+              <div>Trap Status: <strong style="color: ${obj.isTrapped ? '#ff9d82' : '#85e39d'};generic">${obj.isTrapped ? '⚠️ Trapped (Failure triggers discharge)' : '✓ No Traps Detected'}</strong></div>
+              <div>Lockpick In Pack: <strong style="color: ${hasTool ? '#85e39d' : '#ff9d82'};generic">${hasTool ? '✓ Available' : '❌ Missing (Need lockpick set)'}</strong></div>
+              ${obj.keyRequired ? `<div>Required Key: <strong style="color: ${hasKey ? '#85e39d' : '#ffe680'};generic">${hasKey ? '✓ Key Possessed' : '❌ ' + obj.keyRequired}</strong></div>` : ''}
+            </div>
+          `;
+        }
+        if (mechEl) mechEl.innerHTML = mechHtml;
+
+        let actionsHtml = "";
+        const isUnlocked = !!this.state.worldState.unlockedObjects[obj.id];
+
+        if (isUnlocked) {
+          if (obj.type === "container") {
+            const isLooted = !!this.state.worldState.lootedEntities[obj.id];
+            if (!isLooted) {
+              actionsHtml += `<button class="btn-classical" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.lootContainer('${obj.id}')">🎁 Loot Container Contents</button>`;
+            } else {
+              actionsHtml += `<div style="font-style: italic; color: var(--marble-dim); text-align: center;">Container has been completely emptied.</div>`;
+            }
+          } else {
+            actionsHtml += `<div style="font-style: italic; color: #85e39d; text-align: center;">Mechanism is unlocked and open.</div>`;
+          }
+        } else {
+          if (obj.isPickable !== false) {
+            actionsHtml += `<button class="btn-classical" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.attemptLockpick('${obj.id}')">🔓 Attempt Lockpick (DC ${obj.lockDc || 12})</button>`;
+            if (obj.keyRequired && this.hasItem(obj.keyRequired)) {
+              actionsHtml += `<button class="nav-btn" style="border-color: var(--laurel-bright); color: var(--laurel-bright);" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.unlockWithKey('${obj.id}')">🔑 Turn Key in Lock</button>`;
+            }
+          }
+          if (obj.type === "obstacle") {
+            actionsHtml += `<button class="nav-btn" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.heaveObstacle('${obj.id}')">💪 Heave / Shift Obstacle (Athletics DC ${obj.heaveDc || 13})</button>`;
+          }
+        }
+
+        if (actionsEl) actionsEl.innerHTML = actionsHtml;
+        if (modal) modal.style.display = "flex";
+      }
+
+      attemptLockpick(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj) return;
+
+        if (obj.isPickable === false) {
+          this.logTranscript("Obstacle", `You cannot pick the lock on ${obj.name}: it is a solid physical barrier or obstruction with no mechanical tumbler!`, "entry-prose");
+          return;
+        }
+
+        const hasTools = this.hasItem("item_lockpick_set") || 
+                         this.hasItem("item_lockpick_bronze") || 
+                         this.hasItem("item_lockpick_iron") || 
+                         this.hasItem("item_dev_iron_lockpick") ||
+                         this.hasItem("item_thieves_tools") || 
+                         (obj.requiredToolId && this.hasItem(obj.requiredToolId)) || 
+                         this.state.player.inventory.some(i => i.itemId.includes("lockpick"));
+        if (!hasTools) {
+          this.logTranscript("Lockpicking", `You cannot attempt to pick the lock on ${obj.name} without lockpicking tools in your inventory!`, "entry-consequence");
+          if (this.showToast) this.showToast("warning", "Tools Required", "negative", "🔒", "Requires lockpick set");
+          return;
+        }
+
+        const dc = obj.lockDc || obj.lockDifficulty || 12;
+        const check = this.checkSkill("stealth", "agility", dc, `Lockpick Attempt on ${obj.name}`);
+
+        if (check.isAte) {
+          const toolItem = (obj.requiredToolId && this.hasItem(obj.requiredToolId))
+            ? obj.requiredToolId
+            : (this.state.player.inventory.find(i => i.itemId.includes("lockpick") || i.itemId.includes("tools"))?.itemId || "item_lockpick_iron");
+          this.removeItem(toolItem, 1);
+          this.logTranscript("Ate Fumble", `SNAP! Your lockpick catches against a hardened tumbler pin and snaps cleanly in two! The broken tool is ruined.`, "entry-ate");
+          if (this.showToast) this.showToast("item", "Lockpick Broken!", "negative", "💥", "Tool snapped in mechanism");
+          if (obj.isTrapped || obj.trap) {
+            this.triggerObjectTrap(obj);
+          }
+        } else if (check.isArete || check.success) {
+          this.state.worldState.unlockedObjects[obj.id] = true;
+          this.logTranscript("Success", `CLICK! The internal tumblers shift and the lock on ${obj.name} swings open!`, "entry-discovery");
+          this.awardXP(35, `Picked Lock: ${obj.name}`);
+          if (this.showToast) this.showToast("discovery", `Unlocked: ${obj.name}`, "positive", "🔓", "Lock bypassed successfully");
+          if (obj.type === "container") {
+            this.lootContainer(obj.id);
+          }
+        } else {
+          this.logTranscript("Setback", `The lock pins resist your pick. The mechanism remains securely locked.`, "entry-prose");
+          if (obj.isTrapped || obj.trap) {
+            this.triggerObjectTrap(obj);
+          }
+        }
+        this.renderAll();
+      }
+
+      triggerObjectTrap(obj) {
+        if (!obj.trapDamage && !obj.isTrapped && !obj.trap) return;
+        const dmg = (obj.trap && obj.trap.damage) || obj.trapDamage || 6;
+        this.state.player.vitals.health = Math.max(1, this.state.player.vitals.health - dmg);
+        this.logTranscript("Trap Triggered", `⚡ TRAP SPRUNG! A hidden mechanism inside ${obj.name} triggers, discharging spring-loaded needles for ${dmg} damage!`, "entry-consequence");
+        if (this.showToast) this.showToast("warning", `Trap Sprung! (-${dmg} HP)`, "negative", "⚠️", "Spring-loaded needle trap");
+      }
+
+      unlockWithKey(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj) return;
+        this.state.worldState.unlockedObjects[obj.id] = true;
+        this.logTranscript("Key Turned", `You slide the key into the mechanism of ${obj.name}. With a satisfying clunk, the lock releases safely without springing any traps!`, "entry-discovery");
+        if (this.showToast) this.showToast("discovery", `Unlocked: ${obj.name}`, "positive", "🔑", "Opened with key");
+        if (obj.type === "container") {
+          this.lootContainer(obj.id);
+        }
+        this.renderAll();
+      }
+
+      heaveObstacle(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj) return;
+        const dc = obj.heaveDc || 13;
+        const check = this.checkSkill("athletics", "strength", dc, `Heave ${obj.name}`);
+        if (check.isArete || check.success) {
+          this.state.worldState.unlockedObjects[obj.id] = true;
+          this.logTranscript("Success", `With an immense heave of heroic muscle, you shift ${obj.name} aside, clearing the path!`, "entry-discovery");
+          this.awardXP(35, `Cleared Obstacle: ${obj.name}`);
+          if (this.showToast) this.showToast("discovery", `Cleared: ${obj.name}`, "positive", "💪");
+        } else {
+          this.logTranscript("Setback", `The heavy mass of ${obj.name} resists your efforts. You strain your muscles to no avail.`, "entry-prose");
+        }
+        this.renderAll();
+      }
+
+      lootContainer(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj || this.state.worldState.lootedEntities[obj.id]) return;
+        this.state.worldState.lootedEntities[obj.id] = true;
+
+        if (obj.lootTableId) {
+          this.resolveEntityLoot({ name: obj.name, lootTableId: obj.lootTableId });
+        } else if (Array.isArray(obj.items)) {
+          obj.items.forEach(itemId => {
+            const item = this.getItemData(itemId);
+            this.addItem(itemId, 1);
+            this.logTranscript("Container Loot", `Recovered from ${obj.name}: ${item.name}.`, "entry-discovery");
+          });
+        } else {
+          this.logTranscript("Container", `${obj.name} contained only dust and dry air.`, "entry-prose");
+        }
+        this.renderAll();
+      }
+
+      operateMechanism(objectId) {
+        const obj = this.getInteractiveObject(objectId);
+        if (!obj) return;
+        this.state.worldState.unlockedObjects[obj.id] = true;
+        this.logTranscript("Mechanism", `You engage ${obj.name}. Heavy stone counterweights groan within the walls, unlocking the passage!`, "entry-discovery");
+        this.renderAll();
+      }
+
+      /* =========================================================================
+         LIVING ENTITY FREEDOM & COMBAT INTERACTIONS
+         ========================================================================= */
+      confirmOrStartAttackEntity(entityId, entityType) {
+        const entity = (entityType === "npc") ? this.getCharacter(entityId) : this.getCreature(entityId);
+        const name = entity ? entity.name : entityId;
+        this.logTranscript("Combat Initiated", `You draw your weapons and launch a hostile assault against <strong>${name}</strong>!`, "entry-consequence");
+        this.startCombatWithEntity(entityId, entityType);
+      }
+
+      startCombatWithEntity(entityId, entityType) {
+        if (entityType === "npc") {
+          const npc = this.getCharacter(entityId);
+          if (!npc) return;
+
+          const endMod = npc.attributes ? Math.floor(((npc.attributes.endurance || 12) - 10) / 2) : 1;
+          const agiMod = npc.attributes ? Math.floor(((npc.attributes.agility || 11) - 10) / 2) : 0;
+          const strMod = npc.attributes ? Math.floor(((npc.attributes.strength || 12) - 10) / 2) : 1;
+
+          const hp = 14 + (endMod * 4);
+          const enemyObj = {
+            id: npc.id,
+            name: npc.name,
+            ancientGreek: npc.ancientGreek || "",
+            vitals: { health: hp, maxHealth: hp, morale: 12 },
+            armorClass: 10 + agiMod,
+            actions: [
+              {
+                name: "Desperate Strike",
+                attackBonus: 2 + strMod,
+                damage: "1d6+" + Math.max(1, strMod),
+                description: `Strikes back at you in defense of their life!`
+              }
+            ],
+            lootTableId: npc.lootTableId || null,
+            loot: [],
+            isNpc: true,
+            factionId: npc.factionId
+          };
+
+          this.startCombat(enemyObj, {
+            introProse: `Mortal combat begins against ${npc.name}! There is no turning back from this confrontation!`,
+            isNpc: true
+          });
+        } else {
+          this.startCombat(entityId);
+        }
+      }
+
+      attemptPickpocket(npcId) {
+        const npc = this.getCharacter(npcId);
+        if (!npc) return;
+
+        const wisScore = (npc.attributes && npc.attributes.wisdom) ? npc.attributes.wisdom : 12;
+        const dc = 11 + Math.floor((wisScore - 10) / 2);
+
+        const check = this.checkSkill("stealth", "agility", dc, `Pickpocket Attempt on ${npc.name}`);
+
+        if (check.isAte) {
+          this.logTranscript("Caught Red-Handed", `ATE! Your fingers fumble against ${npc.name}'s belt! ${npc.name} spins around shouting: "THIEF! GUARDS, ARREST THIS SCOUNDREL!"`, "entry-ate");
+          this.modifyFactionReputation(npc.factionId || "faction_dev_haven", -15, `Caught pickpocketing ${npc.name}`);
+          setTimeout(() => {
+            this.confirmOrStartAttackEntity(npc.id, "npc");
+          }, 800);
+        } else if (check.isArete || check.success) {
+          const stolenDrachmae = Math.floor(Math.random() * 12) + 6;
+          if (!this.state.player.currencies) this.state.player.currencies = { drachmae: 0, obols: 0 };
+          this.state.player.currencies.drachmae += stolenDrachmae;
+          this.awardXP(25, `Pickpocket: ${npc.name}`);
+          this.logTranscript("Thievery Success", `With deft fingers, you cut ${npc.name}'s coin purse and slip away unnoticed (+${stolenDrachmae} silver drachmae).`, "entry-discovery");
+          if (this.showToast) this.showToast("currency", `+${stolenDrachmae} Silver Drachmae`, "positive", "🖐️", "Pickpocket success");
+        } else {
+          this.logTranscript("Thievery Setback", `${npc.name} shifts their weight and looks down. You barely pull your hand back in time before being noticed!`, "entry-prose");
+        }
+        this.renderAll();
+      }
+
+      /* =========================================================================
+         MULTI-TABLE LOOT RESOLVER & ANTI-EXPLOIT TRACKING
+         ========================================================================= */
+      resolveEntityLoot(entity) {
+        if (!entity) return;
+        const lootTableId = entity.lootTableId;
+        const lootTable = lootTableId ? this.getLootTable(lootTableId) : null;
+        const isRepeatKill = (this.state.worldState.defeatedEncounters[entity.encounterId || entity.id] || 0) > 1;
+
+        const droppedItems = [];
+        let drachmaeWon = 0;
+
+        if (lootTable) {
+          if (Array.isArray(lootTable.guaranteed)) {
+            lootTable.guaranteed.forEach(itemId => {
+              const item = this.getItemData(itemId);
+              if (item.isUnique) {
+                if (!this.state.worldState.grantedUniqueItems[itemId]) {
+                  this.state.worldState.grantedUniqueItems[itemId] = true;
+                  this.addItem(itemId, 1);
+                  droppedItems.push(item.name);
+                } else if (isRepeatKill) {
+                  drachmaeWon += 20;
+                }
+              } else {
+                this.addItem(itemId, 1);
+                droppedItems.push(item.name);
+              }
+            });
+          }
+
+          if (Array.isArray(lootTable.entries)) {
+            lootTable.entries.forEach(ent => {
+              const chance = ent.chance !== undefined ? ent.chance : 0.5;
+              if (Math.random() <= chance) {
+                const item = this.getItemData(ent.itemId);
+                const isUniqueItem = !!(ent.isUnique || (item && item.isUnique));
+                if (isUniqueItem) {
+                  if (!this.state.worldState.grantedUniqueItems[ent.itemId]) {
+                    this.state.worldState.grantedUniqueItems[ent.itemId] = true;
+                    this.addItem(ent.itemId, 1);
+                    droppedItems.push(item.name);
+                  } else if (isRepeatKill) {
+                    drachmaeWon += (lootTable.repeatCurrency ? (lootTable.repeatCurrency.min || 25) : 25);
+                  }
+                } else {
+                  const qty = ent.quantity || (ent.quantityMin ? (Math.floor(Math.random() * (ent.quantityMax - ent.quantityMin + 1)) + ent.quantityMin) : (ent.minQuantity || 1));
+                  this.addItem(ent.itemId, qty);
+                  droppedItems.push(`${item.name} (x${qty})`);
+                }
+              }
+            });
+          }
+
+          if (lootTable.currency) {
+            const minC = lootTable.currency.min !== undefined ? lootTable.currency.min : (lootTable.currency.drachmaeMin || 0);
+            const maxC = lootTable.currency.max !== undefined ? lootTable.currency.max : (lootTable.currency.drachmaeMax || 0);
+            if (maxC > 0) {
+              drachmaeWon += Math.floor(Math.random() * (maxC - minC + 1)) + minC;
+            }
+          }
+        } else if (Array.isArray(entity.loot)) {
+          entity.loot.forEach(l => {
+            if (Math.random() <= (l.chance || 0.5)) {
+              const item = this.getItemData(l.itemId);
+              this.addItem(l.itemId, 1);
+              droppedItems.push(item.name);
+            }
+          });
+        }
+
+        if (drachmaeWon > 0) {
+          if (!this.state.player.currencies) this.state.player.currencies = { drachmae: 0, obols: 0 };
+          this.state.player.currencies.drachmae += drachmaeWon;
+          if (this.showToast) this.showToast("currency", `+${drachmaeWon} Silver Drachmae`, "positive", "🪙");
+        }
+
+        if (droppedItems.length > 0 || drachmaeWon > 0) {
+          const lootList = droppedItems.length > 0 ? droppedItems.join(", ") : "no additional gear";
+          const currText = drachmaeWon > 0 ? ` and ${drachmaeWon} silver drachmae` : "";
+          this.logTranscript("Spoils of Battle", `Recovered from ${entity.name}: ${lootList}${currText}.`, "entry-discovery");
+        }
+      }
+
+      /* =========================================================================
+         FACTION SIMULATION & CONSEQUENCE ENGINE
+         ========================================================================= */
+      modifyFactionReputation(factionId, delta, reason = "") {
+        if (!this.state.worldState.factions[factionId]) {
+          this.state.worldState.factions[factionId] = { reputation: 0 };
+        }
+        const f = this.state.worldState.factions[factionId];
+        const oldRep = f.reputation || 0;
+        f.reputation = oldRep + delta;
+
+        const facDef = this.factions.find(fc => fc.id === factionId) || { name: factionId };
+        const facName = facDef.name;
+
+        const deltaStr = delta > 0 ? `+${delta}` : `${delta}`;
+        const standing = this.getFactionStanding(factionId);
+
+        this.logTranscript("Faction Reputation", `Reputation with <strong>${facName}</strong> shifted by <strong>${deltaStr}</strong> (Now ${f.reputation}: <em>${standing}</em>). ${reason ? "(" + reason + ")" : ""}`, delta < 0 ? "entry-consequence" : "entry-discovery");
+        if (this.showToast) {
+          this.showToast("faction", `${facName}: ${deltaStr}`, delta < 0 ? "negative" : "positive", "🏛️", standing);
+        }
+      }
+
+      getFactionReputation(factionId) {
+        if (!this.state.worldState.factions[factionId]) return 0;
+        return this.state.worldState.factions[factionId].reputation || 0;
+      }
+
+      getFactionStanding(factionId) {
+        const rep = this.getFactionReputation(factionId);
+        if (rep <= -25) return "Hostile";
+        if (rep < 0) return "Unfriendly";
+        if (rep < 20) return "Neutral";
+        if (rep < 50) return "Friendly";
+        return "Honored";
+      }
+
+      emitEvent(eventName, payload = {}) {
+        this.evaluateConsequences(eventName, payload);
+      }
+
+      evaluateConsequences(eventName, payload = {}) {
+        const rules = this.consequenceRules || [];
+        rules.forEach(rule => {
+          if (rule.event !== eventName) return;
+
+          if (rule.conditions) {
+            if (rule.conditions.targetEntityId && rule.conditions.targetEntityId !== payload.entityId) return;
+            if (rule.conditions.locationId && rule.conditions.locationId !== payload.locationId) return;
+          }
+
+          if (rule.outcomes) {
+            const out = rule.outcomes;
+            if (out.setFlags) {
+              Object.assign(this.state.worldState.flags, out.setFlags);
+            }
+            if (out.modifyReputation) {
+              if (Array.isArray(out.modifyReputation)) {
+                out.modifyReputation.forEach(m => {
+                  this.modifyFactionReputation(m.factionId, m.delta, m.reason || rule.id);
+                });
+              } else if (typeof out.modifyReputation === 'object') {
+                Object.entries(out.modifyReputation).forEach(([fId, delta]) => {
+                  this.modifyFactionReputation(fId, delta, rule.id);
+                });
+              }
+            }
+            if (out.scheduleEvent) {
+              const triggerHour = this.getTotalInGameHours() + (out.scheduleEvent.delayHours || 1);
+              this.state.worldState.scheduledEvents.push({
+                id: out.scheduleEvent.id || rule.id,
+                triggerHour: triggerHour,
+                title: out.scheduleEvent.title || "Scheduled World Event",
+                text: out.scheduleEvent.text || "",
+                setFlags: out.scheduleEvent.setFlags
+              });
+            }
+            if (out.transcript) {
+              const text = typeof out.transcript === 'object' ? out.transcript.text : out.transcript;
+              const style = (typeof out.transcript === 'object' && out.transcript.style) || "entry-consequence";
+              this.logTranscript("World Consequence", text, style);
+            }
+            if (out.addJournalChronicle) {
+              this.addJournalEntry("chronicle", out.addJournalChronicle.title, out.addJournalChronicle.text);
+            }
+          }
+        });
+      }
+
+      getTotalInGameHours() {
+        const t = this.state.worldState.time;
+        return (t.year * 365 * 24) + (t.month * 30 * 24) + (t.day * 24) + t.hour;
+      }
+
+      processScheduledEvents() {
+        const currentHours = this.getTotalInGameHours();
+        const pending = [];
+        const triggered = [];
+
+        (this.state.worldState.scheduledEvents || []).forEach(evt => {
+          if (evt.triggerHour <= currentHours) {
+            triggered.push(evt);
+          } else {
+            pending.push(evt);
+          }
+        });
+
+        this.state.worldState.scheduledEvents = pending;
+
+        triggered.forEach(evt => {
+          if (evt.setFlags) {
+            Object.assign(this.state.worldState.flags, evt.setFlags);
+          }
+          if (evt.text) {
+            this.logTranscript("World Event", evt.text, "entry-consequence");
+          }
+          if (evt.title) {
+            this.addJournalEntry("chronicle", evt.title, evt.text || "A scheduled world event unfolded.");
+          }
+        });
+      }
+
+      handleNpcDeath(npcId) {
+        const npc = this.getCharacter(npcId);
+        const name = npc ? npc.name : npcId;
+
+        if (npc && npc.factionId) {
+          this.modifyFactionReputation(npc.factionId, -25, `Killed ${name}`);
+        } else if (npc && npc.faction) {
+          this.modifyFactionReputation(npc.faction, -25, `Killed ${name}`);
+        } else {
+          const firstFaction = Object.keys(this.state.worldState.factions)[0];
+          if (firstFaction) {
+            this.modifyFactionReputation(firstFaction, -20, `Murdered ${name}`);
+          }
+        }
+
+        // Open-world quest failover / alternate paths on NPC death
+        Object.entries(this.state.worldState.quests).forEach(([qId, qState]) => {
+          if (qState.completed || qState.failed) return;
+          
+          if ((npcId === "npc_dev_elena_scholar" || npcId === "npc_dev_scholar_elena") && 
+              (qId === "quest_dev_sunstone_relic" || qId === "quest_dev_sunstone")) {
+            qState.stage = "explore_crypt";
+            this.addItem("item_dev_elena_journal", 1);
+            this.logTranscript("Quest Branch: Alternate Route", `With Scholar Elena dead, you search her satchel and recover her research journal. You can now decipher the sunstone runes at the Ancient Crypt yourself!`, "entry-consequence");
+            this.addJournalEntry("chronicle", "Elena's Legacy", "Recovered Elena's research notes after her death. The quest for the Sunstone Relic continues via independent exploration.");
+          }
+
+          if (npcId === "npc_dev_merchant_lycus" && (qId === "quest_dev_merchant_delivery" || qId === "quest_dev_delivery")) {
+            qState.failed = true;
+            this.logTranscript("Quest Failed", `The quest 'Lycus' Caravan Contract' has failed because Merchant Lycus has been killed!`, "entry-consequence");
+            this.addJournalEntry("chronicle", "Courier Route Abandoned", "Merchant Lycus was slain; the cargo shipment agreement is nullified.");
+          }
+        });
+
+        const curLoc = this.getLocation(this.state.worldState.currentLocationId);
+        const locName = curLoc ? curLoc.name : "the wilderness";
+        this.addJournalEntry("chronicle", `Fateful End: ${name}`, `The mortal thread of ${name} was severed at ${locName}. News of the killing will spread through the region.`);
+      }
+
+      checkEncounterCooldown(encounterId) {
+        const enc = (this.world.encounters || []).find(e => e.id === encounterId);
+        if (!enc || !enc.cooldownHours) return true;
+        const lastDefeat = this.state.worldState.encounterCooldowns[encounterId];
+        if (lastDefeat === undefined) return true;
+        const hoursElapsed = this.getTotalInGameHours() - lastDefeat;
+        return hoursElapsed >= enc.cooldownHours;
+      }
+
+
       /* =========================================================================
          SELECTABLE ACTION ENGINE (CARDS WITH DESCRIPTIONS)
          ========================================================================= */
@@ -5193,6 +6522,152 @@
 
         for (const [catName, actList] of Object.entries(dynamicCategories)) {
           groups.push({ category: catName, actions: actList });
+        }
+
+        // Living Entities & Dynamic Interactions (Attack Freedom / Conversations / Pickpocketing)
+        const livingEntityActions = [];
+        const npcsAtLoc = (this.world.characters || []).filter(c => (c.locationId === locId || (activeLocObj && activeLocObj.presentNPCs && activeLocObj.presentNPCs.includes(c.id))) && !this.state.worldState.deadEntities[c.id]);
+        
+        npcsAtLoc.forEach(npc => {
+          livingEntityActions.push({
+            id: `act_talk_${npc.id}`,
+            title: `Speak with ${npc.name}`,
+            desc: `Inquire with ${npc.title || npc.name} about local rumors, quests, and lore.`,
+            badge: "Dialogue",
+            type: "dialogue-action",
+            handler: () => this.openInpageDialogue(npc.dialogueTreeId || (`dialogue_${npc.id}`))
+          });
+
+          livingEntityActions.push({
+            id: `act_attack_${npc.id}`,
+            title: `⚔️ Attack ${npc.name} [Initiate Combat]`,
+            desc: `Engage ${npc.name} in mortal combat. Warning: Attacking citizens and quest characters produces lasting consequences!`,
+            badge: "Combat",
+            type: "danger-action",
+            handler: () => this.confirmOrStartAttackEntity(npc.id, "npc")
+          });
+
+          livingEntityActions.push({
+            id: `act_pickpocket_${npc.id}`,
+            title: `🖐️ Pickpocket ${npc.name} (DC 12 Stealth)`,
+            desc: `Attempt to slip your hand into ${npc.name}'s pouch to steal drachmae or keys.`,
+            badge: "Thievery",
+            type: "primary-quest-action",
+            handler: () => this.attemptPickpocket(npc.id)
+          });
+        });
+
+        // Creatures & Encounters at location
+        const creaturesAtLoc = [];
+        if (activeLocObj && Array.isArray(activeLocObj.presentCreatures)) {
+          activeLocObj.presentCreatures.forEach(cId => {
+            const cr = this.getCreature(cId);
+            if (cr && !this.state.worldState.deadEntities[cr.id]) creaturesAtLoc.push(cr);
+          });
+        }
+        if (this.world.encounters && Array.isArray(this.world.encounters)) {
+          this.world.encounters.forEach(enc => {
+            if (enc.locationId === locId && enc.type !== "random_travel") {
+              const encCr = this.getCreature(enc.creatureId);
+              if (encCr && this.checkEncounterCooldown(enc.id)) {
+                livingEntityActions.push({
+                  id: `act_enc_${enc.id}`,
+                  title: `⚔️ Confront ${enc.name || encCr.name} [Combat]`,
+                  desc: enc.introProse || `Engage ${enc.name || encCr.name} (Level ${encCr.level || 1} &bull; AC ${encCr.armorClass || 12}).`,
+                  badge: enc.isBoss ? "Boss Encounter" : "Combat",
+                  type: "danger-action",
+                  handler: () => this.startCombatEncounter(enc.id)
+                });
+              }
+            }
+          });
+        }
+        creaturesAtLoc.forEach(creat => {
+          livingEntityActions.push({
+            id: `act_attack_${creat.id}`,
+            title: `⚔️ Attack ${creat.name} [Initiate Combat]`,
+            desc: `Engage the ${creat.name} in battle.`,
+            badge: "Combat",
+            type: "danger-action",
+            handler: () => this.startCombatWithEntity(creat.id, "creature")
+          });
+        });
+
+        if (livingEntityActions.length > 0) {
+          groups.push({ category: "Living Entities & World Interactions", actions: livingEntityActions });
+        }
+
+        // Environmental Objects & Mechanisms (Doors, Containers, Obstacles)
+        const objectActions = [];
+        const objectsAtLoc = (this.world.interactiveObjects || []).filter(o => o.locationId === locId);
+        objectsAtLoc.forEach(obj => {
+          const isUnlocked = !!this.state.worldState.unlockedObjects[obj.id];
+          if (isUnlocked) {
+            if (obj.type === "container") {
+              const isLooted = !!this.state.worldState.lootedEntities[obj.id];
+              objectActions.push({
+                id: `act_obj_loot_${obj.id}`,
+                title: isLooted ? `Inspect ${obj.name} (Empty)` : `🎁 Loot ${obj.name}`,
+                desc: isLooted ? "Container has been searched and emptied." : `Open ${obj.name} and retrieve contents.`,
+                badge: isLooted ? "Empty" : "Container",
+                type: "sacred-action",
+                disabled: isLooted,
+                handler: () => this.lootContainer(obj.id)
+              });
+            } else {
+              objectActions.push({
+                id: `act_obj_inspect_${obj.id}`,
+                title: `Inspect ${obj.name} (Unlocked/Cleared)`,
+                desc: obj.narrativeOpen || "The barrier has been unlocked or shifted aside.",
+                badge: "Open",
+                type: "sacred-action",
+                handler: () => this.openInteractiveObjectModal(obj.id)
+              });
+            }
+          } else {
+            if (obj.isPickable === false) {
+              objectActions.push({
+                id: `act_obj_block_${obj.id}`,
+                title: `Inspect ${obj.name} [Not Lockpickable - Heavy Obstacle]`,
+                desc: "Solid physical obstacle. Lockpicks cannot bypass solid mass; heavy leverage or strength required.",
+                badge: "Physical Barrier",
+                type: "primary-quest-action",
+                handler: () => this.openInteractiveObjectModal(obj.id)
+              });
+            } else {
+              objectActions.push({
+                id: `act_obj_pick_${obj.id}`,
+                title: `Pick Lock: ${obj.name} (DC ${obj.lockDc || 12})`,
+                desc: `Attempt to pick the lock using lockpicking tools. (Trap: ${obj.isTrapped ? 'Armed' : 'None'}).`,
+                badge: "Lockpick",
+                type: "primary-quest-action",
+                handler: () => this.attemptLockpick(obj.id)
+              });
+              if (obj.keyRequired && this.hasItem(obj.keyRequired)) {
+                objectActions.push({
+                  id: `act_obj_key_${obj.id}`,
+                  title: `Unlock ${obj.name} with Key`,
+                  desc: "Turn the matching key to open safely without risk of lockpick breakage or traps.",
+                  badge: "Key",
+                  type: "sacred-action",
+                  handler: () => this.unlockWithKey(obj.id)
+                });
+              }
+            }
+            if (obj.type === "obstacle") {
+              objectActions.push({
+                id: `act_obj_heave_${obj.id}`,
+                title: `Heave / Shift Obstacle: ${obj.name} (DC ${obj.heaveDc || 13} Athletics)`,
+                desc: "Use muscular strength to lever or move the obstruction.",
+                badge: "Athletics",
+                type: "primary-quest-action",
+                handler: () => this.heaveObstacle(obj.id)
+              });
+            }
+          }
+        });
+        if (objectActions.length > 0) {
+          groups.push({ category: "Environmental Objects & Mechanisms", actions: objectActions });
         }
 
         // 1. Dialogue Group
@@ -5746,14 +7221,20 @@
             id: creature.id,
             name: creature.name,
             ancientGreek: creature.ancientGreek || "",
-            hp: creature.vitals.health,
-            maxHp: creature.vitals.maxHealth,
-            morale: creature.vitals.morale || 10,
+            hp: (creature.vitals && creature.vitals.health) || 20,
+            maxHp: (creature.vitals && creature.vitals.maxHealth) || 20,
+            morale: (creature.vitals && creature.vitals.morale) || 10,
             armorClass: creature.armorClass || 12,
             actions: (creature.actions && creature.actions.length > 0) ? creature.actions : [
               { name: "Savage Strike", attackBonus: 3, damage: "1d6+2", description: "Strikes with primal ferocity." }
             ],
-            loot: creature.loot || []
+            loot: creature.loot || [],
+            lootTableId: creature.lootTableId || null,
+            isBoss: !!creature.isBoss || !!(options.isBoss),
+            isNpc: !!(creature.isNpc || options.isNpc),
+            encounterId: options.encounterId || creature.id,
+            enrageThreshold: creature.enrageThreshold || 0.5,
+            enraged: false
           },
           round: 1,
           shieldBraced: false,
@@ -5996,10 +7477,21 @@
           return;
         }
 
+        // --- 2.5 BOSS ENRAGE PHASE CHECK ---
+        if (c.enemy.isBoss && !c.enemy.enraged && c.enemy.hp <= (c.enemy.maxHp * c.enemy.enrageThreshold)) {
+          c.enemy.enraged = true;
+          feed.innerHTML += `
+            <div style="color: #ff4d4d; background: rgba(220, 53, 69, 0.25); padding: 0.6rem; border-left: 3px solid #ff4d4d; margin: 0.4rem 0;">
+              ⚠️ <strong>${c.enemy.name.toUpperCase()} ENRAGES!</strong> Blood and shadows surge with supernatural fury! Attacks gain +3 bonus and strike for devastating extra damage!
+            </div>
+          `;
+          if (this.showToast) this.showToast("warning", `${c.enemy.name} Enraged!`, "negative", "🔥", "Boss entered second phase!");
+        }
+
         // --- 3. ENEMY TURN ---
         const enemyAction = c.enemy.actions[Math.floor(Math.random() * c.enemy.actions.length)];
         const enemyD20 = this.rollD20();
-        const enemyAttackBonus = enemyAction.attackBonus || 3;
+        const enemyAttackBonus = (enemyAction.attackBonus || 3) + (c.enemy.enraged ? 3 : 0);
         const feintPenalty = c.feintActive ? 3 : 0;
         const enemyRoll = enemyD20 + enemyAttackBonus - feintPenalty;
 
@@ -6050,16 +7542,43 @@
 
       handleCombatVictory() {
         const c = this.combatSession;
+        if (!c) return;
+        const enemy = c.enemy;
         this.combatSession = null;
-        
+
+        // 1. Mark dead entity
+        this.state.worldState.deadEntities[enemy.id] = true;
+
+        // 2. Track encounter defeat count and cooldown timestamp
+        const encId = enemy.encounterId || enemy.id;
+        this.state.worldState.defeatedEncounters[encId] = (this.state.worldState.defeatedEncounters[encId] || 0) + 1;
+        this.state.worldState.encounterCooldowns[encId] = this.getTotalInGameHours();
+
+        // 3. Resolve multi-table loot and anti-exploit
+        this.resolveEntityLoot(enemy);
+
+        // 4. Handle NPC death quest failover and consequence if NPC
+        if (enemy.isNpc) {
+          this.handleNpcDeath(enemy.id);
+        }
+
+        // 5. Fire world consequence event
+        this.emitEvent("ENTITY_DEATH", {
+          entityId: enemy.id,
+          isNpc: !!enemy.isNpc,
+          isBoss: !!enemy.isBoss,
+          locationId: this.state.worldState.currentLocationId
+        });
+
+        // 6. Custom encounter outcome or fallback
         if (this._activeEncounter && this._activeEncounter.victoryOutcome) {
           this.applyActionOutcome(this._activeEncounter.victoryOutcome);
           this._activeEncounter = null;
         } else {
           this.state.worldState.flags["cithaeron_beast_defeated"] = true;
           this.updateQuestObjective("quest_tutorial_stolen_ram", "obj_defeat_beast", true);
-          this.logTranscript("Triumph", "You vanquished the beast within the Whispering Fissure! The black ram is safe, and the archaic bronze bell around its horns rings with a pure resonance. Return to Daidalos at the crossroads!", "entry-discovery");
-          this.addJournalEntry("chronicle", "Victory in the Grotto", "Defeated the predator within the cave and secured the consecrated ram of Hermes.");
+          this.logTranscript("Triumph", `You vanquished ${enemy.name}! The threat at this location has been overcome.`, "entry-discovery");
+          this.addJournalEntry("chronicle", `Victory over ${enemy.name}`, `Defeated ${enemy.name} at ${this.getLocation(this.state.worldState.currentLocationId).name}.`);
         }
         this.renderAll();
       }
@@ -6118,7 +7637,7 @@
           <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--bronze); border-radius: 4px; padding: 0.85rem; margin-bottom: 1rem;">
             <div style="font-family: var(--font-heading); font-size: 1.15rem; color: #ffe680; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.25); padding-bottom: 0.4rem; margin-bottom: 0.5rem;">
               <span>AI & Human Pair Programming Collaboration Hub</span>
-              <span style="font-size: 0.8rem; color: var(--laurel-bright); font-weight: normal;">Engine v1.5.0 &bull; 45/45 Tests Passing</span>
+              <span style="font-size: 0.8rem; color: var(--laurel-bright); font-weight: normal;">Engine v2.0.0 &bull; 57/57 Tests Passing</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--parchment); line-height: 1.5; margin: 0;">
               This in-game board and the accompanying <code>DEVELOPER_NOTES.md</code> file allow two friends and their respective AI assistants to pass this repository back and forth, building and improving features seamlessly without breaking mechanics.
@@ -6130,6 +7649,37 @@
             <h4 style="font-family: var(--font-heading); color: var(--bronze-bright); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.35rem;">
               <span>📜</span><span>Recent AI Hand-Off Log</span>
             </h4>
+
+            <div style="background: #17161b; border-left: 3px solid #ffe680; padding: 0.65rem 0.85rem; border-radius: 0 4px 4px 0; margin-bottom: 0.65rem; font-size: 0.85rem; line-height: 1.55;">
+              <div style="display: flex; justify-content: space-between; color: #ffe680; font-weight: bold; margin-bottom: 0.2rem;">
+                <span>Session 8: Complete Campaign System Overhaul & Open World Simulation</span>
+                <span style="color: var(--marble-dim); font-weight: normal; font-size: 0.75rem;">2026-11-11</span>
+              </div>
+              <div style="color: #ded7c6;">
+                &bull; <strong>Campaign Framework & Modular Manifests</strong>: Dynamic loader for multiple distinct campaigns via manifests with dual fetch/embedded fallback support.<br>
+                &bull; <strong>Living Entity Interaction Freedom</strong>: Ability to attack, pickpocket, or speak with ANY living entity (friendly NPCs, merchants, guards, creatures) with permanent consequence logging.<br>
+                &bull; <strong>Multi-Table Loot & Anti-Exploit System</strong>: Procedural drop tables with unique relic tracking to prevent duplication exploits on repeat boss kills.<br>
+                &bull; <strong>Interactive Environmental Objects & Lockpicking</strong>: D20 lockpicking with tool requirements, Ate (Nat 1) tool breaking, spring traps, and unpickable obstacle heaving.<br>
+                &bull; <strong>Multi-Phase Bosses & Respawn Cooldowns</strong>: Second phase enrage triggers below health thresholds and cooldown hours enforcement.<br>
+                &bull; <strong>Factions, Consequences & Scheduled Events</strong>: Dynamic reputation tracking, event-driven consequence evaluation, and delayed world events.<br>
+                &bull; <strong>Non-Linear Quest Branching</strong>: Failover pathways when essential NPCs or quest-givers are slain.<br>
+                &bull; <strong>Campaign Validation Engine</strong>: Static validator checking schemas, referential integrity, and circular quest dependencies with UI modal.<br>
+                &bull; <strong>Test Coverage</strong>: Suite expanded to <strong>57 / 57 passing tests</strong>!
+              </div>
+            </div>
+
+            <div style="background: #17161b; border-left: 3px solid #ffe680; padding: 0.65rem 0.85rem; border-radius: 0 4px 4px 0; margin-bottom: 0.65rem; font-size: 0.85rem; line-height: 1.55;">
+              <div style="display: flex; justify-content: space-between; color: #ffe680; font-weight: bold; margin-bottom: 0.2rem;">
+                <span>Session 7: Modular Action, Puzzle & Encounter Engines</span>
+                <span style="color: var(--marble-dim); font-weight: normal; font-size: 0.75rem;">2026-11-10</span>
+              </div>
+              <div style="color: #ded7c6;">
+                &bull; <strong>Modular Action Engine</strong>: Declarative condition evaluations and outcome dispatching.<br>
+                &bull; <strong>Data-Driven Puzzle Engine</strong>: Dynamic riddle solving with multi-reward resolution.<br>
+                &bull; <strong>Data-Driven Encounter Runner</strong>: Dynamic encounter runner with narrative prose and rewards.<br>
+                &bull; <strong>Storage Management & Fresh Reset</strong>: Slot deletion and complete saved content reset in settings.
+              </div>
+            </div>
 
             <div style="background: #17161b; border-left: 3px solid #ffe680; padding: 0.65rem 0.85rem; border-radius: 0 4px 4px 0; margin-bottom: 0.65rem; font-size: 0.85rem; line-height: 1.55;">
               <div style="display: flex; justify-content: space-between; color: #ffe680; font-weight: bold; margin-bottom: 0.2rem;">
@@ -6165,7 +7715,7 @@
                 <span style="color: var(--marble-dim); font-weight: normal; font-size: 0.75rem;">2026-11-10</span>
               </div>
               <div style="color: #ded7c6;">
-                &bull; <strong>Always-Visible Custom Action Bar</strong>: Docked a prominent, persistent custom command bar (<code>#persistent-action-bar</code>) permanently at the base of the interface across all views (Story, Map, Character, Inventory, Quests, Journal, Codex, Pantheon, Settings) without scrolling.<br>
+                &bull; <strong>Structured Dynamic Action Deck</strong>: All actions are performed through responsive, structured action cards (dialogues, exploration, rites, physical interactions, lockpicking, and combat encounters).<br>
                 &bull; <strong>Understandable to Anyone (Hidden Technical Mechanics)</strong>: Removed raw D&D calculations (d20, DC, AC formulas) from player-facing narratives. Replaced with literary <code>.entry-narrative-check</code> cards communicating what happened, success/setback/Arete/Ate, why (attributes/skills), and consequences.<br>
                 &bull; <strong>Natural Explanations for Attributes</strong>: Added plain-English gameplay descriptions for all 6 core attributes on the character sheet.<br>
                 &bull; <strong>Immediate Visual Feedback (Toast Notifications)</strong>: Classical Greek toast system (<code>#toast-container</code>) with auto-dismissal, concise +/- badges, and distinct positive/negative/info styling wired into items, drachmae, level-ups, feats, quests, journal clues, and travel.<br>
@@ -6683,6 +8233,8 @@
           this.state.worldState.flags["daily_libation_poured"] = false;
         }
 
+        this.processScheduledEvents();
+
         if (!this.state.worldState.flags["tutorial_quest_completed"]) {
           const daysPassed = t.day - 12;
           if (daysPassed >= 2 && !this.state.worldState.flags["warned_urgency_1"]) {
@@ -6697,112 +8249,8 @@
       }
 
       /* =========================================================================
-         OPTIONAL CUSTOM ACTION INTENT PARSER
+         STRUCTURED ACTION DECK (REPLACED OBSOLETE FREE-TEXT BAR)
          ========================================================================= */
-      handleCustomAction() {
-        const inputEl = document.getElementById("custom-action-input");
-        if (!inputEl) return;
-        const query = inputEl.value.trim();
-        if (!query) return;
-        inputEl.value = "";
-
-        // The custom action input must be accessible from ANY view/tab!
-        // Automatically route back to the story chronicle so the outcome is immediately visible.
-        if (this.currentView !== "view-story") {
-          this.switchView("view-story");
-        }
-
-        this.logTranscript("Player", `> "${query}"`, "entry-dialogue");
-        const lower = query.toLowerCase();
-
-        // System & View switching commands
-        if (lower.startsWith("map") || lower === "open map" || lower === "travel") {
-          this.switchView("view-map");
-          this.logTranscript("System", "Opened World Map view.", "entry-discovery");
-          return;
-        }
-        if (lower.startsWith("inv") || lower.includes("bag") || lower.includes("pack") || lower.includes("knapsack")) {
-          this.switchView("view-inventory");
-          this.logTranscript("System", "Inspecting your travel knapsack & inventory.", "entry-discovery");
-          return;
-        }
-        if (lower.includes("character") || lower.includes("sheet") || lower.includes("stats") || lower.includes("hero")) {
-          this.switchView("view-character");
-          this.logTranscript("System", "Inspecting Character Sheet & Attributes.", "entry-discovery");
-          return;
-        }
-        if (lower.includes("journal") || lower.includes("clue") || lower.includes("log") || lower.includes("notes")) {
-          this.switchView("view-journal");
-          this.logTranscript("System", "Consulting your Heroic Journal & recorded clues.", "entry-discovery");
-          return;
-        }
-        if (lower.includes("codex") || lower.includes("lore") || lower.includes("mythology")) {
-          this.switchView("view-codex");
-          this.logTranscript("System", "Opening Classical Mythology Codex.", "entry-discovery");
-          return;
-        }
-        if (lower.includes("pantheon") || lower.includes("gods") || lower.includes("deities")) {
-          this.switchView("view-pantheon");
-          this.logTranscript("System", "Consulting the Olympian Pantheon.", "entry-discovery");
-          return;
-        }
-        if (lower.includes("rest") || lower.includes("sleep") || lower.includes("camp") || lower.includes("recover")) {
-          this.openRestModal();
-          return;
-        }
-        if (lower.includes("fight") || lower.includes("attack") || lower.includes("strike") || lower.includes("slay")) {
-          if (this.state.worldState.currentLocationId === "loc_cithaeron_fissure_cave" && this.state.worldState.flags["cithaeron_cave_unsealed"] && !this.state.worldState.flags["cithaeron_beast_defeated"]) {
-            this.startCaveCombat();
-            return;
-          }
-        }
-
-        if (lower.includes("examine") || lower.includes("look") || lower.includes("inspect") || lower.includes("search")) {
-          if (lower.includes("cairn") || lower.includes("herm") || lower.includes("stone")) {
-            this.handleExamineCairn();
-            return;
-          }
-          if (lower.includes("track") || lower.includes("ground") || lower.includes("fleece") || lower.includes("bush")) {
-            this.handleSearchTracks();
-            return;
-          }
-          if (lower.includes("lintel") || lower.includes("door") || lower.includes("inscription") || lower.includes("slab")) {
-            this.handleInspectCadmeanLintel();
-            return;
-          }
-          this.logTranscript("Narrator", `You carefully inspect your surroundings. The limestone landscape is stark and timeless under the Greek sky.`, "entry-prose");
-          return;
-        }
-
-        if (lower.includes("offer") || lower.includes("pour") || lower.includes("libation") || lower.includes("wine") || lower.includes("pray")) {
-          if (this.hasItem("item_clay_aryballos_wine")) {
-            this.handlePourLibation();
-            return;
-          } else {
-            this.logTranscript("Narrator", "You offer a silent prayer to the Olympian gods. A cool mountain breeze whispers in response.", "entry-prose");
-            return;
-          }
-        }
-
-        if (lower.includes("talk") || lower.includes("speak") || lower.includes("ask")) {
-          if (lower.includes("daidalos") || lower.includes("shepherd")) {
-            this.openInpageDialogue("dialogue_daidalos_shepherd");
-            return;
-          }
-          if (lower.includes("timon") || lower.includes("pilgrim")) {
-            this.openInpageDialogue("dialogue_timon_pilgrim");
-            return;
-          }
-          if (lower.includes("dragon") || lower.includes("drakon") || lower.includes("serpent")) {
-            if (this.state.worldState.currentLocationId === "loc_cithaeron_fissure_cave") {
-              this.openRiddleModal();
-              return;
-            }
-          }
-        }
-
-        this.logTranscript("Narrator", `You consider attempting to '${query}'. While an interesting heroic instinct, there is no immediate result here. Try selecting one of the available action cards above.`, "entry-prose");
-      }
 
       /* =========================================================================
          INVENTORY & ITEMS (WITH HOVER TOOLTIPS & REACTIVE CATEGORY FILTERING)
@@ -6845,6 +8293,27 @@
         (this.world.locations || []).forEach(l => this._locationMap.set(l.id, l));
         this._creatureMap = new Map();
         (this.world.creatures || []).forEach(c => this._creatureMap.set(c.id, c));
+        this._characterMap = new Map();
+        (this.world.characters || []).forEach(c => this._characterMap.set(c.id, c));
+        this._objectMap = new Map();
+        (this.world.interactiveObjects || []).forEach(o => this._objectMap.set(o.id, o));
+        this._lootTableMap = new Map();
+        (this.world.lootTables || []).forEach(lt => this._lootTableMap.set(lt.id, lt));
+      }
+
+      getCharacter(charId) {
+        if (!this._characterMap) this.buildContentMaps();
+        return this._characterMap.get(charId) || (this.world.characters && this.world.characters.find(c => c.id === charId)) || null;
+      }
+
+      getInteractiveObject(objId) {
+        if (!this._objectMap) this.buildContentMaps();
+        return this._objectMap.get(objId) || (this.world.interactiveObjects && this.world.interactiveObjects.find(o => o.id === objId)) || null;
+      }
+
+      getLootTable(ltId) {
+        if (!this._lootTableMap) this.buildContentMaps();
+        return this._lootTableMap.get(ltId) || (this.world.lootTables && this.world.lootTables.find(lt => lt.id === ltId)) || null;
       }
 
       getItemData(itemId) {
@@ -7172,7 +8641,7 @@
 
         const actionGroups = this.getContextualActionGroups();
         if (actionGroups.length === 0) {
-          actionsContainer.innerHTML = `<span style="font-size: 0.8rem; color: var(--marble-dim); font-style: italic;">No specific actions suggested. Consult your map or type a custom command.</span>`;
+          actionsContainer.innerHTML = `<span style="font-size: 0.8rem; color: var(--marble-dim); font-style: italic;">No specific actions suggested. Consult your map for travel pathways.</span>`;
         } else {
           actionGroups.forEach(grp => {
             const grpDiv = document.createElement("div");
@@ -7370,7 +8839,8 @@
       renderJournal() {
         const pane = document.getElementById("journal-content-pane");
         const j = this.state.worldState.journal;
-        const activeTab = document.querySelector(".journal-tab-btn.active").dataset.jtab;
+        const activeTabEl = document.querySelector(".journal-tab-btn.active");
+        const activeTab = (activeTabEl && activeTabEl.dataset && activeTabEl.dataset.jtab) || "chronicle";
 
         if (activeTab === "notes") {
           pane.innerHTML = `

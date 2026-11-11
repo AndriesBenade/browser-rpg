@@ -1,0 +1,123 @@
+{
+  "dialogues": {
+    "dialogue_dev_lycus": {
+      "greeting": "Welcome to my stall, traveler! Lycus has the finest goods in Haven—durable lockpicks, healing draughts, and hearty rations.",
+      "nodes": {
+        "root": {
+          "text": "Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.",
+          "choices": [
+            { "label": "Show me what you have for sale.", "target": "node_browse" },
+            { "label": "Any work for a wandering hero?", "target": "node_quest" },
+            { "label": "Farewell, Lycus.", "target": "exit" }
+          ]
+        },
+        "node_browse": {
+          "text": "Inspect my goods freely! Everything is guaranteed genuine Haven quality.",
+          "choices": [
+            { "label": "Back to inquiries.", "target": "root" }
+          ]
+        },
+        "node_quest": {
+          "text": "I need a trustworthy courier to take on a delivery contract. Take this assignment and I will pay handsomely upon completion.",
+          "setFlags": { "accepted_lycus_contract": true },
+          "startQuest": "quest_dev_merchant_delivery",
+          "choices": [
+            { "label": "I accept the contract.", "target": "root" }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_captain": {
+      "greeting": "Halt and declare your business in Haven. The Watch keeps a sharp eye on all strangers.",
+      "nodes": {
+        "root": {
+          "text": "Captain Valerius stands rigid in iron chainmail, eyeing you with professional scrutiny.",
+          "choices": [
+            { "label": "I heard there is a bounty on wild boars.", "target": "node_boar_bounty" },
+            { "label": "Has anyone breached the High Vault recently?", "target": "node_vault_warning" },
+            { "label": "As you were, Captain.", "target": "exit" }
+          ]
+        },
+        "node_boar_bounty": {
+          "text": "Indeed. The bristle boars in the Whispering Woods have grown bold and aggressive. Bring one down and Haven will pay you in good silver.",
+          "startQuest": "quest_dev_boar_menace",
+          "choices": [
+            { "label": "Consider it done.", "target": "root" }
+          ]
+        },
+        "node_vault_warning": {
+          "text": "The High Vault is sealed under strict Watch decree. Anyone caught tampering with the iron lock will face immediate execution. Do not test our patience.",
+          "choices": [
+            { "label": "Understood, Captain.", "target": "root" }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_elena": {
+      "greeting": "Greetings, traveler. If you have an eye for ancient history, pray lend your ear to my inquiry.",
+      "nodes": {
+        "root": {
+          "text": "Elena adjusts her spectacles and unrolls a map of the Sunken Crypt.",
+          "choices": [
+            { "label": "Tell me of this Sunstone you seek.", "target": "node_sunstone_lore" },
+            { "label": "I will venture into the crypt for you.", "target": "node_accept_sunstone" },
+            { "label": "I have recovered the Sunstone!", "target": "node_complete_sunstone", "condition": { "hasItem": "item_dev_sunstone_relic" } },
+            { "label": "Until later, Elena.", "target": "exit" }
+          ]
+        },
+        "node_sunstone_lore": {
+          "text": "Centuries ago, Lord Karas drew down solar fire into a radiant amber stone. When his dynasty fell, he was entombed with it in the Sunken Crypt. I seek it to restore Haven's lost chronicles.",
+          "choices": [
+            { "label": "A noble goal.", "target": "root" }
+          ]
+        },
+        "node_accept_sunstone": {
+          "text": "May the light guide your blade! The crypt lies southeast of Haven. Beware the guardian Karas; death has not dulled his steel.",
+          "startQuest": "quest_dev_sunstone_relic",
+          "choices": [
+            { "label": "I will return with the relic.", "target": "root" }
+          ]
+        },
+        "node_complete_sunstone": {
+          "text": "Unbelievable! The true Radiant Sunstone! You have achieved what a dozen expeditions failed to accomplish. Take this scholarly purse with Haven's deepest gratitude!",
+          "completeQuest": "quest_dev_sunstone_relic",
+          "consumeItem": "item_dev_sunstone_relic",
+          "giveDrachmae": 60,
+          "awardXP": 250,
+          "choices": [
+            { "label": "It was my honor, Elena.", "target": "root" }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_bandit": {
+      "greeting": "Step lightly, traveler. These woods belong to those swift enough to take what they want.",
+      "nodes": {
+        "root": {
+          "text": "Silas twirls a wicked hunting dagger between scarred knuckles.",
+          "choices": [
+            { "label": "Stand down, or taste cold steel.", "target": "node_threat" },
+            { "label": "What do you know of the hidden grotto nearby?", "target": "node_grotto_hint" },
+            { "label": "I'm moving on.", "target": "exit" }
+          ]
+        },
+        "node_threat": {
+          "text": "Big words for a stranger far from the safety of Haven's walls! Walk away while your purse is still in your belt.",
+          "choices": [
+            { "label": "Back down.", "target": "root" }
+          ]
+        },
+        "node_grotto_hint": {
+          "text": "Follow the overgrown fern trail east until you hit the cliff. There's a colossal granite boulder blocking a cave. Move the stone, and you'll find where the ancients washed silver.",
+          "addJournalKnowledge": {
+            "title": "Silas' Clue to the Grotto",
+            "text": "Silas mentioned a huge granite boulder in the woods sealing a subterranean silver cavern."
+          },
+          "choices": [
+            { "label": "A useful secret.", "target": "root" }
+          ]
+        }
+      }
+    }
+  }
+}

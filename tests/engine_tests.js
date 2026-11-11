@@ -1343,29 +1343,27 @@ runTest("Toast Notifications: Container, styling, and trigger wiring across key 
 });
 
 // -----------------------------------------------------------------------------
-// 24. Persistent Custom Action Bar Interface Architecture
+// 24. Action Deck Architecture (Requirement 20: Persistent Command Bar Removal)
 // -----------------------------------------------------------------------------
-runTest("Persistent Action Bar: Input is permanently docked at the base of the interface across all views", () => {
+runTest("Action Deck & Command Removal: Persistent text action bar is completely removed and gameplay is driven by structured action cards", () => {
   const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8').replace(/\r\n/g, '\n');
 
-  // Verify DOM structure
-  assert.ok(html.includes('id="persistent-action-bar"'), "DOM must contain #persistent-action-bar");
-  assert.ok(html.includes('id="custom-action-input"'), "DOM must contain #custom-action-input");
-  assert.ok(html.includes('id="custom-action-form"'), "DOM must contain #custom-action-form");
+  // Verify complete DOM removal of legacy text input bar
+  assert.ok(!html.includes('id="persistent-action-bar"'), "DOM must NOT contain #persistent-action-bar");
+  assert.ok(!html.includes('id="custom-action-input"'), "DOM must NOT contain #custom-action-input");
+  assert.ok(!html.includes('id="custom-action-form"'), "DOM must NOT contain #custom-action-form");
 
-  // Verify that it is outside #viewports-stage so it stays visible regardless of active viewport
-  const stageIndex = html.indexOf('id="viewports-stage"');
-  const barIndex = html.indexOf('id="persistent-action-bar"');
-  assert.ok(stageIndex !== -1 && barIndex !== -1, "Both stage and persistent bar must exist");
-  assert.ok(barIndex > stageIndex, "Persistent bar must be docked below the viewports stage");
+  // Verify handleCustomAction method is completely removed
+  assert.ok(!html.includes('handleCustomAction('), "Engine must NOT contain handleCustomAction method");
 
-  // Verify CSS styles
-  assert.ok(html.includes('.persistent-action-bar-container'), "CSS missing .persistent-action-bar-container");
-  assert.ok(html.includes('.persistent-action-bar'), "CSS missing .persistent-action-bar");
-  assert.ok(html.includes('.persistent-action-input'), "CSS missing .persistent-action-input");
+  // Verify CSS removal
+  assert.ok(!html.includes('.persistent-action-bar-container'), "CSS must NOT contain .persistent-action-bar-container");
+  assert.ok(!html.includes('.persistent-action-bar'), "CSS must NOT contain .persistent-action-bar");
+  assert.ok(!html.includes('.persistent-action-input'), "CSS must NOT contain .persistent-action-input");
 
-  // Verify handleCustomAction switches to view-story when invoked from any tab
-  assert.ok(html.includes('if (this.currentView !== "view-story") {\n          this.switchView("view-story");\n        }'), "handleCustomAction must automatically switch to view-story");
+  // Verify contextual action cards engine drives gameplay
+  assert.ok(html.includes('getContextualActionGroups()'), "Engine must implement getContextualActionGroups");
+  assert.ok(html.includes('id="context-actions-container"'), "DOM must contain #context-actions-container");
 });
 
 // -----------------------------------------------------------------------------
@@ -1530,6 +1528,359 @@ runTest("Storage Management: deleteSaveSlot and deleteAllSavedContent methods ex
   assert.ok(html.includes("deleteAllSavedContent()"), "Engine must implement deleteAllSavedContent");
   assert.ok(html.includes("Delete All Saved Content"), "Settings viewport must include Delete All Saved Content button");
   assert.ok(html.includes("deleteSaveSlot"), "renderSaveSlots must render slot deletion button");
+});
+
+// Setup headless environment for in-engine campaign and simulation tests
+global.window = global;
+global.window.addEventListener = () => {};
+global.document = {
+  getElementById: (id) => ({
+    tagName: 'DIV',
+    className: '',
+    style: {},
+    dataset: { jtab: 'chronicle' },
+    innerText: '',
+    innerHTML: '',
+    appendChild: () => {},
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    addEventListener: () => {},
+    setAttribute: () => {},
+    removeAttribute: () => {}
+  }),
+  createElement: (tag) => ({
+    tagName: (tag || 'div').toUpperCase(),
+    className: '',
+    style: {},
+    dataset: { jtab: 'chronicle' },
+    innerText: '',
+    innerHTML: '',
+    appendChild: () => {},
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    addEventListener: () => {},
+    setAttribute: () => {},
+    removeAttribute: () => {}
+  }),
+  createElementNS: (ns, tag) => ({
+    tagName: (tag || 'g').toUpperCase(),
+    className: '',
+    style: {},
+    dataset: { jtab: 'chronicle' },
+    innerText: '',
+    innerHTML: '',
+    appendChild: () => {},
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    addEventListener: () => {},
+    setAttribute: () => {},
+    removeAttribute: () => {}
+  }),
+  querySelectorAll: () => [],
+  querySelector: (sel) => ({
+    tagName: 'DIV',
+    className: '',
+    style: {},
+    dataset: { jtab: 'chronicle' },
+    innerText: '',
+    innerHTML: '',
+    appendChild: () => {},
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    addEventListener: () => {},
+    setAttribute: () => {},
+    removeAttribute: () => {}
+  }),
+  addEventListener: () => {}
+};
+global.localStorage = {
+  _data: {},
+  getItem(k) { return this._data[k] || null; },
+  setItem(k, v) { this._data[k] = String(v); },
+  removeItem(k) { delete this._data[k]; }
+};
+global.alert = () => {};
+global.confirm = () => true;
+
+const indexHtmlSource = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+const scriptMatch = indexHtmlSource.match(/<script>([\s\S]*?)<\/script>/);
+if (scriptMatch) {
+  eval(scriptMatch[1]);
+}
+
+// -----------------------------------------------------------------------------
+// 31. Campaign Framework: Manifests & Configuration Architecture
+// -----------------------------------------------------------------------------
+runTest("Campaign Architecture: Greek Mythology and Dev Test campaign manifests are valid and registered", () => {
+  const greekManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/greek_mythology/campaign.json'), 'utf8'));
+  assert.equal(greekManifest.id, "campaign_greek_mythology");
+  assert.ok(greekManifest.name && greekManifest.version && greekManifest.modules, "Greek campaign missing core metadata");
+  assert.ok(Array.isArray(greekManifest.factions) && greekManifest.factions.length >= 4, "Greek campaign must define factions");
+  assert.ok(Array.isArray(greekManifest.consequenceRules) && greekManifest.consequenceRules.length >= 2, "Greek campaign must define consequence rules");
+
+  const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
+  assert.equal(devManifest.id, "campaign_dev_test");
+  assert.equal(devManifest.isTestCampaign, true, "Dev test campaign must have isTestCampaign: true");
+  assert.equal(devManifest.startingLocationId, "loc_dev_haven");
+  assert.ok(devManifest.modules.lootTables && devManifest.modules.interactiveObjects, "Dev manifest must declare modular paths");
+});
+
+// -----------------------------------------------------------------------------
+// 32. Campaign Content Validation Engine
+// -----------------------------------------------------------------------------
+runTest("Campaign Validation: validateCampaign correctly verifies valid campaigns and catches structural/logical flaws", () => {
+  const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
+  const devDir = path.join(__dirname, '../content/campaigns/dev_test_campaign/world');
+  const devContent = {
+    locations: JSON.parse(fs.readFileSync(path.join(devDir, 'locations.json'), 'utf8')).locations,
+    characters: JSON.parse(fs.readFileSync(path.join(devDir, 'characters.json'), 'utf8')).characters,
+    creatures: JSON.parse(fs.readFileSync(path.join(devDir, 'creatures.json'), 'utf8')).creatures,
+    items: JSON.parse(fs.readFileSync(path.join(devDir, 'items.json'), 'utf8')).items,
+    lootTables: JSON.parse(fs.readFileSync(path.join(devDir, 'loot_tables.json'), 'utf8')).lootTables,
+    interactiveObjects: JSON.parse(fs.readFileSync(path.join(devDir, 'interactive_objects.json'), 'utf8')).interactiveObjects,
+    factions: JSON.parse(fs.readFileSync(path.join(devDir, 'factions.json'), 'utf8')).factions,
+    quests: JSON.parse(fs.readFileSync(path.join(devDir, 'quests.json'), 'utf8')).quests,
+    encounters: JSON.parse(fs.readFileSync(path.join(devDir, 'encounters.json'), 'utf8')).encounters
+  };
+
+  const validResult = GreekMythologyEngine.validateCampaign(devManifest, devContent);
+  assert.ok(validResult.valid, `Dev Test campaign should be valid, but had errors: ${validResult.errors.join("; ")}`);
+  assert.equal(validResult.errors.length, 0);
+  assert.ok(validResult.info.length > 0, "Validation should report informational summary");
+
+  // Verify against invalid fixture
+  const invalidFixture = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/fixtures/invalid_campaign.json'), 'utf8'));
+  const invalidResult = GreekMythologyEngine.validateCampaign(invalidFixture, {
+    locations: [
+      { id: "loc_broken", name: "Broken Land", coordinates: { x: 10, y: 10 }, narrative: { overview: "test" }, connections: [{ targetLocationId: "loc_nowhere", travelHours: 1 }] }
+    ],
+    creatures: [
+      { id: "creat_invalid", name: "Dead Husk", vitals: { health: 0 } }
+    ],
+    lootTables: [
+      { id: "lt_bad", entries: [{ itemId: "item_none", chance: 2.5 }] }
+    ],
+    interactiveObjects: [
+      { id: "obj_boulder", name: "Heavy Boulder", type: "obstacle", isPickable: true, locationId: "loc_broken" }
+    ],
+    quests: [
+      { id: "quest_a", title: "Quest A", prerequisites: ["quest_b"] },
+      { id: "quest_b", title: "Quest B", prerequisites: ["quest_a"] }
+    ]
+  });
+
+  assert.equal(invalidResult.valid, false, "Invalid campaign fixture must fail validation");
+  assert.ok(invalidResult.errors.some(e => e.includes("loc_nowhere")), "Must report dangling target location");
+  assert.ok(invalidResult.errors.some(e => e.includes("health")), "Must report invalid creature health");
+  assert.ok(invalidResult.errors.some(e => e.includes("chance")), "Must report invalid loot probability");
+  assert.ok(invalidResult.errors.some(e => e.includes("Circular quest dependency")), "Must detect circular quest dependency");
+  assert.ok(invalidResult.warnings.some(w => w.includes("boulder") || w.includes("obstacle")), "Must warn against lockpickable boulders");
+});
+
+// -----------------------------------------------------------------------------
+// 33. Entity Interaction Freedom: Combat with Anyone & Entity Death
+// -----------------------------------------------------------------------------
+runTest("Entity Interaction Freedom: Players can attack any living NPC, generating combat and handling death consequences", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+  engine.state.worldState.currentLocationId = "loc_dev_haven";
+
+  // Before attack: Merchant Lycus is alive and present
+  const actionsBefore = engine.getContextualActionGroups();
+  const lycusAttack = actionsBefore.flatMap(g => g.actions).find(a => a.id === "act_attack_npc_dev_merchant_lycus");
+  assert.ok(lycusAttack, "Action deck must include option to attack Merchant Lycus in Haven");
+  const lycusTalk = actionsBefore.flatMap(g => g.actions).find(a => a.id === "act_talk_npc_dev_merchant_lycus");
+  assert.ok(lycusTalk, "Action deck must include option to speak with Merchant Lycus");
+
+  // Attack Merchant Lycus -> initiates combat without restriction
+  engine.startCombatWithEntity("npc_dev_merchant_lycus", "npc");
+  assert.ok(engine.combatSession, "Combat session must be active");
+  assert.equal(engine.combatSession.enemy.name, "Merchant Lycus");
+  assert.equal(engine.combatSession.enemy.isNpc, true);
+
+  // Simulate killing Merchant Lycus
+  engine.combatSession.enemy.hp = 0;
+  engine.handleCombatVictory();
+
+  // Verify permanent world state changes
+  assert.ok(engine.state.worldState.deadEntities["npc_dev_merchant_lycus"], "Merchant Lycus must be marked dead in worldState");
+
+  // Verify action deck after death: Merchant is dead so no talk or attack actions generated
+  const actionsAfter = engine.getContextualActionGroups();
+  const lycusAttackAfter = actionsAfter.flatMap(g => g.actions).find(a => a.id === "act_attack_npc_dev_merchant_lycus");
+  assert.ok(!lycusAttackAfter, "Dead NPC must not appear in action deck for combat");
+});
+
+// -----------------------------------------------------------------------------
+// 34. Multi-Table Loot Engine & Anti-Exploit System
+// -----------------------------------------------------------------------------
+runTest("Multi-Table Loot System: Evaluates drops and prevents duplicate unique relic exploitation on repeat kills", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  const karasBoss = {
+    id: "creature_dev_crypt_boss",
+    name: "Lord Karas the Undying",
+    lootTableId: "loot_dev_crypt_boss",
+    encounterId: "enc_dev_crypt_boss"
+  };
+
+  const initialUniqueCount = engine.state.player.inventory.filter(i => i.itemId === "item_dev_sunstone_relic").length;
+  assert.equal(initialUniqueCount, 0);
+
+  // Kill 1: First defeat -> drops unique relic
+  engine.state.worldState.defeatedEncounters["enc_dev_crypt_boss"] = 1;
+  engine.resolveEntityLoot(karasBoss);
+
+  const relicCountAfterKill1 = engine.state.player.inventory.filter(i => i.itemId === "item_dev_sunstone_relic").length;
+  assert.equal(relicCountAfterKill1, 1, "First kill must award unique Sunstone Relic");
+  assert.ok(engine.state.worldState.grantedUniqueItems["item_dev_sunstone_relic"], "Relic must be recorded in grantedUniqueItems");
+
+  // Kill 2: Repeat kill -> Anti-exploit must prevent second unique relic!
+  engine.state.worldState.defeatedEncounters["enc_dev_crypt_boss"] = 2;
+  const drachmaeBeforeKill2 = engine.state.player.currencies.drachmae;
+  engine.resolveEntityLoot(karasBoss);
+
+  const relicCountAfterKill2 = engine.state.player.inventory.filter(i => i.itemId === "item_dev_sunstone_relic").length;
+  assert.equal(relicCountAfterKill2, 1, "Repeat kill must NOT award duplicate unique Sunstone Relic (anti-exploit)");
+  assert.ok(engine.state.player.currencies.drachmae > drachmaeBeforeKill2, "Repeat kill should award repeat currency instead of duplicate relic");
+});
+
+// -----------------------------------------------------------------------------
+// 35. Lockpicking Mechanics & Interactive Physical Objects
+// -----------------------------------------------------------------------------
+runTest("Interactive Objects & Lockpicking: Requires tools, distinguishes unpickable boulders, breaks on Ate, triggers traps", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+  engine.state.worldState.currentLocationId = "loc_dev_haven";
+
+  // 1. Unpickable Boulder: Physical barriers cannot be lockpicked
+  const boulder = engine.getInteractiveObject("obj_boulder_seal");
+  assert.ok(boulder, "Granite boulder must exist");
+  assert.equal(boulder.isPickable, false, "Boulder must be marked isPickable: false");
+
+  // Attempting to pick an unpickable boulder warns the player
+  engine.attemptLockpick("obj_boulder_seal");
+  assert.ok(!engine.state.worldState.unlockedObjects["obj_boulder_seal"], "Boulder cannot be unlocked with lockpicks");
+
+  // 2. Lockpicking requires tools in inventory
+  engine.state.player.inventory = engine.state.player.inventory.filter(i => !i.itemId.includes("lockpick"));
+  engine.attemptLockpick("obj_treasury_iron_door");
+  assert.ok(!engine.state.worldState.unlockedObjects["obj_treasury_iron_door"], "Must not unlock without tools");
+
+  // 3. Give lockpick set and test tool breakage on Ate (Nat 1)
+  engine.addItem("item_dev_iron_lockpick", 1);
+  assert.ok(engine.hasItem("item_dev_iron_lockpick"));
+
+  // Mock rollD20 to return 1 (Ate)
+  const originalRoll = engine.rollD20;
+  engine.rollD20 = () => 1;
+  const initialHealth = engine.state.player.vitals.health;
+
+  // Attempt lockpicking trapped coffer with Nat 1
+  engine.attemptLockpick("obj_trapped_coffer");
+  assert.ok(!engine.hasItem("item_dev_iron_lockpick"), "Nat 1 (Ate) must snap and destroy the lockpick set");
+  assert.ok(engine.state.player.vitals.health < initialHealth, "Trapped coffer failure must inflict trap damage");
+
+  // 4. Key unlocking safely opens container without rolls or traps
+  engine.addItem("item_dev_treasury_key", 1);
+  engine.unlockWithKey("obj_treasury_iron_door");
+  assert.ok(engine.state.worldState.unlockedObjects["obj_treasury_iron_door"], "Vault door must be unlocked with key");
+
+  // Restore rollD20
+  engine.rollD20 = originalRoll;
+});
+
+// -----------------------------------------------------------------------------
+// 36. Non-Linear Quest Branching & Failover on NPC Death
+// -----------------------------------------------------------------------------
+runTest("Quest Branching: Killing key NPCs triggers alternate quest pathways and handles failures", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+  engine.state.worldState.currentLocationId = "loc_dev_haven";
+
+  // Start the Sunstone and Delivery quests
+  engine.state.worldState.quests["quest_dev_sunstone_relic"] = {
+    id: "quest_dev_sunstone_relic",
+    title: "The Lost Sunstone of Haven",
+    stage: "inquire_scholar",
+    completed: false
+  };
+  engine.state.worldState.quests["quest_dev_merchant_delivery"] = {
+    id: "quest_dev_merchant_delivery",
+    title: "Lycus' Caravan Contract",
+    stage: "active_delivery",
+    completed: false
+  };
+
+  // Kill Scholar Elena -> Alternate pathway triggered (field notes dropped)
+  engine.handleNpcDeath("npc_dev_elena_scholar");
+  assert.equal(engine.state.worldState.quests["quest_dev_sunstone_relic"].stage, "explore_crypt", "Killing Elena should advance quest to independent crypt stage");
+  assert.ok(engine.hasItem("item_dev_elena_journal"), "Killing Elena must award her field notes as alternate quest progression item");
+
+  // Kill Merchant Lycus -> Delivery quest fails
+  engine.handleNpcDeath("npc_dev_merchant_lycus");
+  assert.equal(engine.state.worldState.quests["quest_dev_merchant_delivery"].failed, true, "Killing merchant Lycus must fail delivery quest");
+});
+
+// -----------------------------------------------------------------------------
+// 37. Multi-Phase Boss Combat & Respawn Cooldowns
+// -----------------------------------------------------------------------------
+runTest("Boss Mechanics: Enrage phase triggered below threshold and cooldown hours enforced", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  const karasCreature = engine.getCreature("creature_dev_crypt_boss");
+  assert.ok(karasCreature, "Lord Karas creature must exist");
+  assert.ok(karasCreature.isBoss, "Lord Karas must be flagged isBoss");
+
+  // 1. Start boss combat
+  engine.startCombat(karasCreature, { encounterId: "enc_dev_crypt_boss", isBoss: true });
+  assert.equal(engine.combatSession.enemy.enraged, false);
+
+  // Drop boss HP below 50%
+  engine.combatSession.enemy.hp = Math.floor(karasCreature.vitals.maxHealth * 0.4);
+  engine.combatAction("thrust");
+  assert.equal(engine.combatSession.enemy.enraged, true, "Boss must enter enraged phase below 50% HP");
+
+  // 2. Victory and Cooldown tracking
+  engine.handleCombatVictory();
+  const defeatTime = engine.state.worldState.encounterCooldowns["enc_dev_crypt_boss"];
+  assert.ok(defeatTime !== undefined, "Defeat timestamp must be recorded in encounterCooldowns");
+
+  // Immediately after defeat: encounter cooldown is active (not ready)
+  assert.equal(engine.checkEncounterCooldown("enc_dev_crypt_boss"), false, "Boss must be on cooldown immediately after defeat");
+
+  // Advance time past cooldown hours (24h)
+  engine.advanceTime(25, 0);
+  assert.equal(engine.checkEncounterCooldown("enc_dev_crypt_boss"), true, "Boss should be ready to respawn after cooldown elapsed");
+});
+
+// -----------------------------------------------------------------------------
+// 38. Factions & Living World Consequence Engine
+// -----------------------------------------------------------------------------
+runTest("Factions & Consequences: Reputation modifications, scheduled world events, and standings", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // Initial reputation
+  const initialHavenRep = engine.getFactionReputation("faction_dev_haven");
+  assert.equal(initialHavenRep, 15);
+  assert.equal(engine.getFactionStanding("faction_dev_haven"), "Neutral");
+
+  // Shift reputation
+  engine.modifyFactionReputation("faction_dev_haven", 10, "Helped citizens");
+  assert.equal(engine.getFactionReputation("faction_dev_haven"), 25);
+  assert.equal(engine.getFactionStanding("faction_dev_haven"), "Friendly");
+
+  // Severe crime shifts to Hostile
+  engine.modifyFactionReputation("faction_dev_haven", -60, "Committed multiple murders");
+  assert.equal(engine.getFactionReputation("faction_dev_haven"), -35);
+  assert.equal(engine.getFactionStanding("faction_dev_haven"), "Hostile");
+
+  // Scheduled world events processing
+  engine.emitEvent("ENTITY_DEATH", { entityId: "npc_dev_merchant_lycus", locationId: "loc_dev_haven" });
+  assert.ok(engine.state.worldState.scheduledEvents.length > 0, "Murdering merchant should schedule town guard curfew event");
+
+  // Advance time by 5 hours to trigger curfew event
+  engine.advanceTime(5, 0);
+  assert.ok(engine.state.worldState.flags["dev_haven_curfew_active"], "Town curfew flag should be active after time elapsed");
 });
 
 console.log("\n=================================================================");

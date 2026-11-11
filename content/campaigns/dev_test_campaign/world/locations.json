@@ -1,0 +1,184 @@
+{
+  "locations": [
+    {
+      "id": "loc_dev_haven",
+      "name": "Haven of the Crossways",
+      "ancientName": "Portus Asyli",
+      "region": "The Central Marches",
+      "recommendedLevel": 1,
+      "coordinates": { "x": 300, "y": 300 },
+      "terrain": "paved_road",
+      "buildings": [
+        { "id": "bld_haven_apothecary", "name": "Lycus' Fine Goods & Wares", "isOpen": true, "ownerId": "npc_dev_merchant_lycus" },
+        { "id": "bld_haven_guardhouse", "name": "Haven Watch Post", "isOpen": true, "ownerId": "npc_dev_guard_captain" },
+        { "id": "bld_haven_treasury", "name": "The High Vault", "isOpen": false, "requiresLockpick": true }
+      ],
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_whispering_woods",
+          "name": "The Old Forest Trail",
+          "distanceKm": 4.0,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_ancient_crypt",
+          "name": "Road to the Sunken Crypt",
+          "distanceKm": 6.5,
+          "travelHours": 2.0,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_dev_obsidian_crag",
+          "name": "The Jagged Ascent",
+          "distanceKm": 10.0,
+          "travelHours": 3.0,
+          "staminaCost": 8,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        }
+      ],
+      "narrative": {
+        "overview": "Haven of the Crossways is a fortified settlement set amidst limestone ridges. Cobblestone pathways link timber-framed houses, a lively merchant stall, and the imposing town watch house.",
+        "shortDescription": "A bustling crossroads settlement fortified by stout wooden palisades."
+      },
+      "presentNPCs": [
+        "npc_dev_merchant_lycus",
+        "npc_dev_guard_captain",
+        "npc_dev_elena_scholar"
+      ],
+      "presentItems": [
+        "item_dev_iron_lockpick"
+      ]
+    },
+    {
+      "id": "loc_dev_whispering_woods",
+      "name": "The Whispering Woods",
+      "ancientName": "Silva Murmuris",
+      "region": "The Central Marches",
+      "recommendedLevel": 1,
+      "coordinates": { "x": 200, "y": 250 },
+      "terrain": "rocky_scrubland",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_haven",
+          "name": "The Haven Road",
+          "distanceKm": 4.0,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_sunken_grotto",
+          "name": "Overgrown Fern Hollow",
+          "distanceKm": 3.0,
+          "travelHours": 1.0,
+          "staminaCost": 4,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 2,
+          "requiresFlag": "discovered_sunken_grotto"
+        }
+      ],
+      "narrative": {
+        "overview": "Towering ancient pines and dense briars cast cool, dappled shadows across the mossy floor. The air rustles with wild boar foraging in the undergrowth.",
+        "shortDescription": "A verdant, windswept pine forest sheltering game and hidden hollows."
+      },
+      "presentCreatures": [
+        "creature_dev_wild_boar",
+        "creature_dev_forest_wolf"
+      ],
+      "presentItems": [
+        "item_dev_forest_berries"
+      ]
+    },
+    {
+      "id": "loc_dev_ancient_crypt",
+      "name": "The Sunken Crypt of Karas",
+      "ancientName": "Crypta Karatis",
+      "region": "The Desolate Lowlands",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 420, "y": 380 },
+      "terrain": "mountain_cave",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_haven",
+          "name": "Highway to Haven",
+          "distanceKm": 6.5,
+          "travelHours": 2.0,
+          "staminaCost": 5,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "Chilly mist seeps from the shattered archway of the sunken crypt. Dark stone sepulchers flank an archaic sanctuary hall where an ancient warlord slumbers.",
+        "shortDescription": "A subterranean limestone crypt heavy with cold subterranean mist."
+      },
+      "presentCreatures": [
+        "creature_dev_crypt_boss"
+      ],
+      "presentItems": [
+        "item_dev_crypt_torch"
+      ]
+    },
+    {
+      "id": "loc_dev_obsidian_crag",
+      "name": "The Obsidian Crags",
+      "ancientName": "Rupes Atra",
+      "region": "Highland Peaks",
+      "recommendedLevel": 4,
+      "coordinates": { "x": 500, "y": 180 },
+      "terrain": "mountain_trail",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_haven",
+          "name": "Descent to Haven",
+          "distanceKm": 10.0,
+          "travelHours": 3.0,
+          "staminaCost": 8,
+          "terrain": "mountain_trail",
+          "dangerRating": 4
+        }
+      ],
+      "narrative": {
+        "overview": "Razor-sharp black obsidian pinnacles rise into freezing winds. Lethal shadow beasts stalk the high passes, hunting any mortal foolish enough to climb without heroic armament.",
+        "shortDescription": "Treacherous obsidian pinnacles shrouded in howling winds."
+      },
+      "presentCreatures": [
+        "creature_dev_shadow_stalker"
+      ]
+    },
+    {
+      "id": "loc_dev_sunken_grotto",
+      "name": "The Sunken Grotto",
+      "ancientName": "Antrum Ocultum",
+      "region": "The Central Marches",
+      "recommendedLevel": 2,
+      "coordinates": { "x": 150, "y": 180 },
+      "terrain": "mountain_cave",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_whispering_woods",
+          "name": "Path Back to the Pines",
+          "distanceKm": 3.0,
+          "travelHours": 1.0,
+          "staminaCost": 4,
+          "terrain": "rocky_scrubland",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "A secluded subterranean pool lit by bioluminescent moss clinging to limestone stalactites. The water reflects shimmering veins of silver ore.",
+        "shortDescription": "A tranquil subterranean grotto with glowing limestone pools."
+      },
+      "presentItems": [
+        "item_dev_silver_chalice"
+      ]
+    }
+  ]
+}

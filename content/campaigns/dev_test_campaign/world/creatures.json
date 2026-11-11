@@ -1,0 +1,82 @@
+{
+  "creatures": [
+    {
+      "id": "creature_dev_wild_boar",
+      "name": "Wild Bristle Boar",
+      "tier": 1,
+      "level": 1,
+      "isAnimal": true,
+      "xpReward": 35,
+      "vitals": { "health": 18, "maxHealth": 18, "morale": 8 },
+      "armorClass": 12,
+      "lootTableId": "loot_dev_wild_boar",
+      "actions": [
+        { "name": "Goring Tusk Thrust", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" },
+        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning" }
+      ]
+    },
+    {
+      "id": "creature_dev_forest_wolf",
+      "name": "Grey Timber Wolf",
+      "tier": 1,
+      "level": 1,
+      "isAnimal": true,
+      "xpReward": 40,
+      "vitals": { "health": 16, "maxHealth": 16, "morale": 10 },
+      "armorClass": 13,
+      "lootTableId": "loot_dev_forest_wolf",
+      "actions": [
+        { "name": "Snapping Jaws", "attackBonus": 4, "damage": "1d6+2", "damageType": "piercing" }
+      ]
+    },
+    {
+      "id": "creature_dev_shadow_stalker",
+      "name": "Obsidian Shadow Stalker",
+      "tier": 4,
+      "level": 4,
+      "isMonster": true,
+      "xpReward": 220,
+      "vitals": { "health": 55, "maxHealth": 55, "morale": 16 },
+      "armorClass": 15,
+      "lootTableId": "loot_dev_shadow_stalker",
+      "actions": [
+        { "name": "Obsidian Talon Rend", "attackBonus": 6, "damage": "2d8+3", "damageType": "slashing" },
+        { "name": "Shadow Vapor Breath", "attackBonus": 5, "damage": "2d6+2", "damageType": "necrotic" }
+      ]
+    },
+    {
+      "id": "creature_dev_crypt_boss",
+      "name": "Lord Karas the Undying",
+      "title": "Ancient Warlord of the Sunken Crypt",
+      "tier": 3,
+      "level": 3,
+      "isBoss": true,
+      "repeatable": true,
+      "respawnHours": 24,
+      "xpReward": 180,
+      "vitals": { "health": 60, "maxHealth": 60, "morale": 20 },
+      "armorClass": 14,
+      "lootTableId": "loot_dev_crypt_boss",
+      "bossPhases": [
+        {
+          "phase": 1,
+          "name": "Shield of the Tombs",
+          "healthThreshold": 0.5,
+          "banner": "Lord Karas raises an archaic iron crest shield, deflecting incoming blows!"
+        },
+        {
+          "phase": 2,
+          "name": "Enraged Chthonic Fury",
+          "healthThreshold": 0.0,
+          "enrage": true,
+          "damageBonus": 3,
+          "banner": "Lord Karas roars with otherworldly rage as dark green spectral flames engulf his greatsword!"
+        }
+      ],
+      "actions": [
+        { "name": "Crypt Cleaver", "attackBonus": 5, "damage": "1d10+3", "damageType": "slashing" },
+        { "name": "Grave Chill Wave", "attackBonus": 4, "damage": "2d6+2", "damageType": "cold" }
+      ]
+    }
+  ]
+}

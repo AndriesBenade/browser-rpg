@@ -1,0 +1,98 @@
+{
+  "interactiveObjects": [
+    {
+      "id": "obj_treasury_iron_door",
+      "locationId": "loc_dev_haven",
+      "name": "Ironbound Vault Door",
+      "type": "door",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 12,
+      "requiredKeyId": "item_dev_treasury_key",
+      "requiredToolId": "item_dev_iron_lockpick",
+      "description": "A reinforced oak and banded-iron portal securing the Haven High Vault.",
+      "failureConsequence": {
+        "breakToolOnAte": true,
+        "alertNpcId": "npc_dev_guard_captain",
+        "message": "A loud metallic clang echoes down the cobblestones as your pick jams in the tumblers!"
+      },
+      "unlockOutcome": {
+        "setFlags": { "treasury_door_unlocked": true },
+        "transcript": {
+          "speaker": "Physical Interaction",
+          "text": "With a satisfying click of heavy brass tumblers, the ironbound door creaks inward, granting access to the interior vault!",
+          "style": "entry-discovery"
+        },
+        "awardXP": 25
+      }
+    },
+    {
+      "id": "obj_trapped_coffer",
+      "locationId": "loc_dev_haven",
+      "name": "Gilded Treasury Strongbox",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 14,
+      "requiredToolId": "item_dev_iron_lockpick",
+      "description": "A cedar coffer bound in brass filigree, sitting upon a stone pedestal inside the vault.",
+      "trap": {
+        "name": "Spring-Loaded Bronze Dart",
+        "disarmDC": 13,
+        "damage": 6,
+        "description": "A tensioned wire connected to a pressurized dart launcher inside the lock housing."
+      },
+      "contents": {
+        "drachmae": 60,
+        "items": [
+          "item_dev_silver_chalice"
+        ]
+      },
+      "unlockOutcome": {
+        "setFlags": { "treasury_coffer_unlocked": true },
+        "transcript": {
+          "speaker": "Physical Interaction",
+          "text": "The lock springs open! Inside lies a velvet-lined cache containing 60 silver drachmae and an ancient silver chalice!",
+          "style": "entry-discovery"
+        },
+        "awardXP": 35
+      }
+    },
+    {
+      "id": "obj_boulder_seal",
+      "locationId": "loc_dev_whispering_woods",
+      "name": "Massive Overgrown Granite Boulder",
+      "type": "obstacle",
+      "locked": true,
+      "isPickable": false,
+      "unpickableReason": "A colossal solid granite boulder has no mechanical lock or keyhole. It cannot be lockpicked!",
+      "requiredAttribute": "strength",
+      "requiredScore": 14,
+      "description": "A monolithic boulder choked with ivy, completely sealing an arched fissure in the cliffside.",
+      "unlockOutcome": {
+        "setFlags": { "discovered_sunken_grotto": true },
+        "transcript": {
+          "speaker": "Feat of Power",
+          "text": "Bracing your shoulders against the massive stone, you heave with all your might. With a grinding crunch, the boulder rolls aside, revealing the hidden passage to the Sunken Grotto!",
+          "style": "entry-discovery"
+        },
+        "awardXP": 30
+      }
+    },
+    {
+      "id": "obj_crypt_sarcophagus",
+      "locationId": "loc_dev_ancient_crypt",
+      "name": "Lord Karas' Marble Sarcophagus",
+      "type": "container",
+      "locked": false,
+      "isPickable": false,
+      "description": "A carved marble tomb relief depicting the warlord Karas holding a solar emblem.",
+      "contents": {
+        "drachmae": 25,
+        "items": [
+          "item_dev_crypt_torch"
+        ]
+      }
+    }
+  ]
+}

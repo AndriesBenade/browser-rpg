@@ -1,0 +1,123 @@
+{
+  "id": "campaign_greek_mythology",
+  "name": "Hellas: Mythos of the Heroic Age",
+  "version": "1.0.0",
+  "engineVersion": ">=1.0.0",
+  "author": "Classical Mythos Design Guild",
+  "description": "Experience authentic classical Greece in the Heroic Age. Journey across Boeotia, Phocis, Argolis, and Arcadia, confronting mythical beasts and seeking divine favour.",
+  "genre": "classical_mythology",
+  "isDefault": true,
+  "startingLocationId": "loc_cithaeron_crossroads",
+  "startingTime": {
+    "hour": 8,
+    "minute": 30,
+    "day": 12,
+    "month": 4,
+    "year": 1
+  },
+  "modules": {
+    "locations": "content/world/locations.json",
+    "characters": "content/world/characters.json",
+    "creatures": "content/world/creatures.json",
+    "items": "content/world/items.json",
+    "lootTables": "content/world/loot_tables.json",
+    "interactiveObjects": "content/world/interactive_objects.json",
+    "deities": "content/world/deities.json",
+    "mythology": "content/world/mythology.json",
+    "glossary": "content/world/glossary.json",
+    "adventures": [
+      "content/adventures/tutorial.json"
+    ]
+  },
+  "factions": [
+    {
+      "id": "faction_plataea",
+      "name": "Plataean Wayfarers & Shepherds",
+      "description": "The rustic pastoral citizens dwelling in the foothills of Mount Cithaeron and Plataea.",
+      "defaultReputation": 10
+    },
+    {
+      "id": "faction_theban_guard",
+      "name": "Theban City Guard",
+      "description": "The elite bronze-clad sentinels guarding the Seven Gates of Cadmean Thebes.",
+      "defaultReputation": 0
+    },
+    {
+      "id": "faction_delphic_amphictyony",
+      "name": "Delphic Amphictyonic League",
+      "description": "The sacred league of priests and pilgrims protecting the Pythian Oracle of Apollo.",
+      "defaultReputation": 15
+    },
+    {
+      "id": "faction_hermes_cult",
+      "name": "Cult of Hermes Enodios",
+      "description": "Wayfarers, heralds, and travelers honoring the divine guide of mountain roads.",
+      "defaultReputation": 5
+    }
+  ],
+  "consequenceRules": [
+    {
+      "id": "rule_daidalos_death",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_daidalos_shepherd"
+      },
+      "outcomes": {
+        "setFlags": {
+          "daidalos_murdered": true,
+          "plataea_hostile": true
+        },
+        "modifyReputation": {
+          "faction_plataea": -60,
+          "faction_theban_guard": -30
+        },
+        "failQuest": "quest_tutorial_stolen_ram",
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "The elderly shepherd collapses lifeless upon the stones! News of the tragic murder will spread swiftly to Plataea—travelers and herdsmen will treat you as a violent outlaw, and the quest for his lost ram is broken beyond repair.",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Blood on Mount Cithaeron",
+          "text": "Slew Elder Daidalos at the crossroads. The folk of Plataea now consider you a bloodstained outcast."
+        }
+      }
+    },
+    {
+      "id": "rule_timon_death",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_timon_pilgrim"
+      },
+      "outcomes": {
+        "setFlags": {
+          "timon_murdered": true,
+          "sanctuary_polluted": true
+        },
+        "modifyReputation": {
+          "faction_delphic_amphictyony": -50,
+          "faction_hermes_cult": -40
+        },
+        "piety": {
+          "apollo": -2,
+          "hermes": -2
+        },
+        "transcript": {
+          "speaker": "Spiritual Miasma",
+          "text": "Striking down a pious suppliant in a sacred sanctuary brings dark spiritual pollution (miasma) upon your shade. The Delphic league will shun your inquiries, and the gods turn their faces away.",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Sacrilege at the Shrine",
+          "text": "Murdered Timon the suppliant at the sacred Herm. Incurred divine displeasure and severe miasma."
+        }
+      }
+    }
+  ],
+  "settings": {
+    "allowAnyEntityCombat": true,
+    "lockpickingEnabled": true,
+    "randomEncountersEnabled": true,
+    "livingWorldSimulation": true
+  }
+}

@@ -8,6 +8,59 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 8 — 2026-11-11
+* **Collaborator / Model**: User & Antigravity (Google DeepMind)
+* **User Request**: MASTER IMPLEMENTATION PROMPT: COMPLETE CAMPAIGN SYSTEM OVERHAUL. Perform a comprehensive architectural and functional overhaul turning the RPG engine into a content-driven campaign framework capable of hosting entirely different worlds/genres simply by importing compatible content packages without engine modification.
+* **Core Systems Overhauled & Implemented**:
+  1. **Content-Driven Campaign Architecture & Modular Loader**:
+     - Introduced campaign manifests (`campaign.json`) declaring campaign metadata, genre, modular file paths (`locations`, `characters`, `creatures`, `items`, `lootTables`, `interactiveObjects`, `factions`, `quests`, `encounters`, `dialogues`, `events`), factions, starting conditions, and consequence rules.
+     - Dual-loading paradigm: asynchronous `fetch` for web servers (`python server.py`) and embedded fallbacks (`loadEmbeddedFallbackContent()` for Hellenic campaign, `loadEmbeddedDevTestContent()` for Developer Verification Campaign) supporting offline `file:///` execution.
+     - Dynamic campaign registration via `registerCampaign(manifest, content)`.
+  2. **Startup Sequence & Campaign Selection Interface**:
+     - Re-architected startup flow: 1. Welcome & Guide hints &rarr; 2. Campaign Selection & Configuration (`#view-campaign-select`) &rarr; 3. Character Creation Wizard &rarr; 4. Game Begins.
+     - Interactive Campaign Cards with genre badges, description, author, and module toggles (`loot_tables`, `interactive_objects`, `living_world`, `reputation_system`).
+     - Custom Campaign Profiles: Ability to save and reload tailored module configurations per campaign (`saveCustomCampaignProfile`, `loadCustomCampaignProfile`).
+  3. **Campaign Content Validation Engine (`GreekMythologyEngine.validateCampaign`)**:
+     - Static validator analyzing campaign manifests and content data packages.
+     - Checks structural schemas, referential integrity (location coordinates, connection targets, missing item/loot IDs, quest prerequisite chains), and detects circular quest dependencies via depth-first graph traversal.
+     - Identifies logic and thematic anomalies (e.g. flagging unpickable obstacles like boulders marked as pickable).
+     - Integrated into UI via `#validation-modal` with instant visual error/warning/info audits.
+  4. **Complete Freedom to Interact With Living Entities**:
+     - Players can initiate combat with ANY living entity in the world (friendly NPCs, merchants, guards, quest-givers, animals, monsters, bosses).
+     - Contextual Action Deck dynamically generates "Speak", "Attack", and "Pickpocket" actions for all present entities.
+     - Full NPC combat resolution with dynamic HP, AC, and attacks derived from `combatStats` or default stats.
+     - Slain NPCs are recorded permanently in `state.worldState.deadEntities`, disabling dialogue and removing them from exploration action decks.
+  5. **Multi-Table Loot Resolution & Anti-Exploit Engine**:
+     - Data-driven loot engine supporting probability-based entries, guaranteed drops, currency ranges, and dedicated repeat kill rewards (`repeatCurrency`, `repeatEntries`).
+     - Anti-exploit relic protection: Tracks unique item drops via `state.worldState.grantedUniqueItems`. If a boss is defeated repeatedly, unique relic drops are suppressed and converted into replacement silver drachmae to prevent item duplication exploits.
+  6. **Interactive Environmental Objects & Lockpicking Mechanics**:
+     - Data-driven interactive objects (`doors`, `containers`, `obstacles`, `shrines`, `mechanisms`) managed via `state.worldState.unlockedObjects`.
+     - Lockpicking requires physical tools (`item_lockpick_set`, `item_dev_iron_lockpick`, `item_thieves_tools`).
+     - Tabletop d20 skill checks against DC with Ate (Nat 1) tool snapping consequences that destroy the pick.
+     - Distinguishes pickable mechanical locks from unpickable physical obstacles (`isPickable: false` on boulders) which must be heaved with raw Strength.
+     - Spring-loaded needle traps trigger on failed picks or Ate fumbles, inflicting direct health damage.
+     - Key unlocking safely opens containers and doors without rolls or trap hazards.
+  7. **Multi-Phase Boss Mechanics & Respawn Cooldowns**:
+     - Bosses dynamically enter second enraged phases (`enraged: true`) upon dropping below configurable health thresholds (e.g. 50% HP), gaining +3 attack bonus and enhanced damage.
+     - Defeated repeatable encounters record timestamp hours in `state.worldState.encounterCooldowns`. Respawn availability is enforced via `checkEncounterCooldown(encounterId)` against `cooldownHours`.
+  8. **Living World Simulation, Factions & Consequence Engine**:
+     - Dynamic reputation tracking per faction (`getFactionReputation`, `modifyFactionReputation`, `getFactionStanding`).
+     - Standing tiers: Hostile (&le; -25), Unfriendly (< 0), Neutral (< 20), Friendly (< 50), Honored (&ge; 50).
+     - Event-driven consequence dispatcher: `emitEvent(name, payload)` evaluates `consequenceRules` defined in campaign manifests, mutating world flags, adjusting faction reputations, and scheduling delayed world events (`scheduledEvents`).
+     - Scheduled events trigger dynamically when total in-game hours elapse during rest or travel.
+  9. **Non-Linear Quest Branching & Failover on NPC Death**:
+     - Killing essential NPCs does not halt the game: quests evaluate `alternatePathways` and failover logic in `handleNpcDeath()`.
+     - Slaying Scholar Elena automatically drops her research journal and advances the Sunstone quest directly to independent crypt exploration.
+     - Slaying Merchant Lycus cleanly fails delivery contracts and triggers town curfew investigations.
+  10. **Requirement 20 Compliance: Action Deck Pure Gameplay**:
+      - Completely removed legacy `#persistent-action-bar` and its input element, CSS styling, and `handleCustomAction()` method.
+      - 100% of player interaction is driven by structured, categorized action cards in the Action Deck.
+  11. **Dedicated Developer Test Campaign (`content/campaigns/dev_test_campaign/`)**:
+      - Fully populated sandbox campaign with 12 modular content files: 5 locations (Haven, Whispering Woods, Ancient Crypt, Obsidian Crag, Sunken Grotto), 4 NPCs (Merchant Lycus, Captain Valerius, Scholar Elena, Renegade Silas), 4 creatures (Wild Boar, Grey Wolf, Shadow Stalker, Lord Karas the Undying), 15 items, 8 loot tables, 4 interactive objects, 3 factions, 5 quests, 3 encounters, 4 dialogue trees, and 2 world events.
+      - Test fixture `content/campaigns/fixtures/invalid_campaign.json` for validation edge-case testing.
+  12. **Automated Verification**:
+      - Automated test suite expanded to **57 / 57 passing unit tests** (100% pass rate).
+
 ### Session 7 — 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: Implement a modular content architecture so content can be added easily via standalone JSON without modifying major engine functions; provide an option to delete saved content to start completely fresh; author comprehensive developer documentation and reusable templates.

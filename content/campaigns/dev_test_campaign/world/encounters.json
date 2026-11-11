@@ -1,0 +1,87 @@
+{
+  "encounters": [
+    {
+      "id": "enc_dev_crypt_boss",
+      "locationId": "loc_dev_ancient_crypt",
+      "creatureId": "creature_dev_crypt_boss",
+      "isBoss": true,
+      "repeatable": true,
+      "cooldownHours": 24,
+      "introProse": "From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!",
+      "victoryOutcome": {
+        "text": "Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!",
+        "setFlags": { "defeated_lord_karas": true },
+        "updateQuest": {
+          "questId": "quest_dev_sunstone_relic",
+          "objectiveId": "obj_defeat_karas",
+          "completed": true
+        },
+        "awardXP": 180,
+        "addJournalChronicle": {
+          "title": "Vanquished Lord Karas",
+          "text": "Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."
+        }
+      }
+    },
+    {
+      "id": "enc_dev_wild_boar",
+      "locationId": "loc_dev_whispering_woods",
+      "creatureId": "creature_dev_wild_boar",
+      "introProse": "A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!",
+      "victoryOutcome": {
+        "text": "You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.",
+        "setFlags": { "slain_dev_boar": true },
+        "updateQuest": {
+          "questId": "quest_dev_boar_menace",
+          "objectiveId": "obj_slay_boar",
+          "completed": true
+        },
+        "awardXP": 35
+      }
+    },
+    {
+      "id": "enc_dev_shadow_stalker",
+      "locationId": "loc_dev_obsidian_crag",
+      "creatureId": "creature_dev_shadow_stalker",
+      "introProse": "A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!",
+      "victoryOutcome": {
+        "text": "The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.",
+        "awardXP": 220
+      }
+    }
+  ],
+  "randomEncounters": [
+    {
+      "id": "re_dev_forest_wolf",
+      "regions": ["The Central Marches"],
+      "terrain": ["rocky_scrubland", "mountain_trail"],
+      "weight": 50,
+      "type": "combat",
+      "creatureId": "creature_dev_forest_wolf",
+      "introProse": "A prowling timber wolf stalks out from behind a cluster of pines, growling low in its throat!"
+    },
+    {
+      "id": "re_dev_traveling_tinker",
+      "regions": ["The Central Marches"],
+      "terrain": ["paved_road"],
+      "weight": 35,
+      "type": "peaceful",
+      "title": "A Traveling Merchant on the Road",
+      "narrative": "A friendly peddler with a mule stops to exchange greetings: 'Safe travels, wayfarer! The roads are peaceful today, thank the gods.' He shares some dried figs (+3 Stamina).",
+      "outcomes": {
+        "restoreStamina": 3
+      }
+    },
+    {
+      "id": "re_dev_ancient_shrine",
+      "regions": ["The Central Marches", "Highland Peaks"],
+      "weight": 25,
+      "type": "discovery",
+      "title": "An Ancient Roadside Altar",
+      "narrative": "You stumble upon an archaic stone marker carved with blessing runes. Pausing to pay respects fills you with resolute focus (+15 XP).",
+      "outcomes": {
+        "awardXP": 15
+      }
+    }
+  ]
+}
