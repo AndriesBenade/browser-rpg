@@ -681,3 +681,13 @@ In quests and dialogues, grant Virtue (*Arete*) or Hubris (*Miasma*) through out
 - Slaying an NPC permanently records their death in `worldState.permanentNpcDeaths`.
 - NPCs never respawn. Any quest tied to a slain NPC triggers alternative failovers or journal updates, and the engine schedules a delayed murder investigation event.
 
+## 15. People, Shops and Fights Worth Choosing (v1.7.0)
+
+* **Give every quest a beginning and an end.** Set `autoStart: false` on quests an NPC offers (`startQuest` in their dialogue) or that the player discovers (objects and actions that update a quest start it automatically). Turn-ins are dialogue choices with a `questStage` condition and a node with `completeQuest`; the quest's `rewards` are paid there once. Use stage `next` when a branch should skip ahead (see the Dev rescue quest).
+* **Let standing matter.** Give NPCs a `faction` and `disposition`; gate the best dialogue with `minStanding: "friendly"` / `"trusted"` (players see it locked until then); give quest-giving nodes nothing extra: completing the quest already improves the giver's opinion. Use `hostileAction: "attack"` for people who will not tolerate an enemy (guards, outlaws).
+* **Shops**: `isMerchant` + `merchantInventory`; add `openTrade: true` to the node where the merchant says "have a look".
+* **Fights**: decide who starts each encounter. A beast you can stalk: leave `initiative` unset and write an `approachProse`. Something that springs on you: `initiative: "enemy"`; if the story makes escape impossible, add `unavoidable: true`. Add location `tactics` that fit the place (a brazier in a crypt, a bramble thicket in a forest) so preparation feels local. A failed sneak can start a fight with `startEncounter` in the failure outcome.
+* **Things to find**: `presentItems` on a location are found with the Search card; rarer items need better Perception.
+* **Next steps**: the ★ strip finds quest progress by looking for `questId` / `completeQuest` / `questActive` in actions, encounter `victoryOutcome`s, object `unlockOutcome`s and the first choices of conversations. Progress written that way is pointed out to players automatically; progress that only happens through `events.json` is not.
+
+Field details: CONTENT_SCHEMA §26–§28.

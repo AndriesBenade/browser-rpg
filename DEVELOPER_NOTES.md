@@ -8,6 +8,18 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 16 — 2026-11-11 (play-test fixes, quest log, NPC standing, trading, confrontations)
+* **Collaborator / Model**: User & Claude (Anthropic). Builds on Session 15 (its travel-time fix is kept).
+* **Play-test bugs fixed (tutorial + Dev campaign)**: all 8 Dev quests were active on day 1 and 6 of them could not be finished (no turn-in, no delivery target, moral paths unreachable, rescue/monolith had no actions, objects updated quests nobody had). Each now has a start and an end through dialogue, actions or fights; the 48-hour rescue starts when the Captain asks. Quests completed by objects/dialogue never paid their `rewards`; `completeQuest()` pays them once. Dialogue nodes ignored `consumeItem` (the Sunstone stayed in your pack). A creature with an encounter also had a plain "Attack" card that skipped the encounter's quest outcome. Persuade/Deceive had no buttons; Pickpocket showed a wrong DC. `presentItems` could never be picked up (Search card). Resting in Haven/Thebes counted as wilderness. A yielding NPC was always recorded as killed. The strongbox could be picked through the locked vault door. The presence list missed NPCs placed by `locationId`. Combat text named every foe "the beast" on a "cavern floor"; feats and sacred rest used Greek names in the Dev campaign.
+* **Quest log**: Active / Completed / Failed tabs; ☆ Focus pins (max 3) drive the sidebar.
+* **NPC standing** (ENGINE_ARCHITECTURE §7.12, CONTENT_SCHEMA §26): personal favour + half the faction reputation; tiers change prices, persuasion DC, dialogue (locked 🔒 choices), trade refusal and attack-on-sight. Dev Captain lends the vault key when Trusted; Lycus shares a rumour when Friendly.
+* **Trading** (§7.8): trade window for every merchant in both campaigns, standing prices, selling, buy-back, one event-driven restock per merchant.
+* **Confrontations** (§7.13, CONTENT_SCHEMA §27): ambushes, hostile NPCs and alarms let you hide, slip away or talk; forced fights offer brace / strike first / head-on; when you start the fight you can prepare with terrain tactics and open with a strike from hiding. Red vs gold styling.
+* **Action menu** (chosen by the user from four options; all four built): ★ Next steps strip (cards that progress focused quests), Focus panel layout with entity chips and one panel (default; "Lists" layout kept as a Settings option), compact icon tiles with short labels, and Attack/Pickpocket behind a "⚠ Hostile acts" toggle.
+* **Save v1.7.0**: `merchants`, `foundItems`, `focusedQuests` (migrated).
+* **Size**: `index.html` +104 KB (797 → 901 KB, of which 11 KB is the regenerated embedded Dev content).
+* **Tests**: behaviour 82/82 (8 new, incl. a full Dev campaign play-through), legacy 74/74, browser smoke 7/7; real-browser play-throughs of the tutorial and every Dev quest; no cut-off content at 4 window sizes (trade and confrontation windows included); stress fuzz 12,000 steps with 1,868 fights clean.
+
 ### Session 15 — 2026-11-11 (engine capabilities summary & time system audit)
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: Generate downloadable comprehensive summary of all capabilities; verify and explain how time passing works.

@@ -999,3 +999,55 @@ Origins and traits are loaded exactly like classes and backgrounds, from the cam
 * Without files: inline manifest `origins` / `traits`, else the built-in Greek lists (default campaign, `file://`), else a neutral "Wanderer" origin and no traits.
 * The hero keeps a copy of the chosen trait's mechanics, so later edits to a trait file do not change existing heroes.
 
+## 26. NPC Standing, Merchants and Hostility (`characters.json`, `campaign.json` → `npcStanding`)
+
+```json
+{ "id": "npc_dev_guard_captain", "faction": "faction_dev_guards", "disposition": 10,
+  "hostileAction": "attack",
+  "isMerchant": false, "merchantInventory": [{ "itemId": "item_dev_iron_lockpick", "price": 10, "stock": 5 }],
+  "shopClosedFlag": "haven_shop_closed",
+  "attributes": { "wisdom": 13 } }
+```
+* `faction` / `factionId`: the faction whose reputation counts toward this NPC's standing. `disposition`: starting personal favour.
+* `hostileAction: "attack"`: when Hostile, the NPC confronts the hero on arrival.
+* `merchantInventory`: `price` (optional; else the item's `valueDrachmae`) and `stock` (default 3). `shopClosedFlag`: no trading while this flag is set.
+* `attributes.wisdom` sets the Deceive and Pickpocket DCs (12 / 11 + modifier) and, with `perception`, how alert the NPC is in confrontations.
+
+```json
+"npcStanding": {
+  "thresholds": { "hostile": -40, "unfriendly": -10, "friendly": 20, "trusted": 50 },
+  "factionWeight": 0.5,
+  "labels": { "trusted": "Sworn Friend" },
+  "priceMultiplier": { "unfriendly": 1.25, "neutral": 1, "friendly": 0.9, "trusted": 0.8 },
+  "sellRate": { "unfriendly": 0.3, "neutral": 0.4, "friendly": 0.45, "trusted": 0.5 },
+  "persuasionDc": { "hostile": 4, "unfriendly": 2, "neutral": 0, "friendly": -2, "trusted": -4 },
+  "questBonus": 15, "tradeFavourCap": 10, "restockHours": 24
+}
+```
+All keys are optional (defaults shown). Items: `noSell` / `questItem` / `category: "quest"` / `category: "key"` cannot be sold. Traits may give `merchantDiscount` (0–0.5).
+
+## 27. Confrontations (`campaign.json` → `combatPreparation`, encounters, locations, creatures)
+
+```json
+"combatPreparation": { "enabled": true, "maxPreparations": 2, "minutesPerPreparation": 10, "replaceDefaultTactics": false,
+  "tactics": [{ "id": "war_horn", "icon": "📯", "label": "Sound a war horn", "skill": "persuasion", "attribute": "charisma", "dc": 12,
+                "effect": { "enemyAttack": 2, "rounds": 2 }, "text": "The blast rattles your foe." }] }
+```
+* Encounters: `initiative: "player" | "enemy"` (default player: the hero approaches), `unavoidable: true` (no hiding or slipping away), `approachProse` (shown when the hero has the initiative; `introProse` is shown when the foe attacks), `canParley`, `tactics` (extra preparations for this fight).
+* Locations: `tactics` (extra preparations here), `restSafety: "sanctuary" | "settlement" | "wild"`.
+* Creatures: `alertness` (DC to hide from / ambush it; default 10 + Perception or Wisdom modifier + ½ level, +2 bosses), `canParley`.
+* Tactic fields: `id`, `label`, `icon`, `desc`, `skill`, `attribute`, `dc`, `terrain` (regular expression matched against the location's terrain and name; omit for "everywhere"), `requiresFlag`, `text` (shown on success) and `effect`: `damage` (dice, dealt before the fight), `stun` (rounds the foe loses), `attack` / `ac` / `enemyAttack` with `rounds`, `reveal` (shows AC and health).
+
+## 28. Dialogue Conditions, Node Effects and Quest Fields
+
+**Choice conditions** (all keys must hold): `flag` + `expected`, `hasItem`, `notHasItem`, `knowledge`, `questNotStarted`, `questActive`, `questCompleted`, `questStage: { "questId", "stage" }` (stage may be a list), `questNotDone` (+ `questId`), `minStanding` / `maxStanding` (tier ids of the NPC you are talking to; a choice that only lacks standing is shown locked).
+
+**Node effects**: `setFlags`, `startQuest`, `updateQuest`, `updateQuest2`, `completeQuest`, `giveItem`, `giveDrachmae`, `awardXP`, `consumeItem` / `removeItem`, `discoverLocation(s)`, `addJournalKnowledge` / `Chronicle` / `Mysteries`, `modifyReputation`, `morality`, `piety`, `disposition` (a number for the speaker, or `{ "npc_id": delta }`), `moralChoice: { "questId", "path" }`, `removeCharacter` (NPC leaves the world, e.g. arrested), `startEncounter` (the foe confronts the hero), `openTrade: true` (closes the conversation and opens the speaker's shop). Effects that change the world apply on the first visit only. The same outcome keys work in action outcomes, object `unlockOutcome`s, encounter `victoryOutcome`s, `events.json` outcomes and consequence rules.
+
+**Quests**: `autoStart: false` (offered by an NPC or discovered; quests of the adventure start on day 1 otherwise), stage `next` (successor stage), `timeMilestones[].ifStage` (only applies while the quest is at that stage), `rewards` (paid once by `completeQuest()`: `experience`, `drachmae`, `items`, `renown`, `reputation` {faction id or deity id: delta}, `virtue`, `hubris`, `piety`).
+
+**Objects**: `requiresFlag` / `requiresObjectOpen` (hidden and untouchable until then), `failureConsequence.alertNpcId`.
+
+**Locations**: `presentItems` are found with the Search card (DC 10 + 2 per rarity step).
+
+**Progression**: `progression.feats: { "hydra_bane": { "name": "…", "desc": "…" } }` renames feats; non-Greek campaigns get neutral feat names by default.

@@ -9,7 +9,12 @@
       "coordinates": { "x": 300, "y": 300 },
       "terrain": "paved_road",
       "buildings": [
-        { "id": "bld_haven_apothecary", "name": "Lycus' Fine Goods & Wares", "isOpen": true, "ownerId": "npc_dev_merchant_lycus" },
+        {
+          "id": "bld_haven_apothecary",
+          "name": "Lycus' Fine Goods & Wares",
+          "isOpen": true,
+          "ownerId": "npc_dev_merchant_lycus"
+        },
         { "id": "bld_haven_guardhouse", "name": "Haven Watch Post", "isOpen": true, "ownerId": "npc_dev_guard_captain" },
         { "id": "bld_haven_treasury", "name": "The High Vault", "isOpen": false, "requiresLockpick": true }
       ],
@@ -46,14 +51,8 @@
         "overview": "Haven of the Crossways is a fortified settlement set amidst limestone ridges. Cobblestone pathways link timber-framed houses, a lively merchant stall, and the imposing town watch house.",
         "shortDescription": "A bustling crossroads settlement fortified by stout wooden palisades."
       },
-      "presentNPCs": [
-        "npc_dev_merchant_lycus",
-        "npc_dev_guard_captain",
-        "npc_dev_elena_scholar"
-      ],
-      "presentItems": [
-        "item_dev_iron_lockpick"
-      ]
+      "presentNPCs": ["npc_dev_merchant_lycus", "npc_dev_guard_captain", "npc_dev_elena_scholar"],
+      "presentItems": ["item_dev_iron_lockpick"]
     },
     {
       "id": "loc_dev_whispering_woods",
@@ -88,12 +87,56 @@
         "overview": "Towering ancient pines and dense briars cast cool, dappled shadows across the mossy floor. The air rustles with wild boar foraging in the undergrowth.",
         "shortDescription": "A verdant, windswept pine forest sheltering game and hidden hollows."
       },
-      "presentCreatures": [
-        "creature_dev_wild_boar",
-        "creature_dev_forest_wolf"
+      "presentCreatures": ["creature_dev_wild_boar", "creature_dev_forest_wolf"],
+      "presentItems": ["item_dev_forest_berries"],
+      "actions": [
+        {
+          "id": "act_study_monolith",
+          "category": "Exploration & Investigation",
+          "title": "Study the Weathered Monolith",
+          "desc": "Copy the runes from a moss-covered standing stone among the pines.",
+          "badge": "Investigation",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "monolith_runes_copied",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "dc": 12,
+            "name": "Decipher the Monolith",
+            "success": {
+              "transcript": {
+                "speaker": "Discovery",
+                "text": "Beneath the moss you trace a spiral of ancient runes and copy them carefully onto parchment.",
+                "style": "entry-discovery"
+              },
+              "setFlags": { "monolith_runes_copied": true },
+              "updateQuest": { "questId": "quest_dev_ancient_ruins", "objectiveId": "obj_read_monolith", "completed": true },
+              "completeQuest": "quest_dev_ancient_ruins",
+              "addJournalKnowledge": {
+                "title": "The Whispering Monolith",
+                "text": "Copied a spiral of runes from a standing stone in the Whispering Woods."
+              }
+            },
+            "failure": {
+              "text": "The runes blur under the moss and failing light. You could try again later.",
+              "speaker": "Narrator"
+            }
+          }
+        }
       ],
-      "presentItems": [
-        "item_dev_forest_berries"
+      "tactics": [
+        {
+          "id": "bramble_lure",
+          "icon": "🌿",
+          "label": "Lure it into the bramble thicket",
+          "desc": "Draw your quarry into thorns where it cannot turn.",
+          "skill": "survival",
+          "attribute": "wisdom",
+          "dc": 13,
+          "effect": { "enemyAttack": 2, "attack": 1, "rounds": 3 },
+          "text": "Thorns tear at your foe as it blunders into the thicket."
+        }
       ]
     },
     {
@@ -119,11 +162,20 @@
         "overview": "Chilly mist seeps from the shattered archway of the sunken crypt. Dark stone sepulchers flank an archaic sanctuary hall where an ancient warlord slumbers.",
         "shortDescription": "A subterranean limestone crypt heavy with cold subterranean mist."
       },
-      "presentCreatures": [
-        "creature_dev_crypt_boss"
-      ],
-      "presentItems": [
-        "item_dev_crypt_torch"
+      "presentCreatures": ["creature_dev_crypt_boss"],
+      "presentItems": ["item_dev_crypt_torch"],
+      "tactics": [
+        {
+          "id": "topple_brazier",
+          "icon": "🔥",
+          "label": "Topple the burning brazier",
+          "desc": "Tip the old sepulchre brazier onto the dead lord.",
+          "skill": "athletics",
+          "attribute": "strength",
+          "dc": 13,
+          "effect": { "damage": "2d6", "enemyAttack": 1, "rounds": 2 },
+          "text": "Burning coals cascade over your foe!"
+        }
       ]
     },
     {
@@ -149,8 +201,63 @@
         "overview": "Razor-sharp black obsidian pinnacles rise into freezing winds. Lethal shadow beasts stalk the high passes, hunting any mortal foolish enough to climb without heroic armament.",
         "shortDescription": "Treacherous obsidian pinnacles shrouded in howling winds."
       },
-      "presentCreatures": [
-        "creature_dev_shadow_stalker"
+      "presentCreatures": ["creature_dev_shadow_stalker"],
+      "actions": [
+        {
+          "id": "act_sneak_to_apprentice",
+          "category": "Exploration & Investigation",
+          "title": "Sneak to the Bound Apprentice",
+          "desc": "Creep past the stalker's perch and cut the captive free.",
+          "badge": "Stealth",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "crag_stalker_slain",
+          "conditions": [
+            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "rescue_crag" }
+          ],
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "stealth",
+            "attribute": "agility",
+            "dc": 14,
+            "name": "Sneak past the Shadow Stalker",
+            "success": {
+              "transcript": {
+                "speaker": "Rescue",
+                "text": "You slip between the black pinnacles, cut the apprentice's bonds and lead them away before the stalker stirs.",
+                "style": "entry-discovery"
+              },
+              "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice", "completed": true },
+              "awardXP": 40
+            },
+            "failure": {
+              "text": "Loose obsidian skitters under your boot. A shriek answers from the pinnacle above!",
+              "speaker": "Narrator",
+              "startEncounter": "enc_dev_shadow_stalker",
+              "encounterReason": "The Shadow Stalker drops from its perch, talons spread!"
+            }
+          }
+        },
+        {
+          "id": "act_free_apprentice",
+          "category": "Exploration & Investigation",
+          "title": "Free the Bound Apprentice",
+          "desc": "With the stalker dead, cut the captive loose.",
+          "badge": "Rescue",
+          "type": "primary-quest-action",
+          "requiresFlag": "crag_stalker_slain",
+          "conditions": [
+            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "rescue_crag" }
+          ],
+          "handlerType": "narrative",
+          "outcome": {
+            "transcript": {
+              "speaker": "Rescue",
+              "text": "You cut the apprentice's bonds. Shaking but unhurt, they follow you down toward Haven.",
+              "style": "entry-discovery"
+            },
+            "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice", "completed": true }
+          }
+        }
       ]
     },
     {
@@ -176,8 +283,28 @@
         "overview": "A secluded subterranean pool lit by bioluminescent moss clinging to limestone stalactites. The water reflects shimmering veins of silver ore.",
         "shortDescription": "A tranquil subterranean grotto with glowing limestone pools."
       },
-      "presentItems": [
-        "item_dev_silver_chalice"
+      "presentItems": ["item_dev_silver_chalice"],
+      "actions": [
+        {
+          "id": "act_free_apprentice_grotto",
+          "category": "Exploration & Investigation",
+          "title": "Free the Apprentice in the Grotto",
+          "desc": "The captive was dragged here. Find them in the dark.",
+          "badge": "Rescue",
+          "type": "primary-quest-action",
+          "conditions": [
+            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "stage_hostage_moved" }
+          ],
+          "handlerType": "narrative",
+          "outcome": {
+            "transcript": {
+              "speaker": "Rescue",
+              "text": "Deep in the grotto you find the apprentice chained to a stalagmite and pry the shackle open.",
+              "style": "entry-discovery"
+            },
+            "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice_grotto", "completed": true }
+          }
+        }
       ]
     }
   ]

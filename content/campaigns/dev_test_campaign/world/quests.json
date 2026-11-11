@@ -23,7 +23,11 @@
         "return_or_keep": {
           "description": "Deliver the Sunstone to Elena for a scholarly reward, or retain it as an artifact of power.",
           "objectives": [
-            { "id": "obj_resolve_sunstone", "text": "Deliver the relic to Elena or claim its power.", "completed": false }
+            {
+              "id": "obj_resolve_sunstone",
+              "text": "Deliver the relic to Elena or claim its power.",
+              "completed": false
+            }
           ]
         },
         "completed": {
@@ -36,21 +40,19 @@
       "alternatePathways": {
         "onNpcDeath": {
           "npcId": "npc_dev_elena_scholar",
-          "setStage": "explore_crypt", "giveItem": "item_dev_elena_journal",
+          "setStage": "explore_crypt",
+          "giveItem": "item_dev_elena_journal",
           "completeObjective": "obj_speak_elena",
           "narrative": "With Scholar Elena slain, her research journal reveals the location of the Sunstone in the Sunken Crypt. You may seek the relic for your own glory."
         }
       },
-      "rewards": {
-        "experience": 250,
-        "drachmae": 60,
-        "renown": 25
-      }
+      "rewards": { "experience": 250, "drachmae": 60, "renown": 25 }
     },
     {
       "id": "quest_dev_boar_menace",
       "title": "The Bristle Boar Menace",
       "category": "Side Quest",
+      "autoStart": false,
       "summary": "Captain Valerius has posted a bounty for hunting ferocious wild boars in the Whispering Woods.",
       "currentStage": "hunt_boar",
       "stages": {
@@ -73,15 +75,13 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 100,
-        "drachmae": 25
-      }
+      "rewards": { "experience": 100, "drachmae": 25 }
     },
     {
       "id": "quest_dev_treasury_heist",
       "title": "The High Vault Infiltration",
       "category": "Optional Quest",
+      "autoStart": false,
       "summary": "Infiltrate Haven's High Vault by picking the lock or obtaining the key, and claim the treasures within.",
       "currentStage": "infiltrate_vault",
       "stages": {
@@ -99,14 +99,13 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 150
-      }
+      "rewards": { "experience": 150 }
     },
     {
       "id": "quest_dev_grotto_mystery",
       "title": "The Secret of the Sunken Grotto",
       "category": "Discovery Quest",
+      "autoStart": false,
       "summary": "Discover the hidden passage behind the overgrown granite boulder in the Whispering Woods.",
       "currentStage": "discover_grotto",
       "stages": {
@@ -123,22 +122,26 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 75,
-        "drachmae": 15
-      }
+      "rewards": { "experience": 75, "drachmae": 15 }
     },
     {
       "id": "quest_dev_merchant_delivery",
       "title": "Lycus' Caravan Contract",
       "category": "Faction Quest",
-      "summary": "Merchant Lycus entrusted you with a business delivery to the outlying homesteads.",
+      "autoStart": false,
+      "summary": "Merchant Lycus entrusted you with a sealed parcel for the Haven Watch Post.",
       "currentStage": "active_delivery",
       "stages": {
         "active_delivery": {
-          "description": "Ensure the goods reach their destination safely.",
+          "description": "Carry Lycus' sealed parcel to Captain Valerius at the Haven Watch Post.",
           "objectives": [
-            { "id": "obj_carry_goods", "text": "Deliver goods for Lycus.", "completed": false }
+            { "id": "obj_carry_goods", "text": "Deliver the sealed parcel to Captain Valerius.", "completed": false }
+          ]
+        },
+        "return_lycus": {
+          "description": "The Watch has its goods. Collect your fee from Lycus.",
+          "objectives": [
+            { "id": "obj_collect_fee", "text": "Collect your fee from Merchant Lycus.", "completed": false }
           ]
         },
         "completed": {
@@ -154,16 +157,14 @@
           "reason": "Merchant Lycus was slain. The delivery contract is null and void."
         }
       },
-      "rewards": {
-        "experience": 80,
-        "drachmae": 30
-      }
+      "rewards": { "experience": 80, "drachmae": 30 }
     },
     {
       "id": "quest_dev_urgent_rescue",
       "title": "Hostage of the Obsidian Crag",
       "category": "Time-Sensitive Quest",
-      "summary": "Bandits have seized an apprentice artificer. Slay the guards or negotiate before the captive is moved to a distant stronghold.",
+      "autoStart": false,
+      "summary": "A beast-haunted crag holds a captive apprentice artificer. Free them before they are dragged deeper, then report to Captain Valerius.",
       "timeSensitive": true,
       "deadlineHours": 48,
       "earlyCompletionBonus": {
@@ -176,28 +177,42 @@
         {
           "hours": 24,
           "action": "warn",
-          "narrative": "Scouts report bandit lookouts have doubled at the Obsidian Crag. Time is growing short!"
+          "narrative": "Scouts report bandit lookouts have doubled at the Obsidian Crag. Time is growing short!",
+          "ifStage": "rescue_crag"
         },
         {
           "hours": 48,
           "action": "escalate",
           "mutateStage": "stage_hostage_moved",
           "setFlags": { "hostage_moved_deep": true },
-          "narrative": "The deadline expired! The captive has been dragged deeper into the cavern, guarded by heavier reinforcements."
+          "narrative": "The deadline expired! The captive has been dragged deeper into the cavern, guarded by heavier reinforcements.",
+          "ifStage": "rescue_crag"
         }
       ],
       "currentStage": "rescue_crag",
       "stages": {
         "rescue_crag": {
-          "description": "Reach the Obsidian Crag and rescue the captive apprentice.",
+          "description": "Reach the Obsidian Crags and free the captive apprentice, by force or by stealth.",
+          "next": "return_haven",
           "objectives": [
             { "id": "obj_free_apprentice", "text": "Free the apprentice at the crags.", "completed": false }
           ]
         },
         "stage_hostage_moved": {
-          "description": "The apprentice was relocated to the Sunken Grotto. Infiltrate the subterranean cavern.",
+          "description": "The apprentice was dragged into the Sunken Grotto, behind the great boulder in the Whispering Woods. Get in and free them.",
+          "next": "return_haven",
           "objectives": [
-            { "id": "obj_free_apprentice_grotto", "text": "Free the apprentice from the deep grotto.", "completed": false }
+            {
+              "id": "obj_free_apprentice_grotto",
+              "text": "Free the apprentice in the Sunken Grotto (past the boulder in the Whispering Woods).",
+              "completed": false
+            }
+          ]
+        },
+        "return_haven": {
+          "description": "The apprentice is free. Report to Captain Valerius in Haven.",
+          "objectives": [
+            { "id": "obj_report_rescue", "text": "Tell Captain Valerius the apprentice is safe.", "completed": false }
           ]
         },
         "completed": {
@@ -207,17 +222,14 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 150,
-        "drachmae": 50,
-        "virtue": 15
-      }
+      "rewards": { "experience": 150, "drachmae": 50, "virtue": 15 }
     },
     {
       "id": "quest_dev_bandit_alliance",
       "title": "The Renegade's Bargain",
       "category": "Morality Quest",
-      "summary": "Renegade Silas offers a lucrative deal: turn him in to Captain Valerius, accept his hush money, or assassinate the Captain.",
+      "autoStart": false,
+      "summary": "Renegade Silas offers a deal: turn him in to Captain Valerius, take his hush money, or help him remove the Captain.",
       "timeSensitive": false,
       "currentStage": "confront_silas",
       "moralPaths": {
@@ -260,14 +272,13 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 100
-      }
+      "rewards": { "experience": 100 }
     },
     {
       "id": "quest_dev_ancient_ruins",
       "title": "The Whispering Monoliths",
       "category": "Timeless Exploration",
+      "autoStart": false,
       "summary": "Explore the ancient stone monoliths scattered through the wilderness. This quest has no time limit.",
       "timeSensitive": false,
       "currentStage": "examine_stones",
@@ -285,10 +296,7 @@
           ]
         }
       },
-      "rewards": {
-        "experience": 50,
-        "drachmae": 10
-      }
+      "rewards": { "experience": 50, "drachmae": 10 }
     }
   ]
 }

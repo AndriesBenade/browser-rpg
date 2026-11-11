@@ -25,7 +25,8 @@
         { "itemId": "item_dev_healing_draught", "price": 15, "stock": 3 },
         { "itemId": "item_dev_trail_rations", "price": 5, "stock": 8 }
       ],
-      "description": "A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests."
+      "description": "A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests.",
+      "shopClosedFlag": "haven_shop_closed"
     },
     {
       "id": "npc_dev_guard_captain",
@@ -47,7 +48,9 @@
           { "name": "Heavy Broadsword Slash", "attackBonus": 4, "damage": "1d8+2", "damageType": "slashing" }
         ]
       },
-      "description": "An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword."
+      "description": "An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword.",
+      "hostileAction": "attack",
+      "attributes": { "strength": 14, "agility": 12, "endurance": 14, "wisdom": 13, "charisma": 11, "intelligence": 11 }
     },
     {
       "id": "npc_dev_elena_scholar",
@@ -90,7 +93,9 @@
           { "name": "Hunting Knife Stab", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" }
         ]
       },
-      "description": "A lean, hooded archer lurking in the shadows of the pine branches."
+      "description": "A lean, hooded archer lurking in the shadows of the pine branches.",
+      "hostileAction": "attack",
+      "attributes": { "strength": 12, "agility": 15, "endurance": 12, "wisdom": 12, "charisma": 13, "intelligence": 11 }
     }
   ]
 }

@@ -26,6 +26,12 @@ async function test(name, fn) {
 
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 const fixedRoll = (engine, value) => { engine.rollD20 = () => value; };
+// Fights open with a confrontation (pre-combat choices); tests that only need the fight attack openly.
+const engageFight = (engine, env) => {
+  if (env) env.flushTimers();
+  const cf = engine.confrontation;
+  if (cf) engine.chooseConfrontation(cf.initiator === 'enemy' ? (cf.unavoidable ? 'head_on' : 'fight') : 'attack');
+};
 // Values created inside the engine's VM context have foreign prototypes; compare plain copies.
 const plain = (v) => JSON.parse(JSON.stringify(v));
 
@@ -818,6 +824,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
       fixedRoll(engine, 20);
       engine.state.player.vitals.health = engine.state.player.vitals.maxHealth = 500;
       card.handler();
+      engageFight(engine);
       while (engine.combatSession) { engine.combatSession.enemy.hp = 1; engine.combatAction('thrust'); env.flushTimers(); }
       return true;
     };
@@ -1020,7 +1027,10 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     env.flushTimers();
     assert.ok(logs.length > 0);
     assert.ok(!logs.some(t => /mountain wolf|grey fur/i.test(t)), 'Greek wolf prose leaked: ' + logs.join(' | '));
-    assert.ok(engine.combatSession, 'the ambush still happens');
+    assert.ok(engine.confrontation, 'the ambush still happens (as a confrontation: spotted in time, the hero has the initiative)');
+    assert.ok(!/mountain wolf|grey fur/i.test(engine.confrontation.intro || ''), 'confrontation prose is campaign-neutral');
+    engageFight(engine);
+    assert.ok(engine.combatSession, 'standing to fight starts the combat');
   });
 
   await test('Travel: every location of both campaigns can be reached through the travel cards; path predicates are enforced', async () => {
@@ -1065,12 +1075,15 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
     const xp0 = engine.state.player.xp;
     fixedRoll(engine, 19); // a success that is not a natural 20 (which would add a discovery cache)
+    const questXp = engine.getQuestDefinition('quest_dev_grotto_mystery').rewards.experience;
+    const d0 = engine.state.player.currencies.drachmae;
     engine.heaveObstacle('obj_boulder_seal');
     assert.strictEqual(w.flags.discovered_sunken_grotto, true, 'unlockOutcome flag set');
     assert.strictEqual(w.quests.quest_dev_grotto_mystery.completed, true, 'quest completed by the boulder');
-    assert.strictEqual(engine.state.player.xp - xp0, 30, 'authored XP replaces the generic award (not both)');
+    assert.strictEqual(engine.state.player.xp - xp0, 30 + questXp, 'authored XP replaces the generic award (not both); the quest pays its rewards');
+    assert.strictEqual(engine.state.player.currencies.drachmae - d0, 15, 'quest drachmae paid once');
     engine.heaveObstacle('obj_boulder_seal');
-    assert.strictEqual(engine.state.player.xp - xp0, 30, 'no second award');
+    assert.strictEqual(engine.state.player.xp - xp0, 30 + questXp, 'no second award');
     assert.ok(engine.getContextualActionGroups().flatMap(g => g.actions).some(a => a.id === 'act_travel_loc_dev_sunken_grotto'), 'grotto road now open');
   });
 
@@ -1288,23 +1301,72 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.getContextualActionGroups().flatMap(g => g.actions).forEach(a => {
       const e = engine.getActionEntity(a, loc); (groups[`${e.kind}:${e.id}`] = groups[`${e.kind}:${e.id}`] || []).push(a.id);
     });
-    assert.strictEqual(groups['npc:npc_dev_merchant_lycus'].length, 3, 'talk, attack and pickpocket grouped under Lycus');
+    assert.deepStrictEqual(groups['npc:npc_dev_merchant_lycus'].map(id => id.split('_')[1]).sort(),
+      ['attack', 'deceive', 'persuade', 'pickpocket', 'talk', 'trade'], 'talk, trade, persuade, deceive, attack and pickpocket grouped under Lycus');
     assert.strictEqual(groups['object:obj_treasury_iron_door'].length, 1);
     assert.ok(groups['place:loc_dev_whispering_woods'], 'travel belongs to the destination');
-    // Rendering: details elements for multi-action entities, plain cards otherwise
+    // Rendering ("lists" layout): details elements for multi-action entities, plain cards otherwise
+    engine.setUiSize('actionLayout', 'lists');
     const created = [];
     const origCreate = env.sandbox.document.createElement;
     env.sandbox.document.createElement = (tag) => { const el = origCreate(tag); created.push(el); return el; };
     engine.renderStoryPanel();
     env.sandbox.document.createElement = origCreate;
-    const details = created.filter(el => el.tagName === 'DETAILS');
-    assert.strictEqual(details.length, 3, 'three NPC lists (Lycus, Valerius, Elena)');
+    const details = created.filter(el => el.tagName === 'DETAILS' && el.className === 'action-entity-group');
+    assert.strictEqual(details.length, 4, 'three NPC lists (Lycus, Valerius, Elena) and Haven itself (search, rest)');
+    assert.strictEqual(created.filter(el => el.tagName === 'DETAILS' && el.className === 'risky-acts').length, 3, 'attack and pickpocket tucked behind a toggle per NPC');
+    engine.setUiSize('actionLayout', null);
     assert.ok(created.filter(el => el.tagName === 'BUTTON').length >= 9 + 6);
     // Greek tutorial: "Speak with Elder Daidalos" joins Daidalos' list
     await startCampaign(env, engine, 'campaign_greek_mythology');
     const gl = engine.getLocation(engine.state.worldState.currentLocationId);
     const talk = engine.getContextualActionGroups().flatMap(g => g.actions).find(a => /Speak with Elder Daidalos/.test(a.title));
     assert.strictEqual(engine.getActionEntity(talk, gl).id, 'npc_daidalos_shepherd');
+  });
+
+  await test('Action menu: next steps, focus panel with compact tiles, friendly vs hostile acts, layout setting', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const loc = engine.getLocation('loc_dev_haven');
+    assert.strictEqual(engine.getActionLayout(), 'focus', 'focus panel is the default');
+    const actions = () => engine.getContextualActionGroups().flatMap(g => g.actions);
+    // Next steps: the main quest is active, so talking to Elena (who starts it properly) is a next step
+    let steps = engine.getNextStepActions(actions()).map(x => x.act.id);
+    assert.ok(steps.includes('act_talk_npc_dev_elena_scholar'), steps.join(','));
+    // Focusing another quest narrows the strip to it; its encounter is elsewhere, so the road there is offered
+    engine.openDialogue('dialogue_dev_captain', 'node_boar_bounty'); engine.closeDialogue();
+    engine.toggleQuestFocus('quest_dev_boar_menace');
+    steps = engine.getNextStepActions(actions()).map(x => x.act.id);
+    assert.deepStrictEqual(plain(steps), ['act_travel_loc_dev_whispering_woods']);
+    engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
+    assert.deepStrictEqual(plain(engine.getNextStepActions(actions()).map(x => x.act.id)), ['act_enc_enc_dev_wild_boar']);
+    engine.state.worldState.currentLocationId = 'loc_dev_haven';
+    // Short labels drop the entity's name
+    const lycus = { kind: 'npc', id: 'npc_dev_merchant_lycus', name: 'Merchant Lycus' };
+    const byId = (id) => actions().find(a => a.id === id);
+    assert.strictEqual(engine.shortActionLabel(byId('act_talk_npc_dev_merchant_lycus'), lycus), 'Speak');
+    assert.strictEqual(engine.shortActionLabel(byId('act_persuade_npc_dev_merchant_lycus'), lycus), `Persuade (DC ${engine.getPersuadeDc('npc_dev_merchant_lycus')})`);
+    assert.strictEqual(engine.shortActionLabel(byId('act_obj_pick_obj_treasury_iron_door'), { name: 'Ironbound Vault Door' }), 'Pick Lock (DC 12)');
+    // Rendering: one chip per multi-action entity, one hidden panel each, single actions as tiles
+    const created = [];
+    const origCreate = env.sandbox.document.createElement;
+    env.sandbox.document.createElement = (tag) => { const el = origCreate(tag); created.push(el); return el; };
+    engine.renderStoryPanel();
+    env.sandbox.document.createElement = origCreate;
+    const chips = created.filter(el => el.className && /entity-chip/.test(el.className));
+    const panels = created.filter(el => el.className === 'focus-panel');
+    assert.strictEqual(chips.length, 4, 'Lycus, Valerius, Elena and Haven');
+    assert.ok(panels.length === 4 && panels.every(p => p.hidden), 'panels exist but stay closed until chosen');
+    assert.strictEqual(created.filter(el => el.className === 'risky-acts').length, 3, 'hostile acts behind a toggle for each person');
+    assert.ok(created.some(el => el.className === 'next-steps'), 'next steps strip rendered');
+    chips[0].onclick();
+    assert.ok(engine._focusEntity, 'a chip selects its entity');
+    // Layout setting persists and survives "Reset panel sizes"
+    engine.setActionLayout('lists');
+    assert.strictEqual(JSON.parse(env.storage.gm_ui_sizes).actionLayout, 'lists');
+    engine.resetUiSizes();
+    assert.strictEqual(engine.getActionLayout(), 'lists');
   });
 
   await test('UI: panel sizes and text size are saved and restored', async () => {
@@ -1315,6 +1377,305 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.deepStrictEqual(JSON.parse(env.storage.gm_ui_sizes), { sidebar: 420, textScale: 120 });
     engine.resetUiSizes();
     assert.strictEqual(env.storage.gm_ui_sizes, undefined);
+  });
+
+  // ---------------------------------------------------------------------------
+  // Session 15: quests, NPC standing, trading, confrontations, gameplay fixes
+  // ---------------------------------------------------------------------------
+  await test('Dev campaign: every quest can be started and completed through dialogue, actions and fights', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState;
+    fixedRoll(engine, 15);
+    engine.state.player.vitals.maxHealth = engine.state.player.vitals.health = 500;
+    assert.deepStrictEqual(plain(Object.keys(w.quests)), ['quest_dev_sunstone_relic'], 'only the main quest starts on day 1 (others are offered or discovered)');
+    const say = (tree, ...nodes) => { nodes.forEach(n => engine.openDialogue(tree, n)); engine.closeDialogue(); };
+    const win = () => { engageFight(engine, env); let guard = 0; while (engine.combatSession && guard++ < 20) { if (engine.combatSession.awaitingMercy) { engine.resolveYield(false); break; } engine.combatSession.enemy.hp = 1; engine.combatAction('thrust'); env.flushTimers(); } };
+    const at = (loc) => { w.currentLocationId = loc; };
+    const act = (id) => { const a = engine.getContextualActionGroups().flatMap(g => g.actions).find(x => x.id === id); assert.ok(a, 'action available: ' + id); a.handler(); env.flushTimers(); };
+    // Lycus' delivery: parcel -> Captain -> back to Lycus (quest rewards paid once)
+    const xp0 = engine.state.player.xp;
+    say('dialogue_dev_lycus', 'node_quest');
+    assert.ok(engine.hasItem('item_dev_trade_parcel'));
+    assert.strictEqual(w.quests.quest_dev_merchant_delivery.giverId, 'npc_dev_merchant_lycus');
+    say('dialogue_dev_captain', 'node_parcel', 'node_boar_bounty', 'node_rescue_brief');
+    assert.strictEqual(w.quests.quest_dev_merchant_delivery.stage, 'return_lycus');
+    assert.ok(!engine.hasItem('item_dev_trade_parcel'), 'the parcel is handed over (consumeItem)');
+    const lycus0 = engine.getNpcDisposition('npc_dev_merchant_lycus');
+    say('dialogue_dev_lycus', 'node_paid');
+    assert.ok(w.quests.quest_dev_merchant_delivery.completed);
+    assert.strictEqual(engine.state.player.xp - xp0, 80, 'quest rewards block paid');
+    assert.strictEqual(engine.getNpcDisposition('npc_dev_merchant_lycus') - lycus0, 15, 'the quest giver thinks better of you');
+    say('dialogue_dev_lycus', 'node_paid');
+    assert.strictEqual(engine.state.player.xp - xp0, 80, 'never paid twice');
+    // Boar bounty: encounter -> Captain
+    at('loc_dev_whispering_woods'); act('act_enc_enc_dev_wild_boar'); win();
+    assert.strictEqual(w.quests.quest_dev_boar_menace.stage, 'return_captain');
+    assert.ok(!engine.getContextualActionGroups().flatMap(g => g.actions).some(a => a.id === 'act_attack_creature_dev_wild_boar' && engine.isEncounterAvailable(engine.findEncounter('enc_dev_wild_boar'))), 'no second attack card beside an available encounter');
+    say('dialogue_dev_captain', 'node_boar_paid');
+    assert.ok(w.quests.quest_dev_boar_menace.completed);
+    // Monolith, grotto (discovered by doing), Silas' bargain (moral choice from dialogue)
+    say('dialogue_dev_elena', 'node_accept_sunstone', 'node_monoliths');
+    assert.strictEqual(w.quests.quest_dev_sunstone_relic.stage, 'explore_crypt', 'accepting the job completes "speak with Elena"');
+    act('act_study_monolith');
+    assert.ok(w.quests.quest_dev_ancient_ruins.completed);
+    engine.heaveObstacle('obj_boulder_seal');
+    assert.ok(w.quests.quest_dev_grotto_mystery.completed, 'a discovery quest starts and completes when you find it');
+    say('dialogue_dev_bandit', 'node_bargain', 'node_arrest');
+    assert.strictEqual(w.quests.quest_dev_bandit_alliance.chosenPath, 'heroic');
+    assert.ok(!engine.getNpcsAt('loc_dev_whispering_woods').some(n => n.id === 'npc_dev_bandit_renegade'), 'arrested Silas leaves the woods');
+    // Rescue by stealth, report to the Captain within the deadline (early bonus)
+    at('loc_dev_obsidian_crag'); act('act_sneak_to_apprentice');
+    assert.strictEqual(w.quests.quest_dev_urgent_rescue.stage, 'return_haven', 'stage.next skips the "moved" branch');
+    engine.advanceTime(30, 0);
+    assert.strictEqual(w.quests.quest_dev_urgent_rescue.stage, 'return_haven', 'the 24h warning no longer applies; escalation only while still at the crag (ifStage)');
+    engine.advanceTime(20, 0);
+    assert.strictEqual(w.quests.quest_dev_urgent_rescue.stage, 'return_haven', 'a rescued hostage is not moved by the deadline');
+    say('dialogue_dev_captain', 'node_rescue_done');
+    assert.ok(w.quests.quest_dev_urgent_rescue.completed);
+    // Sunstone: boss loot completes the recovery objective through the ITEM_ACQUIRED event
+    at('loc_dev_ancient_crypt'); act('act_enc_enc_dev_crypt_boss'); win();
+    assert.ok(engine.hasItem('item_dev_sunstone_relic'));
+    assert.strictEqual(w.quests.quest_dev_sunstone_relic.stage, 'return_or_keep');
+    at('loc_dev_haven'); say('dialogue_dev_elena', 'node_complete_sunstone');
+    assert.ok(w.quests.quest_dev_sunstone_relic.completed);
+    assert.ok(!engine.hasItem('item_dev_sunstone_relic'), 'the relic is handed over');
+    // Vault: the strongbox is unreachable until the door is open; opening it discovers and completes the heist
+    assert.ok(!engine.getContextualActionGroups().flatMap(g => g.actions).some(a => /Strongbox/.test(a.title)), 'strongbox hidden behind the vault door');
+    engine.addItem('item_dev_iron_lockpick', 1);
+    engine.attemptLockpick('obj_treasury_iron_door');
+    engine.attemptLockpick('obj_trapped_coffer');
+    assert.ok(w.quests.quest_dev_treasury_heist.completed);
+    assert.ok(Object.values(w.quests).every(q => q.completed), 'all eight quests completed: ' + Object.values(w.quests).filter(q => !q.completed).map(q => q.id));
+  });
+
+  await test('Standing: personal favour + faction share, tiers change persuasion, dialogue, trade and hostility', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const st = (id) => engine.getNpcStanding(id);
+    assert.strictEqual(st('npc_dev_merchant_lycus').personal, 20);
+    assert.strictEqual(st('npc_dev_merchant_lycus').regional, Math.round(engine.getFactionReputation('faction_dev_haven') / 2));
+    assert.strictEqual(st('npc_dev_bandit_renegade').tier, 'unfriendly');
+    engine.modifyFactionReputation('faction_dev_haven', -150);
+    assert.strictEqual(st('npc_dev_merchant_lycus').tier, 'hostile', 'regional reputation moves individual standing');
+    assert.ok(engine.getMerchantClosedReason(engine.getCharacter('npc_dev_merchant_lycus')), 'hostile merchants do not trade');
+    engine.openDialogue('dialogue_dev_lycus');
+    assert.ok(/refuses to speak/.test(env.el('dialogue-text-body').innerHTML), 'hostile NPCs refuse to talk');
+    engine.modifyFactionReputation('faction_dev_haven', 150);
+    // Persuasion DC follows standing; success raises it
+    assert.strictEqual(engine.getPersuadeDc('npc_dev_bandit_renegade'), 14);
+    engine.changeNpcStanding('npc_dev_guard_captain', 60);
+    assert.strictEqual(st('npc_dev_guard_captain').tier, 'trusted');
+    assert.strictEqual(engine.getPersuadeDc('npc_dev_guard_captain'), 8);
+    // Standing-gated dialogue choice is shown locked below the threshold and opens at it
+    engine.changeNpcStanding('npc_dev_guard_captain', -60);
+    engine.openDialogue('dialogue_dev_captain');
+    assert.ok(/locked/.test(env.el('dialogue-choices-list').innerHTML), 'locked choice is visible');
+    engine.changeNpcStanding('npc_dev_guard_captain', 60);
+    engine.openDialogue('dialogue_dev_captain', 'node_vault_trust');
+    assert.ok(engine.hasItem('item_dev_treasury_key'), 'trusted Captain lends the vault key');
+    // Persuade / deceive / pickpocket cards show the real DC
+    const cards = engine.getContextualActionGroups().flatMap(g => g.actions);
+    assert.ok(cards.some(a => a.id === 'act_persuade_npc_dev_merchant_lycus' && a.title.includes(`DC ${engine.getPersuadeDc('npc_dev_merchant_lycus')}`)));
+    assert.ok(cards.some(a => a.id === 'act_pickpocket_npc_dev_merchant_lycus' && a.title.includes(`DC ${engine.getPickpocketDc('npc_dev_merchant_lycus')}`)));
+    fixedRoll(engine, 18);
+    const before = engine.getNpcDisposition('npc_dev_elena_scholar');
+    engine.attemptPersuadeNpc('npc_dev_elena_scholar');
+    assert.strictEqual(engine.getNpcDisposition('npc_dev_elena_scholar') - before, 10);
+    assert.ok(!engine.canAttemptSocial('npc_dev_elena_scholar'), 'social cooldown');
+    // Hostile NPCs with hostileAction "attack" confront you on arrival
+    engine.setNpcDisposition('npc_dev_guard_captain', -100);
+    engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
+    fixedRoll(engine, 15);
+    engine.executeTravel(engine.getLocation('loc_dev_haven'), engine.getLocation('loc_dev_whispering_woods').connections.find(c => c.targetLocationId === 'loc_dev_haven'));
+    env.flushTimers();
+    assert.ok(engine.confrontation && engine.confrontation.npcId === 'npc_dev_guard_captain' && engine.confrontation.initiator === 'enemy');
+    assert.ok(engine.getConfrontationOptions().some(o => o.id === 'parley'), 'people can be talked down');
+  });
+
+  await test('Trading: buy and sell with standing prices, buy-back, event-driven restock, saved in the game', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const npc = 'npc_dev_merchant_lycus';
+    engine.state.player.currencies.drachmae = 100;
+    engine.openTrade(npc);
+    assert.ok(engine.tradeSession);
+    const listed = engine.getCharacter(npc).merchantInventory.find(e => e.itemId === 'item_dev_healing_draught');
+    const tier = engine.getNpcStanding(npc).tier;
+    const expected = Math.max(1, Math.round(listed.price * engine.getStandingConfig().priceMultiplier[tier]));
+    assert.strictEqual(engine.getBuyPrice(npc, 'item_dev_healing_draught'), expected);
+    assert.ok(engine.buyItem(npc, 'item_dev_healing_draught'));
+    assert.strictEqual(engine.state.player.currencies.drachmae, 100 - expected);
+    assert.strictEqual(engine.state.worldState.merchants[npc].stock.item_dev_healing_draught, listed.stock - 1);
+    assert.strictEqual(engine.state.worldState.scheduledEvents.filter(e => e.type === 'merchant_restock').length, 1, 'one restock event');
+    engine.buyItem(npc, 'item_dev_healing_draught');
+    assert.strictEqual(engine.state.worldState.scheduledEvents.filter(e => e.type === 'merchant_restock').length, 1, 'still one');
+    // Sell: equipped and quest items cannot be sold; sold items can be bought back
+    const weapon = engine.state.player.inventory.find(e => e.equipped);
+    assert.strictEqual(engine.getUnsellableReason(npc, weapon), 'Equipped');
+    engine.addItem('item_dev_trade_parcel', 1);
+    assert.strictEqual(engine.getUnsellableReason(npc, engine.state.player.inventory.find(e => e.itemId === 'item_dev_trade_parcel')), 'Not for sale');
+    const purse = engine.state.player.currencies.drachmae;
+    assert.ok(engine.sellItem(npc, 'item_dev_healing_draught'));
+    assert.strictEqual(engine.state.player.currencies.drachmae - purse, engine.getSellPrice(npc, 'item_dev_healing_draught'));
+    assert.strictEqual(engine.state.worldState.merchants[npc].buyback.item_dev_healing_draught, 1);
+    // Unfriendly customers pay more
+    const friendlyPrice = engine.getBuyPrice(npc, 'item_dev_iron_lockpick');
+    engine.setNpcDisposition(npc, -40);
+    assert.strictEqual(engine.getNpcStanding(npc).tier, 'unfriendly');
+    assert.ok(engine.getBuyPrice(npc, 'item_dev_iron_lockpick') > friendlyPrice);
+    engine.setNpcDisposition(npc, 20);
+    const t0 = engine.getTotalInGameMinutes();
+    engine.closeTrade();
+    assert.ok(engine.getTotalInGameMinutes() > t0, 'trading takes time');
+    // Save round trip keeps the merchant; the restock event restores the stock
+    const copy = engine.migrateState(JSON.parse(JSON.stringify(engine.state)));
+    assert.strictEqual(copy.worldState.merchants[npc].stock.item_dev_healing_draught, listed.stock - 2);
+    engine.advanceTime(25, 0);
+    assert.strictEqual(engine.getMerchantState(npc).stock.item_dev_healing_draught, listed.stock, 'restocked');
+    assert.deepStrictEqual(plain(engine.getMerchantState(npc).buyback), {}, 'buy-back cleared at restock');
+    // Generic merchants (no authored dialogue) offer trade from conversation too
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    const tree = engine.buildGenericNpcDialogue('dialogue_npc_theban_agora_merchant');
+    assert.ok(tree.nodes.node_wares.openTrade);
+  });
+
+  await test('Confrontations: the side that starts the fight decides the options; preparations shape the opening', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState;
+    w.currentLocationId = 'loc_dev_whispering_woods';
+    // Player-initiated: terrain tactics (+ location tactic), opening strike, attack, back off
+    engine.engageCreature('creature_dev_forest_wolf');
+    const ids = engine.getConfrontationOptions().map(o => o.arg || o.id);
+    assert.ok(ids.includes('bramble_lure') && ids.includes('ambush') && ids.includes('attack') && ids.includes('withdraw'), ids.join(','));
+    assert.ok(!ids.includes('hide'), 'no hiding from something that has not seen you');
+    fixedRoll(engine, 18);
+    const t0 = engine.getTotalInGameMinutes();
+    engine.chooseConfrontation('tactic', 'bramble_lure');
+    assert.strictEqual(engine.getTotalInGameMinutes() - t0, 10, 'preparing takes time');
+    assert.deepStrictEqual(plain(engine.confrontation.opening.mods.enemyAttack), { value: 2, rounds: 3 });
+    engine.chooseConfrontation('ambush');
+    const c = engine.combatSession;
+    assert.ok(c && c.enemy.hp < c.enemy.maxHp, 'the opening strike already wounded the foe');
+    assert.strictEqual(engine.getCombatMod('enemyAttack'), 2, 'preparation carried into the fight');
+    engine.combatSession = null;
+    // Backing off avoids the fight
+    engine.engageCreature('creature_dev_forest_wolf');
+    engine.chooseConfrontation('withdraw');
+    assert.ok(!engine.confrontation && !engine.combatSession);
+    // A noisy failed preparation hands the initiative to the foe
+    engine.engageCreature('creature_dev_forest_wolf');
+    fixedRoll(engine, 1);
+    engine.chooseConfrontation('tactic', 'study');
+    assert.strictEqual(engine.confrontation.initiator, 'enemy');
+    assert.ok(engine.getConfrontationOptions().some(o => o.id === 'hide'));
+    // Enemy-initiated: hiding can avoid the fight entirely
+    fixedRoll(engine, 20);
+    engine.chooseConfrontation('hide');
+    assert.ok(!engine.combatSession && !engine.confrontation, 'hid successfully');
+    // ... and a failed hide means the foe strikes first
+    engine.engageCreature('creature_dev_forest_wolf', { initiator: 'enemy', surprised: true });
+    fixedRoll(engine, 2);
+    const hp = engine.state.player.vitals.health;
+    engine.chooseConfrontation('hide');
+    assert.ok(engine.combatSession, 'found: the fight begins');
+    engine.combatSession = null;
+    // Unavoidable fights only offer conflict choices (tutorial cave beast)
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    engine.state.worldState.flags.cithaeron_cave_unsealed = true;
+    engine.state.worldState.currentLocationId = 'loc_cithaeron_fissure_cave';
+    const enter = engine.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_enter_grotto');
+    enter.handler();
+    assert.deepStrictEqual(plain(engine.getConfrontationOptions().map(o => o.id)), ['brace', 'strike_first', 'head_on']);
+    engine.chooseConfrontation('brace');
+    assert.ok(engine.combatSession && engine.combatSession.mods.ac, 'braced');
+    assert.ok(hp >= 0);
+  });
+
+  await test('Gameplay fixes: search finds placed items once, rest is safe in towns, NPCs can be spared, feats are campaign-neutral', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState;
+    // Search the area for presentItems (previously never obtainable)
+    fixedRoll(engine, 15);
+    assert.deepStrictEqual(plain(engine.getUnfoundItems('loc_dev_haven')), ['item_dev_iron_lockpick']);
+    engine.searchArea('loc_dev_haven');
+    assert.ok(engine.hasItem('item_dev_iron_lockpick'));
+    assert.deepStrictEqual(plain(engine.getUnfoundItems('loc_dev_haven')), [], 'found once');
+    assert.ok(!engine.getContextualActionGroups().flatMap(g => g.actions).some(a => a.id === 'act_search_loc_dev_haven'));
+    // Rest safety: towns and cities are safe
+    assert.strictEqual(engine.getRestSafety(engine.getLocation('loc_dev_haven')), 'settlement');
+    assert.strictEqual(engine.getRestSafety(engine.getLocation('loc_dev_whispering_woods')), 'wild');
+    // Sparing a yielding NPC: they live, turn hostile and leave for a day (event-driven return)
+    engine.engageNpc('npc_dev_elena_scholar', { initiator: 'player' });
+    engine.chooseConfrontation('attack');
+    const c = engine.combatSession;
+    c.enemy.hp = 2; fixedRoll(engine, 2);
+    engine.combatAction('thrust');
+    assert.ok(engine.combatSession.awaitingMercy, 'the NPC yields and the hero chooses');
+    engine.resolveYield(true);
+    assert.ok(engine.isNpcAlive('npc_dev_elena_scholar'));
+    assert.ok(!engine.getNpcsAt('loc_dev_haven').some(n => n.id === 'npc_dev_elena_scholar'), 'gone for now');
+    assert.strictEqual(engine.getNpcStanding('npc_dev_elena_scholar').tier, 'hostile');
+    engine.advanceTime(25, 0);
+    assert.ok(engine.getNpcsAt('loc_dev_haven').some(n => n.id === 'npc_dev_elena_scholar'), 'back after a day');
+    // Feats: neutral names outside the Greek campaign
+    const feats = engine.getHeroicFeatDefinitions();
+    assert.strictEqual(feats.hydra_bane.name, 'Monster Slayer');
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    assert.strictEqual(engine.getHeroicFeatDefinitions().hydra_bane.name, 'Bane of the Hydra');
+    // Greek NPCs belong to their regions' factions
+    assert.strictEqual(engine.getNpcStanding('npc_daidalos_shepherd').factionId, 'faction_plataea');
+  });
+
+  await test('Quest log: completed and failed quests are separate; focused quests drive the sidebar', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const w = engine.state.worldState;
+    engine.startQuest('quest_dev_boar_menace');
+    engine.startQuest('quest_dev_ancient_ruins');
+    engine.startQuest('quest_dev_merchant_delivery');
+    engine.completeQuest('quest_dev_ancient_ruins');
+    engine.failQuest('quest_dev_merchant_delivery');
+    engine.renderQuests();
+    let html = env.el('quest-list-container').innerHTML;
+    assert.ok(/Active \(2\)/.test(html) && /Completed \(1\)/.test(html) && /Failed \(1\)/.test(html), 'tab counts');
+    assert.ok(!html.includes('The Whispering Monoliths'), 'completed quests are not in the Active tab');
+    engine.setQuestTab('completed');
+    html = env.el('quest-list-container').innerHTML;
+    assert.ok(html.includes('The Whispering Monoliths') && !html.includes('Bristle Boar'));
+    // Focus
+    assert.deepStrictEqual(plain(engine.getSidebarQuests().quests.map(q => q.id)), ['quest_dev_sunstone_relic'], 'without focus: the main quest');
+    engine.toggleQuestFocus('quest_dev_boar_menace');
+    assert.deepStrictEqual(plain(engine.getSidebarQuests().quests.map(q => q.id)), ['quest_dev_boar_menace']);
+    assert.ok(engine.getSidebarQuests().focused);
+    engine.completeQuest('quest_dev_boar_menace');
+    assert.deepStrictEqual(plain(w.focusedQuests), [], 'completing a quest unpins it');
+    // Focus survives save/load
+    engine.toggleQuestFocus('quest_dev_sunstone_relic');
+    const copy = engine.migrateState(JSON.parse(JSON.stringify(engine.state)));
+    assert.deepStrictEqual(plain(copy.worldState.focusedQuests), ['quest_dev_sunstone_relic']);
+  });
+
+  await test('Save migration 1.7.0: older saves gain merchants, found items and focused quests', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const old = JSON.parse(JSON.stringify(engine.state));
+    old.version = '1.6.0';
+    delete old.worldState.merchants; delete old.worldState.foundItems; delete old.worldState.focusedQuests;
+    const m = engine.migrateState(old);
+    assert.strictEqual(m.version, '1.7.0');
+    assert.deepStrictEqual(plain(m.worldState.merchants), {});
+    assert.deepStrictEqual(plain(m.worldState.foundItems), {});
+    assert.deepStrictEqual(plain(m.worldState.focusedQuests), []);
   });
 
   // ---------------------------------------------------------------------------
@@ -1338,6 +1699,19 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
           engine.confirmLevelUp();
         } else if (engine.activeMinigame) {
           engine.closeMinigame(false);
+        } else if (engine.combatSession && engine.combatSession.awaitingMercy) {
+          engine.resolveYield(rnd(2) === 0);
+        } else if (engine.confrontation) {
+          const opts = engine.getConfrontationOptions().filter(o => !o.disabled);
+          const o = opts[rnd(opts.length)];
+          engine.chooseConfrontation(o.id, o.arg);
+        } else if (engine.tradeSession) {
+          const m = engine.getMerchantState(engine.tradeSession.npcId);
+          const stock = Object.keys(m.stock); const mine = engine.state.player.inventory.map(e => e.itemId);
+          const r = rnd(3);
+          if (r === 0 && stock.length) engine.buyItem(engine.tradeSession.npcId, stock[rnd(stock.length)]);
+          else if (r === 1 && mine.length) engine.sellItem(engine.tradeSession.npcId, mine[rnd(mine.length)]);
+          else engine.closeTrade();
         } else if (engine.combatSession && !engine.combatSession.ended) {
           engine.combatAction(['thrust', 'thrust', 'thrust', 'shield_block', 'feint', 'salve', 'prayer'][rnd(7)]);
         } else if (env.el('dialogue-modal').style.display === 'flex' && rnd(4) > 0) {
@@ -1369,6 +1743,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
         const foreign = engine.state.player.inventory.filter(e => !engine.isKnownItem(e.itemId)).map(e => e.itemId);
         assert.deepStrictEqual(plain(foreign), [], `step ${step}: unknown items`);
         if (engine.combatSession) assert.ok(Number.isFinite(engine.combatSession.enemy.hp), `step ${step}: enemy hp NaN`);
+        assert.ok(!(engine.confrontation && engine.combatSession && !engine.combatSession.ended), `step ${step}: confrontation open during a fight`);
       }
       assert.deepStrictEqual(env.sandbox.__errors, [], 'console.error output during play');
       // The whole state must survive a JSON round trip + migration

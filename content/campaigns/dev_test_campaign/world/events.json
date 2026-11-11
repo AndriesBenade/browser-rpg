@@ -4,10 +4,7 @@
       "id": "event_dev_guard_alert",
       "name": "Haven Guard Murder Investigation",
       "trigger": "FLAG_SET",
-      "conditions": {
-        "flag": "merchant_lycus_dead",
-        "expected": true
-      },
+      "conditions": { "flag": "merchant_lycus_dead", "expected": true },
       "outcomes": {
         "setFlags": { "haven_under_curfew": true },
         "transcript": {
@@ -21,16 +18,15 @@
       "id": "event_dev_sunstone_radiance",
       "name": "The Sunstone Resonates",
       "trigger": "ITEM_ACQUIRED",
-      "conditions": {
-        "itemId": "item_dev_sunstone_relic"
-      },
+      "conditions": { "itemId": "item_dev_sunstone_relic" },
       "outcomes": {
         "transcript": {
           "speaker": "Ancient Relic",
           "text": "The Sunstone warms in your grasp, casting golden ripples of solar light across the ancient stones. Its power restores your vitality (+10 Health).",
           "style": "entry-discovery"
         },
-        "restoreHealth": 10
+        "restoreHealth": 10,
+        "updateQuest": { "questId": "quest_dev_sunstone_relic", "objectiveId": "obj_recover_sunstone", "completed": true }
       }
     }
   ]

@@ -48,7 +48,7 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 +-----------------------------------------------------------------------------------------+
 |                               PERSISTENCE & SECURITY                                    |
 |  - Multi-slot IndexedDB with LocalStorage fallback                                      |
-|  - Save Versioning (v1.6.0) with automated migration pipeline                           |
+|  - Save Versioning (v1.7.0) with automated migration pipeline                           |
 |  - Slot overwrite protection & isolated campaign saves                                  |
 +-----------------------------------------------------------------------------------------+
 ```
@@ -193,9 +193,13 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
   * Health thresholds (e.g. dropping below 50% HP) trigger enraged stances (`enraged: true`).
   * Enraged bosses gain +3 attack bonuses, amplified damage, and display dramatic narrative banners.
 
-### 5.4 Wounded NPC Yield & Flee Behaviors
-* Living NPCs entering combat evaluate defensive surrender or flight when dropping below 25% HP.
-* Evaluates cowardice, morale, and self-preservation before catastrophic defeat.
+### 5.4 Wounded NPC Yield & Mercy
+* Living NPCs below 25% HP yield, and the hero chooses: **Spare** them (they survive, turn Hostile and leave their post for a day) or **Finish them** (death, loot and murder consequences).
+
+### 5.5 Confrontations Before Combat
+* Fights open with a confrontation instead of starting instantly. The side that started it decides the choices and the look (red when the foe starts it, gold when the hero has the initiative).
+* **Foe-initiated** (ambushes, hostile NPCs, alarms, failed sneaks): hide, slip away, talk your way out, or stand and fight; **unavoidable** fights offer only brace, strike first or meet it head-on.
+* **Hero-initiated**: up to two terrain or location preparations (high ground, rockfall, snares, darkness, a toppled brazier...) that wound, stun or weaken the foe before the first blow, then an opening strike from hiding, an open attack, or backing off.
 
 ---
 
@@ -228,6 +232,13 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 * Intermediate milestone warnings alert the player as time passes (e.g. guard patrols doubled at 24h).
 * **Early Completion Bonuses**: Finishing within `earlyCompletionBonusHours` awards bonus XP, currency, and special titles.
 * **Timeless Quests**: Mythological ruins and research quests omit deadlines to allow relaxed exploration.
+
+### 7.1b Quest Log & Rewards
+* Active, Completed and Failed quests are kept on separate tabs; up to three quests can be focused (☆) and are shown in the story sidebar.
+* Quests are offered by NPCs or discovered by doing them; their `rewards` are paid once on completion.
+
+### 7.1c Individual NPC Standing
+* Every NPC's standing combines personal favour (persuasion, deception, theft, completed quests, trade) with their faction's reputation. Tiers (Hostile → Trusted) change prices, persuasion DCs, which dialogue choices are open, whether they talk or trade, and whether they attack on sight.
 
 ### 7.2 Non-Linear Quest Failovers & Permanent NPC Death
 * **Unique Mortals**: Living NPCs in `characters.json` are unique mortals. When slain, their ID is permanently registered in `state.worldState.permanentNpcDeaths`.
@@ -271,8 +282,8 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 * **Procedural Assembly**: Combines 1 Item Template + 2 Primary Materials + 1 Supplementary Material.
 * **Quality Multipliers**: Standard, Superior, Masterwork. Composite stats (damage, defense, weight, value) are calculated procedurally and saved permanently in `worldState.dynamicItems`.
 
-### 8.4 Settlement Economy
-* Regional settlement merchants maintain authentic local inventories with guaranteed minimums of emergency healing salves and potions.
+### 8.4 Settlement Economy & Trading
+* Every merchant has a trade window: buy and sell, prices set by the merchant's standing toward the hero, buy-back of sold items, and an event-driven restock after purchases. Stock is saved with the game.
 
 ---
 
@@ -282,6 +293,8 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 * **Lockpicking Mechanics**: Requires lockpicks (`item_lockpick_set`), checks Agility/Stealth vs DC, snaps picks on Natural 1 (*Ate*), and triggers spring needle traps on critical fumbles.
 * **Physical Obstacles**: Unpickable boulders require raw Strength and the `athletics` skill to heave aside.
 * **Authored Outcomes**: Opening objects applies authored `unlockOutcome` payloads (awarding XP, revealing hidden road connections, completing quest stages).
+* **Alarms & Gating**: a botched break-in can alert an NPC (`failureConsequence.alertNpcId`), who confronts the hero if present; objects can sit behind others (`requiresObjectOpen`).
+* **Searching**: items placed at a location (`presentItems`) are found with a Perception search, rarer items needing better rolls.
 
 ---
 
@@ -296,12 +309,9 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 
 ## 11. Grouped Action Deck UI
 
-* **Contextual Accordions**: Action cards are automatically grouped by present entities:
-  * Location actions (Search, Rest, Travel).
-  * Living NPCs (Speak, Pickpocket, Attack).
-  * Hostile Creatures & Bosses (Combat, Stalk).
-  * Interactive Objects (Unlock, Heave, Disarm).
-* **State Preservation**: Single actions render as direct buttons; multiple actions render as collapsible accordions that preserve their open/closed state across turns.
+* **Grouped by what you act on**: People, Creatures, Objects and Places.
+* **Focus panel (default)**: a row of chips per section; choosing one shows only that entity's actions as compact tiles, with friendly actions first and Attack/Pickpocket behind a "⚠ Hostile acts" toggle. Single actions are direct tiles; roads show just the destination. A "Lists" layout (one openable list per entity with full cards) can be chosen in Settings.
+* **★ Next steps**: up to four cards that move the focused quests forward, including the road to where the next step waits.
 * **Pure Action Card Gameplay**: Completely eliminated legacy text-entry command bars; 100% of player interaction is driven by structured action cards.
 
 ---
@@ -321,7 +331,7 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 
 * **Multi-Slot IndexedDB**: Robust asynchronous persistence with LocalStorage fallbacks.
 * **Save Versioning & Automated Migration (`migrateState()`)**:
-  * Seamlessly upgrades older save formats across v1.2, v1.3, v1.4, v1.5, and v1.6 without losing player progress.
+  * Seamlessly upgrades older save formats across v1.2 to v1.7 without losing player progress (v1.7.0 adds merchant stock, searched items and focused quests).
   * Preserves time timestamps, dynamic crafted items, custom traits, and newly added skills (`athletics`, `deception`).
 * **Slot Safety Architecture**:
   * `findSlotForNewGame()` finds the first unused slot.

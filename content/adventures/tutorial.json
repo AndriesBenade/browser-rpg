@@ -377,6 +377,8 @@
     {
       "id": "enc_fissure_beast",
       "locationId": "loc_cithaeron_fissure_cave",
+      "initiative": "enemy",
+      "unavoidable": true,
       "triggerCondition": {
         "flag": "cithaeron_cave_unsealed",
         "expected": true,

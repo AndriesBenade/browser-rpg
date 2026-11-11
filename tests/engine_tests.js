@@ -1773,12 +1773,18 @@ runTest("Interactive Objects & Lockpicking: Requires tools, distinguishes unpick
   engine.rollD20 = () => 1;
   const initialHealth = engine.state.player.vitals.health;
 
+  // The strongbox sits inside the vault: it cannot be reached until the vault door is open.
+  engine.attemptLockpick("obj_trapped_coffer");
+  assert.ok(engine.hasItem("item_dev_iron_lockpick") && !engine.state.worldState.unlockedObjects["obj_trapped_coffer"], "Strongbox is unreachable while the vault is shut");
+  engine.state.worldState.unlockedObjects["obj_treasury_iron_door"] = true;
+
   // Attempt lockpicking trapped coffer with Nat 1
   engine.attemptLockpick("obj_trapped_coffer");
   assert.ok(!engine.hasItem("item_dev_iron_lockpick"), "Nat 1 (Ate) must snap and destroy the lockpick set");
   assert.ok(engine.state.player.vitals.health < initialHealth, "Trapped coffer failure must inflict trap damage");
 
   // 4. Key unlocking safely opens container without rolls or traps
+  delete engine.state.worldState.unlockedObjects["obj_treasury_iron_door"];
   engine.addItem("item_dev_treasury_key", 1);
   engine.unlockWithKey("obj_treasury_iron_door");
   assert.ok(engine.state.worldState.unlockedObjects["obj_treasury_iron_door"], "Vault door must be unlocked with key");

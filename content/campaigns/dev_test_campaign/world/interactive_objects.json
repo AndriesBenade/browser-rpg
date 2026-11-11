@@ -43,12 +43,7 @@
         "damage": 6,
         "description": "A tensioned wire connected to a pressurized dart launcher inside the lock housing."
       },
-      "contents": {
-        "drachmae": 60,
-        "items": [
-          "item_dev_silver_chalice"
-        ]
-      },
+      "contents": { "drachmae": 60, "items": ["item_dev_silver_chalice"] },
       "unlockOutcome": {
         "setFlags": { "treasury_coffer_unlocked": true },
         "transcript": {
@@ -59,7 +54,8 @@
         "awardXP": 35,
         "updateQuest": { "questId": "quest_dev_treasury_heist", "objectiveId": "obj_loot_coffer", "completed": true },
         "completeQuest": "quest_dev_treasury_heist"
-      }
+      },
+      "requiresObjectOpen": "obj_treasury_iron_door"
     },
     {
       "id": "obj_boulder_seal",
@@ -92,12 +88,7 @@
       "locked": false,
       "isPickable": false,
       "description": "A carved marble tomb relief depicting the warlord Karas holding a solar emblem.",
-      "contents": {
-        "drachmae": 25,
-        "items": [
-          "item_dev_crypt_torch"
-        ]
-      }
+      "contents": { "drachmae": 25, "items": ["item_dev_crypt_torch"] }
     }
   ]
 }

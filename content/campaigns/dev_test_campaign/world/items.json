@@ -143,6 +143,15 @@
       "valueDrachmae": 35,
       "stats": { "damageMin": 4, "damageMax": 10, "damageType": "slashing" },
       "description": "A double-edged forged steel broadsword issued to Haven guards."
+    },
+    {
+      "id": "item_dev_trade_parcel",
+      "name": "Lycus' Sealed Trade Parcel",
+      "category": "quest",
+      "rarity": "common",
+      "weightKg": 2.0,
+      "valueDrachmae": 0,
+      "description": "A wax-sealed bundle of goods Merchant Lycus is sending to the Haven Watch Post."
     }
   ]
 }
