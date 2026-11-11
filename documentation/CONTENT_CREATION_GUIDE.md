@@ -476,3 +476,126 @@ Validation checks performed:
 4. **Physical Logic Audits**: Flags mechanical incongruities (e.g. unpickable boulders erroneously configured as pickable).
 
 In-game, players and creators can inspect campaign validity anytime via the **Campaign Validator Modal** (`window.engine.runComprehensiveCampaignValidation()`).
+
+---
+
+## 13. Authoring Universal Campaign Systems: Classes, Backgrounds, Professions, Materials & Crafting
+
+The Universal RPG Engine enables content authors to define entirely different genres, mythologies, and rule systems without touching engine code.
+
+### 13.1 Custom Classes (`classes.json`)
+Each campaign can define its own roster of playable classes:
+```json
+{
+  "classes": [
+    {
+      "id": "runic_berserker",
+      "name": "Runic Berserker",
+      "subtitle": "Fury of the Einherjar",
+      "archetype": "Warrior & Skirmisher",
+      "description": "Ferocious Norse warrior channeling ancient elder futhark runes to shrug off agony in battle.",
+      "primaryAttributes": ["strength", "endurance"],
+      "statBonuses": { "strength": 2, "endurance": 1 },
+      "proficiencies": ["two_handed_axes", "medium_armor", "intimidation"],
+      "classFeatures": [
+        { "level": 1, "name": "Viking Rage", "type": "active", "desc": "+3 melee weapon damage for 3 turns." }
+      ],
+      "startingEquipment": ["item_dane_axe", "item_wolf_fur_jerkin"]
+    }
+  ]
+}
+```
+
+### 13.2 Custom Backgrounds (`backgrounds.json`)
+Backgrounds provide narrative origins, skill proficiencies, and unique dialogue perks:
+```json
+{
+  "backgrounds": [
+    {
+      "id": "bg_skald",
+      "name": "Court Skald",
+      "category": "Lore & Tradition",
+      "description": "Keeper of genealogical sagas and praise poetry in the mead-halls of jarls.",
+      "proficiencies": ["oratory", "mythology_lore"],
+      "passiveBonus": "+2 Charisma checks when bargaining with chieftain factions.",
+      "dialoguePerk": "Unlocks skaldic poetry dialogue options when speaking with leaders and gods."
+    }
+  ]
+}
+```
+
+### 13.3 Consolidated Professions & Toolkits (`professions.json`)
+Declare crafting disciplines tailored to your world:
+```json
+{
+  "professions": [
+    {
+      "id": "runecarving",
+      "name": "Runecarving & Inscription",
+      "governingAttribute": "wisdom",
+      "requiredToolkitId": "item_toolkit_runic_chisel",
+      "workstation": "runic_altar",
+      "description": "Chiseling sacred symbols into bog iron and rowan wood to empower arms.",
+      "itemCategories": ["talisman", "enchanted_weapon"]
+    }
+  ]
+}
+```
+
+### 13.4 Standardized Materials (`materials.json`)
+Crafting materials define physical and magical properties that scale dynamic items:
+```json
+{
+  "materials": [
+    {
+      "id": "mat_bog_iron",
+      "name": "Bog Iron Bloom",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 2.0,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 6,
+        "durability": 7,
+        "flexibility": 3,
+        "heatResistance": 7,
+        "magicalAffinity": 4,
+        "purity": 70
+      },
+      "compatibleProfessions": ["metalworking", "runecarving"]
+    }
+  ]
+}
+```
+
+### 13.5 Crafting Templates (`crafting_templates.json`)
+Templates define base equipment geometries and slots for recipe-free procedural synthesis:
+```json
+{
+  "templates": [
+    {
+      "id": "template_dane_axe",
+      "name": "Two-Handed Broadaxe",
+      "professionId": "metalworking",
+      "slot": "two_hand",
+      "category": "weapon",
+      "baseDamageMin": 6,
+      "baseDamageMax": 12,
+      "baseWeightKg": 3.5,
+      "baseValueDrachmae": 35,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "baseDC": 12,
+      "description": "A long-hafted battle axe capable of shearing through shields."
+    }
+  ]
+}
+```
+
+### 13.6 The Zero-Engine-Modification Principle
+When building a new campaign:
+1. Declare your new modules in `content/campaigns/<campaign_id>/campaign.json` under `modules`.
+2. Populate the JSON files in `content/campaigns/<campaign_id>/`.
+3. Provide embedded fallback data in `index.html` (e.g. `loadEmbeddedFallbackContent()` or dedicated method) if offline `file:///` support is desired.
+4. Run `node tests/engine_tests.js` to verify integrity.
+5. Launch the game and select your campaign from `#view-campaign-select`!

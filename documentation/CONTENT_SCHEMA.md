@@ -585,4 +585,134 @@ Event-driven consequences and scheduled delayed events.
   ]
 }
 ```
+
+---
+
+## 14. Character Classes Schema (`classes.json`)
+
+Defines playable character classes, stat bonuses, weapon/armor proficiencies, progression feature unlocks, and starting equipment panoplies.
+
+```json
+{
+  "classes": [
+    {
+      "id": "hoplite",
+      "name": "Hoplite",
+      "subtitle": "Phalangite Heavy Infantry",
+      "archetype": "Warrior & Combat",
+      "description": "Disciplined heavy infantry fighter specialising in heavy bronze armour, shield defence, spear combat, and protective battlefield formations.",
+      "primaryAttributes": ["strength", "endurance"],
+      "statBonuses": { "strength": 1, "endurance": 1 },
+      "proficiencies": ["heavy_armor", "spears", "shields"],
+      "classFeatures": [
+        { "level": 1, "name": "Aspis Phalanx Wall", "type": "passive", "desc": "+2 Armor Class when wielding a shield." },
+        { "level": 2, "name": "Dory Piercing Thrust", "type": "active", "desc": "Bypasses 2 points of enemy armor class on melee spear strikes." }
+      ],
+      "startingEquipment": ["item_dory_spear_001", "item_aspis_shield_001", "item_linothorax_001"]
+    }
+  ]
+}
+```
+
+---
+
+## 15. Character Backgrounds Schema (`backgrounds.json`)
+
+Defines character cultural and narrative origins, skill proficiencies, passive traits, and contextual dialogue perks.
+
+```json
+{
+  "backgrounds": [
+    {
+      "id": "bg_demigod_scion",
+      "name": "Demigod Scion",
+      "category": "Divine & Mystical Origins",
+      "description": "Mortal child of an Olympian deity, carrying heavenly lineage and heroic destiny.",
+      "proficiencies": ["persuasion", "mythology_lore"],
+      "passiveBonus": "+1 to all divine favor and piety gains.",
+      "dialoguePerk": "Unlocks divine lineage dialogue options with priests, seers, and monsters."
+    }
+  ]
+}
+```
+
+---
+
+## 16. Consolidated Professions & Toolkits Schema (`professions.json`)
+
+Defines artisan craft professions, governing attributes, required inventory toolkits, and produced item categories.
+
+```json
+{
+  "professions": [
+    {
+      "id": "metalworking",
+      "name": "Metalworking & Smithing",
+      "governingAttribute": "strength",
+      "requiredToolkitId": "item_toolkit_smithing",
+      "workstation": "forge",
+      "description": "The sacred forge discipline of Hephaestus, encompassing bronze forging, adamantine armaments, and orichalcum refinement.",
+      "itemCategories": ["weapon", "shield", "heavy_armor", "accessory"]
+    }
+  ]
+}
+```
+
+---
+
+## 17. Crafting Materials Schema (`materials.json`)
+
+Standardized crafting materials with physical, elemental, and magical attributes for composite item assembly.
+
+```json
+{
+  "materials": [
+    {
+      "id": "mat_cypriot_bronze",
+      "name": "Cypriot Bronze Ingot",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 1.5,
+      "valueDrachmae": 12,
+      "properties": {
+        "hardness": 7,
+        "durability": 8,
+        "flexibility": 4,
+        "heatResistance": 8,
+        "magicalAffinity": 3,
+        "purity": 85
+      },
+      "compatibleProfessions": ["metalworking", "artifice", "music"],
+      "statModifiers": { "defense": 2, "damage": 2, "durability": 15 },
+      "description": "Refined copper alloyed with tin from the island of Cyprus."
+    }
+  ]
+}
+```
+
+---
+
+## 18. Crafting Templates Schema (`crafting_templates.json`)
+
+Reusable equipment archetypes defining base stats, slot occupancy, DC checks, and required material slots.
+
+```json
+{
+  "templates": [
+    {
+      "id": "template_sword",
+      "name": "Xiphos Short Sword",
+      "professionId": "metalworking",
+      "slot": "main_hand",
+      "category": "weapon",
+      "baseDamageMin": 4,
+      "baseDamageMax": 8,
+      "baseWeightKg": 1.4,
+      "baseValueDrachmae": 25,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A double-edged leaf-bladed short sword suited for close-quarters fighting in phalanx formations."
+    }
+  ]
+}
 ```

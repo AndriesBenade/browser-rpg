@@ -380,3 +380,65 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * **Dynamic Faction Standing**: Tracks numerical reputation per faction, mapped to standing tiers: *Hostile* ($\le -25$), *Unfriendly* ($< 0$), *Neutral* ($< 20$), *Friendly* ($< 50$), and *Honored* ($\ge 50$).
 * **Consequence Rule Engine**: `emitEvent(name, payload)` processes `consequenceRules` defined in campaign manifests, mutating world flags, adjusting faction reputations, and scheduling delayed world events (`scheduledEvents`).
 * **Scheduled Event Dispatch**: Scheduled events trigger automatically when total in-game hours elapse during rest or travel.
+
+---
+
+## 7. Universal RPG Engine, Progression, Equipment, Loot, and Dynamic Crafting (Engine v3.0.0)
+
+### 7.1 Universal Campaign Independence
+The RPG engine is completely decoupled from any single mythology, setting, or genre:
+* **Campaign-Scoped Rules & Definitions**: Classes, backgrounds, professions, materials, and crafting templates are declared within each campaign's directory and manifest (`campaign.json`).
+* **Content Isolation Guarantee**: Non-Greek campaigns (e.g. Developer Verification Campaign) declare their own distinct classes (`dev_sentinel`, `dev_infiltrator`) and backgrounds (`bg_dev_tester`), preventing archetype leakage across different fictional worlds.
+* **Dual-Mode Manifest Synchronization**: `loadEmbeddedFallbackContent()` and `loadEmbeddedDevTestContent()` ensure that full modularity functions offline via `file:///` as well as over HTTP.
+
+### 7.2 14 Greek Heroic Classes & 16 Cultural Backgrounds
+* **14 Classes**: Hoplite, Toxotes, Peltast, Hippeus, Pankratiast, Mystes, Rhapsode, Pythia, Asklepiad, Stratiotes, Korybante, Skiritae, Syntrophos, Telemachos.
+* **16 Backgrounds**: Spartiate Agoge, Athenian Ephebe, Theban Sacred Band, Arcadian Hunter, Cretan Archer, Myrmidon Veteran, Corinthian Navigator, Phocian Miner, Delphic Suppliant, Argive Bronzesmith, Centaur Foster-Child, Thessalian Horseman, Thracian Mercenary, Olympic Victor, Chthonic Oracle, Laconian Helot.
+* **Cross-Compatibility Matrix**: Any background pairs with any class. The engine combines attribute modifiers, determines proficiency lists, equips starting panoplies, and activates background traits without hardcoded restrictions.
+
+### 7.3 Character Progression Overhaul
+* **Point Distribution**: Every level up awards exactly **1 primary attribute point** and **2 secondary skill/substat points**.
+* **Stat Integration**: Upgrades to Wisdom immediately recalculate active Perception and Passive Perception (`10 + Perception Bonus`). Health and Stamina scale dynamically with Endurance.
+
+### 7.4 14-Slot Equipment Paper Doll Architecture
+* **14 Dedicated Slots**: `head`, `neck`, `shoulders`, `back`, `body`, `arms`, `hands`, `waist`, `legs`, `feet`, `ring_1`, `ring_2`, `main_hand`, `off_hand`.
+* **Dual Ring Logic**:
+  * Equipping an accessory ring checks `ring_1`. If empty, it equips into `ring_1`.
+  * If `ring_1` is occupied, it equips into `ring_2`.
+  * If both are occupied, it replaces `ring_1`.
+* **Two-Handed Weapon Mutual Exclusion**:
+  * Equipping a two-handed weapon (`two_hand`) automatically unequips any shield or weapon in `off_hand`.
+  * Equipping any item in `off_hand` automatically unequips any currently equipped two-handed weapon.
+* **Slot Aliasing**: Legacy keys (`helm`, `armor`, `weapon`, `shield`, `relic`, `ring`) automatically map to standard paper doll slots.
+
+### 7.5 Centralized Loot Engine & Probability Hard Caps
+* **Hard Probability Caps**:
+  * Normal creatures: Epic drops $\le 0.02\%$ ($0.0002$), Legendary clamped to $0.00\%$, Mythic clamped to $0.00\%$.
+  * Boss creatures: Mythic drops capped at $\le 0.02\%$ ($0.0002$).
+* **Level-Scaled Independent Currency**:
+  * Normal creature defeats award silver drachmae scaled dynamically to creature level ($\ge \text{level} \times 3$), independent of loot table rolls.
+* **Anti-Exploit Relic Protection**: Suppresses duplicate relic drops on repeat encounters, awarding compensation currency instead.
+
+### 7.6 Recipe-Free Dynamic Crafting Engine
+* **Consolidated Professions & Toolkits**: 7 professions (Blacksmithing, Woodworking, Leatherworking, Weaving, Alchemy, Jewelcrafting, Inscription) requiring dedicated physical toolkits (`item_toolkit_smithing`, etc.).
+* **Material Property Matrix**: 10 standardized materials with composite physical and magical properties:
+  * `hardness`, `durability`, `flexibility`, `magicalAffinity`, `toxicity`, `weightTier`.
+* **Recipe-Free Procedural Assembly**:
+  * Input: 1 item template + 2 primary materials + 1 supplementary material.
+  * Check: D20 + governing attribute modifier + profession skill + minigame bonus vs template base DC.
+  * Quality Outcomes: Standard (roll $\ge$ DC), Superior (margin $\ge 5$), Masterwork (margin $\ge 10$ or Natural 20).
+  * Composite Statistics: Damage, defense, stamina recovery, and sell values calculated from material attributes and quality multipliers.
+  * Classical Lore Attribution: Dynamically generated items cite Hephaestus, Telchines, or classical artisans in `mythologicalLore`.
+
+### 7.7 Minigame Suite & Hephaestus' Forge Strike
+* **Interactive Challenges**: Artemis Stalk, Asklepian Herbal Mortar, Hoplite Shield Clash, Astragaloi Divination, and Hephaestus' Forge Strike.
+* **Hephaestus' Forge Strike**: Oscillating kinetic hammer strike timing challenge.
+* **Zero Failure Penalty**: Crafting bonuses strictly capped between +1 and +3. Failures never destroy materials or penalize the player.
+
+### 7.8 Settlement Economy & Merchant Stock Rules
+* **Settlement Merchants**: Major settlements (Thebes, Delphi, Mycenae, Mount Cithaeron/Plataea) feature dedicated local merchants.
+* **Stock Requirements**: Each merchant stocks $\ge 3\text{--}4$ regional trade goods and **ALWAYS maintains at least one healing potion/draught/salve** in stock.
+
+### 7.9 NPC Defensive Behavior & Social Anti-Exploit Cooldowns
+* **Wounded NPC Behavior**: When living NPCs drop below 25% HP in combat, they evaluate surrender, yielding, or fleeing (`fleeing: true`).
+* **Social Anti-Exploit System**: `attemptPersuadeNpc()` and `attemptDeceiveNpc()` enforce persistent cooldown timestamps in `state.worldState.socialCooldowns`, blocking repetitive exploit farming.

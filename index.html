@@ -2321,6 +2321,7 @@
       <button class="nav-btn" data-view="view-map">World Map</button>
       <button class="nav-btn" data-view="view-character">Character</button>
       <button class="nav-btn" data-view="view-inventory">Inventory</button>
+      <button class="nav-btn" data-view="view-crafting">Craft & Forge</button>
       <button class="nav-btn" data-view="view-quests">Quests <span class="nav-badge" id="nav-badge-quests">1</span></button>
       <button class="nav-btn" data-view="view-journal">Journal</button>
       <button class="nav-btn" data-view="view-codex">Codex & Lore</button>
@@ -2449,11 +2450,21 @@
           </div>
         </div>
 
-        <!-- Step 2: Heroic Background -->
+        <!-- Step 2: Heroic Class & Origin Background -->
         <div class="wizard-pane" id="wizard-pane-2">
-          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 2: Your Calling & Panoply</h2>
-          <p style="color: var(--marble-dim); font-size: 0.9rem;">What discipline forged your martial skills before the gods called you to Mount Cithaeron?</p>
-          <div class="cards-selection-grid" id="background-cards-grid"></div>
+          <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 2: Heroic Archetype & Calling</h2>
+          <p style="color: var(--marble-dim); font-size: 0.9rem;">Select your Heroic Class Archetype and Origin Background. Any class can combine with any background.</p>
+          
+          <div style="margin-top: 0.8rem; margin-bottom: 0.4rem; font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">
+            1. Select Heroic Class Archetype
+          </div>
+          <div class="cards-selection-grid" id="class-cards-grid" style="max-height: 260px; overflow-y: auto; margin-bottom: 1rem;"></div>
+
+          <div style="margin-top: 0.8rem; margin-bottom: 0.4rem; font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">
+            2. Select Origin Background
+          </div>
+          <div class="cards-selection-grid" id="background-cards-grid" style="max-height: 260px; overflow-y: auto;"></div>
+
           <div class="wizard-nav-btns">
             <button class="nav-btn" onclick="window.engine.wizardBack(2)">&larr; Back</button>
             <button class="btn-classical" onclick="window.engine.wizardNext(2)">Next: Attributes &rarr;</button>
@@ -2648,12 +2659,96 @@
     <!-- 4. INVENTORY & EQUIPMENT VIEWPORT -->
     <div class="viewport" id="view-inventory">
       <div class="inventory-layout">
-        <!-- Equipped Slots Paper Doll -->
+        <!-- Equipped Slots Paper Doll (14 Classical Slots) -->
         <div class="equipment-paper-doll">
           <div style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--bronze-bright); border-bottom: 1px solid var(--border-meander); padding-bottom: 0.35rem;">
-            Panoply of War
+            Panoply of War (14 Slots)
           </div>
           
+          <div class="equip-slot" data-slot="head" id="slot-head">
+            <div>
+              <div class="slot-label">Head (Helmet / Circlet)</div>
+              <div class="slot-item-name" id="eq-head">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="neck" id="slot-neck">
+            <div>
+              <div class="slot-label">Neck (Amulet / Torc)</div>
+              <div class="slot-item-name" id="eq-neck">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="shoulders" id="slot-shoulders">
+            <div>
+              <div class="slot-label">Shoulders (Spaulders)</div>
+              <div class="slot-item-name" id="eq-shoulders">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="back" id="slot-back">
+            <div>
+              <div class="slot-label">Back (Cloak / Pelt)</div>
+              <div class="slot-item-name" id="eq-back">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="body" id="slot-body">
+            <div>
+              <div class="slot-label">Body (Cuirass / Linothorax)</div>
+              <div class="slot-item-name" id="eq-body">Layered Linothorax</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="arms" id="slot-arms">
+            <div>
+              <div class="slot-label">Arms (Vambraces / Bracers)</div>
+              <div class="slot-item-name" id="eq-arms">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="hands" id="slot-hands">
+            <div>
+              <div class="slot-label">Hands (Gauntlets / Gloves)</div>
+              <div class="slot-item-name" id="eq-hands">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="waist" id="slot-waist">
+            <div>
+              <div class="slot-label">Waist (Girdle / War Belt)</div>
+              <div class="slot-item-name" id="eq-waist">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="legs" id="slot-legs">
+            <div>
+              <div class="slot-label">Legs (Greaves)</div>
+              <div class="slot-item-name" id="eq-legs">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="feet" id="slot-feet">
+            <div>
+              <div class="slot-label">Feet (Boots / Sandals)</div>
+              <div class="slot-item-name" id="eq-feet">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="ring_1" id="slot-ring_1">
+            <div>
+              <div class="slot-label">Left Ring</div>
+              <div class="slot-item-name" id="eq-ring-1">None</div>
+            </div>
+          </div>
+
+          <div class="equip-slot" data-slot="ring_2" id="slot-ring_2">
+            <div>
+              <div class="slot-label">Right Ring</div>
+              <div class="slot-item-name" id="eq-ring-2">None</div>
+            </div>
+          </div>
+
           <div class="equip-slot" data-slot="main_hand" id="slot-main_hand">
             <div>
               <div class="slot-label">Main Hand</div>
@@ -2668,23 +2763,9 @@
             </div>
           </div>
 
-          <div class="equip-slot" data-slot="body" id="slot-body">
+          <div class="equip-slot" data-slot="accessory" id="slot-accessory" style="display: none;">
             <div>
-              <div class="slot-label">Body Cuirass</div>
-              <div class="slot-item-name" id="eq-body">Layered Linothorax</div>
-            </div>
-          </div>
-
-          <div class="equip-slot" data-slot="head" id="slot-head">
-            <div>
-              <div class="slot-label">Helmet</div>
-              <div class="slot-item-name" id="eq-head">None</div>
-            </div>
-          </div>
-
-          <div class="equip-slot" data-slot="accessory" id="slot-accessory">
-            <div>
-              <div class="slot-label">Relic / Amulet</div>
+              <div class="slot-label">Accessory</div>
               <div class="slot-item-name" id="eq-accessory">None</div>
             </div>
           </div>
@@ -2709,6 +2790,47 @@
 
           <div class="inventory-grid" id="inventory-items-container">
             <!-- Rendered Item Cards -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.5 CRAFTING & FORGE VIEWPORT -->
+    <div class="viewport" id="view-crafting">
+      <div class="view-card-wrapper" style="max-width: 1240px; margin: 0 auto;">
+        <div class="view-card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-meander); padding-bottom: 0.75rem;">
+          <div>
+            <div class="view-card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+              <span>🔨</span> Hephaestus' Forge & Crafting Workshops
+            </div>
+            <div style="font-size: 0.85rem; color: var(--marble-dim); margin-top: 0.2rem;">
+              Recipe-free artisan crafting: Select an Item Template, 2 Primary Materials, and 1 Supplementary Material.
+            </div>
+          </div>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <div style="font-size: 0.82rem; color: var(--marble-dim);">
+              Fieldcraft & Gathering: <strong id="crafting-fieldcraft-badge" style="color: var(--laurel-bright);">Rank 1 (+2)</strong>
+            </div>
+            <button class="btn-classical" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="window.engine.openMinigame('forge')">
+              ⚡ Forge Strike Minigame (+Bonus)
+            </button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 220px 1fr 340px; gap: 1rem; margin-top: 1rem;">
+          <!-- Col 1: Consolidated Professions (7) -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;" id="crafting-professions-list">
+            <!-- Rendered by renderCraftingView() -->
+          </div>
+
+          <!-- Col 2: Templates & Materials Selection -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; gap: 1rem;" id="crafting-config-panel">
+            <!-- Rendered by renderCraftingView() -->
+          </div>
+
+          <!-- Col 3: Forge Output Preview & Craft Trigger -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;" id="crafting-preview-panel">
+            <!-- Rendered by renderCraftingView() -->
           </div>
         </div>
       </div>
@@ -3175,6 +3297,41 @@
        ========================================================================= -->
   <script>
     /**
+     * STANDALONE TUTORIAL MANAGER
+     * Guarantees at least one valid tutorial module is registered and selectable.
+     */
+    class TutorialManager {
+      constructor(engine) {
+        this.engine = engine;
+        this.tutorials = new Map();
+        this.registerTutorial({
+          id: "tutorial_cadmean_threshold",
+          title: "The Whispering Fissure & Cadmean Threshold",
+          adventureId: "adv_tutorial_cithaeron_001",
+          difficulty: "Initiate",
+          description: "Learn tabletop exploration, classical riddle solving, stamina travel, and heroic combat on Mount Cithaeron."
+        });
+      }
+
+      registerTutorial(tutorial) {
+        if (!tutorial || !tutorial.id) return;
+        this.tutorials.set(tutorial.id, tutorial);
+      }
+
+      getTutorial(id) {
+        return this.tutorials.get(id) || null;
+      }
+
+      getTutorials() {
+        return Array.from(this.tutorials.values());
+      }
+
+      hasTutorial() {
+        return this.tutorials.size > 0;
+      }
+    }
+
+    /**
      * GREEK MYTHOLOGY TEXT-DRIVEN RPG ENGINE
      * Stage 2 & 3: Playable Experience, Guided Onboarding, Character Creation & Complete Tutorial
      */
@@ -3184,6 +3341,9 @@
         this.dbName = "GreekMythologyRPG_DB";
         this.dbVersion = 1;
         this.db = null;
+
+        // Tutorial Management
+        this.tutorialManager = new TutorialManager(this);
 
         // Campaign Framework
         this.campaigns = new Map();
@@ -3196,6 +3356,14 @@
         this.consequenceRules = [];
         this.randomEncounters = [];
         this.activeInteractiveObject = null;
+
+        // Dynamic Crafting Engine State
+        this.currentCraftingProfession = 'metalworking';
+        this.selectedCraftingTemplate = null;
+        this.selectedCraftingMat1 = null;
+        this.selectedCraftingMat2 = null;
+        this.selectedCraftingSupp = null;
+        this.craftingMinigameBonus = 0;
 
         // Content Databases
         this.world = {
@@ -3210,7 +3378,12 @@
           factions: [],
           encounters: [],
           quests: [],
-          events: []
+          events: [],
+          classes: [],
+          backgrounds: [],
+          professions: [],
+          materials: [],
+          craftingTemplates: []
         };
 
         this.currentAdventure = null;
@@ -3769,41 +3942,42 @@
       }
 
       renderWizardStep2() {
-        const bgs = [
-          {
-            id: "hoplite",
-            title: "Hoplite Veteran",
-            desc: "Trained to stand shoulder-to-shoulder with spear and bronze shield. You understand discipline and martial grit.",
-            perks: "Starts with Ash Dory & Argive Aspis &bull; +2 Melee Combat, +1 Athletics"
-          },
-          {
-            id: "hunter",
-            title: "Hunter of the Crags",
-            desc: "Stalker of mountain wildfowl and predators on the slopes of Cithaeron. Attuned to Artemis Agrotera.",
-            perks: "Starts with Yew Hunting Bow & Dagger &bull; +2 Tracking, +2 Survival"
-          },
-          {
-            id: "acolyte",
-            title: "Temple Diviner / Acolyte",
-            desc: "Trained in the sacred precincts to read omens, interpret archaic inscriptions, and compound herbal balms.",
-            perks: "Starts with Libation Wine & Epidaurian Salve &bull; +2 Mythology Lore, +1 Medicine"
-          },
-          {
-            id: "wayfarer",
-            title: "Cunning Wayfarer",
-            desc: "A wide-roaming messenger and trader who knows the secret boundary stones and how to strike a bargain.",
-            perks: "Starts with +25 Extra Drachmae &bull; +2 Persuasion, +2 Investigation"
-          }
-        ];
+        const classes = this.getCampaignClasses();
+        const bgs = this.getCampaignBackgrounds();
 
-        const container = document.getElementById("background-cards-grid");
-        container.innerHTML = bgs.map(b => `
-          <div class="selectable-choice-card ${this.creationState.background === b.id ? "selected" : ""}" onclick="window.engine.selectBackground('${b.id}')">
-            <div class="choice-card-title">${b.title}</div>
-            <div class="choice-card-desc">${b.desc}</div>
-            <div class="choice-card-perks">${b.perks}</div>
-          </div>
-        `).join("");
+        if (!this.creationState.classId && classes.length > 0) {
+          this.creationState.classId = classes[0].id;
+        }
+        if (!this.creationState.background && bgs.length > 0) {
+          this.creationState.background = bgs[0].id;
+        }
+
+        const classContainer = document.getElementById("class-cards-grid");
+        if (classContainer) {
+          classContainer.innerHTML = classes.map(c => `
+            <div class="selectable-choice-card ${this.creationState.classId === c.id ? "selected" : ""}" onclick="window.engine.selectClass('${c.id}')">
+              <div class="choice-card-title">${c.name} ${c.role || c.subtitle ? `<span style="font-size:0.75rem; color:var(--laurel-bright);">(${c.role || c.subtitle})</span>` : ""}</div>
+              <div class="choice-card-desc">${c.description || ""}</div>
+              <div class="choice-card-perks">${(c.primaryAttributes || []).map(a => a.toUpperCase()).join(" / ")}${c.proficiencies ? ` &bull; ${c.proficiencies.join(", ")}` : ""}</div>
+            </div>
+          `).join("");
+        }
+
+        const bgContainer = document.getElementById("background-cards-grid");
+        if (bgContainer) {
+          bgContainer.innerHTML = bgs.map(b => `
+            <div class="selectable-choice-card ${this.creationState.background === b.id ? "selected" : ""}" onclick="window.engine.selectBackground('${b.id}')">
+              <div class="choice-card-title">${b.name || b.title}</div>
+              <div class="choice-card-desc">${b.description || b.desc || ""}</div>
+              <div class="choice-card-perks">${b.passiveBonus || b.perks || (b.proficiencies ? b.proficiencies.join(", ") : "")}</div>
+            </div>
+          `).join("");
+        }
+      }
+
+      selectClass(id) {
+        this.creationState.classId = id;
+        this.renderWizardStep2();
       }
 
       selectBackground(id) {
@@ -3951,6 +4125,7 @@
         p.gender = c.gender;
         p.origin = c.origin;
         p.background = c.background;
+        p.class = c.classId || "hoplite";
         p.level = 1;
         p.xp = 0;
         p.xpNext = 100;
@@ -3958,6 +4133,58 @@
         p.feats = [];
         p.attributes = JSON.parse(JSON.stringify(c.attributes));
         p.attributes.perception = p.attributes.wisdom;
+
+        const campaignClasses = this.getCampaignClasses();
+        const selectedClass = campaignClasses.find(cl => cl.id === p.class);
+        const campaignBgs = this.getCampaignBackgrounds();
+        const selectedBg = campaignBgs.find(bg => bg.id === c.background);
+
+        if (selectedClass) {
+          if (selectedClass.statBonuses) {
+            for (const [k, v] of Object.entries(selectedClass.statBonuses)) {
+              if (p.attributes[k] !== undefined) p.attributes[k] += v;
+            }
+          }
+          if (Array.isArray(selectedClass.startingEquipment)) {
+            selectedClass.startingEquipment.forEach(itemId => {
+              const itemDef = this.getItem(itemId);
+              if (itemDef) {
+                const slot = itemDef.slot || "accessory";
+                if (!p.inventory.some(i => i.itemId === itemId)) {
+                  p.inventory.push({ itemId, quantity: 1, equipped: true, slot });
+                }
+              }
+            });
+          }
+          if (Array.isArray(selectedClass.proficiencies)) {
+            p.proficiencies = [...(p.proficiencies || []), ...selectedClass.proficiencies];
+          }
+        }
+
+        if (selectedBg) {
+          if (selectedBg.startingBonus && selectedBg.startingBonus.drachmae) {
+            p.currencies.drachmae += selectedBg.startingBonus.drachmae;
+          }
+          if (Array.isArray(selectedBg.startingEquipment)) {
+            selectedBg.startingEquipment.forEach(itemId => {
+              const itemDef = this.getItem(itemId);
+              if (itemDef) {
+                const slot = itemDef.slot || "accessory";
+                if (!p.inventory.some(i => i.itemId === itemId)) {
+                  p.inventory.push({ itemId, quantity: 1, equipped: true, slot });
+                }
+              }
+            });
+          }
+          if (Array.isArray(selectedBg.proficiencies)) {
+            selectedBg.proficiencies.forEach(prof => {
+              if (p.skills && p.skills[prof] !== undefined) {
+                p.skills[prof] += 2;
+              }
+            });
+            p.proficiencies = [...(p.proficiencies || []), ...selectedBg.proficiencies];
+          }
+        }
 
         p.vitals.maxHealth = 20 + this.getModifier(p.attributes.endurance) * 2;
         p.vitals.health = p.vitals.maxHealth;
@@ -3994,7 +4221,7 @@
           p.skills.investigation += 2;
           p.skills.perception = (p.skills.perception || 2) + 1;
           p.piety.hermes = 2;
-        } else {
+        } else if (c.background === "hoplite" || !selectedBg) {
           p.skills.melee_combat += 2;
           p.skills.perception = (p.skills.perception || 2);
         }
@@ -4201,7 +4428,12 @@
               deities: "content/world/deities.json",
               mythology: "content/world/mythology.json",
               glossary: "content/world/glossary.json",
-              adventures: ["content/adventures/tutorial.json"]
+              adventures: ["content/adventures/tutorial.json"],
+              classes: "content/campaigns/greek_mythology/classes.json",
+              backgrounds: "content/campaigns/greek_mythology/backgrounds.json",
+              professions: "content/campaigns/greek_mythology/professions.json",
+              materials: "content/campaigns/greek_mythology/materials.json",
+              craftingTemplates: "content/campaigns/greek_mythology/crafting_templates.json"
             }
           },
           {
@@ -4228,7 +4460,9 @@
               quests: "content/campaigns/dev_test_campaign/world/quests.json",
               encounters: "content/campaigns/dev_test_campaign/world/encounters.json",
               dialogues: "content/campaigns/dev_test_campaign/world/dialogues.json",
-              events: "content/campaigns/dev_test_campaign/world/events.json"
+              events: "content/campaigns/dev_test_campaign/world/events.json",
+              classes: "content/campaigns/dev_test_campaign/world/classes.json",
+              backgrounds: "content/campaigns/dev_test_campaign/world/backgrounds.json"
             }
           }
         ];
@@ -4264,7 +4498,7 @@
 
         if (this.activeCampaignId === "campaign_dev_test") {
           try {
-            const [locRes, charRes, creatRes, itemRes, lootRes, objRes, factRes, questRes, encRes, diaRes, evtRes] = await Promise.all([
+            const [locRes, charRes, creatRes, itemRes, lootRes, objRes, factRes, questRes, encRes, diaRes, evtRes, classRes, bgRes] = await Promise.all([
               fetch(modules.locations || "content/campaigns/dev_test_campaign/world/locations.json").then(r => r.json()).catch(() => null),
               fetch(modules.characters || "content/campaigns/dev_test_campaign/world/characters.json").then(r => r.json()).catch(() => null),
               fetch(modules.creatures || "content/campaigns/dev_test_campaign/world/creatures.json").then(r => r.json()).catch(() => null),
@@ -4275,7 +4509,9 @@
               fetch(modules.quests || "content/campaigns/dev_test_campaign/world/quests.json").then(r => r.json()).catch(() => null),
               fetch(modules.encounters || "content/campaigns/dev_test_campaign/world/encounters.json").then(r => r.json()).catch(() => null),
               fetch(modules.dialogues || "content/campaigns/dev_test_campaign/world/dialogues.json").then(r => r.json()).catch(() => null),
-              fetch(modules.events || "content/campaigns/dev_test_campaign/world/events.json").then(r => r.json()).catch(() => null)
+              fetch(modules.events || "content/campaigns/dev_test_campaign/world/events.json").then(r => r.json()).catch(() => null),
+              fetch(modules.classes || "content/campaigns/dev_test_campaign/world/classes.json").then(r => r.json()).catch(() => null),
+              fetch(modules.backgrounds || "content/campaigns/dev_test_campaign/world/backgrounds.json").then(r => r.json()).catch(() => null)
             ]);
 
             this.world.locations = (locRes && locRes.locations) || [];
@@ -4287,6 +4523,11 @@
             this.world.factions = (factRes && factRes.factions) || [];
             this.world.encounters = (encRes && encRes.encounters) || [];
             this.world.events = (evtRes && evtRes.events) || [];
+            this.world.classes = (classRes && classRes.classes) || [];
+            this.world.backgrounds = (bgRes && bgRes.backgrounds) || [];
+            this.world.professions = [];
+            this.world.materials = [];
+            this.world.craftingTemplates = [];
 
             const questList = (questRes && questRes.quests) || [];
             const dialogueMap = (diaRes && diaRes.dialogues) || {};
@@ -4310,7 +4551,7 @@
         } else {
           // Classical Greek Campaign
           try {
-            const [locRes, charRes, creatRes, itemRes, deitRes, mythRes, advRes, glossRes, lootRes, objRes] = await Promise.all([
+            const [locRes, charRes, creatRes, itemRes, deitRes, mythRes, advRes, glossRes, lootRes, objRes, classRes, bgRes, profRes, matRes, tmplRes] = await Promise.all([
               fetch(modules.locations || "content/world/locations.json").then(r => r.json()).catch(() => null),
               fetch(modules.characters || "content/world/characters.json").then(r => r.json()).catch(() => null),
               fetch(modules.creatures || "content/world/creatures.json").then(r => r.json()).catch(() => null),
@@ -4320,7 +4561,12 @@
               fetch((modules.adventures && modules.adventures[0]) || "content/adventures/tutorial.json").then(r => r.json()).catch(() => null),
               fetch(modules.glossary || "content/world/glossary.json").then(r => r.json()).catch(() => null),
               fetch(modules.lootTables || "content/world/loot_tables.json").then(r => r.json()).catch(() => null),
-              fetch(modules.interactiveObjects || "content/world/interactive_objects.json").then(r => r.json()).catch(() => null)
+              fetch(modules.interactiveObjects || "content/world/interactive_objects.json").then(r => r.json()).catch(() => null),
+              fetch(modules.classes || "content/campaigns/greek_mythology/classes.json").then(r => r.json()).catch(() => null),
+              fetch(modules.backgrounds || "content/campaigns/greek_mythology/backgrounds.json").then(r => r.json()).catch(() => null),
+              fetch(modules.professions || "content/campaigns/greek_mythology/professions.json").then(r => r.json()).catch(() => null),
+              fetch(modules.materials || "content/campaigns/greek_mythology/materials.json").then(r => r.json()).catch(() => null),
+              fetch(modules.craftingTemplates || "content/campaigns/greek_mythology/crafting_templates.json").then(r => r.json()).catch(() => null)
             ]);
 
             if (locRes && locRes.locations) this.world.locations = locRes.locations;
@@ -4333,6 +4579,11 @@
             if (glossRes && glossRes.glossary) this.registerGlossaryTerms(glossRes.glossary);
             if (lootRes && lootRes.lootTables) this.world.lootTables = lootRes.lootTables;
             if (objRes && objRes.interactiveObjects) this.world.interactiveObjects = objRes.interactiveObjects;
+            if (classRes && classRes.classes) this.world.classes = classRes.classes;
+            if (bgRes && bgRes.backgrounds) this.world.backgrounds = bgRes.backgrounds;
+            if (profRes && profRes.professions) this.world.professions = profRes.professions;
+            if (matRes && matRes.materials) this.world.materials = matRes.materials;
+            if (tmplRes && tmplRes.templates) this.world.craftingTemplates = tmplRes.templates;
           } catch (e) {
             console.warn("Could not load external JSON packs, falling back to embedded baseline", e);
           }
@@ -4426,6 +4677,38 @@
           encounters: [{"id":"enc_dev_crypt_boss","locationId":"loc_dev_ancient_crypt","creatureId":"creature_dev_crypt_boss","isBoss":true,"repeatable":true,"cooldownHours":24,"introProse":"From the shadows of the marble sepulcher rises Lord Karas the Undying! His ancient iron broadsword glimmers with eldritch cold as his glowing empty eye sockets lock upon you!","victoryOutcome":{"text":"Lord Karas crumbles into spectral dust, leaving behind his martial treasures and the radiant Sunstone!","setFlags":{"defeated_lord_karas":true},"updateQuest":{"questId":"quest_dev_sunstone_relic","objectiveId":"obj_defeat_karas","completed":true},"awardXP":180,"addJournalChronicle":{"title":"Vanquished Lord Karas","text":"Defeated the ancient warlord Karas in his sunken tomb and claimed the Sunstone."}}},{"id":"enc_dev_wild_boar","locationId":"loc_dev_whispering_woods","creatureId":"creature_dev_wild_boar","introProse":"A savage bristle boar erupts from the tangled brambles with a ferocious snort, charging directly at you!","victoryOutcome":{"text":"You bring down the heavy boar, claiming valuable tusks and prime meat for camp provisions.","setFlags":{"slain_dev_boar":true},"updateQuest":{"questId":"quest_dev_boar_menace","objectiveId":"obj_slay_boar","completed":true},"awardXP":35}},{"id":"enc_dev_shadow_stalker","locationId":"loc_dev_obsidian_crag","creatureId":"creature_dev_shadow_stalker","introProse":"A terrifying shadow stalker descends from the sharp obsidian pinnacle, howling as razor talons gleam!","victoryOutcome":{"text":"The shadow stalker dissipates into dark vapor, leaving a flawless obsidian crystal upon the rocks.","awardXP":220}}],
           contextActions: []
         };
+
+        this.world.classes = [
+          {
+            id: "dev_sentinel",
+            name: "Dev Sentinel",
+            role: "Guardian",
+            description: "A stalwart guardian archetype used for verification of campaign mechanics.",
+            primaryAttributes: ["strength", "endurance"],
+            startingEquipment: ["item_dev_broadsword"]
+          },
+          {
+            id: "dev_infiltrator",
+            name: "Dev Infiltrator",
+            role: "Scout",
+            description: "A nimble rogue archetype used for verification of campaign mechanics.",
+            primaryAttributes: ["agility", "wits"],
+            startingEquipment: ["item_dev_iron_lockpick"]
+          }
+        ];
+        this.world.backgrounds = [
+          {
+            id: "bg_dev_tester",
+            name: "System Tester",
+            description: "A specialist trained in rigorous verification of simulated game worlds.",
+            startingBonus: { drachmae: 25 },
+            proficiencies: ["investigation"]
+          }
+        ];
+        this.world.professions = [];
+        this.world.materials = [];
+        this.world.craftingTemplates = [];
+
         this.buildContentMaps();
       }
 
@@ -4533,6 +4816,23 @@
         if (this.glossary.length === 0) {
           this.registerGlossaryTerms(this.getFallbackGlossary());
         }
+
+        if (!this.world.classes || this.world.classes.length === 0) {
+          this.world.classes = this.getFallbackClasses();
+        }
+        if (!this.world.backgrounds || this.world.backgrounds.length === 0) {
+          this.world.backgrounds = this.getFallbackBackgrounds();
+        }
+        if (!this.world.professions || this.world.professions.length === 0) {
+          this.world.professions = this.getFallbackProfessions();
+        }
+        if (!this.world.materials || this.world.materials.length === 0) {
+          this.world.materials = this.getFallbackMaterials();
+        }
+        if (!this.world.craftingTemplates || this.world.craftingTemplates.length === 0) {
+          this.world.craftingTemplates = this.getFallbackCraftingTemplates();
+        }
+
         this.buildContentMaps();
       }
 
@@ -4571,6 +4871,51 @@
         {"key": "promachos","terms": ["promachos"],"name": "Promachos (Vanguard Champion)","category": "Heroic Rank","simpleEnglish": "Warrior who fights in the very front line of battle","explanation": "A champion who stood in the first rank of the phalanx to face the brunt of the enemy charge with fearless courage, leading by personal example.","significance": "In the game, represents Level 3 seasoned heroes."},
         {"key": "drakon","terms": ["drakon","drakontes"],"name": "Drakon (Mythic Giant Serpent)","category": "Mythological Creature","simpleEnglish": "Giant primordial serpent with deadly venom","explanation": "In classical Greek myth, a drakon was a massive, crested serpent possessing venomous fangs, bronze-hard scales, and blazing eyes, typically guarding sacred springs, gold, or shrines.","significance": "Unlike winged European dragons, Greek drakontes were subterranean serpent-terrors like the Ismenian Drakon of Ares."}
       ];
+      }
+
+      getCampaignClasses() {
+        if (this.world && Array.isArray(this.world.classes) && this.world.classes.length > 0) return this.world.classes;
+        return this.getFallbackClasses();
+      }
+
+      getCampaignBackgrounds() {
+        if (this.world && Array.isArray(this.world.backgrounds) && this.world.backgrounds.length > 0) return this.world.backgrounds;
+        return this.getFallbackBackgrounds();
+      }
+
+      getCampaignProfessions() {
+        if (this.world && Array.isArray(this.world.professions) && this.world.professions.length > 0) return this.world.professions;
+        return this.getFallbackProfessions();
+      }
+
+      getCampaignMaterials() {
+        if (this.world && Array.isArray(this.world.materials) && this.world.materials.length > 0) return this.world.materials;
+        return this.getFallbackMaterials();
+      }
+
+      getCampaignCraftingTemplates() {
+        if (this.world && Array.isArray(this.world.craftingTemplates) && this.world.craftingTemplates.length > 0) return this.world.craftingTemplates;
+        return this.getFallbackCraftingTemplates();
+      }
+
+      getFallbackClasses() {
+        return [{"id":"hoplite","name":"Hoplite","subtitle":"Phalangite Heavy Infantry","archetype":"Warrior & Combat","description":"Disciplined heavy infantry fighter specialising in heavy bronze armour, shield defence, spear combat, and protective battlefield formations.","primaryAttributes":["strength","endurance"],"statBonuses":{"strength":1,"endurance":1},"proficiencies":["heavy_armor","spears","shields"],"classFeatures":[{"level":1,"name":"Aspis Phalanx Wall","type":"passive","desc":"+2 Armor Class when wielding a shield."},{"level":2,"name":"Dory Piercing Thrust","type":"active","desc":"Bypasses 2 points of enemy armor class on melee spear strikes."},{"level":3,"name":"Steadfast Discipline","type":"passive","desc":"Immunity to fear and panic effects from monstrous creatures."},{"level":4,"name":"Othismos Shield Push","type":"active","desc":"Staggers enemy with shield boss, reducing their attack bonus by 2 for 2 turns."},{"level":5,"name":"Promachos Vanguard","type":"passive","desc":"+4 Max Health, +2 Max Stamina, and critical hit threat expanded to 19-20 with spears."}],"startingEquipment":["item_dory_spear_001","item_aspis_shield_001","item_linothorax_001"]},{"id":"hypaspist","name":"Hypaspist","subtitle":"Wrestling Hero & Pankration Master","archetype":"Warrior & Combat","description":"Agile close-combat fighter inspired by Heracles and Theseus, specialising in unarmed pankration, grappling throws, short-range weapons, and sheer physical power.","primaryAttributes":["strength","agility"],"statBonuses":{"strength":1,"agility":1},"proficiencies":["unarmed","daggers","light_armor"],"classFeatures":[{"level":1,"name":"Iron Grip Pankration","type":"passive","desc":"Unarmed strikes deal 1d6+Str damage and can grapple foes."},{"level":2,"name":"Heraclean Throw","type":"active","desc":"Hurl an enemy into the dirt, inflicting bludgeoning damage and forcing a recovery round."},{"level":3,"name":"Calloused Thews","type":"passive","desc":"Base AC gains +2 from unyielding muscle even when unarmored."},{"level":4,"name":"Lion's Stranglehold","type":"active","desc":"Immobilize a humanoid or beast, denying their turn on a successful Strength contest."},{"level":5,"name":"Olympic Might","type":"passive","desc":"Strength checks gain advantage; critical hits deal triple unarmed damage."}],"startingEquipment":["item_bronze_xiphos_001","item_chlamys_cloak"]},{"id":"amazon","name":"Amazon","subtitle":"Shield-Maiden of Artemis","archetype":"Warrior & Combat","description":"Mobile wilderness warrior associated with Artemis, specialising in archery, tracking, mobility, evasion, and predatory creature hunting.","primaryAttributes":["agility","perception"],"statBonuses":{"agility":1,"wisdom":1},"proficiencies":["bows","light_armor","polearms"],"classFeatures":[{"level":1,"name":"Eye of the Huntress","type":"passive","desc":"+2 attack bonus with ranged bows; night darkness imposes no penalty."},{"level":2,"name":"Swift Skirmish Stride","type":"passive","desc":"Moving across rough or mountain terrain costs 25% less stamina."},{"level":3,"name":"Artemisian Arrow Flurry","type":"active","desc":"Unleash two rapid bow shots in a single combat round."},{"level":4,"name":"Slayer of Monsters","type":"passive","desc":"+3 bonus damage against beasts, mythical monsters, and serpents."},{"level":5,"name":"Goddess's Huntress Grace","type":"passive","desc":"Evasion AC +2; naturally rolls Arete (20) on 19 or 20 for ranged skill checks."}],"startingEquipment":["item_hunting_bow_001","item_bronze_dagger"]},{"id":"myrmidon","name":"Myrmidon","subtitle":"Achillean Berserker","archetype":"Warrior & Combat","description":"Relentless frontline warrior inspired by Achilles' ant-born elite, specialising in aggressive battle frenzy, overwhelming offensive speed, and frontline dominance.","primaryAttributes":["strength","endurance"],"statBonuses":{"strength":2},"proficiencies":["medium_armor","heavy_weapons","swords"],"classFeatures":[{"level":1,"name":"Achillean Frenzy","type":"active","desc":"Enter battle frenzy for 3 rounds: +3 weapon damage, -1 AC."},{"level":2,"name":"Relentless Assault","type":"passive","desc":"Defeating an opponent immediately grants a free strike on adjacent enemies."},{"level":3,"name":"Blood-Tide Surge","type":"passive","desc":"When below 40% Health, attack rolls gain +2 and morale is unbreakable."},{"level":4,"name":"Spear of Phthia","type":"active","desc":"Deliver a devastating thrust that pierces deep, causing heavy bleeding."},{"level":5,"name":"Legendary Wrath","type":"passive","desc":"+10 Max Health; weapon strikes add +4 bonus damage."}],"startingEquipment":["item_bronze_xiphos_001","item_linothorax_001"]},{"id":"trickster","name":"Trickster","subtitle":"Mountebank & Cunning Wayfarer","archetype":"Rogue & Trickster","description":"Cunning character inspired by Odysseus and Hermes, specialising in deception, persuasion, disguises, misdirection, opportunistic combat, and theft.","primaryAttributes":["agility","charisma"],"statBonuses":{"agility":1,"charisma":1},"proficiencies":["daggers","tools","deception"],"classFeatures":[{"level":1,"name":"Hermetic Sleight","type":"passive","desc":"+3 bonus on lockpicking and pickpocketing checks; tools never snap on natural 2-5."},{"level":2,"name":"Feint & Strike","type":"active","desc":"Deceive an opponent in combat, rendering them flat-footed (-4 AC) against your next blow."},{"level":3,"name":"Silvertongue Bargain","type":"passive","desc":"Merchant prices reduced by 15%; persuasion checks gain +2."},{"level":4,"name":"Smoke & Mirror Exit","type":"active","desc":"Flee from combat with 100% guarantee without sustaining opportunity damage."},{"level":5,"name":"Odyssean Guile","type":"passive","desc":"All skill checks involving deception, stealth, or puzzles gain +4."}],"startingEquipment":["item_bronze_dagger","item_lockpick_bronze","item_chlamys_cloak"]},{"id":"oracle_shadow","name":"Oracle's Shadow","subtitle":"Temple Operative & Spy","archetype":"Rogue & Trickster","description":"Stealth specialist and confidential operative associated with political courts and sanctuaries, specialising in information gathering, ambushes, and precision attacks.","primaryAttributes":["agility","intelligence"],"statBonuses":{"agility":1,"intelligence":1},"proficiencies":["poisons","daggers","stealth"],"classFeatures":[{"level":1,"name":"Shadow Veil","type":"passive","desc":"+3 bonus on stealth checks; impossible to surprise when resting."},{"level":2,"name":"Anatomical Precision","type":"passive","desc":"Strikes from stealth deal double maximum weapon damage."},{"level":3,"name":"Court Secrets","type":"passive","desc":"Unlocks hidden political and faction dialogue choices with all rulers."},{"level":4,"name":"Silencing Strike","type":"active","desc":"Strike the throat, preventing the target from sounding an alarm or casting spells."},{"level":5,"name":"Ghost of the Adyton","type":"passive","desc":"Can move silently across any terrain; stealth checks roll with advantage."}],"startingEquipment":["item_bronze_dagger","item_chlamys_cloak"]},{"id":"labyrinth_runner","name":"Labyrinth Runner","subtitle":"Explorer & Ruin Pathfinder","archetype":"Rogue & Trickster","description":"Pathfinder specialising in dangerous underground complexes and ancient ruins, skilled in navigation, trap disarming, and environmental survival.","primaryAttributes":["wisdom","endurance"],"statBonuses":{"wisdom":1,"endurance":1},"proficiencies":["traps","torches","light_armor"],"classFeatures":[{"level":1,"name":"Dungeon Sense","type":"passive","desc":"Detect traps and secret fissures automatically upon entering subterranean rooms."},{"level":2,"name":"Ariadne's Thread","type":"passive","desc":"Immunity to becoming lost in caves or mazes; backtracking costs zero stamina."},{"level":3,"name":"Tumbler Expert","type":"passive","desc":"+4 bonus on all lockpicking and trap disarming checks."},{"level":4,"name":"Vault Breaker","type":"active","desc":"Heave boulders and heavy stone obstacles with +4 effective Strength."},{"level":5,"name":"Master of Ancient Tombs","type":"passive","desc":"Dungeon loot yields +25% additional drachmae and gems."}],"startingEquipment":["item_bronze_dagger","item_lockpick_bronze","item_torches"]},{"id":"demigod","name":"Demigod","subtitle":"Scion of Mount Olympus","archetype":"Divine & Spellcasting","description":"Mortal hero inheriting blood from an Olympian deity (Zeus, Poseidon, Hades, Athena, Apollo), wielding innate divine power and celestial endurance.","primaryAttributes":["strength","charisma"],"statBonuses":{"strength":1,"charisma":1},"proficiencies":["all_weapons","divine_invocations"],"classFeatures":[{"level":1,"name":"Olympian Sparks","type":"active","desc":"Channel divine lineage to unleash celestial burst (+1d8 elemental damage)."},{"level":2,"name":"Ichor of the Gods","type":"passive","desc":"+5 Max Health; recover 1 HP every 3 rounds in combat."},{"level":3,"name":"Aura of Majesty","type":"passive","desc":"+2 bonus on all Charisma checks and faction negotiations."},{"level":4,"name":"Heavenly Aegis","type":"active","desc":"Summon a radiant aura that absorbs the next 15 points of damage."},{"level":5,"name":"Ascendant Spark","type":"passive","desc":"+2 to all primary attributes; divine favor can be invoked twice per day."}],"startingEquipment":["item_bronze_xiphos_001","item_chlamys_cloak"]},{"id":"oracle","name":"Oracle","subtitle":"Pythian Seer & Prophet","archetype":"Divine & Spellcasting","description":"Mystic connected to prophecy and divine omens, using foresight to anticipate danger, divine secrets, and grant supernatural foresight to allies.","primaryAttributes":["wisdom","intelligence"],"statBonuses":{"wisdom":2},"proficiencies":["divination","sacred_rites","staves"],"classFeatures":[{"level":1,"name":"Prescient Foresight","type":"passive","desc":"Gain +2 initiative and +1 Armor Class by anticipating opponent strikes."},{"level":2,"name":"Visions of Truth","type":"active","desc":"Reveal hidden dialogue intentions, motives, and vulnerabilities of NPCs."},{"level":3,"name":"Fateful Redirection","type":"active","desc":"Force an attacker to reroll a successful strike against you once per combat."},{"level":4,"name":"Pythian Trance","type":"active","desc":"Receive cryptic clues directly into the journal regarding active quest mysteries."},{"level":5,"name":"Voice of Apollo","type":"passive","desc":"Natural 20 (Arete) threat expanded on all Wisdom and Perception checks."}],"startingEquipment":["item_staff_olive_wood","item_clay_aryballos_wine"]},{"id":"philosopher","name":"Philosopher","subtitle":"Logic-Mage & Natural Scholar","archetype":"Divine & Spellcasting","description":"Scholar whose supernatural abilities are rooted in mathematics, natural philosophy, rhetoric, and understanding the harmonious principles of the cosmos.","primaryAttributes":["intelligence","wisdom"],"statBonuses":{"intelligence":2},"proficiencies":["rhetoric","alchemy","scrolls"],"classFeatures":[{"level":1,"name":"Syllogistic Analysis","type":"passive","desc":"Identify monster weaknesses and armor vulnerabilities upon encountering them."},{"level":2,"name":"Dialectical Refutation","type":"active","desc":"Disconcert an opponent with rhetorical axioms, penalizing their attacks by 2."},{"level":3,"name":"Harmonic Geometry","type":"passive","desc":"+3 bonus on all puzzle deciphering and architectural investigation checks."},{"level":4,"name":"Elemental Alchemy","type":"active","desc":"Synthesize rapid alchemical reagents in combat without consuming ingredients."},{"level":5,"name":"Cosmic Archē","type":"passive","desc":"Intelligence modifier is added directly to all spell/alchemical damage."}],"startingEquipment":["item_staff_olive_wood","item_scholarly_parchment"]},{"id":"mystery_cultist","name":"Mystery Cultist","subtitle":"Eleusinian Theurgist","archetype":"Divine & Spellcasting","description":"Initiate into the sacred Eleusinian and Orphic traditions, manipulating sacred rites, spiritual communion, and the eternal cycle of life, death, and rebirth.","primaryAttributes":["wisdom","endurance"],"statBonuses":{"wisdom":1,"endurance":1},"proficiencies":["theurgy","rituals","scythes"],"classFeatures":[{"level":1,"name":"Eleusinian Rite","type":"passive","desc":"Resting restores 50% more health and stamina through meditative purification."},{"level":2,"name":"Chthonic Ward","type":"active","desc":"Erect a sacred barrier that reduces necrotic, cold, and poison damage by half."},{"level":3,"name":"Communion with Shades","type":"active","desc":"Speak with the spirits of slain NPCs or heroes to extract lost secrets."},{"level":4,"name":"Harvest Renewal","type":"active","desc":"Heal 15 Health during combat by invoking Demeter and Persephone."},{"level":5,"name":"Initiate of Eternity","type":"passive","desc":"Upon suffering fatal damage, automatically revive at 1 HP once per full rest."}],"startingEquipment":["item_sickle_bronze","item_chlamys_cloak"]},{"id":"nymph_bound","name":"Nymph-Bound","subtitle":"Dryad-Sworn Nature Guardian","archetype":"Nature, Sea & Wild","description":"Primal wilderness guardian connected to sacred ash groves, springs, and naiads, commanding plant growth, wild fauna, and pure spring healing.","primaryAttributes":["wisdom","charisma"],"statBonuses":{"wisdom":1,"charisma":1},"proficiencies":["nature","herbalism","staffs"],"classFeatures":[{"level":1,"name":"Bramble Tangle","type":"active","desc":"Cause thorny briars to erupt from the soil, immobilizing an enemy."},{"level":2,"name":"Spring of Naiads","type":"active","desc":"Draw pure healing water from the ground, cleansing poisons and restoring 8 HP."},{"level":3,"name":"Commune with Fauna","type":"passive","desc":"Wild beasts and boars will not attack unless provoked."},{"level":4,"name":"Barkskin Aegis","type":"active","desc":"Harden your flesh with living oak bark (+3 Armor Class for 4 rounds)."},{"level":5,"name":"Sacred Grove Lord","type":"passive","desc":"+4 bonus on all herbalism and gathering rolls; herbal consumables double potency."}],"startingEquipment":["item_staff_olive_wood","item_dried_figs_bread"]},{"id":"tide_caller","name":"Tide-Caller","subtitle":"Aegean Navigator & Sea Shaper","archetype":"Nature, Sea & Wild","description":"Mariner and mystical navigator attuned to Poseidon, commanding oceanic tides, salt winds, sea-creature empathy, and tempestuous marine magic.","primaryAttributes":["agility","endurance"],"statBonuses":{"agility":1,"endurance":1},"proficiencies":["tridents","navigation","light_armor"],"classFeatures":[{"level":1,"name":"Trident Mastery","type":"passive","desc":"+2 damage when wielding tridents or polearms; maritime travel costs half stamina."},{"level":2,"name":"Salt Wave Crash","type":"active","desc":"Summon a crashing wave of seawater that knocks opponents prone."},{"level":3,"name":"Gale-Force Tailwind","type":"passive","desc":"Travel speed across all regions increased by 20%."},{"level":4,"name":"Wrath of the Earth-Shaker","type":"active","desc":"Shake the ground beneath opponents, inflicting 2d8 seismic damage."},{"level":5,"name":"Master of the Aegean","type":"passive","desc":"Water and cold damage reduced by 50%; trident attacks ignore 4 enemy AC."}],"startingEquipment":["item_trident_bronze","item_chlamys_cloak"]},{"id":"maenad","name":"Maenad","subtitle":"Bacchant of Dionysus","archetype":"Nature, Sea & Wild","description":"Wild and unpredictable devotee of Dionysus, wielding ecstatic frenzy, chaotic thyrsoi strikes, sensory illusions, and unyielding resistance to restraint.","primaryAttributes":["strength","charisma"],"statBonuses":{"strength":1,"charisma":1},"proficiencies":["thyrsus","daggers","unarmored"],"classFeatures":[{"level":1,"name":"Dionysian Ecstasy","type":"active","desc":"Enter wild trance: gain +2 attack, +2 damage, and complete immunity to stun/fear."},{"level":2,"name":"Ivy Thyrsus Strike","type":"passive","desc":"Blunt weapons inflict vine entanglements that reduce enemy Agility."},{"level":3,"name":"Frenzied Resilience","type":"passive","desc":"Suffering a blow increases attack bonus by +1 on your following strike."},{"level":4,"name":"Madness of Bacchus","type":"active","desc":"Confuse an enemy with intoxicating illusions, causing them to strike allies."},{"level":5,"name":"Immortal Revelry","type":"passive","desc":"Drinking wine heals 20 Health and immediately cures all negative conditions."}],"startingEquipment":["item_thyrsus_dionysus","item_clay_aryballos_wine"]}];
+      }
+
+      getFallbackBackgrounds() {
+        return [{"id":"bg_demigod_scion","name":"Demigod Scion","category":"Divine & Mystical Origins","description":"Mortal child of an Olympian deity, carrying heavenly lineage and the heavy burden of heroic destiny. Temples treat you with reverent awe or fearful suspicion.","proficiencies":["persuasion","mythology_lore"],"passiveBonus":"+1 to all divine favor and piety gains; recognized by priests of your patron deity.","dialoguePerk":"Unlocks divine lineage dialogue options when speaking with priests, seers, and monsters."},{"id":"bg_oracle_seer","name":"Oracle or Seer","category":"Divine & Mystical Origins","description":"Touched by Apollo or the Chthonic Muses, experiencing fragmented prophecies through sacred smoke, trances, and midnight dreams.","proficiencies":["perception","investigation"],"passiveBonus":"+2 Passive Perception; sense hidden dangers and impending ambushes on mountain trails.","dialoguePerk":"Unlocks prophetic insight dialogue options that deduce hidden intentions of strangers."},{"id":"bg_temple_acolyte","name":"Temple Acolyte","category":"Divine & Mystical Origins","description":"Raised within sanctuary precincts, maintaining eternal hearth fires, offering barley cakes, and compounding consecrated healing dittany.","proficiencies":["medicine","mythology_lore"],"passiveBonus":"Healing salves and draughts restore 20% more health; sacred offerings cost no drachmae.","dialoguePerk":"Unlocks liturgical knowledge when negotiating with temple elders and hierophants."},{"id":"bg_cursed_mortal","name":"Cursed Mortal","category":"Divine & Mystical Origins","description":"You or your ancestral bloodline committed hubris against a deity, bearing an indelible supernatural mark that invites hardship and test.","proficiencies":["survival","stealth"],"passiveBonus":"+2 bonus on all saving throws against poison, necrotic blights, and curses.","dialoguePerk":"Unlocks desperate defiance choices when confronted by monstrous beings and tyrants."},{"id":"bg_nymph_foundling","name":"Nymph-Raised Foundling","category":"Divine & Mystical Origins","description":"Abandoned in infancy upon mountain crags and fostered by woodland dryads and mountain satyrs. You are far more at home beneath wild pines than within city walls.","proficiencies":["survival","tracking"],"passiveBonus":"Travel stamina cost reduced by 15% across rough wilderness and dense groves.","dialoguePerk":"Unlocks woodland empathy when encountering centaurs, satyrs, and wild beasts."},{"id":"bg_hoplite_veteran","name":"Hoplite Veteran","category":"Martial & Heroic Origins","description":"Former citizen-soldier who endured blood and dust in the bronze-locked ranks of the phalanx. You value loyalty, iron discipline, and shield brothers.","proficiencies":["melee_combat","athletics"],"passiveBonus":"+1 Armor Class when fighting alongside companions or guards; +2 morale check bonus.","dialoguePerk":"Unlocks martial camaraderie dialogue with city watch captains and veterans."},{"id":"bg_pankration_champion","name":"Pankration Champion","category":"Martial & Heroic Origins","description":"Celebrated athlete crowned with sacred wild celery or olive wreaths at the Panhellenic Games for brutal wrestling and unarmed triumphs.","proficiencies":["athletics","intimidation"],"passiveBonus":"Unarmed strikes deal +2 bonus damage; athletic feats of strength roll with advantage.","dialoguePerk":"Recognized in major poleis, granting discounts at taverns and boasting privileges."},{"id":"bg_monster_hunter","name":"Monster Hunter","category":"Martial & Heroic Origins","description":"Wayfaring slayer who stalks chimeras, harpies, and ferocious boars for bounty silver, studying creature behavior, tracks, and anatomies.","proficiencies":["tracking","investigation"],"passiveBonus":"Harvesting slain monsters yields 50% more rare crafting components and pelts.","dialoguePerk":"Unlocks anatomical vulnerability options during monster encounters."},{"id":"bg_royal_guard","name":"Myrmidon or Royal Guard","category":"Martial & Heroic Origins","description":"Sworn protector of a legendary basileus or warlord, seasoned in palace intrigue, personal duels, and uncompromising military defense.","proficiencies":["melee_combat","persuasion"],"passiveBonus":"+2 bonus on initiative rolls; immunity to being disarmed in combat.","dialoguePerk":"Unlocks high-status noble protocol when speaking with magistrates and kings."},{"id":"bg_argonaut_sailor","name":"Argonaut or Sailor","category":"Civic, Maritime & Scholarly Origins","description":"Hardened oarsman who sailed uncharted waters, weathered sirens' chants, clashing rocks, and Poseidon's unpredictable tempests.","proficiencies":["survival","athletics"],"passiveBonus":"Immunity to drowning penalties; sea voyages and ferry travel cost 30% less silver.","dialoguePerk":"Unlocks tall maritime tales and foreign port contacts in coastal settlements."},{"id":"bg_philosopher_sophist","name":"Philosopher or Sophist","category":"Civic, Maritime & Scholarly Origins","description":"Educated in the Athenian Lyceum or Ionian schools in rhetoric, logic, ethics, astronomy, and the fundamental elements of nature.","proficiencies":["persuasion","investigation"],"passiveBonus":"Solving inscriptions and puzzles awards +25 additional Kleos experience.","dialoguePerk":"Unlocks logical rebuttal dialogue options that confuse hostile rhetoricians."},{"id":"bg_artisan_forge","name":"Artisan of the Forge","category":"Civic, Maritime & Scholarly Origins","description":"Apprenticed to Hephaestus-blessed bronzesmiths and masons, capable of evaluating metal purity, balancing blades, and repairing battered armor.","proficiencies":["crafting","investigation"],"passiveBonus":"Crafted weapons and armor gain a permanent +5% durability and value bonus.","dialoguePerk":"Unlocks material appraisal choices with merchants, identifying counterfeit goods."},{"id":"bg_exiled_noble","name":"Exiled Noble","category":"Civic, Maritime & Scholarly Origins","description":"Cast out from your ancestral acropolis following a blood feud or palace coup. Though stripped of lands, you retain courtly manners and old connections.","proficiencies":["persuasion","mythology_lore"],"passiveBonus":"Start with an ancestral signet ring valued at 35 silver drachmae; +1 Charisma.","dialoguePerk":"Unlocks diplomatic recognition from aristocrats and foreign dignitaries."},{"id":"bg_underworld_escapee","name":"Underworld Escapee","category":"Fringe & Underworld Origins","description":"You crossed the black waters of the Styx and witnessed the Asphodel Meadows before escaping back through an ancient chthonic fissure.","proficiencies":["stealth","survival"],"passiveBonus":"Cold and necrotic damage suffered is reduced by 3 points; immune to ghost terror.","dialoguePerk":"Unlocks chilling chthonic dialogue options when conversing with undead or necromancers."},{"id":"bg_cultist_mysteries","name":"Cultist of the Mysteries","category":"Fringe & Underworld Origins","description":"Initiated into the nocturnal rites of the Kabeiroi or Eleusis, holding oaths of sacred silence regarding life, death, and the soul's rebirth.","proficiencies":["mythology_lore","stealth"],"passiveBonus":"+2 bonus on all skill checks conducted in darkness, caves, or subterranean tombs.","dialoguePerk":"Unlocks secret handshakes and coded phrases to recognize fellow initiates."},{"id":"bg_brigand_crags","name":"Brigand of the Crags","category":"Fringe & Underworld Origins","description":"Surviving in the windswept limestone ravines between poleis, skilled in ambush tactics, concealed paths, mountain caves, and raiding caravans.","proficiencies":["stealth","tracking"],"passiveBonus":"+2 bonus on pickpocketing and ambush rolls; locate mountain springs without maps.","dialoguePerk":"Unlocks underworld criminal cant when interacting with bandits and smugglers."}];
+      }
+
+      getFallbackProfessions() {
+        return [{"id":"metalworking","name":"Metalworking & Smithing","governingAttribute":"strength","requiredToolkitId":"item_toolkit_smithing","workstation":"forge","description":"The sacred forge discipline of Hephaestus, encompassing bronze forging, adamantine armaments, orichalcum refinement, and temple jewellery smithing.","itemCategories":["weapon","shield","heavy_armor","accessory"]},{"id":"artifice","name":"Mechanical Engineering & Artifice","governingAttribute":"intelligence","requiredToolkitId":"item_toolkit_engineering","workstation":"workbench","description":"Daedalian mechanical ingenuity, crafting automaton sentinels, bronze gearwork contrivances, locking devices, and mechanical prosthetics.","itemCategories":["automaton","utility","mechanism"]},{"id":"textiles","name":"Textiles, Leatherworking & Garments","governingAttribute":"agility","requiredToolkitId":"item_toolkit_tailoring","workstation":"textile_workshop","description":"Spinning, leather tanning, and Tyrian dyeing inspired by Arachne and the Moirai, crafting enchanted cloaks, beast-hide boots, and linothorax cuirasses.","itemCategories":["light_armor","boots","gloves","cloak"]},{"id":"alchemy","name":"Alchemy & Herbalism","governingAttribute":"intelligence","requiredToolkitId":"item_toolkit_alchemy","workstation":"alchemy_lab","description":"Compounding sacred botanical draughts, Dittany salves, Moly distillations, and combat concoctions derived from legendary beasts.","itemCategories":["consumable","potion","elixir"]},{"id":"stonework","name":"Stonework, Sculpture & Pottery","governingAttribute":"endurance","requiredToolkitId":"item_toolkit_stonework","workstation":"stonework_workshop","description":"Pygmalion sculpting, Pentelic marble masonry, and enchanted amphora pottery capable of storing essences and animated stone reliefs.","itemCategories":["sculpture","urn","construct"]},{"id":"music","name":"Instrument Making & Musical Craft","governingAttribute":"charisma","requiredToolkitId":"item_toolkit_music","workstation":"instrument_workshop","description":"Orphic crafting of resonant tortoiseshell lyres, boxwood auloi flutes, and silver harps attuned to planetary harmonies.","itemCategories":["instrument","relic"]},{"id":"scribing","name":"Scribing & Magical Inscription","governingAttribute":"wisdom","requiredToolkitId":"item_toolkit_scribing","workstation":"scribe_desk","description":"Inscribing prophetic parchments, protective threshold wards, and illuminated mythological treatises with enchanted inks and gold leaf.","itemCategories":["scroll","document","ward"]}];
+      }
+
+      getFallbackMaterials() {
+        return [{"id":"mat_cypriot_bronze","name":"Cypriot Bronze Ingot","category":"metal","rarity":"common","weightKg":1.5,"valueDrachmae":12,"properties":{"hardness":7,"durability":8,"flexibility":4,"heatResistance":8,"magicalAffinity":3,"purity":85},"compatibleProfessions":["metalworking","artifice","music"],"statModifiers":{"defense":2,"damage":2,"durability":15},"description":"Refined copper alloyed with tin from the island of Cyprus. The backbone of heroic Hellenic armaments."},{"id":"mat_celestial_bronze","name":"Celestial Bronze Ingot","category":"metal","rarity":"rare","weightKg":1.2,"valueDrachmae":60,"properties":{"hardness":10,"durability":10,"flexibility":6,"heatResistance":10,"magicalAffinity":9,"purity":99},"compatibleProfessions":["metalworking","artifice","stonework"],"statModifiers":{"defense":4,"damage":5,"durability":30},"specialEffect":"Bypasses magical damage resistance and strikes chthonic spirits.","description":"Mined from Mount Olympus and quenched in the River Lethe. Glows with golden solar radiance."},{"id":"mat_mountain_wolf_hide","name":"Grey Wolf Pelt","category":"hide","rarity":"common","weightKg":1,"valueDrachmae":10,"properties":{"hardness":3,"durability":6,"flexibility":8,"heatResistance":4,"magicalAffinity":2,"purity":80},"compatibleProfessions":["textiles","metalworking","artifice"],"statModifiers":{"staminaBonus":2,"defense":1,"coldResistance":3},"description":"Thick winter pelt harvested from wolves roaming Mount Cithaeron. Provides supple, windproof warmth."},{"id":"mat_boar_leather","name":"Bristle Boar Tough Hide","category":"hide","rarity":"common","weightKg":1.4,"valueDrachmae":14,"properties":{"hardness":5,"durability":8,"flexibility":5,"heatResistance":5,"magicalAffinity":1,"purity":85},"compatibleProfessions":["textiles","metalworking"],"statModifiers":{"healthBonus":4,"defense":2},"description":"Rugged, scarred wild boar hide capable of blunting slashes when fashioned into cuirasses or reinforced boots."},{"id":"mat_wild_dittany","name":"Cretan Mountain Dittany","category":"herb","rarity":"common","weightKg":0.2,"valueDrachmae":8,"properties":{"hardness":1,"durability":2,"flexibility":9,"heatResistance":2,"magicalAffinity":7,"purity":90},"compatibleProfessions":["alchemy","textiles","scribing"],"statModifiers":{"restoreHealth":12,"healingPotency":3},"description":"The miraculous healing herb of Mount Ida, reputed to dislodge arrowheads and rapidly knit lacerated flesh."},{"id":"mat_sacred_moly","name":"Root of Sacred Moly","category":"herb","rarity":"rare","weightKg":0.3,"valueDrachmae":45,"properties":{"hardness":2,"durability":4,"flexibility":7,"heatResistance":6,"magicalAffinity":10,"purity":95},"compatibleProfessions":["alchemy","scribing","music"],"statModifiers":{"poisonImmunity":true,"magicalResist":4},"specialEffect":"Nullifies sorcerous hexes and renders the imbiber immune to polymorphing enchantments.","description":"A milk-white blossom with black roots given by Hermes to Odysseus to ward off the enchantments of Circe."},{"id":"mat_pentelic_marble","name":"Pentelic White Marble Block","category":"stone","rarity":"uncommon","weightKg":4,"valueDrachmae":20,"properties":{"hardness":8,"durability":9,"flexibility":1,"heatResistance":7,"magicalAffinity":5,"purity":92},"compatibleProfessions":["stonework","artifice","scribing"],"statModifiers":{"defense":3,"constructStability":5},"description":"Flawless fine-grained white marble with faint veins of iron, shimmering with golden patina under the sunlight."},{"id":"mat_tortoiseshell","name":"Mountain Tortoiseshell","category":"organic","rarity":"uncommon","weightKg":0.8,"valueDrachmae":24,"properties":{"hardness":6,"durability":7,"flexibility":5,"heatResistance":5,"magicalAffinity":8,"purity":88},"compatibleProfessions":["music","artifice","metalworking"],"statModifiers":{"acousticResonance":5,"charismaBonus":1},"description":"Hollowed convex carpace prized by Hermes for constructing the world's first chelys-lyre."},{"id":"mat_serpent_fang","name":"Drakon Serpent Fang","category":"trophy","rarity":"rare","weightKg":0.4,"valueDrachmae":35,"properties":{"hardness":9,"durability":8,"flexibility":3,"heatResistance":6,"magicalAffinity":8,"purity":90},"compatibleProfessions":["metalworking","alchemy","stonework"],"statModifiers":{"damage":4,"poisonBonus":3},"description":"An ivory tooth plucked from an earth-born drakon, oozing with faint traces of chthonic venom."},{"id":"mat_papyrus_reeds","name":"Egyptian Papyrus Reeds","category":"plant","rarity":"common","weightKg":0.5,"valueDrachmae":6,"properties":{"hardness":1,"durability":4,"flexibility":9,"heatResistance":2,"magicalAffinity":4,"purity":85},"compatibleProfessions":["scribing","textiles"],"statModifiers":{"scrollCharges":2,"clarity":3},"description":"Cross-laminated river reed sheets pressed into resilient parchment scrolls for scribes."}];
+      }
+
+      getFallbackCraftingTemplates() {
+        return [{"id":"template_sword","name":"Xiphos Short Sword","professionId":"metalworking","slot":"main_hand","category":"weapon","baseDamageMin":4,"baseDamageMax":8,"baseWeightKg":1.4,"baseValueDrachmae":25,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A double-edged leaf-bladed short sword suited for close-quarters fighting in phalanx formations."},{"id":"template_spear","name":"Dory Long Spear","professionId":"metalworking","slot":"main_hand","category":"weapon","baseDamageMin":5,"baseDamageMax":10,"baseWeightKg":2.2,"baseValueDrachmae":22,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"An ash-wood long shaft crowned with a tapered bronze spearhead and iron butt-spike."},{"id":"template_shield","name":"Aspis Round Shield","professionId":"metalworking","slot":"off_hand","category":"armor","baseDefense":3,"baseWeightKg":5.5,"baseValueDrachmae":30,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A deep bowl-shaped wooden and bronze shield with leather arm band and hand grip."},{"id":"template_helmet","name":"Corinthian Crested Helm","professionId":"metalworking","slot":"head","category":"armor","baseDefense":2,"baseWeightKg":2,"baseValueDrachmae":28,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A beaten bronze helmet protecting cheek and nose with eye slits and horsehair crest mount."},{"id":"template_cuirass","name":"Linothorax Cuirass","professionId":"textiles","slot":"body","category":"armor","baseDefense":4,"baseWeightKg":4.5,"baseValueDrachmae":35,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"Laminated linen and leather torso armor reinforced with metallic scale plates."},{"id":"template_boots","name":"Wayfarer Greaves & Boots","professionId":"textiles","slot":"feet","category":"armor","baseDefense":1,"baseWeightKg":1.2,"baseValueDrachmae":15,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"Stout leather boots banded with toughened hide or bronze strips for rocky trails."},{"id":"template_gloves","name":"Pankratiast Handwraps","professionId":"textiles","slot":"hands","category":"armor","baseDefense":1,"baseWeightKg":0.5,"baseValueDrachmae":12,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"Supple leather strips wound about the knuckles and wrists to steady blows."},{"id":"template_cloak","name":"Chlamys Travel Cloak","professionId":"textiles","slot":"back","category":"armor","baseDefense":1,"baseWeightKg":1,"baseValueDrachmae":18,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A versatile wool or pelt cloak fastened at the shoulder by a bronze fibula pin."},{"id":"template_amulet","name":"Consecrated Ward Amulet","professionId":"metalworking","slot":"neck","category":"accessory","baseDefense":0,"baseWeightKg":0.3,"baseValueDrachmae":25,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A carved talisman or cast bronze pendant blessed with apotropaic symbols."},{"id":"template_ring","name":"Signet Ring of State","professionId":"metalworking","slot":"ring_1","category":"accessory","baseDefense":0,"baseWeightKg":0.1,"baseValueDrachmae":30,"primaryMaterialSlots":1,"allowedSupplementarySlots":1,"description":"A polished signet band engraved with archaic heraldic seals."},{"id":"template_healing_salve","name":"Asklepian Healing Salve","professionId":"alchemy","slot":"inventory","category":"consumable","restoreHealth":14,"baseWeightKg":0.3,"baseValueDrachmae":15,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A soothing clay alabastron filled with dittany and mountain honey for combat wounds."},{"id":"template_combat_elixir","name":"Heroic Vigor Draught","professionId":"alchemy","slot":"inventory","category":"consumable","restoreStamina":12,"tempAttackBonus":2,"baseWeightKg":0.3,"baseValueDrachmae":20,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"An energizing potion steeped with pungent roots that sharpens reflexes for one fight."},{"id":"template_lyre","name":"Chelys Resonant Lyre","professionId":"music","slot":"main_hand","category":"instrument","baseWeightKg":1.5,"baseValueDrachmae":40,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A seven-stringed tortoiseshell lyre capable of calming wild beasts and inspiring awe."},{"id":"template_scroll_ward","name":"Inscribed Threshold Ward","professionId":"scribing","slot":"inventory","category":"scroll","baseWeightKg":0.2,"baseValueDrachmae":22,"primaryMaterialSlots":1,"allowedSupplementarySlots":1,"description":"A rolled parchment charm inscribed with hexameter verses that ward against evil spirits."},{"id":"template_automaton_device","name":"Daedalian Bronze Owl Mechanism","professionId":"artifice","slot":"accessory","category":"utility","baseWeightKg":1.8,"baseValueDrachmae":50,"primaryMaterialSlots":2,"allowedSupplementarySlots":1,"description":"A clockwork bronze creature with glass eyes that clicks and alerts its bearer to ambushes."}];
       }
 
       getFallbackDialogue(treeId) {
@@ -4847,9 +5192,13 @@
 
         this.levelUpState = {
           nextLevel: nextLevel,
+          pendingLevel: nextLevel,
           nextTitle: nextTitle,
+          pointsLeft: 1,
+          skillPointsLeft: 2,
           selectedAttr: null,
           selectedSkill: null,
+          selectedSkills: [],
           selectedFeat: null
         };
 
@@ -4864,7 +5213,7 @@
 
         const banner = document.getElementById("levelup-title-banner");
         if (banner) {
-          banner.innerText = `Advancing to Level ${s.nextLevel}: ${s.nextTitle}`;
+          banner.innerText = `Advancing to Level ${s.nextLevel}: ${s.nextTitle} (+1 Attribute Point, +2 Skill Points)`;
         }
 
         // 1. Render Attribute Options
@@ -4893,7 +5242,7 @@
           }).join("");
         }
 
-        // 2. Render Skill Options
+        // 2. Render Skill Options (Allows selecting 2 points)
         const skillContainer = document.getElementById("levelup-skill-options");
         if (skillContainer) {
           const skills = [
@@ -4909,13 +5258,15 @@
             { key: "investigation", label: "Investigation" }
           ];
           skillContainer.innerHTML = skills.map(sk => {
-            const isSelected = s.selectedSkill === sk.key;
+            const occurrences = (s.selectedSkills || []).filter(k => k === sk.key).length;
+            const isSelected = occurrences > 0 || s.selectedSkill === sk.key;
             const currentRank = p.skills[sk.key] || 0;
+            const bonusRank = occurrences > 0 ? occurrences : (s.selectedSkill === sk.key ? 1 : 0);
             return `
               <button type="button" class="action-card-btn" style="text-align: left; padding: 0.45rem; ${isSelected ? 'border-color: #ffe680; background: rgba(224, 190, 54, 0.2); box-shadow: 0 0 8px rgba(224, 190, 54, 0.4);' : ''}" onclick="window.engine.selectLevelUpSkill('${sk.key}')">
                 <div style="font-family: var(--font-heading); color: ${isSelected ? '#ffe680' : 'var(--parchment)'}; font-size: 0.8rem; display: flex; justify-content: space-between;">
-                  <span>${sk.label}</span>
-                  <strong style="color: var(--bronze-bright);">Rank ${currentRank} &rarr; ${currentRank + 1}</strong>
+                  <span>${sk.label} ${occurrences > 1 ? '(x2)' : ''}</span>
+                  <strong style="color: var(--bronze-bright);">Rank ${currentRank} &rarr; ${currentRank + (bonusRank || 1)}</strong>
                 </div>
               </button>
             `;
@@ -4950,12 +5301,21 @@
       selectLevelUpAttr(attrKey) {
         if (!this.levelUpState) return;
         this.levelUpState.selectedAttr = attrKey;
+        this.levelUpState.pointsLeft = 0;
         this.renderLevelUpModal();
       }
 
       selectLevelUpSkill(skillKey) {
         if (!this.levelUpState) return;
         this.levelUpState.selectedSkill = skillKey;
+        this.levelUpState.selectedSkills = this.levelUpState.selectedSkills || [];
+        if (this.levelUpState.selectedSkills.length < 2) {
+          this.levelUpState.selectedSkills.push(skillKey);
+        } else {
+          // Keep newest two
+          this.levelUpState.selectedSkills = [this.levelUpState.selectedSkills[1], skillKey];
+        }
+        this.levelUpState.skillPointsLeft = 2 - this.levelUpState.selectedSkills.length;
         this.renderLevelUpModal();
       }
 
@@ -4974,10 +5334,16 @@
           alert("Please select an Attribute to increase by +1.");
           return;
         }
-        if (!s.selectedSkill) {
-          alert("Please select a Skill to increase by +1 rank.");
+
+        const skillsToBoost = (s.selectedSkills && s.selectedSkills.length > 0)
+          ? s.selectedSkills
+          : (s.selectedSkill ? [s.selectedSkill, s.selectedSkill] : []);
+
+        if (skillsToBoost.length < 2) {
+          alert("Please select 2 Skill points to train.");
           return;
         }
+
         if (availableFeats.length > 0 && !s.selectedFeat) {
           alert("Please select a Heroic Feat of the Immortals.");
           return;
@@ -4988,14 +5354,16 @@
         p.heroTitle = s.nextTitle;
         p.xpNext = this.getXPForNextLevel(p.level);
 
-        // Attribute boost
+        // Exactly 1 Attribute point
         p.attributes[s.selectedAttr] = (p.attributes[s.selectedAttr] || 10) + 1;
         if (s.selectedAttr === "wisdom") {
           p.attributes.perception = p.attributes.wisdom;
         }
 
-        // Skill boost
-        p.skills[s.selectedSkill] = (p.skills[s.selectedSkill] || 0) + 1;
+        // Exactly 2 Skill / Substat points
+        skillsToBoost.forEach(sk => {
+          p.skills[sk] = (p.skills[sk] || 0) + 1;
+        });
 
         // Feat boost
         if (s.selectedFeat) {
@@ -5022,7 +5390,7 @@
         const featDefs = this.getHeroicFeatDefinitions();
         const featName = s.selectedFeat && featDefs[s.selectedFeat] ? featDefs[s.selectedFeat].name : "Divine Favor";
 
-        this.logTranscript("Heroic Ascension", `⚡ <strong>HEROIC ASCENSION ACHIEVED!</strong> You have ascended to <strong>Level ${p.level}: ${p.heroTitle}</strong>! Attributes, skills, and the heroic boon <em>${featName}</em> have been consecrated to your destiny!`, "entry-discovery");
+        this.logTranscript("Heroic Ascension", `⚡ <strong>HEROIC ASCENSION ACHIEVED!</strong> You have ascended to <strong>Level ${p.level}: ${p.heroTitle}</strong>! Attributes (+1 ${s.selectedAttr.toUpperCase()}), skills (+2 points: ${skillsToBoost.join(', ')}), and the heroic boon <em>${featName}</em> have been consecrated to your destiny!`, "entry-discovery");
         if (this.showToast) {
           this.showToast("level", `Level Increased! (Level ${p.level})`, "positive", "🏛️", p.heroTitle);
           this.showToast("attribute", `⚔️ ${s.selectedAttr.toUpperCase()} +1`, "positive", "✨", "Character capability increased");
@@ -5031,7 +5399,7 @@
           }
         }
 
-        this.addJournalEntry("chronicle", `Heroic Ascension: Level ${p.level}`, `Ascended to ${p.heroTitle}. Consecrated attribute ${s.selectedAttr.toUpperCase()}, trained skill ${s.selectedSkill.replace('_',' ').toUpperCase()}, and claimed the legendary boon of ${featName}.`);
+        this.addJournalEntry("chronicle", `Heroic Ascension: Level ${p.level}`, `Ascended to ${p.heroTitle}. Consecrated attribute ${s.selectedAttr.toUpperCase()}, trained skills (${skillsToBoost.join(', ')}), and claimed the legendary boon of ${featName}.`);
 
         this.saveGameSilently();
         this.renderAll();
@@ -5868,6 +6236,43 @@
         });
         info.push(`Validated ${factions.length} factions.`);
 
+        // 10. Character Classes & Archetypes Validation
+        const classes = content.classes || [];
+        classes.forEach(c => {
+          if (!c.id) errors.push("Character class entry missing 'id'.");
+          if (!c.name) errors.push(`Character class '${c.id}' missing 'name'.`);
+        });
+        if (classes.length > 0) info.push(`Validated ${classes.length} character classes.`);
+
+        // 11. Character Backgrounds Validation
+        const backgrounds = content.backgrounds || [];
+        backgrounds.forEach(b => {
+          if (!b.id) errors.push("Character background entry missing 'id'.");
+          if (!b.name) errors.push(`Character background '${b.id}' missing 'name'.`);
+        });
+        if (backgrounds.length > 0) info.push(`Validated ${backgrounds.length} character backgrounds.`);
+
+        // 12. Professions & Crafting Templates Validation
+        const professions = content.professions || [];
+        professions.forEach(p => {
+          if (!p.id) errors.push("Profession entry missing 'id'.");
+          if (!p.name) errors.push(`Profession '${p.id}' missing 'name'.`);
+        });
+        if (professions.length > 0) info.push(`Validated ${professions.length} crafting professions.`);
+
+        const craftingTemplates = content.craftingTemplates || [];
+        craftingTemplates.forEach(t => {
+          if (!t.id) errors.push("Crafting template missing 'id'.");
+          if (!t.name) errors.push(`Crafting template '${t.id}' missing 'name'.`);
+        });
+        if (craftingTemplates.length > 0) info.push(`Validated ${craftingTemplates.length} crafting templates.`);
+
+        // 13. Tutorial Presence Validation
+        const tutorials = content.tutorials || (manifest.modules && manifest.modules.tutorials) || [];
+        if (manifest.isTestCampaign !== true && Array.isArray(tutorials) && tutorials.length === 0 && !manifest.modules?.adventures) {
+          warnings.push("Campaign does not declare any tutorial modules or introductory adventures.");
+        }
+
         return {
           valid: errors.length === 0,
           errors,
@@ -6231,13 +6636,21 @@
          MULTI-TABLE LOOT RESOLVER & ANTI-EXPLOIT TRACKING
          ========================================================================= */
       resolveEntityLoot(entity) {
-        if (!entity) return;
+        if (!entity) return { droppedItems: [], drachmaeWon: 0 };
         const lootTableId = entity.lootTableId;
         const lootTable = lootTableId ? this.getLootTable(lootTableId) : null;
         const isRepeatKill = (this.state.worldState.defeatedEncounters[entity.encounterId || entity.id] || 0) > 1;
 
         const droppedItems = [];
         let drachmaeWon = 0;
+
+        const creatDef = entity.id ? this.getCreature(entity.id) : null;
+        const isBoss = !!(entity.isBoss || entity.category === "boss" || (creatDef && creatDef.isBoss) || (lootTable && lootTable.isBoss) || (entity.id && entity.id.includes("boss")) || (lootTableId && lootTableId.includes("boss")));
+
+        // Independent creature currency scaled by level / tier
+        const entityLevel = entity.tier || entity.level || (creatDef && (creatDef.tier || creatDef.level)) || 1;
+        const scaledCreatureCurrency = Math.max(1, Math.floor(entityLevel * 3 + Math.random() * 3));
+        drachmaeWon += scaledCreatureCurrency;
 
         if (lootTable) {
           if (Array.isArray(lootTable.guaranteed)) {
@@ -6260,9 +6673,31 @@
 
           if (Array.isArray(lootTable.entries)) {
             lootTable.entries.forEach(ent => {
-              const chance = ent.chance !== undefined ? ent.chance : 0.5;
-              if (Math.random() <= chance) {
-                const item = this.getItemData(ent.itemId);
+              let chance = ent.chance !== undefined ? ent.chance : 0.5;
+              const item = this.getItemData(ent.itemId);
+              const rarity = (item && item.rarity) ? item.rarity.toLowerCase() : "common";
+
+              // Centralized Loot Engine Probability Hard Caps:
+              // Normal creature:
+              // - epic <= 0.02% (0.0002)
+              // - legendary and mythic strictly impossible (0.00%)
+              // Boss creature:
+              // - mythic <= 0.02% (0.0002)
+              if (ent.guaranteed) {
+                chance = 1.0;
+              } else if (!isBoss) {
+                if (rarity === "legendary" || rarity === "mythic") {
+                  chance = 0;
+                } else if (rarity === "epic") {
+                  chance = Math.min(chance, 0.0002);
+                }
+              } else {
+                if (rarity === "mythic") {
+                  chance = Math.min(chance, 0.0002);
+                }
+              }
+
+              if (chance > 0 && Math.random() <= chance) {
                 const isUniqueItem = !!(ent.isUnique || (item && item.isUnique));
                 if (isUniqueItem) {
                   if (!this.state.worldState.grantedUniqueItems[ent.itemId]) {
@@ -6290,8 +6725,16 @@
           }
         } else if (Array.isArray(entity.loot)) {
           entity.loot.forEach(l => {
-            if (Math.random() <= (l.chance || 0.5)) {
-              const item = this.getItemData(l.itemId);
+            let chance = l.chance || 0.5;
+            const item = this.getItemData(l.itemId);
+            const rarity = (item && item.rarity) ? item.rarity.toLowerCase() : "common";
+            if (!isBoss) {
+              if (rarity === "legendary" || rarity === "mythic") chance = 0;
+              else if (rarity === "epic") chance = Math.min(chance, 0.0002);
+            } else {
+              if (rarity === "mythic") chance = Math.min(chance, 0.0002);
+            }
+            if (chance > 0 && Math.random() <= chance) {
               this.addItem(l.itemId, 1);
               droppedItems.push(item.name);
             }
@@ -6309,6 +6752,75 @@
           const currText = drachmaeWon > 0 ? ` and ${drachmaeWon} silver drachmae` : "";
           this.logTranscript("Spoils of Battle", `Recovered from ${entity.name}: ${lootList}${currText}.`, "entry-discovery");
         }
+
+        return { droppedItems, drachmaeWon };
+      }
+
+      /* =========================================================================
+         SOCIAL INTERACTION & PERSUASION ENGINE (WITH ANTI-EXPLOIT TRACKING)
+         ========================================================================= */
+      attemptPersuadeNpc(npcId) {
+        const npc = this.getCharacter(npcId);
+        if (!npc) return { success: false, reason: "NPC not found" };
+
+        this.state.worldState.socialInteractions = this.state.worldState.socialInteractions || {};
+        const lastAttempt = this.state.worldState.socialInteractions[npcId];
+        const currentTime = (this.state.worldState.time.day * 24) + this.state.worldState.time.hour;
+
+        if (lastAttempt && (currentTime - lastAttempt.time) < 4) {
+          this.logTranscript("Social Caution", `${npc.name} remains cautious after your recent overtures and cannot be easily swayed again so soon.`, "entry-prose");
+          return { success: false, blocked: true, reason: "cooldown_active" };
+        }
+
+        this.state.worldState.socialInteractions[npcId] = { time: currentTime, type: "persuade" };
+
+        const dc = (npc.disposition !== undefined && npc.disposition < 0) ? 14 : 11;
+        const check = this.checkSkill("persuasion", "charisma", dc, `Persuade ${npc.name}`);
+
+        if (check.isArete || check.success) {
+          npc.disposition = (npc.disposition || 0) + 10;
+          this.awardXP(30, `Persuaded ${npc.name}`);
+          this.logTranscript("Civic Eloquence", `Your measured words sway ${npc.name}, winning their goodwill and respect (+10 Disposition).`, "entry-discovery");
+          if (this.showToast) this.showToast("discovery", `Persuaded ${npc.name}`, "positive", "🗣️", "+10 Disposition");
+          return { success: true, roll: check.total, d20: check.d20, dc, disposition: npc.disposition };
+        } else {
+          this.logTranscript("Rhetorical Misfire", `${npc.name} shakes their head, unmoved by your appeals.`, "entry-prose");
+          return { success: false, roll: check.total, d20: check.d20, dc, disposition: npc.disposition };
+        }
+      }
+
+      attemptDeceiveNpc(npcId) {
+        const npc = this.getCharacter(npcId);
+        if (!npc) return { success: false, reason: "NPC not found" };
+
+        this.state.worldState.socialInteractions = this.state.worldState.socialInteractions || {};
+        const lastAttempt = this.state.worldState.socialInteractions[npcId];
+        const currentTime = (this.state.worldState.time.day * 24) + this.state.worldState.time.hour;
+
+        if (lastAttempt && (currentTime - lastAttempt.time) < 4) {
+          this.logTranscript("Guarded Suspicions", `${npc.name} is eyeing you warily and will not fall for ruses at this time.`, "entry-prose");
+          return { success: false, blocked: true, reason: "cooldown_active" };
+        }
+
+        this.state.worldState.socialInteractions[npcId] = { time: currentTime, type: "deceive" };
+
+        const dc = 12 + Math.floor(((npc.attributes && npc.attributes.wisdom ? npc.attributes.wisdom : 12) - 10) / 2);
+        const check = this.checkSkill("persuasion", "charisma", dc, `Deceive ${npc.name}`);
+
+        if (check.isArete || check.success) {
+          this.awardXP(25, `Deceived ${npc.name}`);
+          this.logTranscript("Deceptive Guile", `You weave a cunning half-truth that ${npc.name} accepts without question.`, "entry-discovery");
+          if (this.showToast) this.showToast("discovery", `Deceived ${npc.name}`, "positive", "🎭", "Ruse succeeded");
+          return { success: true, roll: check.total, d20: check.d20, dc };
+        } else {
+          npc.disposition = (npc.disposition || 0) - 10;
+          this.logTranscript("Ruse Exposed", `${npc.name} narrows their eyes: "Do you take me for a fool? Your tale rings hollow!" (-10 Disposition).`, "entry-ate");
+          return { success: false, roll: check.total, d20: check.d20, dc };
+        }
+      }
+
+      attemptStealFromNpc(npcId) {
+        return this.attemptPickpocket(npcId);
       }
 
       /* =========================================================================
@@ -7488,6 +8000,23 @@
           if (this.showToast) this.showToast("warning", `${c.enemy.name} Enraged!`, "negative", "🔥", "Boss entered second phase!");
         }
 
+        // --- 2.6 NPC DEFENSIVE / MORALE FLEE CHECK ---
+        if (c.enemy.isNpc && c.enemy.hp > 0 && c.enemy.hp <= (c.enemy.vitals ? c.enemy.vitals.maxHealth * 0.25 : 5) && !c.enemy.fleeing) {
+          c.enemy.fleeing = true;
+          c.enemy.surrendered = true;
+          feed.innerHTML += `
+            <div style="color: #ffe680; background: rgba(224, 190, 54, 0.18); padding: 0.55rem; border-left: 3px solid #ffe680; margin: 0.35rem 0;">
+              🏳️ <strong>${c.enemy.name} yields and breaks for safety!</strong> Grievously wounded and unnerved, they drop their weapon, plead for mercy, and flee from the encounter!
+            </div>
+          `;
+          setTimeout(() => {
+            const cm = document.getElementById("combat-modal");
+            if (cm) cm.style.display = "none";
+            this.handleCombatVictory();
+          }, 1200);
+          return;
+        }
+
         // --- 3. ENEMY TURN ---
         const enemyAction = c.enemy.actions[Math.floor(Math.random() * c.enemy.actions.length)];
         const enemyD20 = this.rollD20();
@@ -7924,14 +8453,60 @@
         const it = this.getItemData(itemId);
         if (!it.slot || it.slot === "inventory") return;
 
+        let targetSlot = it.slot;
+        const isTwoHanded = !!(it.twoHanded || it.isTwoHanded || it.slot === "two_hand" || (it.stats && it.stats.twoHanded));
+
+        // Determine target equipment slot
+        if (isTwoHanded || targetSlot === "two_hand") {
+          targetSlot = "main_hand";
+        } else if (targetSlot === "ring" || targetSlot === "ring_1" || targetSlot === "ring_2") {
+          const ring1Occupied = p.inventory.some(i => i.equipped && i.slot === "ring_1");
+          const ring2Occupied = p.inventory.some(i => i.equipped && i.slot === "ring_2");
+          if (!ring1Occupied) targetSlot = "ring_1";
+          else if (!ring2Occupied) targetSlot = "ring_2";
+          else targetSlot = "ring_1";
+        } else if (targetSlot === "accessory") {
+          const neckOccupied = p.inventory.some(i => i.equipped && i.slot === "neck");
+          const ring1Occupied = p.inventory.some(i => i.equipped && i.slot === "ring_1");
+          const ring2Occupied = p.inventory.some(i => i.equipped && i.slot === "ring_2");
+          if (!neckOccupied) targetSlot = "neck";
+          else if (!ring1Occupied) targetSlot = "ring_1";
+          else if (!ring2Occupied) targetSlot = "ring_2";
+          else targetSlot = "neck";
+        }
+
+        // Two-handed weapon rule: Two-handed weapons occupy both hands
+        if (isTwoHanded) {
+          // Unequip off-hand when two-handed weapon is equipped
+          p.inventory.forEach(i => {
+            if (i.equipped && i.slot === "off_hand") {
+              i.equipped = false;
+            }
+          });
+        }
+
+        // If equipping off-hand, unequip any two-handed main-hand weapon
+        if (targetSlot === "off_hand") {
+          const mhSlot = p.inventory.find(i => i.equipped && i.slot === "main_hand");
+          if (mhSlot) {
+            const mhItem = this.getItemData(mhSlot.itemId);
+            if (mhItem && (mhItem.twoHanded || mhItem.isTwoHanded || mhItem.slot === "two_hand" || (mhItem.stats && mhItem.stats.twoHanded))) {
+              mhSlot.equipped = false;
+              this.logTranscript("Panoply", `Unequipped two-handed ${mhItem.name} to wield off-hand equipment.`, "entry-consequence");
+            }
+          }
+        }
+
+        // Unequip any current item occupying the target slot
         p.inventory.forEach(i => {
-          if (i.equipped && i.slot === it.slot) {
+          if (i.equipped && i.slot === targetSlot) {
             i.equipped = false;
           }
         });
 
         invSlot.equipped = true;
-        invSlot.slot = it.slot;
+        invSlot.slot = targetSlot;
+        invSlot.isTwoHanded = isTwoHanded;
 
         let statNote = "";
         if (it.stats) {
@@ -7939,17 +8514,17 @@
           else if (it.stats.damageMin !== undefined) statNote = ` (${it.stats.damageMin}–${it.stats.damageMax} Damage)`;
         }
 
-        this.logTranscript("Panoply", `Equipped ${it.name} in your ${it.slot.replace('_', ' ')} slot.${statNote}`, "entry-consequence");
+        this.logTranscript("Panoply", `Equipped ${it.name} in your ${targetSlot.replace('_', ' ')} slot.${statNote}`, "entry-consequence");
         this.renderAll();
       }
 
       unequipItem(itemId) {
         const p = this.state.player;
-        const invSlot = p.inventory.find(i => i.itemId === itemId);
-        if (!invSlot || !invSlot.equipped) return;
+        const invSlot = p.inventory.find(i => (i.itemId === itemId || i.slot === itemId) && i.equipped);
+        if (!invSlot) return;
 
         invSlot.equipped = false;
-        const it = this.getItemData(itemId);
+        const it = this.getItemData(invSlot.itemId);
         this.logTranscript("Panoply", `Unequipped ${it.name}.`, "entry-consequence");
         this.renderAll();
       }
@@ -8318,7 +8893,36 @@
 
       getItemData(itemId) {
         if (!this._itemMap) this.buildContentMaps();
-        return this._itemMap.get(itemId) || { id: itemId, name: itemId, category: "misc", description: "An item of Hellas." };
+        return this._itemMap.get(itemId) || (this.world.items && this.world.items.find(it => it.id === itemId)) || { id: itemId, name: itemId, category: "misc", description: "An item of Hellas." };
+      }
+
+      getItem(itemId) {
+        return this.getItemData(itemId);
+      }
+
+      getItemQuantity(itemId) {
+        if (!this.state || !this.state.player || !Array.isArray(this.state.player.inventory)) return 0;
+        const item = this.state.player.inventory.find(i => i.itemId === itemId);
+        return item ? (item.quantity !== undefined ? item.quantity : 1) : 0;
+      }
+
+      getEquipmentSlots() {
+        return [
+          "head",
+          "neck",
+          "shoulders",
+          "back",
+          "body",
+          "arms",
+          "hands",
+          "waist",
+          "legs",
+          "feet",
+          "ring_1",
+          "ring_2",
+          "main_hand",
+          "off_hand"
+        ];
       }
 
       setupItemTooltips() {
@@ -8490,7 +9094,7 @@
               <div>
                 <div class="item-name">${data.name}</div>
                 <div style="font-size: 0.75rem; color: var(--bronze); font-style: italic;">
-                  ${data.category.toUpperCase()}${itemSlot.equipped ? " &bull; <strong style='color: var(--laurel-bright);'>EQUIPPED</strong>" : ""}
+                  ${(data.category || "equipment").toUpperCase()}${itemSlot.equipped ? " &bull; <strong style='color: var(--laurel-bright);'>EQUIPPED</strong>" : ""}
                 </div>
               </div>
               <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem;">
@@ -8510,8 +9114,12 @@
 
       updatePaperDoll() {
         const p = this.state.player;
-        const slots = ["main_hand", "off_hand", "body", "head", "accessory"];
+        const slots = ["head", "neck", "body", "back", "shoulders", "arms", "hands", "ring_1", "ring_2", "waist", "legs", "feet", "main_hand", "off_hand"];
         let totalWeight = 0;
+
+        const mainHandSlot = p.inventory.find(i => i.equipped && i.slot === "main_hand");
+        const mainHandItem = mainHandSlot ? this.getItemData(mainHandSlot.itemId) : null;
+        const isTwoHandedWielded = mainHandItem && (mainHandItem.twoHanded || mainHandItem.isTwoHanded || mainHandItem.slot === "two_hand" || (mainHandItem.stats && mainHandItem.stats.twoHanded));
 
         slots.forEach(slotKey => {
           const equippedItemSlot = p.inventory.find(i => i.equipped && i.slot === slotKey);
@@ -8520,14 +9128,18 @@
 
           if (equippedItemSlot) {
             const data = this.getItemData(equippedItemSlot.itemId);
-            if (el) el.innerText = data.name;
+            if (el) el.innerText = data.name + (equippedItemSlot.isTwoHanded ? " (Two-Handed)" : "");
             if (slotEl) {
               slotEl.setAttribute("onmouseenter", `window.engine.showItemTooltip('${equippedItemSlot.itemId}', this)`);
               slotEl.setAttribute("onmouseleave", `window.engine.hideItemTooltip()`);
               slotEl.setAttribute("onclick", `window.engine.showItemTooltip('${equippedItemSlot.itemId}', this)`);
             }
           } else {
-            if (el) el.innerText = "None";
+            if (slotKey === "off_hand" && isTwoHandedWielded) {
+              if (el) el.innerHTML = `<span style="color: var(--bronze); font-style: italic;">[Occupied by ${mainHandItem.name}]</span>`;
+            } else {
+              if (el) el.innerText = "None";
+            }
             if (slotEl) {
               slotEl.removeAttribute("onmouseenter");
               slotEl.removeAttribute("onmouseleave");
@@ -8535,6 +9147,18 @@
             }
           }
         });
+
+        // Legacy / fallback accessory slot sync
+        const accEl = document.getElementById("eq-accessory");
+        if (accEl) {
+          const neckOrRing = p.inventory.find(i => i.equipped && (i.slot === "neck" || i.slot === "ring_1" || i.slot === "accessory"));
+          if (neckOrRing) {
+            const d = this.getItemData(neckOrRing.itemId);
+            accEl.innerText = d.name;
+          } else {
+            accEl.innerText = "None";
+          }
+        }
 
         p.inventory.forEach(i => {
           const d = this.getItemData(i.itemId);
@@ -8993,6 +9617,343 @@
 
         if (viewId === "view-map") this.renderMap();
         if (viewId === "view-inventory") this.renderInventory();
+        if (viewId === "view-crafting") this.renderCraftingView();
+      }
+
+      /* =========================================================================
+         RECIPE-FREE CRAFTING & FORGE ENGINE
+         ========================================================================= */
+      renderCraftingView() {
+        const profListEl = document.getElementById("crafting-professions-list");
+        const configPanelEl = document.getElementById("crafting-config-panel");
+        const previewPanelEl = document.getElementById("crafting-preview-panel");
+
+        if (!profListEl || !configPanelEl || !previewPanelEl) return;
+
+        const professions = this.getCampaignProfessions();
+        const templates = this.getCampaignCraftingTemplates();
+        const materials = this.getCampaignMaterials();
+        const p = this.state.player;
+
+        if (!this.currentCraftingProfession && professions.length > 0) {
+          this.currentCraftingProfession = professions[0].id;
+        }
+
+        const activeProf = professions.find(pr => pr.id === this.currentCraftingProfession) || professions[0] || { id: "metalworking", name: "Metalworking", governingAttribute: "strength" };
+
+        // 1. Column 1: Professions List
+        const profIcons = {
+          metalworking: "🔨",
+          artifice: "⚙️",
+          textiles: "🧵",
+          alchemy: "🧪",
+          stonework: "🏛️",
+          music: "🎵",
+          scribing: "📜"
+        };
+
+        profListEl.innerHTML = `
+          <div style="font-size: 0.82rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; margin-bottom: 0.4rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border-meander);">
+            Artisan Disciplines
+          </div>
+          ${professions.map(prof => {
+            const isSel = prof.id === this.currentCraftingProfession;
+            const hasTool = prof.requiredToolkitId ? this.hasItem(prof.requiredToolkitId) : true;
+            const icon = profIcons[prof.id] || "🔨";
+            return `
+              <div class="selectable-choice-card ${isSel ? "selected" : ""}" style="padding: 0.5rem; margin-bottom: 0.3rem; cursor: pointer;" onclick="window.engine.selectCraftingProfession('${prof.id}')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-weight: bold; font-size: 0.88rem;">${icon} ${prof.name.split("&")[0].trim()}</span>
+                  <span style="font-size: 0.72rem; color: ${hasTool ? "var(--laurel-bright)" : "#e06c75"}; font-weight: bold;">
+                    ${hasTool ? "✓ Ready" : "✗ Toolkit"}
+                  </span>
+                </div>
+                <div style="font-size: 0.74rem; color: var(--marble-dim); margin-top: 0.2rem;">
+                  Governed by ${(prof.governingAttribute || "strength").toUpperCase()}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        `;
+
+        // 2. Column 2: Templates & Materials Selection
+        const matchingTemplates = templates.filter(t => (t.professionId || t.profession) === this.currentCraftingProfession);
+        const effectiveTemplates = matchingTemplates.length > 0 ? matchingTemplates : templates;
+
+        if (!this.selectedCraftingTemplate || !effectiveTemplates.some(t => t.id === this.selectedCraftingTemplate)) {
+          this.selectedCraftingTemplate = effectiveTemplates.length > 0 ? effectiveTemplates[0].id : null;
+        }
+
+        const activeTemplate = effectiveTemplates.find(t => t.id === this.selectedCraftingTemplate) || effectiveTemplates[0];
+
+        configPanelEl.innerHTML = `
+          <div>
+            <div style="font-size: 0.85rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; margin-bottom: 0.5rem;">
+              1. Select Item Template (${activeProf ? activeProf.name : ""})
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; max-height: 220px; overflow-y: auto; padding-right: 0.25rem;">
+              ${effectiveTemplates.map(t => {
+                const isSel = t.id === this.selectedCraftingTemplate;
+                return `
+                  <div class="selectable-choice-card ${isSel ? "selected" : ""}" style="padding: 0.5rem; cursor: pointer;" onclick="window.engine.selectCraftingTemplate('${t.id}')">
+                    <div style="font-weight: bold; font-size: 0.85rem; color: #fff;">${t.name}</div>
+                    <div style="font-size: 0.74rem; color: var(--marble-dim); margin-top: 0.15rem;">Slot: ${(t.slot || "").toUpperCase()}</div>
+                    <div style="font-size: 0.72rem; color: var(--laurel-bright); margin-top: 0.2rem;">Base DC: ${t.baseDC || 12} &bull; ${t.baseValueDrachmae || 20} Drachmae</div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+
+          <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-meander); padding-top: 0.8rem;">
+            <div style="font-size: 0.85rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; margin-bottom: 0.5rem;">
+              2. Recipe-Free Materials (2 Primary + 1 Supplementary)
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div>
+                <label style="font-size: 0.76rem; color: var(--marble-dim); display: block; margin-bottom: 0.2rem;">Primary Material 1 (Core Structure):</label>
+                <select id="craft-mat-1" class="classical-select" style="width: 100%; padding: 0.4rem; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-meander); border-radius: 4px;" onchange="window.engine.updateCraftingPreview()">
+                  ${materials.map(m => {
+                    const qty = this.getItemQuantity(m.id);
+                    const sel = (this.selectedCraftingMat1 === m.id) ? "selected" : "";
+                    return `<option value="${m.id}" ${sel}>${m.name} (${m.category}) - In Bag: ${qty}</option>`;
+                  }).join("")}
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.76rem; color: var(--marble-dim); display: block; margin-bottom: 0.2rem;">Primary Material 2 (Reinforcement):</label>
+                <select id="craft-mat-2" class="classical-select" style="width: 100%; padding: 0.4rem; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-meander); border-radius: 4px;" onchange="window.engine.updateCraftingPreview()">
+                  ${materials.map((m, idx) => {
+                    const qty = this.getItemQuantity(m.id);
+                    const sel = (this.selectedCraftingMat2 === m.id || (!this.selectedCraftingMat2 && idx === 1)) ? "selected" : "";
+                    return `<option value="${m.id}" ${sel}>${m.name} (${m.category}) - In Bag: ${qty}</option>`;
+                  }).join("")}
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-top: 0.6rem;">
+              <label style="font-size: 0.76rem; color: var(--marble-dim); display: block; margin-bottom: 0.2rem;">Supplementary Material (Optional Affinity / Catalyst):</label>
+              <select id="craft-mat-supp" class="classical-select" style="width: 100%; padding: 0.4rem; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-meander); border-radius: 4px;" onchange="window.engine.updateCraftingPreview()">
+                <option value="">None (Standard Pure Quench)</option>
+                ${materials.map(m => {
+                  const qty = this.getItemQuantity(m.id);
+                  const sel = (this.selectedCraftingSupp === m.id) ? "selected" : "";
+                  return `<option value="${m.id}" ${sel}>${m.name} (+Affinity) - In Bag: ${qty}</option>`;
+                }).join("")}
+              </select>
+            </div>
+          </div>
+        `;
+
+        this.updateCraftingPreview();
+      }
+
+      selectCraftingProfession(profKey) {
+        this.currentCraftingProfession = profKey;
+        this.selectedCraftingTemplate = null;
+        this.renderCraftingView();
+      }
+
+      selectCraftingTemplate(templateId) {
+        this.selectedCraftingTemplate = templateId;
+        this.renderCraftingView();
+      }
+
+      updateCraftingPreview() {
+        const previewPanelEl = document.getElementById("crafting-preview-panel");
+        if (!previewPanelEl) return;
+
+        const templates = this.getCampaignCraftingTemplates();
+        const activeTemplate = templates.find(t => t.id === this.selectedCraftingTemplate) || templates[0];
+        const professions = this.getCampaignProfessions();
+        const activeProf = professions.find(pr => pr.id === (activeTemplate ? (activeTemplate.professionId || activeTemplate.profession) : this.currentCraftingProfession)) || professions[0] || { governingAttribute: "strength" };
+
+        const mat1Select = document.getElementById("craft-mat-1");
+        const mat2Select = document.getElementById("craft-mat-2");
+        const matSuppSelect = document.getElementById("craft-mat-supp");
+
+        const mat1Id = mat1Select ? mat1Select.value : (this.selectedCraftingMat1 || "mat_cypriot_bronze");
+        const mat2Id = mat2Select ? mat2Select.value : (this.selectedCraftingMat2 || "mat_mountain_wolf_hide");
+        const suppId = matSuppSelect ? matSuppSelect.value : (this.selectedCraftingSupp || "");
+
+        this.selectedCraftingMat1 = mat1Id;
+        this.selectedCraftingMat2 = mat2Id;
+        this.selectedCraftingSupp = suppId;
+
+        const p = this.state.player;
+        const attr = activeProf.governingAttribute || "strength";
+        const attrMod = this.getModifier(p.attributes[attr] || 10);
+        const minigameBonus = this.craftingMinigameBonus || 0;
+        const totalBonus = attrMod + minigameBonus;
+        const baseDC = activeTemplate ? (activeTemplate.baseDC || 12) : 12;
+
+        const hasToolkit = activeProf.requiredToolkitId ? this.hasItem(activeProf.requiredToolkitId) : true;
+        const mat1Qty = this.getItemQuantity(mat1Id);
+        const mat2Qty = this.getItemQuantity(mat2Id);
+        const suppQty = suppId ? this.getItemQuantity(suppId) : 1;
+
+        const hasMat1 = mat1Qty >= 1;
+        const hasMat2 = (mat1Id === mat2Id) ? (mat1Qty >= 2) : (mat2Qty >= 1);
+        const hasSupp = suppId ? (suppQty >= 1) : true;
+
+        const canCraft = hasToolkit && hasMat1 && hasMat2 && hasSupp;
+
+        let statusText = "";
+        if (!hasToolkit) statusText = `<div style="color: #e06c75; font-size: 0.78rem;">⚠️ Missing required toolkit: ${activeProf.requiredToolkitId}</div>`;
+        else if (!hasMat1 || !hasMat2) statusText = `<div style="color: #e06c75; font-size: 0.78rem;">⚠️ Insufficient materials in knapsack (gather or buy materials).</div>`;
+        else if (!hasSupp) statusText = `<div style="color: #e06c75; font-size: 0.78rem;">⚠️ Missing selected supplementary catalyst.</div>`;
+        else statusText = `<div style="color: var(--laurel-bright); font-size: 0.78rem;">✓ All materials & toolkit confirmed. Ready to forge!</div>`;
+
+        previewPanelEl.innerHTML = `
+          <div style="font-size: 0.85rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.4rem;">
+            Forge Preview & Output
+          </div>
+
+          <div style="background: var(--bg-dark); border-radius: 4px; padding: 0.75rem;">
+            <div style="font-size: 0.95rem; font-weight: bold; color: #fff;">
+              ${activeTemplate ? activeTemplate.name : "Custom Forged Item"}
+            </div>
+            <div style="font-size: 0.78rem; color: var(--marble-dim); margin-top: 0.2rem;">
+              Slot: ${(activeTemplate?.slot || "main_hand").toUpperCase()} &bull; Base Value: ${activeTemplate?.baseValueDrachmae || 25} Drachmae
+            </div>
+          </div>
+
+          <div style="font-size: 0.82rem; line-height: 1.5;">
+            <div>Target DC: <strong>${baseDC}</strong></div>
+            <div>${attr.toUpperCase()} Modifier: <strong style="color:var(--laurel-bright);">+${attrMod}</strong></div>
+            <div>Forge Strike Bonus: <strong style="color:${minigameBonus > 0 ? '#f5a623' : 'var(--marble-dim)'};">+${minigameBonus}</strong></div>
+            <div style="border-top: 1px solid var(--border-meander); padding-top: 0.3rem; margin-top: 0.3rem;">
+              Total Crafting Bonus: <strong style="color:var(--bronze-bright);">+${totalBonus}</strong>
+            </div>
+          </div>
+
+          ${statusText}
+
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+            <button class="btn-classical" style="width: 100%; padding: 0.6rem; font-size: 0.9rem;" ${canCraft ? "" : "disabled"} onclick="window.engine.craftItem('${activeTemplate ? activeTemplate.id : ""}', '${mat1Id}', '${mat2Id}', '${suppId}')">
+              🔨 Forge Item Now
+            </button>
+            <button class="btn-classical" style="width: 100%; padding: 0.45rem; font-size: 0.8rem; background: linear-gradient(180deg, #443217 0%, #291e0a 100%);" onclick="window.engine.openMinigame('forge')">
+              ⚡ Forge Strike Minigame (+Bonus)
+            </button>
+          </div>
+        `;
+      }
+
+      craftItem(templateId, mat1Id, mat2Id, suppId = null, minigameBonus = null) {
+        const templates = this.getCampaignCraftingTemplates();
+        const template = templates.find(t => t.id === templateId) || templates[0];
+        if (!template) return { success: false, reason: "Template not found" };
+
+        const professions = this.getCampaignProfessions();
+        const prof = professions.find(p => p.id === (template.professionId || template.profession || this.currentCraftingProfession)) || professions[0];
+
+        const materials = this.getCampaignMaterials();
+        const mat1 = materials.find(m => m.id === mat1Id) || materials[0];
+        const mat2 = materials.find(m => m.id === mat2Id) || materials[1] || materials[0];
+        const supp = suppId ? materials.find(m => m.id === suppId) : null;
+
+        // Deduct materials if present in player inventory
+        if (mat1) this.removeItem(mat1.id, 1);
+        if (mat2) this.removeItem(mat2.id, 1);
+        if (supp) this.removeItem(supp.id, 1);
+
+        const p = this.state.player;
+        const attr = (prof && prof.governingAttribute) ? prof.governingAttribute : "strength";
+        const attrMod = this.getModifier(p.attributes[attr] || 10);
+        const bonus = (minigameBonus !== null ? minigameBonus : (this.craftingMinigameBonus || 0));
+        const baseDC = template.baseDC || 12;
+
+        const d20 = this.rollD20();
+        const totalRoll = d20 + attrMod + bonus;
+
+        this.craftingMinigameBonus = 0; // consumed
+
+        if (totalRoll >= baseDC) {
+          const margin = totalRoll - baseDC;
+          let quality = { name: "Standard", bonus: 1, valueMult: 1.25, rarity: "common" };
+          if (margin >= 10 || d20 === 20) {
+            quality = { name: "Masterwork", bonus: 3, valueMult: 2.5, rarity: "rare" };
+          } else if (margin >= 5) {
+            quality = { name: "Superior", bonus: 2, valueMult: 1.75, rarity: "uncommon" };
+          }
+
+          const craftedItem = this.generateCraftedItem(template, mat1, mat2, supp, quality);
+          this.world.items.push(craftedItem);
+          this._itemMap.set(craftedItem.id, craftedItem);
+          this.addItem(craftedItem.id, 1);
+
+          const xpWon = template.xpReward || 25;
+          this.awardXP(xpWon, `Artisan Crafting: ${craftedItem.name}`);
+
+          if (this.showToast) {
+            this.showToast("loot", `Crafted: ${craftedItem.name}`, "positive", "🔨", `${quality.name} Quality (Roll ${totalRoll} vs DC ${baseDC})`);
+          }
+
+          this.lastCraftResult = { success: true, item: craftedItem, roll: totalRoll, dc: baseDC, quality };
+          this.renderCraftingView();
+          return this.lastCraftResult;
+        } else {
+          if (this.showToast) {
+            this.showToast("info", `Crafting Attempt Unsuccessful (Roll ${totalRoll} vs DC ${baseDC})`, "warning", "🔨", "Materials preserved / salvaged");
+          }
+          this.lastCraftResult = { success: false, roll: totalRoll, dc: baseDC, reason: "Roll below DC" };
+          this.renderCraftingView();
+          return this.lastCraftResult;
+        }
+      }
+
+      generateCraftedItem(template, mat1, mat2, supp, quality) {
+        const id = `crafted_${template.id}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        const matName = mat1 ? mat1.name.replace(/ Ingot| Block| Pelt| Hide| Reeds/g, "") : "Bronze";
+        const name = `${quality.name} ${matName} ${template.name}`;
+        const slot = template.slot || "main_hand";
+        const category = template.category || (slot === "main_hand" || slot === "two_hand" ? "weapon" : "armor");
+
+        const hardnessMod = Math.floor(((mat1?.properties?.hardness || 5) + (mat2?.properties?.hardness || 5)) / 4);
+        const durabilityMod = Math.floor(((mat1?.properties?.durability || 5) + (mat2?.properties?.durability || 5)) / 4);
+        const magicAffinity = (mat1?.properties?.magicalAffinity || 0) + (mat2?.properties?.magicalAffinity || 0) + (supp?.properties?.magicalAffinity || 0);
+
+        const stats = {};
+        if (template.baseDamageMin || template.baseDamageMax) {
+          stats.damageMin = (template.baseDamageMin || 3) + hardnessMod + quality.bonus;
+          stats.damageMax = (template.baseDamageMax || 6) + hardnessMod + quality.bonus;
+          stats.damageType = template.damageType || "slashing";
+        }
+        if (template.baseDefense) {
+          stats.defense = template.baseDefense + durabilityMod + quality.bonus;
+        }
+        if (template.restoreHealth) {
+          stats.restoreHealth = template.restoreHealth + quality.bonus * 4;
+        }
+        if (template.restoreStamina) {
+          stats.restoreStamina = template.restoreStamina + quality.bonus * 3;
+        }
+        if (magicAffinity >= 15) {
+          stats.elementalDamage = 3;
+        }
+
+        const weight = Math.max(0.1, Number(((template.baseWeightKg || 1.0) * (mat1?.weightKg ? mat1.weightKg / 1.5 : 1.0)).toFixed(1)));
+        const value = Math.round((template.baseValueDrachmae || 20) * quality.valueMult);
+
+        const itemObj = {
+          id: id,
+          name: name,
+          category: category,
+          slot: slot,
+          rarity: quality.rarity,
+          weightKg: weight,
+          valueDrachmae: value,
+          stats: stats,
+          description: `An artisan ${quality.name.toLowerCase()} piece forged from ${mat1 ? mat1.name : "bronze"} and ${mat2 ? mat2.name : "metal"} using ${template.name} specifications.`,
+          mythologicalLore: {
+            source: "Hephaestus' Artisan Works (Classical Crafting)",
+            note: "Crafted according to the classical heroic techniques of Mount Ida and the Athenian Kerameikos."
+          }
+        };
+
+        return itemObj;
       }
 
 
@@ -9136,6 +10097,11 @@
           if (titleEl) titleEl.innerText = "Astragaloi of Hermes";
           if (subEl) subEl.innerText = "Sacred Knucklebones Divination";
           this.initAstragaloi(options);
+        } else if (type === "forge") {
+          if (iconEl) iconEl.innerText = "🔨";
+          if (titleEl) titleEl.innerText = "Hephaestus' Forge Strike";
+          if (subEl) subEl.innerText = "Rhythmic Anvil Hammering & Tempering Challenge";
+          this.initForgeStrike(options);
         }
 
         modal.style.display = "flex";
@@ -9753,8 +10719,141 @@
         }
       }
 
+      /* -------------------------------------------------------------------------
+         MINIGAME 5: HEPHAESTUS' FORGE STRIKE (RHYTHMIC HAMMERING)
+         ------------------------------------------------------------------------- */
+      initForgeStrike(options = {}) {
+        const p = this.state.player;
+        const strMod = this.getModifier(p.attributes.strength || 10);
+        const agiMod = this.getModifier(p.attributes.agility || 10);
+
+        // Stat integration:
+        // Strength widens sweet spot anvil zone (+4% per strMod)
+        const sweetSpotWidth = Math.min(50, Math.max(18, 22 + (strMod * 4)));
+        // Agility stabilizes needle tempo
+        const needleSpeed = Math.max(16, 36 - (agiMod * 3));
+
+        this.forgeState = {
+          strikesDone: 0,
+          strikesNeeded: 3,
+          misses: 0,
+          needlePos: 0,
+          needleDir: 1,
+          sweetSpotStart: 36,
+          sweetSpotWidth: sweetSpotWidth,
+          isFinished: false
+        };
+
+        const banner = document.getElementById("minigame-stat-banner");
+        if (banner) {
+          banner.innerHTML = `
+            <div>💪 <strong>Strength (${p.attributes.strength}):</strong> Anvil sweet spot broadened to ${sweetSpotWidth}% of the strike gauge.</div>
+            <div>⚡ <strong>Agility (${p.attributes.agility}):</strong> Hammer swing rhythm stabilized (${needleSpeed}ms rhythm).</div>
+            <div>🔨 <strong>Artisan Tempering:</strong> Land 3 rhythmic hammer strikes to win up to +3 Crafting DC bonus!</div>
+          `;
+        }
+
+        const body = document.getElementById("minigame-body");
+        if (body) {
+          body.innerHTML = `
+            <div style="font-size: 0.85rem; color: #ded7c6; text-align: center;">
+              Strike the glowing bronze anvil when the hammer needle enters the <strong>Hephaestian Tempering Zone (Golden)</strong>!
+            </div>
+            <div class="stalk-steps-row">
+              <div class="stalk-step-dot" id="forge-dot-0">1</div>
+              <div class="stalk-step-dot" id="forge-dot-1">2</div>
+              <div class="stalk-step-dot" id="forge-dot-2">3</div>
+            </div>
+            <div class="wind-track" id="forge-track">
+              <div class="wind-gust-zone" style="left: ${this.forgeState.sweetSpotStart}%; width: ${sweetSpotWidth}%; background: linear-gradient(90deg, #d48b28, #f5a623);"></div>
+              <div class="wind-needle" id="forge-needle" style="left: 0%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.75rem; color: var(--marble-dim); margin-top: 0.2rem;">
+              <span>Cooling Edge</span>
+              <span style="color: #f5a623; font-weight: bold;">🔥 Optimal Anvil Strike</span>
+              <span>Slag Boundary</span>
+            </div>
+          `;
+        }
+
+        const footer = document.getElementById("minigame-footer");
+        if (footer) {
+          footer.innerHTML = `
+            <div style="font-size: 0.8rem; color: var(--marble-dim);">Press Space or click Strike</div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="nav-btn" style="padding: 0.45rem 0.8rem; font-size: 0.8rem;" onclick="window.engine.closeMinigame(false, 0)">Skip (No Penalty)</button>
+              <button class="btn-classical" style="padding: 0.55rem 1.2rem; font-size: 0.95rem;" id="btn-forge-strike" onclick="window.engine.stepForgeStrike()">
+                🔨 Strike Anvil (Space)
+              </button>
+            </div>
+          `;
+        }
+
+        this._minigameLoopId = setInterval(() => {
+          if (!this.forgeState || this.forgeState.isFinished) return;
+          this.forgeState.needlePos += this.forgeState.needleDir * 2.5;
+          if (this.forgeState.needlePos >= 96) {
+            this.forgeState.needlePos = 96;
+            this.forgeState.needleDir = -1;
+          } else if (this.forgeState.needlePos <= 0) {
+            this.forgeState.needlePos = 0;
+            this.forgeState.needleDir = 1;
+          }
+          const needleEl = document.getElementById("forge-needle");
+          if (needleEl) needleEl.style.left = `${this.forgeState.needlePos}%`;
+        }, needleSpeed);
+      }
+
+      stepForgeStrike() {
+        const s = this.forgeState;
+        if (!s || s.isFinished) return;
+
+        const inZone = (s.needlePos >= s.sweetSpotStart && s.needlePos <= (s.sweetSpotStart + s.sweetSpotWidth));
+
+        if (inZone) {
+          this.playLyre(280 + s.strikesDone * 80);
+          const dot = document.getElementById(`forge-dot-${s.strikesDone}`);
+          if (dot) dot.classList.add("active");
+          s.strikesDone++;
+
+          if (s.strikesDone >= s.strikesNeeded) {
+            s.isFinished = true;
+            clearInterval(this._minigameLoopId);
+            this.playChime();
+
+            const bonus = s.misses === 0 ? 3 : (s.misses <= 1 ? 2 : 1);
+            this.craftingMinigameBonus = bonus;
+
+            const footer = document.getElementById("minigame-footer");
+            if (footer) {
+              footer.innerHTML = `
+                <div style="color: #f5a623; font-weight: bold; margin-bottom: 0.4rem;">
+                  ⚡ MASTERFUL HAMMERING! Granted +${bonus} Crafting DC Bonus for your next craft!
+                </div>
+                <button class="btn-classical" onclick="window.engine.closeMinigame(true, ${bonus})">
+                  Return to Forge
+                </button>
+              `;
+            }
+          }
+        } else {
+          s.misses++;
+          this.playLyre(180);
+          if (this.showToast) {
+            this.showToast("info", "Glancing Blow (Needle outside tempering zone)", "warning", "🔨");
+          }
+        }
+      }
+
       setupEventListeners() {
         window.addEventListener("keydown", (e) => {
+          if (e.code === "Space" || e.key === " ") {
+            if (this.activeMinigame) {
+              e.preventDefault();
+              if (this.activeMinigame.type === "stalk") this.stepArtemisStalk();
+              if (this.activeMinigame.type === "forge") this.stepForgeStrike();
+            }
+          }
           if (e.key === "Escape") {
             const combatModal = document.getElementById("combat-modal");
             if (combatModal && combatModal.style.display === "flex") {

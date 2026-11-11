@@ -1,0 +1,22 @@
+{
+  "backgrounds": [
+    {
+      "id": "dev_bg_haven_guard",
+      "name": "Haven Watch Veteran",
+      "category": "Martial",
+      "description": "Served three tours on the Haven palisades.",
+      "proficiencies": ["melee_combat", "athletics"],
+      "passiveBonus": "+1 Armor Class when near settlements.",
+      "dialoguePerk": "Recognized by town guards."
+    },
+    {
+      "id": "dev_bg_frontier_trapper",
+      "name": "Frontier Trapper",
+      "category": "Wilderness",
+      "description": "Survived the dangerous crags and harvested wildlife hides.",
+      "proficiencies": ["survival", "tracking"],
+      "passiveBonus": "20% bonus resource yield when gathering.",
+      "dialoguePerk": "Can identify rare creature tracks."
+    }
+  ]
+}

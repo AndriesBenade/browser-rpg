@@ -1,0 +1,256 @@
+{
+  "classes": [
+    {
+      "id": "hoplite",
+      "name": "Hoplite",
+      "subtitle": "Phalangite Heavy Infantry",
+      "archetype": "Warrior & Combat",
+      "description": "Disciplined heavy infantry fighter specialising in heavy bronze armour, shield defence, spear combat, and protective battlefield formations.",
+      "primaryAttributes": ["strength", "endurance"],
+      "statBonuses": { "strength": 1, "endurance": 1 },
+      "proficiencies": ["heavy_armor", "spears", "shields"],
+      "classFeatures": [
+        { "level": 1, "name": "Aspis Phalanx Wall", "type": "passive", "desc": "+2 Armor Class when wielding a shield." },
+        { "level": 2, "name": "Dory Piercing Thrust", "type": "active", "desc": "Bypasses 2 points of enemy armor class on melee spear strikes." },
+        { "level": 3, "name": "Steadfast Discipline", "type": "passive", "desc": "Immunity to fear and panic effects from monstrous creatures." },
+        { "level": 4, "name": "Othismos Shield Push", "type": "active", "desc": "Staggers enemy with shield boss, reducing their attack bonus by 2 for 2 turns." },
+        { "level": 5, "name": "Promachos Vanguard", "type": "passive", "desc": "+4 Max Health, +2 Max Stamina, and critical hit threat expanded to 19-20 with spears." }
+      ],
+      "startingEquipment": ["item_dory_spear_001", "item_aspis_shield_001", "item_linothorax_001"]
+    },
+    {
+      "id": "hypaspist",
+      "name": "Hypaspist",
+      "subtitle": "Wrestling Hero & Pankration Master",
+      "archetype": "Warrior & Combat",
+      "description": "Agile close-combat fighter inspired by Heracles and Theseus, specialising in unarmed pankration, grappling throws, short-range weapons, and sheer physical power.",
+      "primaryAttributes": ["strength", "agility"],
+      "statBonuses": { "strength": 1, "agility": 1 },
+      "proficiencies": ["unarmed", "daggers", "light_armor"],
+      "classFeatures": [
+        { "level": 1, "name": "Iron Grip Pankration", "type": "passive", "desc": "Unarmed strikes deal 1d6+Str damage and can grapple foes." },
+        { "level": 2, "name": "Heraclean Throw", "type": "active", "desc": "Hurl an enemy into the dirt, inflicting bludgeoning damage and forcing a recovery round." },
+        { "level": 3, "name": "Calloused Thews", "type": "passive", "desc": "Base AC gains +2 from unyielding muscle even when unarmored." },
+        { "level": 4, "name": "Lion's Stranglehold", "type": "active", "desc": "Immobilize a humanoid or beast, denying their turn on a successful Strength contest." },
+        { "level": 5, "name": "Olympic Might", "type": "passive", "desc": "Strength checks gain advantage; critical hits deal triple unarmed damage." }
+      ],
+      "startingEquipment": ["item_bronze_xiphos_001", "item_chlamys_cloak"]
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "subtitle": "Shield-Maiden of Artemis",
+      "archetype": "Warrior & Combat",
+      "description": "Mobile wilderness warrior associated with Artemis, specialising in archery, tracking, mobility, evasion, and predatory creature hunting.",
+      "primaryAttributes": ["agility", "perception"],
+      "statBonuses": { "agility": 1, "wisdom": 1 },
+      "proficiencies": ["bows", "light_armor", "polearms"],
+      "classFeatures": [
+        { "level": 1, "name": "Eye of the Huntress", "type": "passive", "desc": "+2 attack bonus with ranged bows; night darkness imposes no penalty." },
+        { "level": 2, "name": "Swift Skirmish Stride", "type": "passive", "desc": "Moving across rough or mountain terrain costs 25% less stamina." },
+        { "level": 3, "name": "Artemisian Arrow Flurry", "type": "active", "desc": "Unleash two rapid bow shots in a single combat round." },
+        { "level": 4, "name": "Slayer of Monsters", "type": "passive", "desc": "+3 bonus damage against beasts, mythical monsters, and serpents." },
+        { "level": 5, "name": "Goddess's Huntress Grace", "type": "passive", "desc": "Evasion AC +2; naturally rolls Arete (20) on 19 or 20 for ranged skill checks." }
+      ],
+      "startingEquipment": ["item_hunting_bow_001", "item_bronze_dagger"]
+    },
+    {
+      "id": "myrmidon",
+      "name": "Myrmidon",
+      "subtitle": "Achillean Berserker",
+      "archetype": "Warrior & Combat",
+      "description": "Relentless frontline warrior inspired by Achilles' ant-born elite, specialising in aggressive battle frenzy, overwhelming offensive speed, and frontline dominance.",
+      "primaryAttributes": ["strength", "endurance"],
+      "statBonuses": { "strength": 2 },
+      "proficiencies": ["medium_armor", "heavy_weapons", "swords"],
+      "classFeatures": [
+        { "level": 1, "name": "Achillean Frenzy", "type": "active", "desc": "Enter battle frenzy for 3 rounds: +3 weapon damage, -1 AC." },
+        { "level": 2, "name": "Relentless Assault", "type": "passive", "desc": "Defeating an opponent immediately grants a free strike on adjacent enemies." },
+        { "level": 3, "name": "Blood-Tide Surge", "type": "passive", "desc": "When below 40% Health, attack rolls gain +2 and morale is unbreakable." },
+        { "level": 4, "name": "Spear of Phthia", "type": "active", "desc": "Deliver a devastating thrust that pierces deep, causing heavy bleeding." },
+        { "level": 5, "name": "Legendary Wrath", "type": "passive", "desc": "+10 Max Health; weapon strikes add +4 bonus damage." }
+      ],
+      "startingEquipment": ["item_bronze_xiphos_001", "item_linothorax_001"]
+    },
+    {
+      "id": "trickster",
+      "name": "Trickster",
+      "subtitle": "Mountebank & Cunning Wayfarer",
+      "archetype": "Rogue & Trickster",
+      "description": "Cunning character inspired by Odysseus and Hermes, specialising in deception, persuasion, disguises, misdirection, opportunistic combat, and theft.",
+      "primaryAttributes": ["agility", "charisma"],
+      "statBonuses": { "agility": 1, "charisma": 1 },
+      "proficiencies": ["daggers", "tools", "deception"],
+      "classFeatures": [
+        { "level": 1, "name": "Hermetic Sleight", "type": "passive", "desc": "+3 bonus on lockpicking and pickpocketing checks; tools never snap on natural 2-5." },
+        { "level": 2, "name": "Feint & Strike", "type": "active", "desc": "Deceive an opponent in combat, rendering them flat-footed (-4 AC) against your next blow." },
+        { "level": 3, "name": "Silvertongue Bargain", "type": "passive", "desc": "Merchant prices reduced by 15%; persuasion checks gain +2." },
+        { "level": 4, "name": "Smoke & Mirror Exit", "type": "active", "desc": "Flee from combat with 100% guarantee without sustaining opportunity damage." },
+        { "level": 5, "name": "Odyssean Guile", "type": "passive", "desc": "All skill checks involving deception, stealth, or puzzles gain +4." }
+      ],
+      "startingEquipment": ["item_bronze_dagger", "item_lockpick_bronze", "item_chlamys_cloak"]
+    },
+    {
+      "id": "oracle_shadow",
+      "name": "Oracle's Shadow",
+      "subtitle": "Temple Operative & Spy",
+      "archetype": "Rogue & Trickster",
+      "description": "Stealth specialist and confidential operative associated with political courts and sanctuaries, specialising in information gathering, ambushes, and precision attacks.",
+      "primaryAttributes": ["agility", "intelligence"],
+      "statBonuses": { "agility": 1, "intelligence": 1 },
+      "proficiencies": ["poisons", "daggers", "stealth"],
+      "classFeatures": [
+        { "level": 1, "name": "Shadow Veil", "type": "passive", "desc": "+3 bonus on stealth checks; impossible to surprise when resting." },
+        { "level": 2, "name": "Anatomical Precision", "type": "passive", "desc": "Strikes from stealth deal double maximum weapon damage." },
+        { "level": 3, "name": "Court Secrets", "type": "passive", "desc": "Unlocks hidden political and faction dialogue choices with all rulers." },
+        { "level": 4, "name": "Silencing Strike", "type": "active", "desc": "Strike the throat, preventing the target from sounding an alarm or casting spells." },
+        { "level": 5, "name": "Ghost of the Adyton", "type": "passive", "desc": "Can move silently across any terrain; stealth checks roll with advantage." }
+      ],
+      "startingEquipment": ["item_bronze_dagger", "item_chlamys_cloak"]
+    },
+    {
+      "id": "labyrinth_runner",
+      "name": "Labyrinth Runner",
+      "subtitle": "Explorer & Ruin Pathfinder",
+      "archetype": "Rogue & Trickster",
+      "description": "Pathfinder specialising in dangerous underground complexes and ancient ruins, skilled in navigation, trap disarming, and environmental survival.",
+      "primaryAttributes": ["wisdom", "endurance"],
+      "statBonuses": { "wisdom": 1, "endurance": 1 },
+      "proficiencies": ["traps", "torches", "light_armor"],
+      "classFeatures": [
+        { "level": 1, "name": "Dungeon Sense", "type": "passive", "desc": "Detect traps and secret fissures automatically upon entering subterranean rooms." },
+        { "level": 2, "name": "Ariadne's Thread", "type": "passive", "desc": "Immunity to becoming lost in caves or mazes; backtracking costs zero stamina." },
+        { "level": 3, "name": "Tumbler Expert", "type": "passive", "desc": "+4 bonus on all lockpicking and trap disarming checks." },
+        { "level": 4, "name": "Vault Breaker", "type": "active", "desc": "Heave boulders and heavy stone obstacles with +4 effective Strength." },
+        { "level": 5, "name": "Master of Ancient Tombs", "type": "passive", "desc": "Dungeon loot yields +25% additional drachmae and gems." }
+      ],
+      "startingEquipment": ["item_bronze_dagger", "item_lockpick_bronze", "item_torches"]
+    },
+    {
+      "id": "demigod",
+      "name": "Demigod",
+      "subtitle": "Scion of Mount Olympus",
+      "archetype": "Divine & Spellcasting",
+      "description": "Mortal hero inheriting blood from an Olympian deity (Zeus, Poseidon, Hades, Athena, Apollo), wielding innate divine power and celestial endurance.",
+      "primaryAttributes": ["strength", "charisma"],
+      "statBonuses": { "strength": 1, "charisma": 1 },
+      "proficiencies": ["all_weapons", "divine_invocations"],
+      "classFeatures": [
+        { "level": 1, "name": "Olympian Sparks", "type": "active", "desc": "Channel divine lineage to unleash celestial burst (+1d8 elemental damage)." },
+        { "level": 2, "name": "Ichor of the Gods", "type": "passive", "desc": "+5 Max Health; recover 1 HP every 3 rounds in combat." },
+        { "level": 3, "name": "Aura of Majesty", "type": "passive", "desc": "+2 bonus on all Charisma checks and faction negotiations." },
+        { "level": 4, "name": "Heavenly Aegis", "type": "active", "desc": "Summon a radiant aura that absorbs the next 15 points of damage." },
+        { "level": 5, "name": "Ascendant Spark", "type": "passive", "desc": "+2 to all primary attributes; divine favor can be invoked twice per day." }
+      ],
+      "startingEquipment": ["item_bronze_xiphos_001", "item_chlamys_cloak"]
+    },
+    {
+      "id": "oracle",
+      "name": "Oracle",
+      "subtitle": "Pythian Seer & Prophet",
+      "archetype": "Divine & Spellcasting",
+      "description": "Mystic connected to prophecy and divine omens, using foresight to anticipate danger, divine secrets, and grant supernatural foresight to allies.",
+      "primaryAttributes": ["wisdom", "intelligence"],
+      "statBonuses": { "wisdom": 2 },
+      "proficiencies": ["divination", "sacred_rites", "staves"],
+      "classFeatures": [
+        { "level": 1, "name": "Prescient Foresight", "type": "passive", "desc": "Gain +2 initiative and +1 Armor Class by anticipating opponent strikes." },
+        { "level": 2, "name": "Visions of Truth", "type": "active", "desc": "Reveal hidden dialogue intentions, motives, and vulnerabilities of NPCs." },
+        { "level": 3, "name": "Fateful Redirection", "type": "active", "desc": "Force an attacker to reroll a successful strike against you once per combat." },
+        { "level": 4, "name": "Pythian Trance", "type": "active", "desc": "Receive cryptic clues directly into the journal regarding active quest mysteries." },
+        { "level": 5, "name": "Voice of Apollo", "type": "passive", "desc": "Natural 20 (Arete) threat expanded on all Wisdom and Perception checks." }
+      ],
+      "startingEquipment": ["item_staff_olive_wood", "item_clay_aryballos_wine"]
+    },
+    {
+      "id": "philosopher",
+      "name": "Philosopher",
+      "subtitle": "Logic-Mage & Natural Scholar",
+      "archetype": "Divine & Spellcasting",
+      "description": "Scholar whose supernatural abilities are rooted in mathematics, natural philosophy, rhetoric, and understanding the harmonious principles of the cosmos.",
+      "primaryAttributes": ["intelligence", "wisdom"],
+      "statBonuses": { "intelligence": 2 },
+      "proficiencies": ["rhetoric", "alchemy", "scrolls"],
+      "classFeatures": [
+        { "level": 1, "name": "Syllogistic Analysis", "type": "passive", "desc": "Identify monster weaknesses and armor vulnerabilities upon encountering them." },
+        { "level": 2, "name": "Dialectical Refutation", "type": "active", "desc": "Disconcert an opponent with rhetorical axioms, penalizing their attacks by 2." },
+        { "level": 3, "name": "Harmonic Geometry", "type": "passive", "desc": "+3 bonus on all puzzle deciphering and architectural investigation checks." },
+        { "level": 4, "name": "Elemental Alchemy", "type": "active", "desc": "Synthesize rapid alchemical reagents in combat without consuming ingredients." },
+        { "level": 5, "name": "Cosmic Archē", "type": "passive", "desc": "Intelligence modifier is added directly to all spell/alchemical damage." }
+      ],
+      "startingEquipment": ["item_staff_olive_wood", "item_scholarly_parchment"]
+    },
+    {
+      "id": "mystery_cultist",
+      "name": "Mystery Cultist",
+      "subtitle": "Eleusinian Theurgist",
+      "archetype": "Divine & Spellcasting",
+      "description": "Initiate into the sacred Eleusinian and Orphic traditions, manipulating sacred rites, spiritual communion, and the eternal cycle of life, death, and rebirth.",
+      "primaryAttributes": ["wisdom", "endurance"],
+      "statBonuses": { "wisdom": 1, "endurance": 1 },
+      "proficiencies": ["theurgy", "rituals", "scythes"],
+      "classFeatures": [
+        { "level": 1, "name": "Eleusinian Rite", "type": "passive", "desc": "Resting restores 50% more health and stamina through meditative purification." },
+        { "level": 2, "name": "Chthonic Ward", "type": "active", "desc": "Erect a sacred barrier that reduces necrotic, cold, and poison damage by half." },
+        { "level": 3, "name": "Communion with Shades", "type": "active", "desc": "Speak with the spirits of slain NPCs or heroes to extract lost secrets." },
+        { "level": 4, "name": "Harvest Renewal", "type": "active", "desc": "Heal 15 Health during combat by invoking Demeter and Persephone." },
+        { "level": 5, "name": "Initiate of Eternity", "type": "passive", "desc": "Upon suffering fatal damage, automatically revive at 1 HP once per full rest." }
+      ],
+      "startingEquipment": ["item_sickle_bronze", "item_chlamys_cloak"]
+    },
+    {
+      "id": "nymph_bound",
+      "name": "Nymph-Bound",
+      "subtitle": "Dryad-Sworn Nature Guardian",
+      "archetype": "Nature, Sea & Wild",
+      "description": "Primal wilderness guardian connected to sacred ash groves, springs, and naiads, commanding plant growth, wild fauna, and pure spring healing.",
+      "primaryAttributes": ["wisdom", "charisma"],
+      "statBonuses": { "wisdom": 1, "charisma": 1 },
+      "proficiencies": ["nature", "herbalism", "staffs"],
+      "classFeatures": [
+        { "level": 1, "name": "Bramble Tangle", "type": "active", "desc": "Cause thorny briars to erupt from the soil, immobilizing an enemy." },
+        { "level": 2, "name": "Spring of Naiads", "type": "active", "desc": "Draw pure healing water from the ground, cleansing poisons and restoring 8 HP." },
+        { "level": 3, "name": "Commune with Fauna", "type": "passive", "desc": "Wild beasts and boars will not attack unless provoked." },
+        { "level": 4, "name": "Barkskin Aegis", "type": "active", "desc": "Harden your flesh with living oak bark (+3 Armor Class for 4 rounds)." },
+        { "level": 5, "name": "Sacred Grove Lord", "type": "passive", "desc": "+4 bonus on all herbalism and gathering rolls; herbal consumables double potency." }
+      ],
+      "startingEquipment": ["item_staff_olive_wood", "item_dried_figs_bread"]
+    },
+    {
+      "id": "tide_caller",
+      "name": "Tide-Caller",
+      "subtitle": "Aegean Navigator & Sea Shaper",
+      "archetype": "Nature, Sea & Wild",
+      "description": "Mariner and mystical navigator attuned to Poseidon, commanding oceanic tides, salt winds, sea-creature empathy, and tempestuous marine magic.",
+      "primaryAttributes": ["agility", "endurance"],
+      "statBonuses": { "agility": 1, "endurance": 1 },
+      "proficiencies": ["tridents", "navigation", "light_armor"],
+      "classFeatures": [
+        { "level": 1, "name": "Trident Mastery", "type": "passive", "desc": "+2 damage when wielding tridents or polearms; maritime travel costs half stamina." },
+        { "level": 2, "name": "Salt Wave Crash", "type": "active", "desc": "Summon a crashing wave of seawater that knocks opponents prone." },
+        { "level": 3, "name": "Gale-Force Tailwind", "type": "passive", "desc": "Travel speed across all regions increased by 20%." },
+        { "level": 4, "name": "Wrath of the Earth-Shaker", "type": "active", "desc": "Shake the ground beneath opponents, inflicting 2d8 seismic damage." },
+        { "level": 5, "name": "Master of the Aegean", "type": "passive", "desc": "Water and cold damage reduced by 50%; trident attacks ignore 4 enemy AC." }
+      ],
+      "startingEquipment": ["item_trident_bronze", "item_chlamys_cloak"]
+    },
+    {
+      "id": "maenad",
+      "name": "Maenad",
+      "subtitle": "Bacchant of Dionysus",
+      "archetype": "Nature, Sea & Wild",
+      "description": "Wild and unpredictable devotee of Dionysus, wielding ecstatic frenzy, chaotic thyrsoi strikes, sensory illusions, and unyielding resistance to restraint.",
+      "primaryAttributes": ["strength", "charisma"],
+      "statBonuses": { "strength": 1, "charisma": 1 },
+      "proficiencies": ["thyrsus", "daggers", "unarmored"],
+      "classFeatures": [
+        { "level": 1, "name": "Dionysian Ecstasy", "type": "active", "desc": "Enter wild trance: gain +2 attack, +2 damage, and complete immunity to stun/fear." },
+        { "level": 2, "name": "Ivy Thyrsus Strike", "type": "passive", "desc": "Blunt weapons inflict vine entanglements that reduce enemy Agility." },
+        { "level": 3, "name": "Frenzied Resilience", "type": "passive", "desc": "Suffering a blow increases attack bonus by +1 on your following strike." },
+        { "level": 4, "name": "Madness of Bacchus", "type": "active", "desc": "Confuse an enemy with intoxicating illusions, causing them to strike allies." },
+        { "level": 5, "name": "Immortal Revelry", "type": "passive", "desc": "Drinking wine heals 20 Health and immediately cures all negative conditions." }
+      ],
+      "startingEquipment": ["item_thyrsus_dionysus", "item_clay_aryballos_wine"]
+    }
+  ]
+}

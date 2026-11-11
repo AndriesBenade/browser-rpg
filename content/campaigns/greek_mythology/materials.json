@@ -1,0 +1,196 @@
+{
+  "materials": [
+    {
+      "id": "mat_cypriot_bronze",
+      "name": "Cypriot Bronze Ingot",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 1.5,
+      "valueDrachmae": 12,
+      "properties": {
+        "hardness": 7,
+        "durability": 8,
+        "flexibility": 4,
+        "heatResistance": 8,
+        "magicalAffinity": 3,
+        "purity": 85
+      },
+      "compatibleProfessions": ["metalworking", "artifice", "music"],
+      "statModifiers": { "defense": 2, "damage": 2, "durability": 15 },
+      "description": "Refined copper alloyed with tin from the island of Cyprus. The backbone of heroic Hellenic armaments."
+    },
+    {
+      "id": "mat_celestial_bronze",
+      "name": "Celestial Bronze Ingot",
+      "category": "metal",
+      "rarity": "rare",
+      "weightKg": 1.2,
+      "valueDrachmae": 60,
+      "properties": {
+        "hardness": 10,
+        "durability": 10,
+        "flexibility": 6,
+        "heatResistance": 10,
+        "magicalAffinity": 9,
+        "purity": 99
+      },
+      "compatibleProfessions": ["metalworking", "artifice", "stonework"],
+      "statModifiers": { "defense": 4, "damage": 5, "durability": 30 },
+      "specialEffect": "Bypasses magical damage resistance and strikes chthonic spirits.",
+      "description": "Mined from Mount Olympus and quenched in the River Lethe. Glows with golden solar radiance."
+    },
+    {
+      "id": "mat_mountain_wolf_hide",
+      "name": "Grey Wolf Pelt",
+      "category": "hide",
+      "rarity": "common",
+      "weightKg": 1.0,
+      "valueDrachmae": 10,
+      "properties": {
+        "hardness": 3,
+        "durability": 6,
+        "flexibility": 8,
+        "heatResistance": 4,
+        "magicalAffinity": 2,
+        "purity": 80
+      },
+      "compatibleProfessions": ["textiles", "metalworking", "artifice"],
+      "statModifiers": { "staminaBonus": 2, "defense": 1, "coldResistance": 3 },
+      "description": "Thick winter pelt harvested from wolves roaming Mount Cithaeron. Provides supple, windproof warmth."
+    },
+    {
+      "id": "mat_boar_leather",
+      "name": "Bristle Boar Tough Hide",
+      "category": "hide",
+      "rarity": "common",
+      "weightKg": 1.4,
+      "valueDrachmae": 14,
+      "properties": {
+        "hardness": 5,
+        "durability": 8,
+        "flexibility": 5,
+        "heatResistance": 5,
+        "magicalAffinity": 1,
+        "purity": 85
+      },
+      "compatibleProfessions": ["textiles", "metalworking"],
+      "statModifiers": { "healthBonus": 4, "defense": 2 },
+      "description": "Rugged, scarred wild boar hide capable of blunting slashes when fashioned into cuirasses or reinforced boots."
+    },
+    {
+      "id": "mat_wild_dittany",
+      "name": "Cretan Mountain Dittany",
+      "category": "herb",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 1,
+        "durability": 2,
+        "flexibility": 9,
+        "heatResistance": 2,
+        "magicalAffinity": 7,
+        "purity": 90
+      },
+      "compatibleProfessions": ["alchemy", "textiles", "scribing"],
+      "statModifiers": { "restoreHealth": 12, "healingPotency": 3 },
+      "description": "The miraculous healing herb of Mount Ida, reputed to dislodge arrowheads and rapidly knit lacerated flesh."
+    },
+    {
+      "id": "mat_sacred_moly",
+      "name": "Root of Sacred Moly",
+      "category": "herb",
+      "rarity": "rare",
+      "weightKg": 0.3,
+      "valueDrachmae": 45,
+      "properties": {
+        "hardness": 2,
+        "durability": 4,
+        "flexibility": 7,
+        "heatResistance": 6,
+        "magicalAffinity": 10,
+        "purity": 95
+      },
+      "compatibleProfessions": ["alchemy", "scribing", "music"],
+      "statModifiers": { "poisonImmunity": true, "magicalResist": 4 },
+      "specialEffect": "Nullifies sorcerous hexes and renders the imbiber immune to polymorphing enchantments.",
+      "description": "A milk-white blossom with black roots given by Hermes to Odysseus to ward off the enchantments of Circe."
+    },
+    {
+      "id": "mat_pentelic_marble",
+      "name": "Pentelic White Marble Block",
+      "category": "stone",
+      "rarity": "uncommon",
+      "weightKg": 4.0,
+      "valueDrachmae": 20,
+      "properties": {
+        "hardness": 8,
+        "durability": 9,
+        "flexibility": 1,
+        "heatResistance": 7,
+        "magicalAffinity": 5,
+        "purity": 92
+      },
+      "compatibleProfessions": ["stonework", "artifice", "scribing"],
+      "statModifiers": { "defense": 3, "constructStability": 5 },
+      "description": "Flawless fine-grained white marble with faint veins of iron, shimmering with golden patina under the sunlight."
+    },
+    {
+      "id": "mat_tortoiseshell",
+      "name": "Mountain Tortoiseshell",
+      "category": "organic",
+      "rarity": "uncommon",
+      "weightKg": 0.8,
+      "valueDrachmae": 24,
+      "properties": {
+        "hardness": 6,
+        "durability": 7,
+        "flexibility": 5,
+        "heatResistance": 5,
+        "magicalAffinity": 8,
+        "purity": 88
+      },
+      "compatibleProfessions": ["music", "artifice", "metalworking"],
+      "statModifiers": { "acousticResonance": 5, "charismaBonus": 1 },
+      "description": "Hollowed convex carpace prized by Hermes for constructing the world's first chelys-lyre."
+    },
+    {
+      "id": "mat_serpent_fang",
+      "name": "Drakon Serpent Fang",
+      "category": "trophy",
+      "rarity": "rare",
+      "weightKg": 0.4,
+      "valueDrachmae": 35,
+      "properties": {
+        "hardness": 9,
+        "durability": 8,
+        "flexibility": 3,
+        "heatResistance": 6,
+        "magicalAffinity": 8,
+        "purity": 90
+      },
+      "compatibleProfessions": ["metalworking", "alchemy", "stonework"],
+      "statModifiers": { "damage": 4, "poisonBonus": 3 },
+      "description": "An ivory tooth plucked from an earth-born drakon, oozing with faint traces of chthonic venom."
+    },
+    {
+      "id": "mat_papyrus_reeds",
+      "name": "Egyptian Papyrus Reeds",
+      "category": "plant",
+      "rarity": "common",
+      "weightKg": 0.5,
+      "valueDrachmae": 6,
+      "properties": {
+        "hardness": 1,
+        "durability": 4,
+        "flexibility": 9,
+        "heatResistance": 2,
+        "magicalAffinity": 4,
+        "purity": 85
+      },
+      "compatibleProfessions": ["scribing", "textiles"],
+      "statModifiers": { "scrollCharges": 2, "clarity": 3 },
+      "description": "Cross-laminated river reed sheets pressed into resilient parchment scrolls for scribes."
+    }
+  ]
+}

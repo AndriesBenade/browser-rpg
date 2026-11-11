@@ -1,0 +1,77 @@
+{
+  "professions": [
+    {
+      "id": "metalworking",
+      "name": "Metalworking & Smithing",
+      "governingAttribute": "strength",
+      "requiredToolkitId": "item_toolkit_smithing",
+      "workstation": "forge",
+      "description": "The sacred forge discipline of Hephaestus, encompassing bronze forging, adamantine armaments, orichalcum refinement, and temple jewellery smithing.",
+      "itemCategories": ["weapon", "shield", "heavy_armor", "accessory"]
+    },
+    {
+      "id": "artifice",
+      "name": "Mechanical Engineering & Artifice",
+      "governingAttribute": "intelligence",
+      "requiredToolkitId": "item_toolkit_engineering",
+      "workstation": "workbench",
+      "description": "Daedalian mechanical ingenuity, crafting automaton sentinels, bronze gearwork contrivances, locking devices, and mechanical prosthetics.",
+      "itemCategories": ["automaton", "utility", "mechanism"]
+    },
+    {
+      "id": "textiles",
+      "name": "Textiles, Leatherworking & Garments",
+      "governingAttribute": "agility",
+      "requiredToolkitId": "item_toolkit_tailoring",
+      "workstation": "textile_workshop",
+      "description": "Spinning, leather tanning, and Tyrian dyeing inspired by Arachne and the Moirai, crafting enchanted cloaks, beast-hide boots, and linothorax cuirasses.",
+      "itemCategories": ["light_armor", "boots", "gloves", "cloak"]
+    },
+    {
+      "id": "alchemy",
+      "name": "Alchemy & Herbalism",
+      "governingAttribute": "intelligence",
+      "requiredToolkitId": "item_toolkit_alchemy",
+      "workstation": "alchemy_lab",
+      "description": "Compounding sacred botanical draughts, Dittany salves, Moly distillations, and combat concoctions derived from legendary beasts.",
+      "itemCategories": ["consumable", "potion", "elixir"]
+    },
+    {
+      "id": "stonework",
+      "name": "Stonework, Sculpture & Pottery",
+      "governingAttribute": "endurance",
+      "requiredToolkitId": "item_toolkit_stonework",
+      "workstation": "stonework_workshop",
+      "description": "Pygmalion sculpting, Pentelic marble masonry, and enchanted amphora pottery capable of storing essences and animated stone reliefs.",
+      "itemCategories": ["sculpture", "urn", "construct"]
+    },
+    {
+      "id": "music",
+      "name": "Instrument Making & Musical Craft",
+      "governingAttribute": "charisma",
+      "requiredToolkitId": "item_toolkit_music",
+      "workstation": "instrument_workshop",
+      "description": "Orphic crafting of resonant tortoiseshell lyres, boxwood auloi flutes, and silver harps attuned to planetary harmonies.",
+      "itemCategories": ["instrument", "relic"]
+    },
+    {
+      "id": "scribing",
+      "name": "Scribing & Magical Inscription",
+      "governingAttribute": "wisdom",
+      "requiredToolkitId": "item_toolkit_scribing",
+      "workstation": "scribe_desk",
+      "description": "Inscribing prophetic parchments, protective threshold wards, and illuminated mythological treatises with enchanted inks and gold leaf.",
+      "itemCategories": ["scroll", "document", "ward"]
+    }
+  ],
+  "toolkits": [
+    { "id": "item_toolkit_smithing", "name": "Hephaestian Smithing Kit", "weightKg": 3.0, "valueDrachmae": 30, "description": "Tongs, forging hammer, and crucible suited for bronze and iron smithing." },
+    { "id": "item_toolkit_engineering", "name": "Daedalian Artifice Kit", "weightKg": 2.2, "valueDrachmae": 35, "description": "Calipers, delicate bronze screwdrivers, gears, and balance weights." },
+    { "id": "item_toolkit_tailoring", "name": "Textile & Leatherworking Kit", "weightKg": 1.5, "valueDrachmae": 20, "description": "Bone needles, sinew spools, awls, and scraper shears." },
+    { "id": "item_toolkit_alchemy", "name": "Asklepian Alchemist Kit", "weightKg": 2.0, "valueDrachmae": 25, "description": "Agate mortar, glass alembic, copper vials, and precision herb shears." },
+    { "id": "item_toolkit_stonework", "name": "Pygmalion Sculptor Kit", "weightKg": 3.5, "valueDrachmae": 25, "description": "Hardened chisels, wooden mallet, pumice stone, and polishing rags." },
+    { "id": "item_toolkit_music", "name": "Orphic Instrument Kit", "weightKg": 1.2, "valueDrachmae": 28, "description": "Gauged gut stringer, peg reamer, tuning fork, and carving knives." },
+    { "id": "item_toolkit_scribing", "name": "Hierophant Scribing Kit", "weightKg": 1.0, "valueDrachmae": 22, "description": "Egyptian reed pens, gall inkpot, bone folder, and gum arabic binder." },
+    { "id": "item_toolkit_gathering", "name": "Fieldcraft & Gathering Kit", "weightKg": 2.5, "valueDrachmae": 18, "description": "Iron trowel, foraging sickle, mineral chisel, and specimen satchel." }
+  ]
+}

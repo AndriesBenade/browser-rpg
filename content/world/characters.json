@@ -8,6 +8,13 @@
       "region": "Boeotia",
       "locationId": "loc_cithaeron_crossroads",
       "disposition": 10,
+      "isMerchant": true,
+      "merchantInventory": [
+        { "itemId": "item_healing_draught", "price": 15, "stock": 5 },
+        { "itemId": "item_dried_figs_bread", "price": 5, "stock": 10 },
+        { "itemId": "item_clay_aryballos_wine", "price": 10, "stock": 4 },
+        { "itemId": "item_toolkit_gathering", "price": 18, "stock": 2 }
+      ],
       "attributes": {
         "strength": 12,
         "agility": 10,
@@ -102,6 +109,13 @@
       "region": "Phocis",
       "locationId": "loc_delphi_sanctuary",
       "disposition": 10,
+      "isMerchant": true,
+      "merchantInventory": [
+        { "itemId": "item_healing_draught", "price": 15, "stock": 5 },
+        { "itemId": "item_dried_figs_bread", "price": 5, "stock": 10 },
+        { "itemId": "item_clay_aryballos_wine", "price": 10, "stock": 4 },
+        { "itemId": "item_toolkit_gathering", "price": 18, "stock": 2 }
+      ],
       "attributes": {
         "strength": 8,
         "agility": 9,
@@ -237,6 +251,60 @@
         "law_of_the_underworld_obol",
         "the_hound_of_hades"
       ]
+    },
+    {
+      "id": "npc_theban_agora_merchant",
+      "name": "Gorgo of the Agora",
+      "title": "Cadmean Armaments Merchant",
+      "ancientGreek": "Γοργώ",
+      "region": "Boeotia",
+      "locationId": "loc_thebes_seven_gates",
+      "disposition": 15,
+      "isMerchant": true,
+      "merchantInventory": [
+        { "itemId": "item_healing_draught", "price": 15, "stock": 6 },
+        { "itemId": "item_theban_bronze_cuirass", "price": 45, "stock": 2 },
+        { "itemId": "item_hoplite_greaves", "price": 25, "stock": 3 },
+        { "itemId": "item_toolkit_smithing", "price": 30, "stock": 1 }
+      ],
+      "attributes": { "strength": 12, "agility": 11, "endurance": 13, "intelligence": 13, "wisdom": 12, "charisma": 14 },
+      "description": "A sharp-eyed merchant in dyed saffron tunic managing a bronze shop in the lower Theban agora."
+    },
+    {
+      "id": "npc_delphi_sanctuary_purveyor",
+      "name": "Kallias the Sacred Purveyor",
+      "title": "Purveyor of Delphic Votives",
+      "ancientGreek": "Καλλίας",
+      "region": "Phocis",
+      "locationId": "loc_delphi_sanctuary",
+      "disposition": 15,
+      "isMerchant": true,
+      "merchantInventory": [
+        { "itemId": "item_healing_draught", "price": 15, "stock": 8 },
+        { "itemId": "item_delphic_amphictyonic_ring", "price": 35, "stock": 1 },
+        { "itemId": "item_gorgon_amulet", "price": 30, "stock": 2 },
+        { "itemId": "item_toolkit_scribing", "price": 22, "stock": 1 }
+      ],
+      "attributes": { "strength": 10, "agility": 10, "endurance": 12, "intelligence": 15, "wisdom": 16, "charisma": 13 },
+      "description": "A calm, silver-haired attendant of Apollo selling consecrated votives, salves, and temple scrolls."
+    },
+    {
+      "id": "npc_mycenae_armourer",
+      "name": "Echephron the Cyclopean Smith",
+      "title": "Master of Mycenaean Forges",
+      "ancientGreek": "Ἐχέφρων",
+      "region": "Argolis",
+      "locationId": "loc_mycenae_lion_gate",
+      "disposition": 20,
+      "isMerchant": true,
+      "merchantInventory": [
+        { "itemId": "item_healing_draught", "price": 15, "stock": 5 },
+        { "itemId": "item_bronze_xiphos_001", "price": 25, "stock": 3 },
+        { "itemId": "item_hoplite_spaulders", "price": 28, "stock": 2 },
+        { "itemId": "item_toolkit_engineering", "price": 35, "stock": 1 }
+      ],
+      "attributes": { "strength": 16, "agility": 11, "endurance": 15, "intelligence": 14, "wisdom": 11, "charisma": 12 },
+      "description": "A soot-stained artisan whose massive brawn echoes the mythical cyclopean stone masons of Mycenae."
     }
   ]
 }

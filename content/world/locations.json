@@ -244,7 +244,7 @@
         "overview": "The ancient bronze-girded citadel founded by Phoenician prince Cadmus. Seven monolithic bronze gates pierce its mud-brick and ashlar walls, each guarded by spearmen wearing the Labdacid serpent crest. The city streets hum with nervous murmurs: the monster upon Mount Sphingion strangles every courier sent toward Delphi, and Regent Creon has promised the throne to any hero who can defeat her.",
         "shortDescription": "The proud seven-gated acropolis of Cadmus, gripped by the terror of the Sphinx."
       },
-      "presentNPCs": ["npc_teiresias_prophet", "npc_creon_regent"],
+      "presentNPCs": ["npc_teiresias_prophet", "npc_creon_regent", "npc_theban_agora_merchant"],
       "presentItems": ["item_theban_bronze_cuirass"]
     },
     {
@@ -428,7 +428,7 @@
         "overview": "The Navel of the World (Omphalos) clinging to the monumental terraces of Mount Parnassus between the sheer cliffs of the Phaedriades. Doric columns of the Temple of Apollo gleam with Pentelic marble. Chthonic vapors rise from the adyton chasm beneath the golden tripod where the Pythia sits in divine trance, voicing the ambiguous prophecies of Apollo.",
         "shortDescription": "The world-renowned panhellenic oracle of Apollo perched on Mount Parnassus."
       },
-      "presentNPCs": ["npc_pythia_aristonike"],
+      "presentNPCs": ["npc_pythia_aristonike", "npc_delphi_sanctuary_purveyor"],
       "presentItems": ["item_omphalos_amulet"]
     },
     {
@@ -533,7 +533,7 @@
         "overview": "The cyclopean stronghold of Perseus and Agamemnon, built of immense limestone boulders fitted without mortar. Above the monumental lintel of the main entrance, two rampant lionesses carved in relief flank a sacred pillar. Within the acropolis lie the royal shaft graves and beehive tholos tombs rich in gold funerary masks, bronze rapiers, and echoes of the Trojan expedition.",
         "shortDescription": "The imposing cyclopean citadel of Agamemnon guarded by the monumental Lion Gate."
       },
-      "presentNPCs": ["npc_herakles_traveler"],
+      "presentNPCs": ["npc_herakles_traveler", "npc_mycenae_armourer"],
       "presentItems": ["item_cyclopean_bronze_spear"]
     },
     {

@@ -5,7 +5,10 @@
       "name": "Cithaeronian Timber Wolf Spoils",
       "currency": { "min": 2, "max": 6 },
       "entries": [
-        { "itemId": "item_dried_figs_bread", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 }
+        { "itemId": "item_wolf_boots_common", "chance": 0.30, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item_wolf_boots_uncommon", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item_wolf_boots_rare", "chance": 0.05, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "mat_mountain_wolf_hide", "chance": 0.10, "minQuantity": 1, "maxQuantity": 1 }
       ]
     },
     {

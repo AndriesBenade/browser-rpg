@@ -1,0 +1,148 @@
+{
+  "backgrounds": [
+    {
+      "id": "bg_demigod_scion",
+      "name": "Demigod Scion",
+      "category": "Divine & Mystical Origins",
+      "description": "Mortal child of an Olympian deity, carrying heavenly lineage and the heavy burden of heroic destiny. Temples treat you with reverent awe or fearful suspicion.",
+      "proficiencies": ["persuasion", "mythology_lore"],
+      "passiveBonus": "+1 to all divine favor and piety gains; recognized by priests of your patron deity.",
+      "dialoguePerk": "Unlocks divine lineage dialogue options when speaking with priests, seers, and monsters."
+    },
+    {
+      "id": "bg_oracle_seer",
+      "name": "Oracle or Seer",
+      "category": "Divine & Mystical Origins",
+      "description": "Touched by Apollo or the Chthonic Muses, experiencing fragmented prophecies through sacred smoke, trances, and midnight dreams.",
+      "proficiencies": ["perception", "investigation"],
+      "passiveBonus": "+2 Passive Perception; sense hidden dangers and impending ambushes on mountain trails.",
+      "dialoguePerk": "Unlocks prophetic insight dialogue options that deduce hidden intentions of strangers."
+    },
+    {
+      "id": "bg_temple_acolyte",
+      "name": "Temple Acolyte",
+      "category": "Divine & Mystical Origins",
+      "description": "Raised within sanctuary precincts, maintaining eternal hearth fires, offering barley cakes, and compounding consecrated healing dittany.",
+      "proficiencies": ["medicine", "mythology_lore"],
+      "passiveBonus": "Healing salves and draughts restore 20% more health; sacred offerings cost no drachmae.",
+      "dialoguePerk": "Unlocks liturgical knowledge when negotiating with temple elders and hierophants."
+    },
+    {
+      "id": "bg_cursed_mortal",
+      "name": "Cursed Mortal",
+      "category": "Divine & Mystical Origins",
+      "description": "You or your ancestral bloodline committed hubris against a deity, bearing an indelible supernatural mark that invites hardship and test.",
+      "proficiencies": ["survival", "stealth"],
+      "passiveBonus": "+2 bonus on all saving throws against poison, necrotic blights, and curses.",
+      "dialoguePerk": "Unlocks desperate defiance choices when confronted by monstrous beings and tyrants."
+    },
+    {
+      "id": "bg_nymph_foundling",
+      "name": "Nymph-Raised Foundling",
+      "category": "Divine & Mystical Origins",
+      "description": "Abandoned in infancy upon mountain crags and fostered by woodland dryads and mountain satyrs. You are far more at home beneath wild pines than within city walls.",
+      "proficiencies": ["survival", "tracking"],
+      "passiveBonus": "Travel stamina cost reduced by 15% across rough wilderness and dense groves.",
+      "dialoguePerk": "Unlocks woodland empathy when encountering centaurs, satyrs, and wild beasts."
+    },
+    {
+      "id": "bg_hoplite_veteran",
+      "name": "Hoplite Veteran",
+      "category": "Martial & Heroic Origins",
+      "description": "Former citizen-soldier who endured blood and dust in the bronze-locked ranks of the phalanx. You value loyalty, iron discipline, and shield brothers.",
+      "proficiencies": ["melee_combat", "athletics"],
+      "passiveBonus": "+1 Armor Class when fighting alongside companions or guards; +2 morale check bonus.",
+      "dialoguePerk": "Unlocks martial camaraderie dialogue with city watch captains and veterans."
+    },
+    {
+      "id": "bg_pankration_champion",
+      "name": "Pankration Champion",
+      "category": "Martial & Heroic Origins",
+      "description": "Celebrated athlete crowned with sacred wild celery or olive wreaths at the Panhellenic Games for brutal wrestling and unarmed triumphs.",
+      "proficiencies": ["athletics", "intimidation"],
+      "passiveBonus": "Unarmed strikes deal +2 bonus damage; athletic feats of strength roll with advantage.",
+      "dialoguePerk": "Recognized in major poleis, granting discounts at taverns and boasting privileges."
+    },
+    {
+      "id": "bg_monster_hunter",
+      "name": "Monster Hunter",
+      "category": "Martial & Heroic Origins",
+      "description": "Wayfaring slayer who stalks chimeras, harpies, and ferocious boars for bounty silver, studying creature behavior, tracks, and anatomies.",
+      "proficiencies": ["tracking", "investigation"],
+      "passiveBonus": "Harvesting slain monsters yields 50% more rare crafting components and pelts.",
+      "dialoguePerk": "Unlocks anatomical vulnerability options during monster encounters."
+    },
+    {
+      "id": "bg_royal_guard",
+      "name": "Myrmidon or Royal Guard",
+      "category": "Martial & Heroic Origins",
+      "description": "Sworn protector of a legendary basileus or warlord, seasoned in palace intrigue, personal duels, and uncompromising military defense.",
+      "proficiencies": ["melee_combat", "persuasion"],
+      "passiveBonus": "+2 bonus on initiative rolls; immunity to being disarmed in combat.",
+      "dialoguePerk": "Unlocks high-status noble protocol when speaking with magistrates and kings."
+    },
+    {
+      "id": "bg_argonaut_sailor",
+      "name": "Argonaut or Sailor",
+      "category": "Civic, Maritime & Scholarly Origins",
+      "description": "Hardened oarsman who sailed uncharted waters, weathered sirens' chants, clashing rocks, and Poseidon's unpredictable tempests.",
+      "proficiencies": ["survival", "athletics"],
+      "passiveBonus": "Immunity to drowning penalties; sea voyages and ferry travel cost 30% less silver.",
+      "dialoguePerk": "Unlocks tall maritime tales and foreign port contacts in coastal settlements."
+    },
+    {
+      "id": "bg_philosopher_sophist",
+      "name": "Philosopher or Sophist",
+      "category": "Civic, Maritime & Scholarly Origins",
+      "description": "Educated in the Athenian Lyceum or Ionian schools in rhetoric, logic, ethics, astronomy, and the fundamental elements of nature.",
+      "proficiencies": ["persuasion", "investigation"],
+      "passiveBonus": "Solving inscriptions and puzzles awards +25 additional Kleos experience.",
+      "dialoguePerk": "Unlocks logical rebuttal dialogue options that confuse hostile rhetoricians."
+    },
+    {
+      "id": "bg_artisan_forge",
+      "name": "Artisan of the Forge",
+      "category": "Civic, Maritime & Scholarly Origins",
+      "description": "Apprenticed to Hephaestus-blessed bronzesmiths and masons, capable of evaluating metal purity, balancing blades, and repairing battered armor.",
+      "proficiencies": ["crafting", "investigation"],
+      "passiveBonus": "Crafted weapons and armor gain a permanent +5% durability and value bonus.",
+      "dialoguePerk": "Unlocks material appraisal choices with merchants, identifying counterfeit goods."
+    },
+    {
+      "id": "bg_exiled_noble",
+      "name": "Exiled Noble",
+      "category": "Civic, Maritime & Scholarly Origins",
+      "description": "Cast out from your ancestral acropolis following a blood feud or palace coup. Though stripped of lands, you retain courtly manners and old connections.",
+      "proficiencies": ["persuasion", "mythology_lore"],
+      "passiveBonus": "Start with an ancestral signet ring valued at 35 silver drachmae; +1 Charisma.",
+      "dialoguePerk": "Unlocks diplomatic recognition from aristocrats and foreign dignitaries."
+    },
+    {
+      "id": "bg_underworld_escapee",
+      "name": "Underworld Escapee",
+      "category": "Fringe & Underworld Origins",
+      "description": "You crossed the black waters of the Styx and witnessed the Asphodel Meadows before escaping back through an ancient chthonic fissure.",
+      "proficiencies": ["stealth", "survival"],
+      "passiveBonus": "Cold and necrotic damage suffered is reduced by 3 points; immune to ghost terror.",
+      "dialoguePerk": "Unlocks chilling chthonic dialogue options when conversing with undead or necromancers."
+    },
+    {
+      "id": "bg_cultist_mysteries",
+      "name": "Cultist of the Mysteries",
+      "category": "Fringe & Underworld Origins",
+      "description": "Initiated into the nocturnal rites of the Kabeiroi or Eleusis, holding oaths of sacred silence regarding life, death, and the soul's rebirth.",
+      "proficiencies": ["mythology_lore", "stealth"],
+      "passiveBonus": "+2 bonus on all skill checks conducted in darkness, caves, or subterranean tombs.",
+      "dialoguePerk": "Unlocks secret handshakes and coded phrases to recognize fellow initiates."
+    },
+    {
+      "id": "bg_brigand_crags",
+      "name": "Brigand of the Crags",
+      "category": "Fringe & Underworld Origins",
+      "description": "Surviving in the windswept limestone ravines between poleis, skilled in ambush tactics, concealed paths, mountain caves, and raiding caravans.",
+      "proficiencies": ["stealth", "tracking"],
+      "passiveBonus": "+2 bonus on pickpocketing and ambush rolls; locate mountain springs without maps.",
+      "dialoguePerk": "Unlocks underworld criminal cant when interacting with bandits and smugglers."
+    }
+  ]
+}

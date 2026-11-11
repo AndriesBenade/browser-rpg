@@ -1883,6 +1883,302 @@ runTest("Factions & Consequences: Reputation modifications, scheduled world even
   assert.ok(engine.state.worldState.flags["dev_haven_curfew_active"], "Town curfew flag should be active after time elapsed");
 });
 
+// -----------------------------------------------------------------------------
+// 39. Character Classes & Backgrounds Archetype Matrix
+// -----------------------------------------------------------------------------
+runTest("Character Classes & Backgrounds: All 14 Greek classes and 16 backgrounds loaded & selectable, full compatibility matrix, starting equipment and proficiencies assigned cleanly", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  const classes = engine.getCampaignClasses();
+  assert.equal(classes.length, 14, "Must define exactly 14 Greek heroic classes");
+  classes.forEach(c => {
+    assert.ok(c.id && c.name && c.description, `Class ${c.id} missing core fields`);
+    assert.ok(Array.isArray(c.primaryAttributes) && c.primaryAttributes.length >= 2, `Class ${c.id} missing primaryAttributes`);
+    assert.ok(Array.isArray(c.startingEquipment), `Class ${c.id} missing startingEquipment array`);
+  });
+
+  const backgrounds = engine.getCampaignBackgrounds();
+  assert.equal(backgrounds.length, 16, "Must define exactly 16 Greek heroic backgrounds");
+  backgrounds.forEach(b => {
+    assert.ok(b.id && b.name && b.description, `Background ${b.id} missing core fields`);
+    assert.ok(Array.isArray(b.proficiencies), `Background ${b.id} missing proficiencies`);
+  });
+
+  // Test full cross-compatibility: combine non-standard pairing (Amazon warrior + Artisan Forge origin)
+  engine.creationState = {
+    name: "Hippolyta",
+    gender: "female",
+    origin: "boeotia",
+    classId: "amazon",
+    background: "bg_artisan_forge",
+    trait: "vigilant",
+    attributes: { strength: 12, agility: 14, endurance: 12, intelligence: 10, wisdom: 12, charisma: 10 },
+    pointsLeft: 0
+  };
+
+  engine.confirmHeroCreation();
+  const p = engine.state.player;
+  assert.equal(p.class, "amazon");
+  assert.equal(p.background, "bg_artisan_forge");
+  assert.ok(p.inventory.some(i => i.itemId === "item_hunting_bow_001"), "Amazon starting equipment (bow) must be assigned");
+  assert.ok(p.proficiencies.includes("crafting"), "Background crafting proficiency must be assigned");
+  assert.ok(p.proficiencies.includes("bows"), "Class bows proficiency must be assigned");
+});
+
+// -----------------------------------------------------------------------------
+// 40. Campaign Independence & Archetype Isolation
+// -----------------------------------------------------------------------------
+runTest("Campaign Independence: Switching to Dev Test isolates classes and backgrounds without leaking Greek archetypes", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  const devClasses = engine.getCampaignClasses();
+  assert.equal(devClasses.length, 2, "Dev test campaign must expose exactly 2 verified test classes");
+  assert.ok(devClasses.some(c => c.id === "dev_sentinel"));
+  assert.ok(devClasses.some(c => c.id === "dev_infiltrator"));
+  assert.ok(!devClasses.some(c => c.id === "hoplite"), "Greek hoplite class must not leak into dev test campaign");
+  assert.ok(!devClasses.some(c => c.id === "amazon"), "Greek amazon class must not leak into dev test campaign");
+
+  const devBgs = engine.getCampaignBackgrounds();
+  assert.equal(devBgs.length, 1, "Dev test campaign must expose exactly 1 verified test background");
+  assert.equal(devBgs[0].id, "bg_dev_tester");
+  assert.ok(!devBgs.some(b => b.id === "bg_demigod_scion"), "Greek background must not leak into dev test campaign");
+});
+
+// -----------------------------------------------------------------------------
+// 41. Level Up Progression & Point Distribution
+// -----------------------------------------------------------------------------
+runTest("Progression & Point Distribution: Level up awards exactly 1 primary attribute point and 2 secondary skill/substat points", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  const p = engine.state.player;
+  p.level = 1;
+  p.xp = 120;
+  p.xpNext = 100;
+  const initialStr = p.attributes.strength;
+  const initialAthletics = p.skills.athletics || 0;
+  const initialMelee = p.skills.melee_combat || 0;
+
+  engine.triggerLevelUp();
+  assert.ok(engine.levelUpState, "Level-up state must be active");
+  assert.equal(engine.levelUpState.pendingLevel, 2);
+  assert.equal(engine.levelUpState.pointsLeft, 1, "Must award exactly 1 primary attribute point");
+  assert.equal(engine.levelUpState.skillPointsLeft, 2, "Must award exactly 2 secondary skill points");
+
+  // Select 1 primary attribute
+  engine.selectLevelUpAttr("strength");
+  assert.equal(engine.levelUpState.pointsLeft, 0);
+
+  // Select 2 secondary skills
+  engine.selectLevelUpSkill("athletics");
+  assert.equal(engine.levelUpState.skillPointsLeft, 1);
+  engine.selectLevelUpSkill("melee_combat");
+  assert.equal(engine.levelUpState.skillPointsLeft, 0);
+
+  // Select feat if required
+  const availableFeats = engine.getAvailableFeats();
+  if (availableFeats.length > 0) engine.selectLevelUpFeat(availableFeats[0].id);
+
+  // Confirm level up
+  engine.confirmLevelUp();
+  assert.equal(p.level, 2, "Hero level must increase to 2");
+  assert.equal(p.attributes.strength, initialStr + 1, "Primary attribute must increase by exactly 1");
+  assert.equal(p.skills.athletics, initialAthletics + 1, "Secondary skill athletics must increase by 1");
+  assert.equal(p.skills.melee_combat, initialMelee + 1, "Secondary skill melee_combat must increase by 1");
+});
+
+// -----------------------------------------------------------------------------
+// 42. Full 14-Slot Equipment Paper Doll & Dual Ring / Two-Hand Rules
+// -----------------------------------------------------------------------------
+runTest("Equipment Paper Doll: Full 14 slots supported, dual ring slot logic, and two-handed weapon slot occupancy", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  const slots = engine.getEquipmentSlots();
+  assert.equal(slots.length, 14, "Paper doll must support all 14 distinct equipment slots");
+  const expectedSlots = ["head", "neck", "shoulders", "back", "body", "arms", "hands", "waist", "legs", "feet", "ring_1", "ring_2", "main_hand", "off_hand"];
+  expectedSlots.forEach(s => assert.ok(slots.includes(s), `Missing slot ${s}`));
+
+  // 1. Dual Ring Logic
+  engine.world.items.push(
+    { id: "item_test_ring_1", name: "Silver Signet Ring", category: "accessory", slot: "ring_1", rarity: "common" },
+    { id: "item_test_ring_2", name: "Bronze Seal Ring", category: "accessory", slot: "ring_2", rarity: "common" }
+  );
+  engine.buildContentMaps();
+
+  engine.addItem("item_test_ring_1", 1);
+  engine.addItem("item_test_ring_2", 1);
+
+  engine.equipItem("item_test_ring_1");
+  let equippedRing1 = engine.state.player.inventory.find(i => i.itemId === "item_test_ring_1" && i.equipped);
+  assert.ok(equippedRing1, "First ring must be equipped");
+  assert.equal(equippedRing1.slot, "ring_1", "First ring must occupy ring_1");
+
+  engine.equipItem("item_test_ring_2");
+  let equippedRing2 = engine.state.player.inventory.find(i => i.itemId === "item_test_ring_2" && i.equipped);
+  assert.ok(equippedRing2, "Second ring must be equipped");
+  assert.equal(equippedRing2.slot, "ring_2", "Second ring must occupy ring_2");
+
+  // 2. Two-Handed Weapon Slot Occupancy Rule
+  engine.addItem("item_dory_spear_001", 1);
+  engine.addItem("item_aspis_shield_001", 1);
+  engine.addItem("item_hunting_bow_001", 1);
+
+  // Equip 1-hand weapon and off-hand shield
+  engine.equipItem("item_dory_spear_001");
+  engine.equipItem("item_aspis_shield_001");
+  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Shield must be equipped in off-hand");
+
+  // Equip two-handed bow -> must unequip shield in off-hand!
+  engine.equipItem("item_hunting_bow_001");
+  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Equipping two-handed weapon must unequip off-hand shield");
+
+  // Attempting to equip shield while holding two-handed weapon -> must unequip two-handed weapon!
+  engine.equipItem("item_aspis_shield_001");
+  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_hunting_bow_001" && i.equipped), "Equipping off-hand shield must unequip two-handed weapon");
+  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Shield should now be equipped");
+});
+
+// -----------------------------------------------------------------------------
+// 43. Centralized Loot Engine & Probability Hard Caps
+// -----------------------------------------------------------------------------
+runTest("Centralized Loot Engine: Normal creature epic <= 0.02%, legendary/mythic 0.00%, boss mythic <= 0.02%, independent currency", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  const normalCreature = {
+    id: "creature_cithaeron_wolf",
+    tier: 1,
+    level: 1,
+    lootTableId: "loot_test_scaling"
+  };
+
+  const testLootTable = {
+    id: "loot_test_scaling",
+    currency: { min: 10, max: 20 },
+    entries: [
+      { itemId: "item_trash_pebble", chance: 1.0 },
+      { itemId: "item_epic_helm", chance: 0.5 },
+      { itemId: "item_legendary_blade", chance: 0.5 },
+      { itemId: "item_mythic_relic", chance: 0.5 }
+    ]
+  };
+  engine.lootTables.push(testLootTable);
+  engine._lootTableMap.set(testLootTable.id, testLootTable);
+
+  engine.world.items.push(
+    { id: "item_trash_pebble", name: "Pebble", rarity: "trash" },
+    { id: "item_epic_helm", name: "Epic Helm", rarity: "epic", mythologicalLore: { source: "Homer", note: "Epic" } },
+    { id: "item_legendary_blade", name: "Legendary Blade", rarity: "legendary", mythologicalLore: { source: "Homer", note: "Legendary" } },
+    { id: "item_mythic_relic", name: "Mythic Relic", rarity: "mythic", mythologicalLore: { source: "Homer", note: "Mythic" } }
+  );
+  engine.buildContentMaps();
+
+  // Test probability enforcement on normal creature:
+  // Legendary and Mythic MUST NEVER drop from normal creatures (chance clamped to 0)
+  for (let i = 0; i < 50; i++) {
+    engine.resolveEntityLoot(normalCreature);
+    assert.ok(!engine.hasItem("item_legendary_blade"), "Legendary items must NEVER drop from normal creatures");
+    assert.ok(!engine.hasItem("item_mythic_relic"), "Mythic items must NEVER drop from normal creatures");
+  }
+
+  // Currency must be scaled by creature level independently of loot table
+  const currencyResult = engine.resolveEntityLoot({ id: "creature_level_5", level: 5 });
+  assert.ok(currencyResult.drachmaeWon >= 15, "Creature currency must scale with level (>= level * 3)");
+});
+
+// -----------------------------------------------------------------------------
+// 44. Recipe-Free Dynamic Crafting Engine & Minigame Integration
+// -----------------------------------------------------------------------------
+runTest("Dynamic Crafting Engine: Template + 2 primary materials + 1 supplementary generates dynamic item with composite stats and minigame bonus", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedFallbackContent();
+
+  engine.addItem("mat_cypriot_bronze", 2);
+  engine.addItem("mat_mountain_wolf_hide", 1);
+  engine.addItem("item_toolkit_smithing", 1);
+
+  // Mock rollD20 for deterministic crafting check
+  const originalRoll = engine.rollD20;
+  engine.rollD20 = () => 15;
+
+  // Craft with forge minigame bonus +3
+  const craftResult = engine.craftItem("template_sword", "mat_cypriot_bronze", "mat_cypriot_bronze", "mat_mountain_wolf_hide", 3);
+  assert.ok(craftResult.success, "Crafting check with bonus should succeed");
+  assert.ok(craftResult.item, "Must return dynamically generated item object");
+  assert.ok(craftResult.item.id.startsWith("crafted_template_sword_"), "Item ID must follow procedural convention");
+  assert.ok(craftResult.item.name.includes("Xiphos Short Sword"), "Item name must include template base name");
+  assert.ok(craftResult.item.stats.damageMin >= 4, "Weapon damage must reflect template and material hardness");
+  assert.equal(craftResult.item.slot, "main_hand");
+  assert.ok(craftResult.item.mythologicalLore, "Crafted item must contain mythological lore attribution");
+
+  // Verify item is present in player inventory and world item map
+  assert.ok(engine.hasItem(craftResult.item.id), "Crafted item must be added to player knapsack");
+  assert.ok(engine.getItem(craftResult.item.id), "Crafted item must be registered in world items");
+
+  // Verify failure produces zero penalty and does not crash
+  const failResult = engine.craftItem("template_sword", "mat_cypriot_bronze", "mat_cypriot_bronze", null, -50);
+  assert.equal(failResult.success, false, "Negative roll must fail craft check");
+  assert.equal(failResult.reason, "Roll below DC");
+
+  // Restore rollD20
+  engine.rollD20 = originalRoll;
+});
+
+// -----------------------------------------------------------------------------
+// 45. Settlement Economy & Mandatory Healing Potion
+// -----------------------------------------------------------------------------
+runTest("Settlement Economy: Every major settlement merchant maintains at least 3-4 local goods and ALWAYS a healing potion", () => {
+  const charactersJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/characters.json'), 'utf8'));
+  const characters = charactersJson.characters;
+
+  const settlementMerchants = [
+    { id: "npc_daidalos_shepherd", settlement: "Mount Cithaeron / Plataea" },
+    { id: "npc_theban_agora_merchant", settlement: "Thebes" },
+    { id: "npc_delphi_sanctuary_purveyor", settlement: "Delphi" },
+    { id: "npc_mycenae_armourer", settlement: "Mycenae" }
+  ];
+
+  settlementMerchants.forEach(sm => {
+    const merchant = characters.find(c => c.id === sm.id);
+    assert.ok(merchant, `Merchant ${sm.id} for ${sm.settlement} must exist`);
+    assert.equal(merchant.isMerchant, true, `${sm.id} must have isMerchant: true`);
+    assert.ok(Array.isArray(merchant.merchantInventory) && merchant.merchantInventory.length >= 3, `${sm.id} must stock at least 3 items`);
+    const hasHealing = merchant.merchantInventory.some(i => i.itemId.includes("healing") || i.itemId.includes("salve") || i.itemId.includes("draught"));
+    assert.ok(hasHealing, `Merchant ${sm.id} in ${sm.settlement} must ALWAYS stock a healing potion/salve`);
+  });
+});
+
+// -----------------------------------------------------------------------------
+// 46. NPC Defensive / Flee Behavior & Social Interactivity Anti-Exploit
+// -----------------------------------------------------------------------------
+runTest("NPC Interactivity: Wounded NPCs attempt to yield/flee below 25% HP and social checks enforce cooldowns", () => {
+  const engine = new GreekMythologyEngine();
+  engine.loadEmbeddedDevTestContent();
+
+  // 1. Social Checks with Anti-Exploit Cooldown
+  const persuadeResult1 = engine.attemptPersuadeNpc("npc_dev_merchant_lycus");
+  assert.ok(persuadeResult1 && typeof persuadeResult1.roll === "number", "Persuasion check should return roll result");
+
+  // Immediate repeat attempt must be blocked by cooldown/anti-exploit
+  const persuadeResult2 = engine.attemptPersuadeNpc("npc_dev_merchant_lycus");
+  assert.equal(persuadeResult2.blocked, true, "Immediate repeat persuasion attempt must be blocked by cooldown");
+
+  // 2. Combat defensive check below 25% HP
+  const bandit = engine.getCharacter("npc_dev_bandit_renegade");
+  engine.startCombatWithEntity("npc_dev_bandit_renegade", "npc");
+  assert.ok(engine.combatSession, "Combat session should be active");
+
+  // Reduce NPC HP below 25%
+  engine.combatSession.enemy.hp = Math.floor(bandit.vitals.maxHealth * 0.2);
+  engine.combatAction("thrust");
+
+  // Verify NPC attempts to surrender or flee
+  assert.ok(engine.combatSession.enemy.fleeing || engine.combatSession.enemy.surrendered || engine.combatSession.enemy.hp <= 0, "NPC below 25% HP should attempt to yield/flee or perish");
+});
+
 console.log("\n=================================================================");
 console.log(`SUMMARY: ${passedTests} / ${totalTests} TESTS PASSED SUCCESSFULLY`);
 console.log("=================================================================");

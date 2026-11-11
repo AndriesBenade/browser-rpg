@@ -41,8 +41,9 @@
           "description": "Darts across the loose limestone scree to strike from the unprotected flank."
         }
       ],
+      "lootTableId": "loot_cithaeron_wolf",
       "loot": [
-        { "itemId": "item_dried_figs_bread", "chance": 0.3 }
+        { "itemId": "mat_mountain_wolf_hide", "chance": 0.4 }
       ]
     },
     {

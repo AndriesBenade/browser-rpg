@@ -23,6 +23,8 @@
     "items": "content/campaigns/dev_test_campaign/world/items.json",
     "lootTables": "content/campaigns/dev_test_campaign/world/loot_tables.json",
     "interactiveObjects": "content/campaigns/dev_test_campaign/world/interactive_objects.json",
+    "classes": "content/campaigns/dev_test_campaign/world/classes.json",
+    "backgrounds": "content/campaigns/dev_test_campaign/world/backgrounds.json",
     "factions": "content/campaigns/dev_test_campaign/world/factions.json",
     "quests": "content/campaigns/dev_test_campaign/world/quests.json",
     "encounters": "content/campaigns/dev_test_campaign/world/encounters.json",

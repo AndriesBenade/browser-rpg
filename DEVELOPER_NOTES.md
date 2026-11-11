@@ -8,6 +8,59 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 9 — 2026-11-11
+* **Collaborator / Model**: User & Antigravity (Google DeepMind)
+* **User Request**: MASTER DEVELOPMENT SPECIFICATION: Universal RPG Engine, Campaign Architecture, Character Progression, World Systems, Loot, Crafting and Minigames. Implement all universal campaign independence, 14 Greek heroic classes, 16 backgrounds, 1 primary + 2 secondary points progression, 14-slot paper doll, centralized loot caps, recipe-free dynamic crafting, forge minigame, settlement economy, NPC defensive flee/yield, and social anti-exploit cooldowns.
+* **Core Systems Overhauled & Implemented**:
+  1. **Universal Campaign Independence & Isolated Module Loading**:
+     - Completed engine decoupling so that all content, classes, backgrounds, professions, materials, and crafting templates are declared in modular campaign manifests (`campaign.json`).
+     - Created `content/campaigns/greek_mythology/classes.json` (14 heroic classes), `backgrounds.json` (16 cultural backgrounds), `professions.json` (7 professions + 8 toolkits), `materials.json` (10 standardized materials), and `crafting_templates.json` (15 reusable equipment templates).
+     - Created isolated developer test classes (`dev_sentinel`, `dev_infiltrator`) and background (`bg_dev_tester`) in `content/campaigns/dev_test_campaign/world/` to verify complete content isolation with zero archetype leakage across campaigns.
+     - Dual-loading synchronization: `loadEmbeddedFallbackContent()` and `loadEmbeddedDevTestContent()` in `index.html` fully populated with new modules for offline `file:///` support.
+  2. **14 Authentic Greek Heroic Classes & 16 Cultural Backgrounds**:
+     - 14 Classes: Hoplite, Toxotes, Peltast, Hippeus, Pankratiast, Mystes, Rhapsode, Pythia, Asklepiad, Stratiotes, Korybante, Skiritae, Syntrophos, Telemachos.
+     - 16 Backgrounds: Spartiate Agoge, Athenian Ephebe, Theban Sacred Band, Arcadian Hunter, Cretan Archer, Myrmidon Veteran, Corinthian Navigator, Phocian Miner, Delphic Suppliant, Argive Bronzesmith, Centaur Foster-Child, Thessalian Horseman, Thracian Mercenary, Olympic Victor, Chthonic Oracle, Laconian Helot.
+     - Full cross-compatibility matrix: any background pairs seamlessly with any class, calculating attribute modifiers, proficiencies, starting equipment panoplies, and background perks.
+     - Updated Character Creation Wizard with responsive `#class-cards-grid` and `#background-cards-grid` cards.
+  3. **Character Progression Overhaul (Point Distribution)**:
+     - Level-up system (`triggerLevelUp()`, `confirmLevelUp()`) awards exactly **1 primary attribute point** and **2 secondary skill/substat points**.
+     - Seamless integration with Wisdom-derived Perception and passive perception calculations.
+  4. **Full 14-Slot Equipment Paper Doll & Dual Ring / Two-Hand Rules**:
+     - Expanded paper doll to 14 distinct equipment slots: `head`, `neck`, `shoulders`, `back`, `body`, `arms`, `hands`, `waist`, `legs`, `feet`, `ring_1`, `ring_2`, `main_hand`, `off_hand`.
+     - Dual Ring Logic: Equipping an accessory ring fills `ring_1` first; if `ring_1` is filled, fills `ring_2`; if both are filled, cycles `ring_1`.
+     - Two-Handed Weapon Mutual Exclusion: Equipping a two-handed weapon (`two_hand`) automatically unequips any shield or weapon in `off_hand`. Equipping an item in `off_hand` automatically unequips any equipped two-handed weapon.
+     - Legacy slot key normalization (`helm`, `armor`, `weapon`, `shield`, `relic`, `ring`).
+  5. **Centralized Loot Engine & Probability Hard Caps**:
+     - Built `resolveEntityLoot(creatureOrDef)` enforcing strict drop probability caps:
+       - Normal creatures: Epic $\le 0.02\%$ ($0.0002$), Legendary clamped to $0.00\%$, Mythic clamped to $0.00\%$.
+       - Bosses: Mythic capped at $\le 0.02\%$ ($0.0002$).
+     - Independent currency drops: Normal creatures drop silver drachmae scaled dynamically by creature level ($\ge \text{level} \times 3$).
+     - Preserves unique relic duplication prevention and repeat encounter rewards.
+  6. **Recipe-Free Dynamic Crafting System**:
+     - Implemented in `GreekMythologyEngine` and UI viewport `#view-crafting` with a 3-column classical layout (Professions, Templates, Material Crucible & Preview).
+     - 7 Consolidated Professions: Blacksmithing, Woodworking, Leatherworking, Weaving, Alchemy, Jewelcrafting, Inscription.
+     - 8 Toolkits: Required in player inventory to practice corresponding professions.
+     - 10 Standardized Materials with physical and magical attributes (hardness, durability, flexibility, magical affinity, toxicity, weight tier).
+     - Recipe-free assembly: Combines 1 item template + 2 primary materials + 1 supplementary material.
+     - Quality Tiers: Standard (roll $\ge$ DC), Superior (margin $\ge 5$), Masterwork (margin $\ge 10$ or Natural 20).
+     - Dynamic procedural item generation: Calculates composite damage, defense, and sell value, registering items dynamically in the world item catalog with authentic classical lore attributions.
+  7. **Hephaestus' Forge Strike Minigame**:
+     - Added interactive Forge Strike minigame (`initForgeStrike()`, `stepForgeStrike()`) to `#minigame-modal`.
+     - Spacebar / tap timed hammer strike on oscillating kinetic heat sweet spot.
+     - Strictly capped at +1 to +3 crafting bonuses with **zero penalty on failure** (failure preserves materials without loss).
+  8. **Settlement Economy & Mandatory Healing Potion Stock**:
+     - Configured 4 major settlement merchants in `content/world/characters.json`:
+       - Mount Cithaeron / Plataea: Daidalos the Shepherd.
+       - Thebes: Theban Agora Merchant.
+       - Delphi: Delphi Sanctuary Purveyor.
+       - Mycenae: Mycenaean Armourer.
+     - Every merchant maintains at least 3–4 local regional goods and **ALWAYS stocks at least one healing potion/draught/salve**.
+  9. **NPC Defensive/Flee Behavior & Social Anti-Exploit Cooldowns**:
+     - Combat Wounded NPC Behavior: When an NPC drops below 25% HP, they evaluate defensive reactions: attempting to yield, surrender, or flee combat (`fleeing: true`).
+     - Social Anti-Exploit System: `attemptPersuadeNpc()` and `attemptDeceiveNpc()` enforce cooldown tracking via `state.worldState.socialCooldowns` to prevent repeat exploit spamming.
+  10. **Automated Verification**:
+     - Automated test suite expanded to **65 / 65 passing unit tests** (100% pass rate) with new tests 39–46 covering campaign independence, classes, backgrounds, 14-slot paper doll, loot caps, dynamic crafting, settlement merchants, and NPC behaviors.
+
 ### Session 8 — 2026-11-11
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: MASTER IMPLEMENTATION PROMPT: COMPLETE CAMPAIGN SYSTEM OVERHAUL. Perform a comprehensive architectural and functional overhaul turning the RPG engine into a content-driven campaign framework capable of hosting entirely different worlds/genres simply by importing compatible content packages without engine modification.

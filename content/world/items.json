@@ -465,6 +465,273 @@
         "source": "Apollodorus, Bibliotheca 3.4.1",
         "note": "Cadmus brought the art of letters (Phoinikeia grammata) to Boeotia."
       }
-    }
+    },
+    {
+      "id": "item_wolf_boots_common",
+      "name": "Common Wolfhide Boots",
+      "ancientGreek": "κρηπῖδες λύκειαι",
+      "category": "armor",
+      "slot": "feet",
+      "rarity": "common",
+      "weightKg": 1.0,
+      "valueDrachmae": 12,
+      "stats": { "defenseBonus": 1 },
+      "description": "Supple laced boots fashioned from cured mountain wolf pelt, offering warmth and sure footing."
+    },
+    {
+      "id": "item_wolf_boots_uncommon",
+      "name": "Reinforced Wolfskin Boots",
+      "ancientGreek": "κρηπῖδες χαλκόδετοι",
+      "category": "armor",
+      "slot": "feet",
+      "rarity": "uncommon",
+      "weightKg": 1.3,
+      "valueDrachmae": 24,
+      "stats": { "defenseBonus": 2, "staminaBonus": 2 },
+      "description": "Double-layered wolfhide footwear reinforced with bronze studs along the heel and arches.",
+      "mythologicalLore": {
+        "source": "Oppian, Cynegetica 3.200-210",
+        "note": "Cithaeronian wolves were noted by ancient hunters for their speed through rugged limestone crags."
+      }
+    },
+    {
+      "id": "item_wolf_boots_rare",
+      "name": "Frost-Treader Wolfhide Boots",
+      "ancientGreek": "ἀρβύλαι χειμέριαι",
+      "category": "armor",
+      "slot": "feet",
+      "rarity": "rare",
+      "weightKg": 1.4,
+      "valueDrachmae": 45,
+      "stats": { "defenseBonus": 3, "staminaBonus": 4, "coldResistance": 3 },
+      "description": "Masterwork winter boots imbued with the swiftness and enduring frost-resistance of mountain alpha wolves.",
+      "mythologicalLore": {
+        "source": "Pausanias, Description of Greece 9.2.3",
+        "note": "Mount Cithaeron harbored fierce wolves that roamed the snowline above Plataea."
+      }
+    },
+    {
+      "id": "item_lion_pelt_cape",
+      "name": "Nemean Pelt Cloak",
+      "ancientGreek": "λεοντῆ",
+      "category": "armor",
+      "slot": "back",
+      "rarity": "rare",
+      "weightKg": 2.5,
+      "valueDrachmae": 50,
+      "stats": { "defenseBonus": 3 },
+      "description": "A heavy feline pelt draped over the back and shoulders, deflecting slicing blows.",
+      "mythologicalLore": {
+        "source": "Pseudo-Apollodorus, Bibliotheca 2.4.9-10",
+        "note": "Heracles wore the skin of the Cithaeronian lion before slaying the Nemean beast."
+      }
+    },
+    {
+      "id": "item_hydra_scale_bracers",
+      "name": "Hydra-Scale Vambraces",
+      "ancientGreek": "περιβραχιόνια ὕδρας",
+      "category": "armor",
+      "slot": "arms",
+      "rarity": "rare",
+      "weightKg": 0.8,
+      "valueDrachmae": 40,
+      "stats": { "defenseBonus": 2 },
+      "description": "Forearm guards fashioned from the iridescent scales of the Lernaean serpent.",
+      "mythologicalLore": {
+        "source": "Hesiod, Theogony 313-318",
+        "note": "The Hydra of Lerna was raised by Hera as a menace to Heracles; its hide was steeped in lethal venom."
+      }
+    },
+    {
+      "id": "item_gorgon_amulet",
+      "name": "Gorgon-Eye Ward",
+      "ancientGreek": "γοργόνειον",
+      "category": "accessory",
+      "slot": "neck",
+      "rarity": "uncommon",
+      "weightKg": 0.3,
+      "valueDrachmae": 30,
+      "stats": { "defenseBonus": 1 },
+      "description": "A bronze pendant bearing the snarling visage of Medusa, warding the wearer against terror.",
+      "mythologicalLore": {
+        "source": "Pausanias, Description of Greece 2.21.5",
+        "note": "Apotropaic gorgoneia were carved upon shields and pendants to turn evil upon the foe."
+      }
+    },
+    {
+      "id": "item_hoplite_greaves",
+      "name": "Bronze Phalanx Greaves",
+      "ancientGreek": "κνημῖδες",
+      "category": "armor",
+      "slot": "legs",
+      "rarity": "common",
+      "weightKg": 2.2,
+      "valueDrachmae": 25,
+      "stats": { "defenseBonus": 2 },
+      "description": "Anatomically shaped bronze leg guards springing tight around the calf and shin."
+    },
+    {
+      "id": "item_warrior_belt",
+      "name": "Embossed Leather Girdle",
+      "ancientGreek": "ζωστήρ",
+      "category": "armor",
+      "slot": "waist",
+      "rarity": "common",
+      "weightKg": 0.7,
+      "valueDrachmae": 15,
+      "stats": { "defenseBonus": 1 },
+      "description": "A stout leather war belt faced with bronze plaques securing the lower abdomen."
+    },
+    {
+      "id": "item_caestus_gloves",
+      "name": "Hoplite Field Gloves",
+      "ancientGreek": "χειρῖδες",
+      "category": "armor",
+      "slot": "hands",
+      "rarity": "common",
+      "weightKg": 0.5,
+      "valueDrachmae": 12,
+      "stats": { "defenseBonus": 1 },
+      "description": "Tanned oxhide gauntlets protecting palms and knuckles when grasping spear shafts."
+    },
+    {
+      "id": "item_signet_ring_plataea",
+      "name": "Plataean Signet Ring",
+      "ancientGreek": "δακτύλιος Πλαταιικός",
+      "category": "accessory",
+      "slot": "ring_1",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 20,
+      "stats": { "persuasionBonus": 1 },
+      "description": "A carved signet ring depicting the heifer of Plataea, recognized throughout Boeotia."
+    },
+    {
+      "id": "item_delphic_amphictyonic_ring",
+      "name": "Delphic Ring of Truth",
+      "ancientGreek": "δακτύλιος Δελφικός",
+      "category": "accessory",
+      "slot": "ring_2",
+      "rarity": "uncommon",
+      "weightKg": 0.1,
+      "valueDrachmae": 35,
+      "stats": { "wisdomBonus": 1 },
+      "description": "A consecrated silver band engraved with the tripod of Apollo Pythios.",
+      "mythologicalLore": {
+        "source": "Aeschines, Against Ctesiphon 115",
+        "note": "The Amphictyonic League guarded the sacred sanctuary and treasury of Apollo at Delphi."
+      }
+    },
+    {
+      "id": "item_hoplite_spaulders",
+      "name": "Forged Bronze Spaulders",
+      "ancientGreek": "ἐπωμίδες",
+      "category": "armor",
+      "slot": "shoulders",
+      "rarity": "uncommon",
+      "weightKg": 1.8,
+      "valueDrachmae": 28,
+      "stats": { "defenseBonus": 2 },
+      "description": "Curved bronze shoulder pauldrons riveted with leather under-straps.",
+      "mythologicalLore": {
+        "source": "Xenophon, Cyropaedia 7.1.2",
+        "note": "Layered bronze shoulder guards protected hoplite ranks against descending spear thrusts."
+      }
+    },
+    {
+      "id": "item_healing_draught",
+      "name": "Apothecary Healing Draught",
+      "ancientGreek": "φάρμακον ὑγιείας",
+      "category": "consumable",
+      "slot": "inventory",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 15,
+      "stats": { "restoreHealth": 12 },
+      "description": "A glass phial of distilled Cretan dittany, willow bark, and sweet thyme honey that rapidly stitches wounds."
+    },
+    { "id": "item_toolkit_smithing", "name": "Hephaestian Smithing Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 3.0, "valueDrachmae": 30, "description": "Tongs, forging hammer, and crucible suited for bronze and iron smithing." },
+    { "id": "item_toolkit_engineering", "name": "Daedalian Artifice Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 2.2, "valueDrachmae": 35, "description": "Calipers, delicate bronze screwdrivers, gears, and balance weights." },
+    { "id": "item_toolkit_tailoring", "name": "Textile & Leatherworking Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 1.5, "valueDrachmae": 20, "description": "Bone needles, sinew spools, awls, and scraper shears." },
+    { "id": "item_toolkit_alchemy", "name": "Asklepian Alchemist Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 2.0, "valueDrachmae": 25, "description": "Agate mortar, glass alembic, copper vials, and precision herb shears." },
+    { "id": "item_toolkit_stonework", "name": "Pygmalion Sculptor Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 3.5, "valueDrachmae": 25, "description": "Hardened chisels, wooden mallet, pumice stone, and polishing rags." },
+    { "id": "item_toolkit_music", "name": "Orphic Instrument Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 1.2, "valueDrachmae": 28, "description": "Gauged gut stringer, peg reamer, tuning fork, and carving knives." },
+    { "id": "item_toolkit_scribing", "name": "Hierophant Scribing Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 1.0, "valueDrachmae": 22, "description": "Egyptian reed pens, gall inkpot, bone folder, and gum arabic binder." },
+    { "id": "item_toolkit_gathering", "name": "Fieldcraft & Gathering Kit", "category": "tool", "slot": "inventory", "rarity": "common", "weightKg": 2.5, "valueDrachmae": 18, "description": "Iron trowel, foraging sickle, mineral chisel, and specimen satchel." },
+    { "id": "mat_cypriot_bronze", "name": "Cypriot Bronze Ingot", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 1.5, "valueDrachmae": 12, "description": "Refined copper alloyed with tin from Cyprus for forging armaments." },
+    {
+      "id": "mat_celestial_bronze",
+      "name": "Celestial Bronze Ingot",
+      "category": "material",
+      "slot": "inventory",
+      "rarity": "rare",
+      "weightKg": 1.2,
+      "valueDrachmae": 60,
+      "description": "Mined from Mount Olympus and quenched in the River Lethe.",
+      "mythologicalLore": {
+        "source": "Hesiod, Works and Days 143-155",
+        "note": "The Bronze Race wrought all their implements and arms from heaven-blessed bronze."
+      }
+    },
+    { "id": "mat_mountain_wolf_hide", "name": "Grey Wolf Pelt", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 1.0, "valueDrachmae": 10, "description": "Thick winter pelt harvested from wolves roaming Mount Cithaeron." },
+    { "id": "mat_boar_leather", "name": "Bristle Boar Tough Hide", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 1.4, "valueDrachmae": 14, "description": "Rugged, scarred wild boar hide capable of blunting slashes." },
+    { "id": "mat_wild_dittany", "name": "Cretan Mountain Dittany", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 0.2, "valueDrachmae": 8, "description": "The miraculous healing herb of Mount Ida that rapidly stitches flesh." },
+    {
+      "id": "mat_sacred_moly",
+      "name": "Root of Sacred Moly",
+      "category": "material",
+      "slot": "inventory",
+      "rarity": "rare",
+      "weightKg": 0.3,
+      "valueDrachmae": 45,
+      "description": "A milk-white blossom with black roots given by Hermes to ward off enchantments.",
+      "mythologicalLore": {
+        "source": "Homer, Odyssey 10.302-306",
+        "note": "Hermes plucked the black-rooted, white-blossomed herb moly to preserve Odysseus from enchantment."
+      }
+    },
+    {
+      "id": "mat_pentelic_marble",
+      "name": "Pentelic White Marble Block",
+      "category": "material",
+      "slot": "inventory",
+      "rarity": "uncommon",
+      "weightKg": 4.0,
+      "valueDrachmae": 20,
+      "description": "Flawless fine-grained white marble with faint veins of iron.",
+      "mythologicalLore": {
+        "source": "Pausanias, Description of Greece 1.32.1",
+        "note": "Mount Pentelikon was the famed source of brilliant white marble for classical temples and sculpture."
+      }
+    },
+    {
+      "id": "mat_tortoiseshell",
+      "name": "Mountain Tortoiseshell",
+      "category": "material",
+      "slot": "inventory",
+      "rarity": "uncommon",
+      "weightKg": 0.8,
+      "valueDrachmae": 24,
+      "description": "Hollowed convex carpace prized by Hermes for constructing resonant lyres.",
+      "mythologicalLore": {
+        "source": "Homeric Hymn 4 to Hermes 24-54",
+        "note": "Hermes scooped out the shell of a mountain tortoise to invent the seven-stringed lyre."
+      }
+    },
+    {
+      "id": "mat_serpent_fang",
+      "name": "Drakon Serpent Fang",
+      "category": "material",
+      "slot": "inventory",
+      "rarity": "rare",
+      "weightKg": 0.4,
+      "valueDrachmae": 35,
+      "description": "An ivory tooth plucked from an earth-born drakon.",
+      "mythologicalLore": {
+        "source": "Ovid, Metamorphoses 3.100-130",
+        "note": "Cadmus sowed the teeth of the sacred dragon of Ares into the Boeotian earth to sprout the Spartoi."
+      }
+    },
+    { "id": "mat_papyrus_reeds", "name": "Egyptian Papyrus Reeds", "category": "material", "slot": "inventory", "rarity": "common", "weightKg": 0.5, "valueDrachmae": 6, "description": "Cross-laminated river reed sheets pressed into resilient parchment scrolls." }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "classes": [
+    {
+      "id": "dev_sentinel",
+      "name": "Haven Sentinel",
+      "subtitle": "Test Vanguard",
+      "archetype": "Combat",
+      "description": "A fortified frontier guardian trained in test combat mechanics.",
+      "primaryAttributes": ["strength", "endurance"],
+      "statBonuses": { "strength": 1, "endurance": 1 },
+      "classFeatures": [
+        { "level": 1, "name": "Aegis Guard", "type": "passive", "desc": "+2 Armor Class." }
+      ]
+    },
+    {
+      "id": "dev_infiltrator",
+      "name": "Shadow Infiltrator",
+      "subtitle": "Test Specialist",
+      "archetype": "Rogue",
+      "description": "A stealth operative specialized in lockpicking and scouting.",
+      "primaryAttributes": ["agility", "perception"],
+      "statBonuses": { "agility": 1, "perception": 1 },
+      "classFeatures": [
+        { "level": 1, "name": "Lockpick Mastery", "type": "passive", "desc": "+3 on lockpicking." }
+      ]
+    }
+  ]
+}
