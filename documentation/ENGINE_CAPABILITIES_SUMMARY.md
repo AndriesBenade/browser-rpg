@@ -80,7 +80,8 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 ### 2.2 Dual-Mode Content Loading
 * **HTTP Dynamic Fetch**: Operates asynchronously over local or cloud web servers (`python server.py`).
 * **Offline `file:///` Embedded Fallbacks**: Embedded fallback methods (`loadEmbeddedFallbackContent()`, `loadEmbeddedDevTestContent()`) ensure the entire game is 100% playable directly from disk in browsers that restrict local `fetch()`.
-* **Automated Sync Tooling**: `scripts/sync-embedded-dev-content.js` automatically compiles the JSON files into embedded methods, verified on every test run.
+* **Automated Sync Tooling**: `scripts/sync-embedded-content.js` (`npm run sync:embedded`) packs every JSON file of both built-in campaigns into one compressed embedded copy, verified on every test run.
+* **Release build**: `npm run build` writes a minified copy to `dist/` (about a third smaller) and runs the behaviour and Dev suites against it.
 
 ### 2.3 Campaign Validation Engine
 * An in-engine static analyzer (`GreekMythologyEngine.validateCampaign`) that audits any campaign pack:

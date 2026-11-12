@@ -96,6 +96,11 @@
           "stock": 1
         },
         {
+          "itemId": "item_dev_whetstone",
+          "price": 6,
+          "stock": 3
+        },
+        {
           "itemId": "item_dev_leather_kit",
           "price": 25,
           "stock": 1
@@ -256,6 +261,11 @@
           "itemId": "item_dev_ferryman_pole",
           "price": 40,
           "stock": 1
+        },
+        {
+          "itemId": "item_dev_lurker_gland",
+          "price": 20,
+          "stock": 2
         }
       ],
       "rumours": [

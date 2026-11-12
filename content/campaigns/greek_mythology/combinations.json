@@ -1,0 +1,70 @@
+{
+  "combinations": [
+    {
+      "id": "comb_hone_xiphos",
+      "name": "Hone the edge",
+      "icon": "🪨",
+      "apply": "item_naxian_whetstone",
+      "onto": "item_xiphos_001",
+      "result": "item_xiphos_honed",
+      "consumeApplied": 0,
+      "minutes": 15,
+      "text": "You wet the emery and draw the xiphos along it, stroke after stroke, until the bronze edge throws back the light."
+    },
+    {
+      "id": "comb_hone_dagger",
+      "name": "Hone the point",
+      "icon": "🪨",
+      "apply": "item_naxian_whetstone",
+      "onto": "item_bronze_dagger",
+      "result": "item_bronze_dagger_honed",
+      "consumeApplied": 0,
+      "minutes": 10,
+      "text": "A few patient passes on the Naxian stone and the leaf dagger comes to a needle point."
+    },
+    {
+      "id": "comb_hydra_venom",
+      "name": "Anoint with Hydra venom",
+      "icon": "☠️",
+      "apply": "item_hydra_bile_vial",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "piercing",
+          "slashing"
+        ]
+      },
+      "coating": {
+        "name": "Hydra Venom",
+        "icon": "☠️",
+        "charges": 3,
+        "status": {
+          "id": "poisoned",
+          "rounds": 3,
+          "value": 6
+        }
+      },
+      "minutes": 5,
+      "text": "Like Herakles dipping his arrows, you let the black bile run along the blade. The bronze hisses where it touches."
+    },
+    {
+      "id": "comb_dittany_draught",
+      "name": "Steep with dittany",
+      "icon": "🌿",
+      "apply": "mat_wild_dittany",
+      "onto": "item_healing_draught",
+      "result": "item_dittany_draught",
+      "requiresItem": "item_toolkit_alchemy",
+      "minutes": 30,
+      "xp": 10,
+      "check": {
+        "skill": "medicine",
+        "attribute": "wisdom",
+        "dc": 11,
+        "failureConsumesApplied": true,
+        "failureText": "The dittany scorches in the mortar before it can steep. The herb is wasted; the draught is unharmed."
+      },
+      "text": "You bruise the dittany in the Asklepian mortar and let it steep in the draught until it turns a deep, clean green."
+    }
+  ]
+}

@@ -4,11 +4,15 @@
   "description": "Greek Mythology Text-Driven RPG Engine",
   "private": true,
   "scripts": {
-    "test": "node tests/engine_tests.js && node tests/behaviour_tests.js && node tests/dev_campaign_tests.js && node scripts/sync-embedded-dev-content.js --check",
-    "sync:embedded": "node scripts/sync-embedded-dev-content.js",
+    "test": "node tests/engine_tests.js && node tests/behaviour_tests.js && node tests/dev_campaign_tests.js && node scripts/sync-embedded-content.js --check",
+    "sync:embedded": "node scripts/sync-embedded-content.js",
     "test:legacy": "node tests/engine_tests.js",
     "test:behaviour": "node tests/behaviour_tests.js",
     "test:dev": "node tests/dev_campaign_tests.js",
-    "test:browser": "node tests/browser_smoke.js"
+    "test:browser": "node tests/browser_smoke.js",
+    "build": "node scripts/build-release.js --check"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

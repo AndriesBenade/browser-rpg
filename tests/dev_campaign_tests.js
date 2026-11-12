@@ -515,6 +515,119 @@ async function newGame(opts = {}) {
     files.forEach(f => assert.ok(!fs.readFileSync(f, 'utf8').includes('—'), `em dash in ${f}`));
   });
 
+  await test('Workbench: materials dropped on a toolkit open its workbench; two materials offer that discipline\'s recipes; crafting consumes them', async () => {
+    const g = await newGame({ classId: 'dev_guild_tinker' });
+    const e = g.engine;
+    assert.ok(e.isCraftingToolkit('item_dev_tinker_kit') && !e.isCraftingToolkit('item_dev_whetstone'));
+    // A herb is no use on the tinker's bench; it opens nothing and changes nothing.
+    e.addItem('mat_dev_yarrow', 1);
+    const bad = e.dropItemOnItem('mat_dev_yarrow', 'item_dev_tinker_kit');
+    assert.ok(!bad.ok && !e.workbench, 'yarrow does not open the tinkering workbench');
+    // River iron on the kit (either drag direction) opens it with the iron in slot 1.
+    const r = e.dropItemOnItem('item_dev_tinker_kit', 'mat_dev_river_iron');
+    assert.ok(r.ok && e.workbench && e.workbench.professionId === 'dev_tinkering');
+    assert.deepStrictEqual(Array.from(e.workbench.primary), ['mat_dev_river_iron', null]);
+    assert.ok(!e.isWorkbenchReady());
+    // You cannot put down more than you carry.
+    assert.ok(!e.placeOnWorkbench('mat_dev_river_iron', 'p1').ok, 'only one river iron in the bag');
+    assert.ok(e.placeOnWorkbench('mat_dev_driftwood').ok);
+    assert.ok(e.isWorkbenchReady());
+    assert.deepStrictEqual(Array.from(e.getWorkbenchTemplates().map(t => t.id)), ['template_dev_knife', 'template_dev_buckler']);
+    assert.ok(e.getWorkbenchCandidates().every(m => m.id !== 'mat_dev_yarrow'), 'complements are tinkering materials only');
+    g.roll(15);
+    const res = e.craftAtWorkbench('template_dev_buckler');
+    assert.ok(res.success, 'crafted');
+    assert.strictEqual(e.getItemQuantity('mat_dev_river_iron'), 0);
+    assert.strictEqual(e.getItemQuantity('mat_dev_driftwood'), 0);
+    assert.ok(/River Iron Buckler/.test(res.item.name), res.item.name);
+    assert.deepStrictEqual(Array.from(e.workbench.primary), [null, null], 'bench cleared for the next job');
+    assert.ok(g.obj('quest_dev_trials', 'obj_trial_craft'), 'the Ledger counts it');
+    // The workbench closes itself if the toolkit leaves the bag.
+    e.removeItem('item_dev_tinker_kit', 1);
+    e.renderWorkbench();
+    assert.strictEqual(e.workbench, null);
+  });
+
+  await test('Combining: whetstone hones a blade in place (stays equipped, whetstone kept); venom coats a blade for three hits; yarrow needs the kit and a check', async () => {
+    const g = await newGame({ classId: 'dev_guild_tinker' });
+    const e = g.engine;
+    const slotOf = (id) => (g.p().inventory.find(i => i.itemId === id) || {}).slot;
+    assert.strictEqual(slotOf('item_dev_tinker_knife'), 'main_hand');
+    assert.deepStrictEqual(Array.from(e.getCombinationPartners('item_dev_whetstone')), ['item_dev_tinker_knife']);
+    assert.ok(/Honed Tinker's Knife/.test(e.describeCombination(e.findCombinations('item_dev_tinker_knife', 'item_dev_whetstone')[0])));
+    const hone = e.dropItemOnItem('item_dev_whetstone', 'item_dev_tinker_knife');
+    assert.ok(hone.success && hone.resultItemId === 'item_dev_honed_tinker_knife');
+    assert.strictEqual(e.getItemQuantity('item_dev_tinker_knife'), 0);
+    assert.strictEqual(slotOf('item_dev_honed_tinker_knife'), 'main_hand', 'the honed knife is still in hand');
+    assert.strictEqual(e.getItemQuantity('item_dev_whetstone'), 1, 'the whetstone is not used up');
+    assert.deepStrictEqual(Array.from(e.getCombinationPartners('item_dev_whetstone')), [], 'a honed blade cannot be honed again');
+    assert.ok(g.obj('quest_dev_trials', 'obj_trial_craft'), 'ITEM_COMBINED counts for the Ledger too');
+
+    // Venom: any piercing/slashing weapon, not a club; three hits, then it is spent.
+    e.addItem('item_dev_lurker_gland', 1);
+    e.addItem('item_dev_ferryman_pole', 1);
+    assert.strictEqual(e.findCombinations('item_dev_lurker_gland', 'item_dev_ferryman_pole').length, 0, 'no venom on a bludgeon');
+    const coat = e.combineItems('item_dev_honed_tinker_knife', 'item_dev_lurker_gland');
+    assert.ok(coat.success && e.getWeaponCoating('item_dev_honed_tinker_knife').charges === 3);
+    assert.strictEqual(e.getItemQuantity('item_dev_lurker_gland'), 0);
+    e.startCombat('creature_dev_reef_crab'); g.flush();
+    let hits = 0;
+    g.roll(18);
+    for (let i = 0; i < 10 && e.getWeaponCoating('item_dev_honed_tinker_knife'); i++) {
+      e.combatSession.enemy.hp = 500; g.p().vitals.health = g.p().vitals.maxHealth;
+      e.combatAction('thrust'); g.flush(); hits++;
+      if (i === 0) assert.ok(e.hasCombatStatus('enemy', 'poisoned') || e.combatSession.status.enemy.poisoned, 'the crab is poisoned');
+    }
+    assert.strictEqual(hits, 3, 'three hits use it up');
+    assert.strictEqual(e.getWeaponCoating('item_dev_honed_tinker_knife'), null);
+    e.combatSession.enemy.hp = 0; g.fight();
+
+    // Yarrow tonic: blocked without the herbal kit, nothing used; a failed check wastes the yarrow only.
+    e.addItem('mat_dev_yarrow', 2); e.addItem('item_dev_healing_tonic', 1);
+    const blocked = e.combineItems('mat_dev_yarrow', 'item_dev_healing_tonic');
+    assert.ok(!blocked.success && /Herbalist's Satchel/.test(blocked.reason));
+    assert.strictEqual(e.getItemQuantity('mat_dev_yarrow'), 2);
+    e.addItem('item_dev_herbal_kit', 1);
+    g.roll(1);
+    const fail = e.combineItems('mat_dev_yarrow', 'item_dev_healing_tonic');
+    assert.ok(!fail.success && e.getItemQuantity('mat_dev_yarrow') === 1 && e.getItemQuantity('item_dev_healing_tonic') === 1);
+    g.roll(18);
+    const ok = e.combineItems('item_dev_healing_tonic', 'mat_dev_yarrow');
+    assert.ok(ok.success && e.getItemQuantity('item_dev_strong_tonic') === 1 && e.getItemQuantity('item_dev_healing_tonic') === 0 && e.getItemQuantity('mat_dev_yarrow') === 0);
+    assert.strictEqual(e.combineItems('item_dev_honey_cake', 'item_dev_whetstone').success, false, 'unrelated items do nothing');
+  });
+
+  await test('Combining: a coating survives save and load, and is cleared when the weapon leaves the bag', async () => {
+    const g = await newGame({ classId: 'dev_ford_warden' });
+    const e = g.engine;
+    e.addItem('item_dev_lurker_gland', 1);
+    assert.ok(e.combineItems('item_dev_lurker_gland', 'item_dev_guild_shortsword').success);
+    const saved = JSON.parse(JSON.stringify(e.state));
+    const migrated = e.migrateState(saved);
+    assert.strictEqual(migrated.worldState.weaponCoatings.item_dev_guild_shortsword.charges, 3);
+    const old = JSON.parse(JSON.stringify(e.state)); delete old.worldState.weaponCoatings;
+    assert.strictEqual(Object.keys(e.migrateState(old).worldState.weaponCoatings).length, 0, 'older saves get an empty table');
+    e.removeItem('item_dev_guild_shortsword', 1);
+    assert.strictEqual(e.getWeaponCoating('item_dev_guild_shortsword'), null);
+  });
+
+  await test('Greek campaign: whetstone, Hydra venom and dittany combinations are wired to real items', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_greek_mythology', { classId: 'hoplite' });
+    const e = engine;
+    const v = GreekMythologyEngine_validate(e);
+    assert.deepStrictEqual(Array.from(v.errors), []);
+    e.addItem('item_naxian_whetstone', 1); e.addItem('item_xiphos_001', 1); e.addItem('item_hydra_bile_vial', 1);
+    assert.ok(e.combineItems('item_naxian_whetstone', 'item_xiphos_001').success);
+    assert.strictEqual(e.getItemQuantity('item_xiphos_honed'), 1);
+    assert.ok(e.combineItems('item_hydra_bile_vial', 'item_xiphos_honed').success);
+    const c = e.getWeaponCoating('item_xiphos_honed');
+    assert.ok(c && c.status.id === 'poisoned' && c.status.value === 6, 'Hydra venom uses the vial\'s own numbers');
+    assert.ok(e.world.characters.some(ch => (ch.merchantInventory || []).some(m => m.itemId === 'item_naxian_whetstone')), 'whetstones are sold');
+    function GreekMythologyEngine_validate(eng) { return env.Engine.validateCampaign(eng.activeCampaign, eng.collectValidationContent(eng.activeCampaign)); }
+  });
+
   const failed = results.filter(r => !r.ok);
   console.log('\n=================================================================');
   console.log(`DEV CAMPAIGN SUMMARY: ${results.length - failed.length} / ${results.length} passed`);

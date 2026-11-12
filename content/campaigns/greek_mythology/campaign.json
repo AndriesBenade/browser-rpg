@@ -27,6 +27,7 @@
     "professions": "content/campaigns/greek_mythology/professions.json",
     "materials": "content/campaigns/greek_mythology/materials.json",
     "craftingTemplates": "content/campaigns/greek_mythology/crafting_templates.json",
+    "combinations": "content/campaigns/greek_mythology/combinations.json",
     "deities": "content/world/deities.json",
     "mythology": "content/world/mythology.json",
     "glossary": "content/world/glossary.json",

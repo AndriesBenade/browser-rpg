@@ -42,7 +42,8 @@ Thornback Ridge (cliffs) · Gull Rock Lighthouse (boss) · The Sunken Chapel (hi
 | Rumours | Notice board, NPC rumours, "?" markers on the map |
 | Riddle | The Bog Stone: known answer (from Rook), deduction (Investigation), typed answer, wrong answers with a retry cooldown |
 | Minigames | Reed stalk (Old Moss), augury bones (Willowmere), herbal mortar (any rest), anvil strike (crafting), shield clash (combat); names and rewards come from `campaign.json` → `minigames` |
-| Crafting | Tinkering, Herbalism, Leatherwork; 8 materials, 6 templates; toolkits from Tamsin and Bramble |
+| Crafting | Tinkering, Herbalism, Leatherwork; 8 materials, 6 templates; toolkits from Tamsin and Bramble. The Guild Tinker starts with a kit, river iron and driftwood: drop a material on the kit in the bag to open its workbench |
+| Combining items | River whetstone (Tinker and Warden kits, Tamsin) hones the Tinker's knife, Guild shortsword and Watch falchion; Fogback venom gland (lurker loot, Fennick) coats any blade for 3 poisoned hits; yarrow + healing tonic needs the herbal kit and a Medicine check. `ITEM_COMBINED` also ticks the Ledger's crafting line |
 | Pantheon and favour | The Hive Mother (mead offering, blessing, augury rerolls) and the Tide Warden (pearl offering, relighting the lantern) |
 | Rest | Sanctuary rest at Willowmere and the chapel, settlement rest in town, wild camps with campaign camp events |
 | Rest rules per location | Brindle Ford: rest at the Ferry Inn, barred during the curfew · Saltreed: no rest while the smugglers are hostile · Thornback: no camp in a squall · Gull Rock: short rest only |
@@ -50,10 +51,10 @@ Thornback Ridge (cliffs) · Gull Rock Lighthouse (boss) · The Sunken Chapel (hi
 | Travel, pace, weather, rations | Custom "Watchful" pace label, sea fog and squall weather, three ration items |
 | Progression | Fast XP table (levels at 100/250/450...), campaign level titles, two renamed feats |
 | Difficulty | Four presets with campaign labels; Hard has 3 lives |
-| Events | Trial Ledger lines are completed by engine events: SOCIAL_SUCCESS, HIDDEN_SPOT_FOUND, ITEM_PURCHASED, ITEM_CRAFTED, MINIGAME_COMPLETED, COMPANION_JOINED, PLAYER_RESTED; plus FLAG_SET, ITEM_ACQUIRED and ENTITY_DEATH events |
+| Events | Trial Ledger lines are completed by engine events: SOCIAL_SUCCESS, HIDDEN_SPOT_FOUND, ITEM_PURCHASED, ITEM_CRAFTED or ITEM_COMBINED, MINIGAME_COMPLETED, COMPANION_JOINED, PLAYER_RESTED; plus FLAG_SET, ITEM_ACQUIRED and ENTITY_DEATH events |
 | Codex, glossary | 4 lore entries, 3 glossary terms (Lanternfall, wisp-glass, Everflame) |
 
 ## Editing
 
-Edit the JSON files here, then run `node scripts/sync-embedded-dev-content.js` so the copy used in
+Edit the JSON files here, then run `npm run sync:embedded` so the copy used in
 `file://` mode matches. `npm test` fails until the two agree. Never use the em dash character in campaign files.

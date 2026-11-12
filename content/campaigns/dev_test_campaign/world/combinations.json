@@ -1,0 +1,81 @@
+{
+  "combinations": [
+    {
+      "id": "comb_dev_hone_knife",
+      "name": "Hone the edge",
+      "icon": "🪨",
+      "apply": "item_dev_whetstone",
+      "onto": "item_dev_tinker_knife",
+      "result": "item_dev_honed_tinker_knife",
+      "consumeApplied": 0,
+      "minutes": 10,
+      "text": "You spit on the whetstone and work the knife in small circles until the edge catches the light."
+    },
+    {
+      "id": "comb_dev_hone_shortsword",
+      "name": "Hone the edge",
+      "icon": "🪨",
+      "apply": "item_dev_whetstone",
+      "onto": "item_dev_guild_shortsword",
+      "result": "item_dev_honed_shortsword",
+      "consumeApplied": 0,
+      "minutes": 15,
+      "text": "Long, even strokes on the river stone. The Guild shortsword comes up bright and keen."
+    },
+    {
+      "id": "comb_dev_hone_falchion",
+      "name": "Hone the edge",
+      "icon": "🪨",
+      "apply": "item_dev_whetstone",
+      "onto": "item_dev_watch_falchion",
+      "result": "item_dev_honed_falchion",
+      "consumeApplied": 0,
+      "minutes": 15,
+      "text": "The falchion's broad edge takes a while, but it comes up keen."
+    },
+    {
+      "id": "comb_dev_fogback_venom",
+      "name": "Coat with venom",
+      "icon": "☠️",
+      "apply": "item_dev_lurker_gland",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "piercing",
+          "slashing"
+        ]
+      },
+      "coating": {
+        "name": "Fogback Venom",
+        "icon": "☠️",
+        "charges": 3,
+        "status": {
+          "id": "poisoned",
+          "rounds": 2,
+          "value": 3
+        }
+      },
+      "minutes": 5,
+      "text": "Gloves on. You split the gland and smear the grey venom along the edge. It smells like a fogbank and a dead fish."
+    },
+    {
+      "id": "comb_dev_yarrow_tonic",
+      "name": "Steep with yarrow",
+      "icon": "🌿",
+      "apply": "mat_dev_yarrow",
+      "onto": "item_dev_healing_tonic",
+      "result": "item_dev_strong_tonic",
+      "requiresItem": "item_dev_herbal_kit",
+      "minutes": 20,
+      "xp": 10,
+      "check": {
+        "skill": "medicine",
+        "attribute": "wisdom",
+        "dc": 10,
+        "failureConsumesApplied": true,
+        "failureText": "The yarrow goes brown and bitter in the vial before it steeps. That bundle is wasted; the tonic is fine."
+      },
+      "text": "You crush the yarrow in the satchel's mortar and let it steep in the tonic until it turns a clean, sharp green."
+    }
+  ]
+}

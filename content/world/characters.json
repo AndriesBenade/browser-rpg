@@ -272,6 +272,7 @@
       "disposition": 15,
       "isMerchant": true,
       "merchantInventory": [
+        { "itemId": "item_naxian_whetstone", "price": 8, "stock": 3 },
         { "itemId": "item_healing_draught", "price": 15, "stock": 6 },
         { "itemId": "item_theban_bronze_cuirass", "price": 45, "stock": 2 },
         { "itemId": "item_hoplite_greaves", "price": 25, "stock": 3 },
@@ -311,6 +312,7 @@
       "disposition": 20,
       "isMerchant": true,
       "merchantInventory": [
+        { "itemId": "item_naxian_whetstone", "price": 7, "stock": 3 },
         { "itemId": "item_healing_draught", "price": 15, "stock": 5 },
         { "itemId": "item_xiphos_001", "price": 25, "stock": 3 },
         { "itemId": "item_hoplite_spaulders", "price": 28, "stock": 2 },

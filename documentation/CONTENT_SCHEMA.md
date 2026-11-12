@@ -1145,3 +1145,36 @@ Wrong answers and failed deductions start the `puzzle` cooldown; a known answer 
   * Actions (`locations.json`): item conditions support `{ "type": "item", "itemId": string, "quantity"?: number, "equipped"?: boolean }`, plus action properties `requiresItem`, `requiresQuantity`, `requiresEquipped`, `consumeItem`, `consumeCount`. Enforced in both UI availability and `executeGenericAction()`.
   * Dialogue conditions (`dialogues.json`): also support `quantity` / `hasItemQuantity` alongside `hasItem`, `hasEquipped` / `requiresEquipped`, `questFailed`, and `questNotFailed`.
 * **Expanded Validator (`GreekMythologyEngine.validateCampaign`)**: returns `{ valid, errors, criticalErrors, warnings, info, findings, checksTotal, checksPassed }` covering duplicate IDs, location rest rules & actions, character gear/inventory/skills, quest stages & failovers, dialogue target nodes, glossary completeness, item/loot integrity, em-dash bans, and early weapon availability.
+
+## 34. Item Combinations, the Workbench and Embedded Content (Session 23)
+
+**Combinations** (`combinations.json`, `{ "combinations": [...] }`, manifest module `"combinations"`; template at
+`documentation/templates/combination_template.json`). The player drags one item onto another in the bag (or uses
+the "Use on…" button); the order does not matter.
+
+| Field | Meaning |
+| --- | --- |
+| `id`, `name`, `icon` | Required id; the verb shown on the drop hint ("Hone the edge") and an icon. |
+| `apply` | The item that is used: an item id, a list of ids, or `{ "item" / "items", "category" / "categories", "damageType" / "damageTypes", "exclude" }`. |
+| `onto` | The item it is used on (same forms). Example: `{ "category": "weapon", "damageTypes": ["piercing", "slashing"] }`. |
+| `result` | Item id (or `{ "itemId", "quantity", "keepTarget" }`). The target is replaced; if it was equipped, the result is equipped in the same slot and keeps any coating. |
+| `coating` | Instead of a result: `{ "name", "icon", "charges", "damageBonus", "status": { "id", "rounds", "value", "chance" } }`. Each hit with the weapon applies it and uses one charge. |
+| `consumeApplied` | How many of the `apply` item are used up (default 1; `0` for tools such as whetstones). |
+| `requiresItem`, `requiresFlag`, `requiresFlagText` | Needed in the bag / set, else the combination is shown greyed out with the reason. |
+| `check` | `{ "skill", "attribute", "dc", "failureConsumesApplied", "failureText", "label" }`. On failure nothing changes, except that `failureConsumesApplied` uses up the applied item. |
+| `minutes`, `xp`, `text`, `speaker`, `outcome`, `allowInCombat` | Time taken, XP, the chronicle line, an optional outcome object (as for actions), and whether it works mid-fight (default no). |
+
+Raises the gameplay event `ITEM_COMBINED` with `combinationId`, `applyItemId`, `ontoItemId`, `itemId` (the result,
+or the coated item) and `resultItemId`. Coatings are saved in `worldState.weaponCoatings` and removed when the item
+leaves the bag. `validateCampaign()` checks that every id a combination names exists.
+
+**Workbench**: no new data. Any item that is a profession's `requiredToolkitId` accepts that profession's materials
+(`materials.json` → `compatibleProfessions`; a material without the list fits every profession). Two materials offer
+every template of that profession; a third is the optional complement (the supplementary material of the Craft tab).
+Crafting uses the same rules as the Craft tab (`craftItem`), and the `forge` minigame bonus applies.
+
+**Embedded content (file://)**: `index.html` carries a compressed copy of every JSON file the built-in campaigns list
+in their `campaign.json` (`GreekMythologyEngine.EMBEDDED_CONTENT`), used only when `fetch` fails. Regenerate it with
+`npm run sync:embedded` after editing content; `npm test` fails while it is stale. A new module file is picked up
+automatically once it is listed in `campaign.json`.
+

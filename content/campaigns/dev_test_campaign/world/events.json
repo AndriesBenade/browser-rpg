@@ -55,6 +55,24 @@
       }
     },
     {
+      "id": "event_dev_trial_combine",
+      "name": "Trial: obj_trial_craft",
+      "trigger": "ITEM_COMBINED",
+      "conditions": {},
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_craft",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: improved your kit with your own hands.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
       "id": "event_dev_trial_challenge",
       "name": "Trial: obj_trial_challenge",
       "trigger": "MINIGAME_COMPLETED",

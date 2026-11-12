@@ -102,6 +102,25 @@ function serve() {
       return out;
     });
     check('Travel card (with pace), trade, confrontation and combat windows are visible; weather and supplies are shown', Object.values(windows).every(Boolean), JSON.stringify(windows));
+
+    // Crafting from the bag with real mouse drags: material onto a toolkit opens its workbench,
+    // a second material fills it, and a whetstone dropped on a blade hones it.
+    await page.evaluate(() => {
+      const e = window.engine;
+      e.addItem('item_dev_tinker_kit', 1); e.addItem('mat_dev_river_iron', 1); e.addItem('mat_dev_driftwood', 1);
+      e.addItem('item_dev_whetstone', 1); e.addItem('item_dev_tinker_knife', 1);
+      e.switchView('view-inventory');
+    });
+    const card = (id) => page.locator(`#inventory-items-container .item-card[data-item-id="${id}"]`);
+    await card('mat_dev_river_iron').dragTo(card('item_dev_tinker_kit'));
+    await card('mat_dev_driftwood').dragTo(page.locator('#workbench-panel [data-wb-slot="p1"]'));
+    const bench = await page.evaluate(() => ({ shown: document.getElementById('workbench-panel').getBoundingClientRect().height > 50, ready: window.engine.isWorkbenchReady(), recipes: document.querySelectorAll('#workbench-panel .workbench-template').length }));
+    check('Drag to craft: materials dropped on a toolkit open its workbench with the recipes they can make', bench.shown && bench.ready && bench.recipes > 0, JSON.stringify(bench));
+    // Close the bench and scroll the bag so both cards are on screen (Playwright cannot scroll mid-drag).
+    await page.evaluate(() => { window.engine.closeWorkbench(); document.getElementById('inventory-items-container').scrollTop = 1e6; });
+    await card('item_dev_whetstone').dragTo(card('item_dev_tinker_knife'));
+    const honed = await page.evaluate(() => ({ honed: window.engine.getItemQuantity('item_dev_honed_tinker_knife'), knife: window.engine.getItemQuantity('item_dev_tinker_knife') }));
+    check('Combining in the bag: a whetstone dropped on the knife hones it', honed.honed === 1, JSON.stringify(honed));
     check('No uncaught page errors', errors.length === 0, errors.join(' | '));
   } finally {
     await browser.close();

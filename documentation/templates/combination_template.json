@@ -1,0 +1,60 @@
+{
+  "_comment": "Item combinations: drag 'apply' onto 'onto' in the bag (either order). Use 'result' for a new item or 'coating' for a few hits of extra effect. See CONTENT_SCHEMA.md section 34.",
+  "combinations": [
+    {
+      "id": "comb_example_upgrade",
+      "name": "Hone the edge",
+      "icon": "🪨",
+      "apply": "item_example_whetstone",
+      "onto": "item_example_knife",
+      "result": "item_example_knife_honed",
+      "consumeApplied": 0,
+      "minutes": 10,
+      "text": "You work the edge on the stone until it shines."
+    },
+    {
+      "id": "comb_example_coating",
+      "name": "Coat with venom",
+      "icon": "☠️",
+      "apply": "item_example_venom",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "piercing",
+          "slashing"
+        ]
+      },
+      "coating": {
+        "name": "Venom",
+        "icon": "☠️",
+        "charges": 3,
+        "damageBonus": 0,
+        "status": {
+          "id": "poisoned",
+          "rounds": 2,
+          "value": 3,
+          "chance": 1
+        }
+      },
+      "minutes": 5
+    },
+    {
+      "id": "comb_example_checked",
+      "name": "Steep with herbs",
+      "icon": "🌿",
+      "apply": "mat_example_herb",
+      "onto": "item_example_tonic",
+      "result": "item_example_strong_tonic",
+      "requiresItem": "item_example_herbal_kit",
+      "check": {
+        "skill": "medicine",
+        "attribute": "wisdom",
+        "dc": 10,
+        "failureConsumesApplied": true,
+        "failureText": "The herb spoils before it steeps."
+      },
+      "minutes": 20,
+      "xp": 10
+    }
+  ]
+}

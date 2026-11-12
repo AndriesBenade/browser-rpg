@@ -80,6 +80,52 @@
       "description": "A broad, chopping blade issued to the Ford Watch."
     },
     {
+      "id": "item_dev_honed_tinker_knife",
+      "name": "Honed Tinker's Knife",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "common",
+      "weightKg": 0.6,
+      "valueDrachmae": 18,
+      "stats": {
+        "damageMin": 3,
+        "damageMax": 7,
+        "damageType": "piercing",
+        "investigationBonus": 1
+      },
+      "description": "The same knife, with an edge you could shave with."
+    },
+    {
+      "id": "item_dev_honed_shortsword",
+      "name": "Honed Guild Shortsword",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "common",
+      "weightKg": 1.4,
+      "valueDrachmae": 32,
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 9,
+        "damageType": "slashing"
+      },
+      "description": "The Guild blade, honed until the lantern mark gleams."
+    },
+    {
+      "id": "item_dev_honed_falchion",
+      "name": "Honed Watch Falchion",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "uncommon",
+      "weightKg": 1.8,
+      "valueDrachmae": 55,
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 11,
+        "damageType": "slashing"
+      },
+      "description": "A falchion with a fresh, bright edge."
+    },
+    {
       "id": "item_dev_ferry_shield",
       "name": "Ferry-Plank Shield",
       "category": "shield",
@@ -296,6 +342,18 @@
       "description": "Golden, bitter-sweet. The Hive Mother likes it poured on her stones."
     },
     {
+      "id": "item_dev_strong_tonic",
+      "name": "Yarrow-Steeped Tonic",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 24,
+      "effect": {
+        "restoreHealth": 18
+      },
+      "description": "A Willowmere tonic steeped with fresh yarrow. Twice the kick."
+    },
+    {
       "id": "item_dev_smelling_salts",
       "name": "Smelling Salts",
       "category": "consumable",
@@ -316,6 +374,15 @@
       "weightKg": 0.2,
       "valueDrachmae": 12,
       "description": "Six picks and a tension bar in a leather roll."
+    },
+    {
+      "id": "item_dev_whetstone",
+      "name": "River Whetstone",
+      "category": "tool",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 6,
+      "description": "A grey river stone worn smooth on one face. Drop it on a blade in your bag to hone it; it never wears out."
     },
     {
       "id": "item_dev_tinker_kit",

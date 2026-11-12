@@ -61,6 +61,7 @@
     "professions": "content/campaigns/dev_test_campaign/world/professions.json",
     "materials": "content/campaigns/dev_test_campaign/world/materials.json",
     "craftingTemplates": "content/campaigns/dev_test_campaign/world/crafting_templates.json",
+    "combinations": "content/campaigns/dev_test_campaign/world/combinations.json",
     "classes": "content/campaigns/dev_test_campaign/world/classes.json",
     "backgrounds": "content/campaigns/dev_test_campaign/world/backgrounds.json",
     "origins": [

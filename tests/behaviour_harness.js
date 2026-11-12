@@ -37,7 +37,7 @@ function makeElement(id, tag = 'div') {
   return el;
 }
 
-function createSandbox() {
+function createSandbox(opts = {}) {
   const elements = new Map();
   const timers = [];
   const storage = {};
@@ -85,7 +85,8 @@ function createSandbox() {
   sandbox.window = sandbox;
   vm.createContext(sandbox);
 
-  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  // ENGINE_HTML=dist/index.html runs the whole suite against the release build.
+  const html = opts.html || fs.readFileSync(path.join(ROOT, process.env.ENGINE_HTML || 'index.html'), 'utf8');
   const match = html.match(/<script>([\s\S]*?)<\/script>/);
   if (!match) throw new Error('Engine <script> block not found in index.html');
   // Classes declared with `class X {}` are not added to the global object, so expose them explicitly.

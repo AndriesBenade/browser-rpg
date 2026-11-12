@@ -1177,20 +1177,27 @@ runTest("Regional Scaling: Dangerous zones trigger peril warning when hero level
 // -----------------------------------------------------------------------------
 runTest("Dual Content Sync: index.html embedded fallback contains 19 locations, 12 creatures and 24 items", () => {
   const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  // The file:// copy of the content is generated (compressed) by scripts/sync-embedded-content.js; decode it.
+  const embedded = require('../scripts/sync-embedded-content.js').readEmbedded(html);
+  const ids = (file, key) => new Set(((embedded[file] || {})[key] || []).map(e => e.id));
+  const locs = ids('content/world/locations.json', 'locations');
+  const creatures = ids('content/world/creatures.json', 'creatures');
+  const items = ids('content/world/items.json', 'items');
+  assert.ok(locs.size >= 19 && creatures.size >= 12 && items.size >= 24, "Embedded Greek content is incomplete");
 
-  // Verify locations in index.html
-  assert.ok(html.includes('"id": "loc_thebes_seven_gates"'), "Fallback missing Seven Gates of Thebes");
-  assert.ok(html.includes('"id": "loc_lernaean_swamp"'), "Fallback missing Marshes of Lerna");
-  assert.ok(html.includes('"id": "loc_delphi_sanctuary"'), "Fallback missing Delphi Sanctuary");
+  // Verify locations
+  assert.ok(locs.has("loc_thebes_seven_gates"), "Fallback missing Seven Gates of Thebes");
+  assert.ok(locs.has("loc_lernaean_swamp"), "Fallback missing Marshes of Lerna");
+  assert.ok(locs.has("loc_delphi_sanctuary"), "Fallback missing Delphi Sanctuary");
 
-  // Verify creatures in index.html
-  assert.ok(html.includes('"id": "creature_lernaean_hydra"'), "Fallback missing Lernaean Hydra");
-  assert.ok(html.includes('"id": "creature_sphinx_thebes"'), "Fallback missing Sphinx of Thebes");
-  assert.ok(html.includes('"id": "creature_lykaion_werewolf"'), "Fallback missing Lykaion Werewolf");
+  // Verify creatures
+  assert.ok(creatures.has("creature_lernaean_hydra"), "Fallback missing Lernaean Hydra");
+  assert.ok(creatures.has("creature_sphinx_thebes"), "Fallback missing Sphinx of Thebes");
+  assert.ok(creatures.has("creature_lykaion_werewolf"), "Fallback missing Lykaion Werewolf");
 
-  // Verify items in index.html
-  assert.ok(html.includes('"id": "item_nemean_pelt_fragment"'), "Fallback missing Nemean Pelt Fragment");
-  assert.ok(html.includes('"id": "item_hydra_bile_vial"'), "Fallback missing Hydra Venom Vial");
+  // Verify items
+  assert.ok(items.has("item_nemean_pelt_fragment"), "Fallback missing Nemean Pelt Fragment");
+  assert.ok(items.has("item_hydra_bile_vial"), "Fallback missing Hydra Venom Vial");
 
   // Verify level-up methods in index.html
   assert.ok(html.includes("awardXP("), "Engine missing awardXP");

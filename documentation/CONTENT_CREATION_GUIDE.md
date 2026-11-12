@@ -472,7 +472,7 @@ To author a new campaign or adventure world:
    - `dialogues.json`: Decoupled conversation trees with conditional node branches.
    - `events.json`: World events that react to `FLAG_SET`, `ITEM_ACQUIRED` or `ENTITY_DEATH` (see CONTENT_SCHEMA §23). Manifest `consequenceRules` cover the same triggers.
 
-> **file:// mode:** the Dev campaign also exists as an embedded copy inside `index.html`. After editing any of the files above, run `npm run sync:embedded` (`node scripts/sync-embedded-dev-content.js`). `npm test` fails while the copy is out of date.
+> **file:// mode:** both built-in campaigns also exist as a compressed embedded copy inside `index.html`. After editing any of their files, run `npm run sync:embedded` (`node scripts/sync-embedded-content.js`). `npm test` fails while the copy is out of date.
 
 ### 12.2 Using the Campaign Content Validation Engine
 The engine includes a built-in static validator:
@@ -748,3 +748,31 @@ Give NPCs realistic inspectable gear and pocket items separate from `merchantInv
 * The herbal mortar heals like a rest, so it follows the same location rules as a short rest or camp.
 
 Field details: CONTENT_SCHEMA §33.
+
+## 19. Crafting from the Bag: Workbenches and Combinations (Session 23)
+
+### 19.1 Workbenches come for free
+Every toolkit that a profession names as `requiredToolkitId` is a workbench. Dropping a material on the toolkit in the
+Inventory (or pressing its "Workbench" button) opens that profession's bench; two materials list everything the
+profession can make, a third adds a complement, and the player can play the `forge` minigame first for +1 to +3.
+To decide which materials fit, give each material `"compatibleProfessions": ["your_profession_id"]`.
+
+### 19.2 Writing combinations
+Add `combinations.json` and list it in `campaign.json` → `modules.combinations`. Three patterns cover most needs:
+```json
+{ "combinations": [
+  { "id": "comb_hone_knife", "name": "Hone the edge", "apply": "item_whetstone", "onto": "item_knife",
+    "result": "item_knife_honed", "consumeApplied": 0, "minutes": 10, "text": "You work the edge on the stone." },
+  { "id": "comb_poison_blade", "name": "Coat with venom", "apply": "item_venom",
+    "onto": { "category": "weapon", "damageTypes": ["piercing", "slashing"] },
+    "coating": { "name": "Venom", "charges": 3, "status": { "id": "poisoned", "rounds": 2, "value": 3 } } },
+  { "id": "comb_strong_tonic", "name": "Steep with herbs", "apply": "mat_herb", "onto": "item_tonic",
+    "result": "item_strong_tonic", "requiresItem": "item_herbal_kit",
+    "check": { "skill": "medicine", "attribute": "wisdom", "dc": 10, "failureConsumesApplied": true } }
+] }
+```
+* A permanent upgrade needs its own result item (one combination per blade); a coating works on any matching weapon.
+* `consumeApplied: 0` keeps tools such as whetstones; leave it out for consumables.
+* Use `ITEM_COMBINED` in `events.json` to react (the Dev Trial Ledger counts it as crafting).
+* Ready-made template: `documentation/templates/combination_template.json`. Field details: CONTENT_SCHEMA §34.
+

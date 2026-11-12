@@ -38,7 +38,7 @@
             },
             {
               "id": "obj_trial_craft",
-              "text": "Craft an item on the Craft & Forge tab (you need a toolkit).",
+              "text": "Make or improve something: drop two materials on a toolkit in your bag (a workbench opens), use the Craft tab, or drop one item on another (a whetstone on a blade).",
               "completed": false
             },
             {

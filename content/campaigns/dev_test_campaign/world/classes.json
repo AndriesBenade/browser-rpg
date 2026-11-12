@@ -22,6 +22,7 @@
         "item_dev_guild_shortsword",
         "item_dev_ferry_shield",
         "item_dev_padded_jack",
+        "item_dev_whetstone",
         "item_dev_honey_cake",
         "item_dev_honey_cake"
       ],
@@ -151,6 +152,9 @@
         "item_dev_tinker_knife",
         "item_dev_lockpick_roll",
         "item_dev_tinker_kit",
+        "item_dev_whetstone",
+        "mat_dev_river_iron",
+        "mat_dev_driftwood",
         "item_dev_honey_cake"
       ],
       "classFeatures": [
