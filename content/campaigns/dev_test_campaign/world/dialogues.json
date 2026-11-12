@@ -1,7 +1,7 @@
 {
   "dialogues": {
     "dialogue_dev_lycus": {
-      "greeting": "Welcome to my stall, traveler! Lycus has the finest goods in Haven—durable lockpicks, healing draughts, and hearty rations.",
+      "greeting": "Welcome to my stall, traveler! Lycus has the finest goods in Haven - durable lockpicks, healing draughts, and hearty rations.",
       "nodes": {
         "root": {
           "text": "Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.",

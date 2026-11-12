@@ -141,7 +141,7 @@
   ],
   "dialogues": {
     "dialogue_daidalos_shepherd": {
-      "greeting": "Hail, traveler! By Zeus Xenios, keeper of strangers, hear an old man's grief. My prize black ram—reared since spring to be offered at the altar of Hermes Kriophoros—was dragged into the crags this very dawn! No ordinary wolf did this; I heard a hiss like escaping steam and deep, heavy footfalls.",
+      "greeting": "Hail, traveler! By Zeus Xenios, keeper of strangers, hear an old man's grief. My prize black ram, reared since spring to be offered at the altar of Hermes Kriophoros, was dragged into the crags this very dawn! No ordinary wolf did this; I heard a hiss like escaping steam and deep, heavy footfalls.",
       "nodes": {
         "root": {
           "text": "Daidalos clutches his olive-wood staff, staring up at the limestone cliffs with troubled eyes.",
@@ -218,7 +218,7 @@
           ]
         },
         "node_cairn_lore": {
-          "text": "That is an hermaion—a mound consecrated to Hermes of the Way. Wayfarers who toss a stone or pour a few drops of wine upon it receive the god's swift speed on rugged roads. An old inscription at the bottom speaks of Cadmus, founder of Thebes, who walked these slopes long ago.",
+          "text": "That is an hermaion, a mound consecrated to Hermes of the Way. Wayfarers who toss a stone or pour a few drops of wine upon it receive the god's swift speed on rugged roads. An old inscription at the bottom speaks of Cadmus, founder of Thebes, who walked these slopes long ago.",
           "addJournalKnowledge": {
             "title": "The Hermaion of Cithaeron",
             "text": "Daidalos confirmed the stone cairn is sacred to Hermes Enodios. Libations of wine or stones cast upon it invoke the god's divine protection over travelers."
@@ -235,7 +235,7 @@
           ]
         },
         "node_cadmus_lore": {
-          "text": "They say Prince Cadmus sought his lost sister Europa, following a heifer until it collapsed here in Boeotia. Before he could build the Cadmeia, he had to slay the ferocious Drakon of Ares—a colossal serpent whose venomous teeth he sowed into the soil to bring forth warriors. If you encounter ancient stone carvings of a serpent and tripod up the mountain, remember the name of Ares' Drakon!",
+          "text": "They say Prince Cadmus sought his lost sister Europa, following a heifer until it collapsed here in Boeotia. Before he could build the Cadmeia, he had to slay the ferocious Drakon of Ares: a colossal serpent whose venomous teeth he sowed into the soil to bring forth warriors. If you encounter ancient stone carvings of a serpent and tripod up the mountain, remember the name of Ares' Drakon!",
           "setFlags": {
             "knows_cadmus_drakon": true
           },
@@ -251,7 +251,7 @@
           ]
         },
         "node_accept_quest": {
-          "text": "May Hermes watch your steps and Athena guide your blade, noble friend! Take this small aryballos of Pramnian wine—if you reach the Herm shrine, pour it upon the altar; the god never turns away a pious heart.",
+          "text": "May Hermes watch your steps and Athena guide your blade, noble friend! Take this small aryballos of Pramnian wine; if you reach the Herm shrine, pour it upon the altar; the god never turns away a pious heart.",
           "setFlags": {
             "cithaeron_accepted_quest": true
           },
@@ -311,7 +311,7 @@
           ]
         },
         "node_shrine_wisdom": {
-          "text": "Always look for the symbols carved on archaic lintels. In Boeotia, the old kings inscribed the guardian beasts of their bloodlines. If you encounter an unyielding door of stone, remember that the Greeks do not pray to deaf idols—they invoke the specific epithet and legend of the guardian.",
+          "text": "Always look for the symbols carved on archaic lintels. In Boeotia, the old kings inscribed the guardian beasts of their bloodlines. If you encounter an unyielding door of stone, remember that the Greeks do not pray to deaf idols: they invoke the specific epithet and legend of the guardian.",
           "addJournalKnowledge": {
             "title": "Timon's Counsel on Archaic Inscriptions",
             "text": "Archaic Boeotian stone doors and seals respond to the ancient names of mythic guardians invoked in sacred hymns."
@@ -324,7 +324,7 @@
           ]
         },
         "node_creature_rumors": {
-          "text": "At twilight yesterday, as the red sun sank behind Plataea, I heard baying from the Whispering Fissure. It was no jackal or sheepdog—the sound set the hair on my arms upright. Carry good bronze and a stout shield if you tread that upper path.",
+          "text": "At twilight yesterday, as the red sun sank behind Plataea, I heard baying from the Whispering Fissure. It was no jackal or sheepdog; the sound set the hair on my arms upright. Carry good bronze and a stout shield if you tread that upper path.",
           "choices": [
             {
               "label": "I will heed your warning.",
@@ -387,7 +387,7 @@
       "creatureId": "creature_cithaeron_wolf",
       "introProse": "As you step into the damp, echoing cave, twin amber eyes blaze in the gloom! A ferocious, grey-furred mountain wolf snarling with feral menace guards the frightened, tethered black ram! It lowers its snout and springs across the mossy floor!",
       "victoryOutcome": {
-        "text": "With a final decisive blow, the beast collapses against the limestone wall, whimpering into the shadows. Trembling in the corner of the cavern, the black ram bleats softly—uninjured! Tied to its horn is the sacred archaic bronze bell of Hermes.",
+        "text": "With a final decisive blow, the beast collapses against the limestone wall, whimpering into the shadows. Trembling in the corner of the cavern, the black ram bleats softly, uninjured! Tied to its horn is the sacred archaic bronze bell of Hermes.",
         "setFlags": {
           "cithaeron_beast_defeated": true
         },
@@ -582,7 +582,7 @@
         "restoreStamina": 6,
         "transcript": {
           "speaker": "Sacred Offering",
-          "text": "Uncorking the aryballos, you pour fragrant dark Pramnian wine over the crest stone of the cairn. A sudden warm gust of wind sweeps across the pass, carrying the scent of mountain thyme. Your weariness lifts—Hermes has received your pious offering!",
+          "text": "Uncorking the aryballos, you pour fragrant dark Pramnian wine over the crest stone of the cairn. A sudden warm gust of wind sweeps across the pass, carrying the scent of mountain thyme. Your weariness lifts: Hermes has received your pious offering!",
           "style": "entry-discovery"
         },
         "addJournalChronicle": {

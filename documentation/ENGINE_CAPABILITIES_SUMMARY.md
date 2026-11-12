@@ -1,6 +1,6 @@
-# Universal Browser RPG Campaign Engine — Comprehensive Capabilities Specification
+# Browser-RPG Universal Campaign Engine - Comprehensive Capabilities Specification
 
-**Document Version:** 4.2.0  
+**Document Version:** 4.3.0  
 **Engine Build:** Modular Vanilla HTML5/ES6+ RPG Engine  
 **Runtime Architecture:** Single-File Distribution (`index.html`) + Standalone JSON Content Packages  
 **Runtime Dependencies:** None (Zero external dependencies; runs offline via `file:///` and over standard HTTP)
@@ -9,9 +9,9 @@
 
 ## 1. Executive Summary & Engine Philosophy
 
-The **Universal Browser RPG Campaign Engine** is a high-fidelity, tabletop-inspired, narrative roleplaying system engineered using standard web technologies (HTML5, CSS3, Vanilla ES6+ JavaScript, SVG, Web Audio API, IndexedDB). 
+The **Browser-RPG Universal Campaign Engine** is a high-fidelity, tabletop-inspired, narrative roleplaying system engineered using standard web technologies (HTML5, CSS3, Vanilla ES6+ JavaScript, SVG, Web Audio API, IndexedDB). 
 
-Originally developed as an authentic classical Greek mythology adventure, the engine underwent a comprehensive architectural overhaul to become **completely campaign- and genre-independent**. Any universe—Greek myth, Norse legends, traditional high fantasy, grimdark medieval, cyberpunk, sci-fi, or anime—can be loaded simply by importing compatible content packages, requiring **zero engine modifications**.
+Originally developed as an authentic classical Greek mythology adventure, the engine underwent a comprehensive architectural overhaul to become **completely campaign- and genre-independent**. Any universe (Greek myth, Norse legends, traditional high fantasy, grimdark medieval, cyberpunk, sci-fi, or anime) can be loaded simply by importing compatible content packages, requiring **zero engine modifications**.
 
 ```
 +-----------------------------------------------------------------------------------------+
@@ -29,7 +29,7 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 |  | Central Rules & D20   |  | Dynamic World Time     |  | Character & Progression    |  |
 |  | - resolveD20()        |  | - Calendar rollover    |  | - 14-slot paper doll       |  |
 |  | - Nat 20 / Nat 1      |  | - Event Scheduler      |  | - 1 primary + 2 secondary  |  |
-|  | - Reliable Talent     |  | - Zero polling loops   |  | - Attributes & 11 Skills   |  |
+|  | - Reliable Talent     |  | - Zero polling loops   |  | - Attributes & 12 Skills   |  |
 |  +-----------------------+  +------------------------+  +----------------------------+  |
 |  +-----------------------+  +------------------------+  +----------------------------+  |
 |  | Combat & Encounters   |  | Quests & Consequences  |  | Procedural Crafting        |  |
@@ -48,7 +48,7 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 +-----------------------------------------------------------------------------------------+
 |                               PERSISTENCE & SECURITY                                    |
 |  - Multi-slot IndexedDB with LocalStorage fallback                                      |
-|  - Save Versioning (v1.8.0) with automated migration pipeline                           |
+|  - Save Versioning (v1.9.0) with automated migration pipeline                           |
 |  - Slot overwrite protection & isolated campaign saves                                  |
 +-----------------------------------------------------------------------------------------+
 ```
@@ -87,6 +87,7 @@ Originally developed as an authentic classical Greek mythology adventure, the en
   * Referential integrity: Missing locations, invalid connection targets, missing items, unlinked dialogue trees.
   * Circular quest dependencies via depth-first graph traversal.
   * Logical anomalies (e.g. flagging unpickable physical obstacles accidentally marked as pickable).
+  * **Authoring & Content Policies**: Rejects forbidden Unicode em dashes (`U+2014`) across manifests and content packs, and enforces obtainable early-reachable weapons in combat campaigns.
   * Surfaced via the in-game `#validation-modal` and CLI verification tests.
 
 ---
@@ -106,22 +107,25 @@ Originally developed as an authentic classical Greek mythology adventure, the en
 * **16 Backgrounds**: Spartiate Agoge, Athenian Ephebe, Theban Sacred Band, Arcadian Hunter, Cretan Archer, Myrmidon Veteran, Corinthian Navigator, Phocian Miner, Delphic Suppliant, Argive Bronzesmith, Centaur Foster-Child, Thessalian Horseman, Thracian Mercenary, Olympic Victor, Chthonic Oracle, Laconian Helot.
 * **Universal Compatibility Matrix**: Any background pairs with any class. The engine dynamically calculates attribute modifiers, proficiencies, starting equipment panoplies, and background perks.
 
-### 3.3 Core Attributes & The 11-Skill System
+### 3.3 Core Attributes & The 12-Skill Dependency System
 * **6 Core Attributes**:
   * **Strength**: Melee attack power, heavy armor tolerance, physical heaving.
   * **Agility**: Ranged accuracy, defensive evasion, stealth, initiative.
   * **Endurance**: Health pool, stamina pool, exhaustion thresholds.
-  * **Intelligence**: Lore knowledge, puzzle insight, crafting precision.
-  * **Wisdom**: Perception, medical diagnosis, divine discernment.
+  * **Intelligence**: Lore knowledge, puzzle insight, investigation, crafting precision.
+  * **Wisdom**: Perception, medical diagnosis, tracking, divine discernment.
   * **Charisma**: Persuasion, deception, morale capacity, social standing.
-* **11 Core Skills**:
-  * Combat: `melee`, `ranged`, `defense`.
-  * Physical & Subterfuge: `athletics`, `stealth`.
-  * Social: `persuasion`, `deception`.
-  * Survival & Knowledge: `survival`, `medicine`, `lore`, `piety`.
+* **12 Core Skills (Primary + Secondary Governing Attributes)**:
+  * Combat: `melee_combat` (STR/AGI), `ranged_combat` (AGI/WIS), `athletics` (STR/END).
+  * Subterfuge & Social: `stealth` (AGI/INT), `persuasion` (CHA/WIS), `deception` (CHA/INT).
+  * Survival & Discovery: `survival` (END/WIS), `tracking` (WIS/INT), `perception` (WIS/INT), `investigation` (INT/WIS).
+  * Medicine & Lore: `medicine` (WIS/INT; combat *Field Triage* & potion boost), `mythology_lore` (INT/WIS; combat *Assess Foe* & runes).
+  * Each skill check adds `primaryMod + ceil(max(0, secondaryMod) / 2)`. Campaigns can customize pairings via `skillDependencies` in `campaign.json`.
 
-### 3.4 Progression & Level Advancement
-* **Point Allocation**: Every level-up grants **1 Primary Attribute Point** and **2 Secondary Skill / Substat Points**.
+### 3.4 Progression, Feat Prerequisites & Difficulty Modes
+* **Point Allocation**: Creation requires spending all 5 bonus attribute points (validated in UI and engine); every level-up grants **1 Primary Attribute Point**, **2 Skill Points** (4-column grid), and an eligible Feat.
+* **Feat Eligibility (`checkFeatEligibility`)**: Feats declare `minLevel`, `minAttributes`, and `minSkills`, showing unmet requirements clearly and locking selection until met.
+* **Campaign Difficulty Modes (`DIFFICULTY_PRESETS`)**: `easy` (unlimited respawns, 0% supply loss), `normal` (unlimited respawns, 25% unequipped non-quest supply loss), `hard` (3 sanctuary respawns, 50% supply loss, permanent death once exhausted), and `extreme` (0 respawns, permanent death via `#gameover-modal`). Equipped gear and quest/key/relic/unique items are always spared.
 * **Campaign Progression Config**: Campaigns configure XP advancement tables and cultural level titles (e.g. *Ephebos* &rarr; *Hoplite* &rarr; *Hero* in Hellas; neutral titles in other campaigns).
 * **Derived Substats**:
   * **Perception**: Derived from Wisdom (`10 + Wisdom Modifier + Skill Points`). Governs detection of hidden paths, ambush warnings, and secret loot caches.
@@ -246,8 +250,10 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 * Active, Completed and Failed quests are kept on separate tabs; up to three quests can be focused (☆) and are shown in the story sidebar.
 * Quests are offered by NPCs or discovered by doing them; their `rewards` are paid once on completion.
 
-### 7.1c Individual NPC Standing
+### 7.1c Individual NPC Standing, Social Cooldowns & Hostile Acts
 * Every NPC's standing combines personal favour (persuasion, deception, theft, completed quests, trade) with their faction's reputation. Tiers (Hostile → Trusted) change prices, persuasion DCs, which dialogue choices are open, whether they talk or trade, and whether they attack on sight.
+* **Independent Social Channels**: Persuasion (`attemptPersuadeNpc`) and Deception (`attemptDeceiveNpc`) maintain separate event-driven cooldowns (`cooldownRules`), separate DCs, and distinct consequences.
+* **Noticed Hostile Acts (`recordHostileAct`)**: Assault, caught theft, or caught tampering reduce standing with the target and with local witnesses/law factions.
 
 ### 7.2 Non-Linear Quest Failovers & Permanent NPC Death
 * **Unique Mortals**: Living NPCs in `characters.json` are unique mortals. When slain, their ID is permanently registered in `state.worldState.permanentNpcDeaths`.
@@ -347,7 +353,7 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 
 * **Multi-Slot IndexedDB**: Robust asynchronous persistence with LocalStorage fallbacks.
 * **Save Versioning & Automated Migration (`migrateState()`)**:
-  * Seamlessly upgrades older save formats across v1.2 to v1.8 without losing player progress (v1.8.0 adds companions, hidden spots, rumours, pace and hunger; v1.7.0 adds merchant stock, searched items and focused quests).
+  * Seamlessly upgrades older save formats across v1.2 to v1.9 without losing player progress (v1.9.0 adds difficulty presets/respawn counters, action cooldowns, persistent confrontation states, and seeded challenge states; v1.8.0 adds companions, hidden spots, rumours, pace and hunger; v1.7.0 adds merchant stock, searched items and focused quests).
   * Preserves time timestamps, dynamic crafted items, custom traits, and newly added skills (`athletics`, `deception`).
 * **Slot Safety Architecture**:
   * `findSlotForNewGame()` finds the first unused slot.
@@ -364,19 +370,20 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 * **Interactive UI Resizing**:
   * Drag grips adjust Action Deck height and Sidebar width.
   * Corner resize handles on dialogues, selection cards, level-up lists, and crafting crucible.
-  * In-game Font Size slider and UI Reset controls in Settings, saved persistently in `localStorage.gm_ui_sizes`.
+  * In-game Font Size slider, AudioManager volume slider & mute controls (`localStorage.gm_audio_settings`), drag-and-drop 14-slot equipment management, and UI Reset controls in Settings, saved persistently in `localStorage.gm_ui_sizes`.
+* **Unified Tooltips & Modal Policy**: Contextual hover/focus tooltips (`#gm-ui-tooltip` via `data-tooltip`) replace native browser `title` attributes, `#nav-badge-quests` surfaces unseen quest updates, and `MODAL_CONFIG` governs Escape/backdrop dismissal while protecting critical combat, level-up, defeat, and game-over dialogs.
 * **Thematic Modals**: In-game Codex, Mythology Glossary, Pantheon Shrine, Validation Suite, Developer Hand-Off Notes, and Quest Chronicle.
 
 ---
 
 ## 15. Testing, Verification & Developer Tooling
 
-* **148 Automated Tests**:
+* **175 Automated Tests**:
   * **Legacy Test Suite (`tests/engine_tests.js`)**: 74 unit tests validating formulas, math, and data schemas.
-  * **Behaviour Test Suite (`tests/behaviour_tests.js`)**: 74 integration tests executing the real engine in a headless Node VM against live JSON content packs.
+  * **Behaviour Test Suite (`tests/behaviour_tests.js`)**: 101 integration tests executing the real engine in a headless Node VM against live JSON content packs.
   * **Seeded Fuzzing**: 600-step randomized action runs across both Hellenic and Dev campaigns verifying state invariants.
 * **Synchronization CLI**: `npm run sync:embedded` regenerates embedded offline fallbacks from JSON.
-* **Full Test Command**: `npm test` runs both suites and checks embedded sync in **< 1.5 seconds**.
+* **Full Test Command**: `npm test` runs both suites and checks embedded sync cleanly in Node.js with zero third-party dependencies.
 
 ---
 
@@ -384,14 +391,14 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 
 | System | Specification / Limit | Implementation Notes |
 | :--- | :--- | :--- |
-| **Engine Core** | Single-file HTML5 (`index.html`), ~13,100 lines | Zero external runtime scripts or libraries |
+| **Engine Core** | Single-file HTML5 (`index.html`), ~17,800 lines | Zero external runtime scripts or libraries |
 | **Supported Browsers** | Chrome, Firefox, Edge, Safari | ES6+ standard compliant |
 | **Active Campaigns** | Unlimited | Loaded via `content/campaigns/<id>/` |
-| **Equipment Slots** | 14 discrete paper doll slots | Dual rings + Two-hand weapon mutual exclusion |
+| **Equipment Slots** | 14 discrete paper doll slots | Drag-and-drop, Dual rings + Two-hand mutual exclusion |
 | **Core Attributes** | 6 (STR, AGI, END, INT, WIS, CHA) | Standard tabletop modifier formula $\lfloor(X-10)/2\rfloor$ |
-| **Core Skills** | 11 specialized skills | Non-combat skills support Reliable Talent ($\ge 8$) |
+| **Core Skills** | 12 specialized skills | Primary + Secondary attribute dependency; non-combat skills support Reliable Talent ($\ge 8$) |
 | **Time System** | Discrete minutes, hours, days, months, years | Zero continuous polling loops; activity-driven |
 | **Scheduler Insertion** | Binary Search ($O(\log n)$) | Chronologically sorted; memory pruned on execution |
 | **Loot Hard Caps** | Normal Epic $\le 0.02\%$; Boss Mythic $\le 0.02\%$ | Anti-exploit unique relic duplication lock |
-| **Save Storage** | IndexedDB primary, LocalStorage fallback | Automated schema migration pipeline |
-| **Automated Tests** | 148 automated passing tests | Complete regression & behaviour coverage |
+| **Save Storage** | IndexedDB primary, LocalStorage fallback | Save v1.9.0 automated schema migration pipeline |
+| **Automated Tests** | 175 automated passing tests | Complete regression & behaviour coverage |

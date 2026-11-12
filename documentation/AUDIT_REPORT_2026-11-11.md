@@ -1,4 +1,4 @@
-# Independent Project Audit — Browser RPG (Engine v4.1)
+# Independent Project Audit - Browser RPG (Engine v4.1)
 
 > **Two passes.** Part 1 (sections A–H below) is the first audit pass. **Part 2** (at the end) is a second, independent pass made the same day. It re-checked Part 1's changes and continued into areas Part 1 had not covered. Part 2 found critical save-slot overwrite problems. It also found inconsistent travel rules, re-rated High after a correction: an earlier version of this report wrongly said most of the map was unreachable. Items in Part 1 §F that Part 2 resolved are marked ✅.
 
@@ -139,7 +139,7 @@ The most serious problems were at the **boundaries between systems**: campaign l
 ---
 ---
 
-# Part 2 — Second Independent Pass (2026-11-11)
+# Part 2 - Second Independent Pass (2026-11-11)
 
 **Approach:** I started by reviewing Part 1's ~1,900-line engine diff line by line. I then probed every remaining system with the real engine and content (Node VM harness) and in real Chrome (HTTP with IndexedDB, and `file://`). Every suspected defect was reproduced before it was fixed. Each fix has a regression test, and the new tests were run against Part 1's engine to confirm that they fail there.
 

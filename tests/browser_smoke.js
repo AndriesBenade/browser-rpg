@@ -54,7 +54,9 @@ function serve() {
 
     const greek = await page.evaluate(async () => {
       engine.skipWalkthrough(); engine.selectCampaign('campaign_greek_mythology'); await engine.confirmCampaignSelection();
-      engine.renderWizardStep(2); engine.confirmHeroCreation();
+      engine.renderWizardStep(2);
+      while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
+      engine.confirmHeroCreation();
       ['view-map', 'view-character', 'view-inventory', 'view-journal', 'view-codex', 'view-crafting', 'view-settings', 'view-story'].forEach(v => engine.switchView(v));
       // Cards may sit inside closed per-NPC / per-place lists, so read textContent (innerText is empty for hidden text).
       const cards = [...document.querySelectorAll('#context-actions-container .action-card-btn')].map(b => b.querySelector('.action-card-title span').textContent.trim());
@@ -64,7 +66,9 @@ function serve() {
 
     const dev = await page.evaluate(async () => {
       engine.selectCampaign('campaign_dev_test'); await engine.confirmCampaignSelection();
-      engine.renderWizardStep(2); engine.confirmHeroCreation();
+      engine.renderWizardStep(2);
+      while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
+      engine.confirmHeroCreation();
       const talk = [...document.querySelectorAll('#context-actions-container .action-card-btn')].find(b => /Speak with Merchant Lycus/.test(b.textContent));
       if (talk) talk.click();
       const speaker = document.getElementById('dialogue-speaker-name').innerText;

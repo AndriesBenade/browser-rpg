@@ -1,13 +1,13 @@
-# Greek Mythology RPG — Engine Architecture Specification
-**Document Version:** 1.0.0  
-**Target Engine Version:** v0.1.0-alpha  
+# Browser-RPG - Engine Architecture Specification
+**Document Version:** 1.1.0  
+**Target Engine Version:** v4.3.0 / Save v1.9.0  
 **Author:** Lead Software Architect & Systems Designer  
 
 ---
 
 ## 1. Executive Summary & Design Philosophy
 
-The **Greek Mythology RPG Engine** is a browser-based, data-driven, tabletop-inspired roleplaying engine built with standard web technologies (HTML5, CSS3, Vanilla ES6+ JavaScript, SVG, IndexedDB). It is engineered for long-term campaigns rooted in authentic classical Greek mythology, literature, and history.
+The **Browser-RPG Engine** is a browser-based, data-driven, tabletop-inspired roleplaying engine built with standard web technologies (HTML5, CSS3, Vanilla ES6+ JavaScript, SVG, IndexedDB). It ships with the Greek Mythology campaign as its initial default world and supports loading unrelated worlds and genres through standalone JSON campaign modules.
 
 ### Core Architectural Pillars
 1. **Strict Separation of Engine & Content:** The engine is a general-purpose, content-agnostic interpreter. All locations, dialogue, quests, items, creatures, deities, and narrative logic reside in external, versioned JSON packs.
@@ -321,7 +321,7 @@ Listeners evaluate conditions and execute side effects (mutating game state, log
   - Body: High-legibility classical serif or humanist sans (e.g., Merriweather / Georgia / system serif).
 - **Ornamentation:**
   - Subtle meander (Greek fret) borders on section headers.
-  - SVG iconography derived from authentic archaeological motifs (tripods, amphorae, hoplite shields, laurel wreaths) — strictly no modern emojis.
+  - SVG iconography derived from authentic archaeological motifs (tripods, amphorae, hoplite shields, laurel wreaths) - strictly no modern emojis.
 
 ---
 
@@ -420,12 +420,12 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 
 ### 7.5 Loot Engine & Probability Caps
 * `resolveEntityLoot()` is the single place drops are resolved (it is called once per victory). It applies loot-table `guaranteed` items, `entries` (with `minQuantity`/`maxQuantity`), `currency`, **and** a creature's inline `loot` array, plus level-scaled drachmae.
-* **Caps** (by rarity *name*): normal creatures — `epic` ≤ 0.02 %, `legendary`/`mythic` 0 %; bosses — `mythic` ≤ 0.02 %. The Greek content uses `exceptional` and `consecrated` tiers, which are **not** capped (see `getRarityRank()` for the full vocabulary: common, crafted, uncommon, rare, exceptional/epic, consecrated/legendary, mythic).
+* **Caps** (by rarity *name*): normal creatures (`epic` ≤ 0.02 %, `legendary`/`mythic` 0 %); bosses (`mythic` ≤ 0.02 %). The Greek content uses `exceptional` and `consecrated` tiers, which are **not** capped (see `getRarityRank()` for the full vocabulary: common, crafted, uncommon, rare, exceptional/epic, consecrated/legendary, mythic).
 * Unique items (`isUnique`) are granted once (`worldState.grantedUniqueItems`); repeat kills give replacement drachmae.
 * References to items that do not exist in the campaign are skipped (and reported by the validator).
 
 ### 7.6 Recipe-Free Crafting
-* Professions (Greek): metalworking, artifice, textiles, alchemy, stonework, music, scribing — each requires its toolkit item.
+* Professions (Greek): metalworking, artifice, textiles, alchemy, stonework, music, scribing - each requires its toolkit item and scales from primary + secondary governing attributes.
 * Materials expose `hardness`, `durability`, `flexibility`, `heatResistance`, `magicalAffinity`, `purity`.
 * Check (shared resolver, §7.11): `d20 + governing attribute modifier + Forge Strike bonus (0–3)` vs template `baseDC`. Quality: Standard, Superior (margin ≥ 5), Masterwork (margin ≥ 10 or natural 20). A natural 1 always fails, even with a large bonus.
 * `craftItem()` validates the toolkit and material quantities itself. **Materials are consumed only on success**; an ordinary failure keeps them, a **critical failure ruins one unit of the first primary material**. Every attempt takes the crafting time.
@@ -496,9 +496,9 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * Standing is shown in the dialogue header, the NPC's action group, the "Nearby Presence" list, the trade window and confrontations. Greek NPCs now belong to their regions' factions (Plataea, Thebes, Delphi, Cult of Hermes).
 
 ### 7.13 Confrontations (pre-combat choices)
-* Fights no longer start the moment they are triggered. `openConfrontation()` shows who started it — **red** when the foe did, **gold** when the hero has the initiative — and offers different choices:
+* Fights no longer start the moment they are triggered. `openConfrontation()` shows who started it (**red** when the foe did, **gold** when the hero has the initiative) and offers different choices:
   * **Foe-initiated** (ambush while travelling or resting, hostile NPC, being caught, a failed sneak): *Hide* (Stealth vs the foe's alertness; failure lets it strike first with +2), *Slip away* (harder; failure means a normal fight), *Talk your way out* (people and `canParley` creatures; Persuasion, or Deception when caught), *Stand and fight* (it strikes first). Surprised heroes (ambush not spotted) face +2 DCs.
-  * **Unavoidable** (`unavoidable: true`, e.g. the tutorial cave beast): only conflict choices — *Brace* (+3 AC against its first attacks), *Strike first* (Agility vs alertness: act first with +2, or it strikes first harder), *Meet it head-on*.
+  * **Unavoidable** (`unavoidable: true`, e.g. the tutorial cave beast): only conflict choices - *Brace* (+3 AC against its first attacks), *Strike first* (Agility vs alertness: act first with +2, or it strikes first harder), *Meet it head-on*.
   * **Hero-initiated** (Confront/Hunt/Attack cards, ambushes spotted by passive Perception): up to 2 **preparations** (10 minutes each) drawn from terrain tactics (study, high ground, rockfall, snare, darkness) plus location/encounter `tactics`, each a skill check whose success gives opening damage, a stunned foe, or round-limited bonuses; a badly failed preparation alerts the foe and the confrontation becomes foe-initiated. Then *Opening strike from hiding* (Stealth: weapon damage ×2 before the fight, or it strikes first), *Attack openly* or *Back off*.
 * The result is passed to `startCombat()` as `options.opening` (`damage`, `stun`, `mods`, `enemyFirst`, `enemyBonus`); combat keeps round-limited modifiers in `combatSession.mods` (shown under the round counter) and `enemyStunned`. The foe's turn is `runEnemyTurn()` (shared by normal rounds and first strikes).
 * Foe alertness = `alertness`, else 10 + Perception/Wisdom modifier + ½ level (+2 bosses). `startCombat()` / `startCombatEncounter()` still start a fight immediately (used by tests and internals); the UI uses `engageEncounter()`, `engageCreature()` and `engageNpc()`. Campaigns can switch confrontations off (`combatPreparation.enabled: false`). A confrontation is not saved: reloading during one cancels it (like a fight).
@@ -536,7 +536,7 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 ### 8.2 Event Scheduler
 * No polling: events are processed only inside `advanceTime()` (UI animations use timers, game time never does).
 * `scheduleEvent()` inserts by `triggerTimeMinutes` (binary search). Re-scheduling an id that already ran is treated as a new occurrence.
-* `processScheduledEvents()` repeatedly takes the **earliest due event**, so large time skips run every due event — including each occurrence of a recurring event and events scheduled by other events — in chronological order (safety valve: 1000 dispatches per call).
+* `processScheduledEvents()` repeatedly takes the **earliest due event**, so large time skips run every due event (including each occurrence of a recurring event and events scheduled by other events) in chronological order (safety valve: 1000 dispatches per call).
 * Conditional events (`conditions.requiresFlag`, `requiresNotFlag`, `npcAlive`) are dropped if their condition is false when due; **recurring** events stay scheduled.
 * Duplicate protection: `worldState.executedEventIds` (bounded to the latest 500 ids).
 * Manifest consequence rules (`scheduleEvent` outcome) also go through `scheduleEvent()`.
@@ -545,7 +545,7 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * API: `scheduleEvent`, `cancelScheduledEvent`, `rescheduleEvent`, `getTimeUntilEvent`, `processScheduledEvents`.
 
 ### 8.3 Time-Sensitive Quests
-* `timeMilestones` (`hours`, `action`, `mutateStage`, `setFlags`, `narrative`; `action: "fail"` fails the quest) are scheduled when the quest starts. `deadlineHours` is descriptive only — use a milestone to enforce it.
+* `timeMilestones` (`hours`, `action`, `mutateStage`, `setFlags`, `narrative`; `action: "fail"` fails the quest) are scheduled when the quest starts. `deadlineHours` is descriptive only; use a milestone to enforce it.
 * `earlyCompletionBonus` (`hoursThreshold`, `drachmae`, `virtue`, `narrative`) is applied by `completeQuest()`.
 * Completing or failing a quest cancels its pending milestone events.
 
@@ -580,3 +580,16 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * World-state containers added in v1.4.0: `socialInteractions`, `criticalDiscoveries` (one natural-20 cache per location), `dialogueRewardsClaimed` (one-time dialogue rewards), `dynamicItems` (crafted item definitions), `npcStates[npcId].disposition`. Added in v1.5.0: `firedWorldEvents`, `player.skills.athletics`.
 * Calendar migration for pre-1.4.0 saves in year 2+: each timestamp is shifted by the error of the year it was taken in (scheduled events by the year they were created in), so events created before and after a year boundary both keep their exact timing.
 * Crafted items made before v1.4.0 were never saved; their definitions cannot be recovered and they appear as unidentified items.
+
+---
+
+## 10. Gameplay Consistency, Difficulty, Cooldowns & Audio Architecture (v1.9.0)
+
+* **Save v1.9.0 (`SAVE_VERSION = "1.9.0"`)**: Adds `worldState.difficultyConfig`, `worldState.difficultyLocked`, `worldState.playerRespawnsUsed`, `worldState.playerDead` (and `player.dead`), `worldState.actionCooldowns`, `worldState.confrontationStates`, and `worldState.challengeStates`.
+* **Difficulty Presets (`DIFFICULTY_PRESETS`)**: Selectable on campaign start (`easy`, `normal`, `hard`, `extreme`). `hard` limits sanctuary respawns (`maxRespawns: 3`) and drops up to `dropNonEssentialPct` of carried non-essential items while sparing equipped gear and quest/key/relic/unique items (`applyDefeatInventoryLoss()`). `extreme` (`maxRespawns: 0`) triggers permanent death (`#gameover-modal`).
+* **Primary & Secondary Dependencies**: `getSkillDependencyTable()` (12 skills) and `getProfessionDependencyTable()` (7 crafting professions) evaluate both a primary governing attribute and secondary attribute (`getSkillSecondaryBonus()`, `getCraftingSkillBreakdown()`). All 12 skills have active mechanics (including combat `Field Triage` for `medicine`, `Assess Foe` for `mythology_lore`, `trackQuarryLocation` for `tracking`, `forageLocation` for `survival`, and `inspectObjectTrap` for `investigation`).
+* **Event-Driven Cooldowns & Independent Social Channels**: `checkActionCooldown()` / `setActionCooldown()` read in-game timestamps with zero continuous timers. Persuasion (`attemptPersuadeNpc`) and Deception (`attemptDeceiveNpc`) use separate cooldowns and outcomes, while noticed crimes call `recordHostileAct()` to apply standing penalties to targets and faction/law witnesses.
+* **Persistent Confrontation & Seeded Minigame States**: `worldState.confrontationStates` preserves executed preparation steps across `withdraw()` and reopen. Minigames use per-challenge Mulberry32 PRNG seeds (`worldState.challengeStates`) persisted until solved/reset (`isMortarStateSolvable()` guarantees solvable Herbalism Mortar states).
+* **Centralized `AudioManager` & `MODAL_CONFIG`**: `playSound(category)` throttles (45ms per category) synthesized Web Audio cues and saves `localStorage.gm_audio_settings` (`volume`, `muted`). `MODAL_CONFIG` marks popups as dismissible (`Escape` / backdrop) vs critical gameplay dialogs, and native `title` tooltips are replaced by `#gm-ui-tooltip` (`data-tooltip`).
+* **Inventory Drag-and-Drop**: `isItemCompatibleWithSlot()`, ring swaps (`ring_1`/`ring_2`), and two-handed/off-hand mutual exclusion share `equipItem()` / `unequipItem()`.
+* **Validator Policies (`validateCampaign()` Sections 15–16)**: Enforces zero `\u2014` em dashes across manifest/content and verifies obtainable, early-reachable weapons in combat campaigns.

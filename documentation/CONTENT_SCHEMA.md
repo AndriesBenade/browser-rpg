@@ -7,7 +7,7 @@
 
 ## 1. Overview & Content Philosophy
 
-All narrative content, geography, entities, and adventures in the Greek Mythology RPG are stored in standardized JSON content packs.
+All narrative content, geography, entities, and adventures in **Browser-RPG** are stored in standardized JSON content packs.
 
 Content creators must follow these principles:
 1. **Primary Source Integrity:** Every mythological deity, monster, and legendary item must include a `mythology` object attributing the classical ancient source (e.g., Homer, Hesiod, Apollodorus, Pausanias, Pindar).
@@ -113,7 +113,7 @@ Locations represent both points on the vector campaign map and rich narrative ex
     }
   ],
   "narrative": {
-    "firstVisit": "The wind carries the bitter scent of wild thyme and crushed limestone. Here, where the rugged track from Plataea forks toward the heights of Cithaeron, stands a rough stone cairn dedicated to Hermes—patron of travelers and guide of spirits. To the north, limestone crags cut into the morning sky like broken teeth.",
+    "firstVisit": "The wind carries the bitter scent of wild thyme and crushed limestone. Here, where the rugged track from Plataea forks toward the heights of Cithaeron, stands a rough stone cairn dedicated to Hermes, patron of travelers and guide of spirits. To the north, limestone crags cut into the morning sky like broken teeth.",
     "subsequentVisit": "You return to the wind-buffeted crossroads. The stone cairn stands silent under the watch of circling kites."
   },
   "contextualActions": [
@@ -127,7 +127,7 @@ Locations represent both points on the vector campaign map and rich narrative ex
         "difficulty": 11
       },
       "successOutcome": {
-        "text": "You recognize the stones as an *hermaion*—a mound raised by travelers adding stones for good fortune. Tucked beneath an ancient slate is a carved wooden dedication marked with archaic caduceus symbols.",
+        "text": "You recognize the stones as an *hermaion* - a mound raised by travelers adding stones for good fortune. Tucked beneath an ancient slate is a carved wooden dedication marked with archaic caduceus symbols.",
         "addJournalDiscovery": "discovery_hermaion_tradition",
         "setFlags": { "inspected_hermaion": true },
         "revealsActions": ["act_pour_libation_hermes"]
@@ -147,7 +147,7 @@ Locations represent both points on the vector campaign map and rich narrative ex
         { "type": "flag", "flag": "hermes_libation_poured", "expected": false }
       ],
       "outcome": {
-        "text": "Uncorking the small aryballos, you pour dark Pramnian wine over the crest stone, invoking Hermes Enodios—Protector of the Way. A warm breeze stirs the dry grass, carrying away fatigue.",
+        "text": "Uncorking the small aryballos, you pour dark Pramnian wine over the crest stone, invoking Hermes Enodios, Protector of the Way. A warm breeze stirs the dry grass, carrying away fatigue.",
         "consumeItem": { "itemId": "item_clay_aryballos_wine", "quantity": 1 },
         "modifyVitals": { "stamina": 5 },
         "modifyPiety": { "deity": "hermes", "amount": 2 },
@@ -890,7 +890,7 @@ These fields are supported by the engine as of v4.1. Where two spellings exist i
 
 ### Locations
 * Connections: `requiresFlag` closes the road until the flag is set; `requiresNotFlag` closes it while the flag is set. Every open road can be travelled, including to places not yet discovered (arriving discovers them).
-* `criticalDiscovery`: `{ "itemId", "quantity", "drachmae", "pietyDeity", "pietyAmount", "title", "narrative" }` — the cache a natural 20 can uncover (once per location).
+* `criticalDiscovery`: `{ "itemId", "quantity", "drachmae", "pietyDeity", "pietyAmount", "title", "narrative" }` - the cache a natural 20 can uncover (once per location).
 
 ### Campaign manifest (`campaign.json`)
 * `origins` / `traits`: inline creation-wizard lists (prefer the `modules.origins` / `modules.traits` files, §25).
@@ -900,8 +900,8 @@ These fields are supported by the engine as of v4.1. Where two spellings exist i
 * `activityDurations.divination` (default 30), `lockpicking` (default 10) and `heave` (default 10) in addition to the existing keys.
 * `respawnRules.bossHours` is used for bosses without their own `respawnHours`.
 * `moralityConfig`: see §21 (both `tiers` and `alignmentTiers` formats).
-* `progression`: `{ "xpTable": { "1": 100, "2": 250 }, "levelTitles": { "1": "Recruit" }, "maxLevelTitle": "Legend" }` — XP needed to leave each level and level titles; missing entries use the engine defaults (non-default campaigns get "Level N Adventurer").
-* `randomEncounters` (or a top-level `randomEncounters` array in the campaign's `encounters.json`): `{ "id", "type": "combat", "creatureId", "regions", "terrain", "weight" }` — used for rest/travel ambushes.
+* `progression`: `{ "xpTable": { "1": 100, "2": 250 }, "levelTitles": { "1": "Recruit" }, "maxLevelTitle": "Legend" }` - XP needed to leave each level and level titles; missing entries use the engine defaults (non-default campaigns get "Level N Adventurer").
+* `randomEncounters` (or a top-level `randomEncounters` array in the campaign's `encounters.json`): `{ "id", "type": "combat", "creatureId", "regions", "terrain", "weight" }` - used for rest/travel ambushes.
 
 ### Encounters (`encounters.json`)
 * A won encounter is **one-time** unless `"repeatable": true`. A repeatable encounter returns after `cooldownHours`, or, without a cooldown, once its creature has respawned.
@@ -1072,3 +1072,11 @@ All keys are optional (defaults shown). Items: `noSell` / `questItem` / `categor
 * **NPCs**: `rumours: ["loc_id", …]` (told one at a time). Dialogue nodes / outcomes: `revealRumour: "loc_id"` or `true` (a random unknown place), `inspiration: true`, `loseRation: n`.
 * **Items**: `ration: true`. Campaign `survival: { "enabled": true, "rationItems": ["item_id"], "campEventChance": 0.35, "hiddenCaches": true }`.
 * **Campaign** `campEvents: [{ "id", "weight", "text", "outcome": { … } }]` (replaces the defaults), `travelPaces: { "careful": { "label", "icon", "time", "stamina", "ambush", "spot", "desc" } }`, `weather: { "enabled": true, "types": { "sandstorm": { "label", "icon", "weight", "perception", "stealth", "ranged", "ambush", "travelTime", "travelStamina" } } }`.
+
+## 31. Difficulty Presets, Cooldowns, Dependencies & Policy Validation (v1.9.0)
+
+* **Difficulty (`campaign.json`)**: `defaultDifficulty` (`"easy" | "normal" | "hard" | "extreme"`) and optional `difficultyPresets` overrides (`{ "unlimitedRespawns", "maxRespawns", "dropNonEssentialPct", "keepEquipped", "keepQuestItems", "deathPenaltyDrachmae", "respawnHealthPct" }`). When `playerRespawnsUsed > maxRespawns` (or `0` on `extreme`), defeat is permanent and triggers the Game Over modal.
+* **Cooldowns (`campaign.json`)**: `cooldownRules: { "persuade": 4, "deceive": 4, "negotiate": 12, "bluff": 8, "pickpocket": 24, "track": 12, "forage": 8, "confrontation_prep": 24 }` (hours). Persuasion and Deception maintain separate per-NPC cooldowns.
+* **Skill & Profession Dependencies**: `campaign.json` may declare `skillDependencies[skillName] = { "primary", "secondary", "label", "purpose" }`. `professions.json` entries accept `"secondaryAttribute"` alongside `"governingAttribute"`. Both skills and crafting add `Math.ceil(secMod / 2)` when `secMod > 0`.
+* **Feat Eligibility (`progression.feats[id]`)**: Supports `minLevel`, `minAttributes`, and `minSkills`; ineligible feats display their unmet prerequisites and cannot be selected during level-up.
+* **Content Validation Policies**: `validateCampaign()` enforces **zero `\u2014` em dashes** across `manifest` and loaded content files (Section 15), and requires combat-enabled campaigns to include at least one obtainable, early-reachable weapon (`type: "weapon"` or `main_hand`/`two_hand` slot) (Section 16).

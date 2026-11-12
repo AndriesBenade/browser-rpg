@@ -21,6 +21,7 @@
         ]
       },
       "merchantInventory": [
+        { "itemId": "item_dev_broadsword", "price": 35, "stock": 2 },
         { "itemId": "item_dev_iron_lockpick", "price": 10, "stock": 5 },
         { "itemId": "item_dev_healing_draught", "price": 15, "stock": 3 },
         { "itemId": "item_dev_trail_rations", "price": 5, "stock": 8 }

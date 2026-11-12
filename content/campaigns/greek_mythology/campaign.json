@@ -112,7 +112,7 @@
         "failQuest": "quest_tutorial_stolen_ram",
         "transcript": {
           "speaker": "World Consequence",
-          "text": "The elderly shepherd collapses lifeless upon the stones! News of the tragic murder will spread swiftly to Plataea—travelers and herdsmen will treat you as a violent outlaw, and the quest for his lost ram is broken beyond repair.",
+          "text": "The elderly shepherd collapses lifeless upon the stones! News of the tragic murder will spread swiftly to Plataea: travelers and herdsmen will treat you as a violent outlaw, and the quest for his lost ram is broken beyond repair.",
           "style": "entry-consequence"
         },
         "addJournalChronicle": {

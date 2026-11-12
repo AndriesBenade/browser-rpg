@@ -18,9 +18,10 @@
           "damage": "1d6+2",
           "damageType": "piercing",
           "style": "heavy",
-          "telegraph": "The boar lowers its head and paws the ground..."
+          "telegraph": "The boar lowers its head and paws the ground...",
+          "description": "The beast charges forward with thick, curving tusks."
         },
-        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning", "style": "quick" }
+        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning", "style": "quick", "description": "Heavy cloven hooves churn the earth beneath you." }
       ]
     },
     {
@@ -40,6 +41,7 @@
           "attackBonus": 4,
           "damage": "1d6+2",
           "damageType": "piercing",
+          "description": "Sharp canine fangs snap toward your limb.",
           "inflicts": { "status": "bleeding", "chance": 0.35, "rounds": 2, "value": 1 }
         }
       ]
@@ -63,6 +65,7 @@
           "damageType": "slashing",
           "style": "heavy",
           "telegraph": "The stalker rears back, talons spread wide...",
+          "description": "Razor-black claws slash in a vicious downward arc.",
           "inflicts": { "status": "bleeding", "chance": 0.5, "rounds": 3, "value": 2 }
         },
         {
@@ -71,6 +74,7 @@
           "damage": "2d6+2",
           "damageType": "necrotic",
           "style": "normal",
+          "description": "Choking dark mist billows toward your lungs.",
           "inflicts": { "status": "frightened", "chance": 0.5, "rounds": 2 }
         }
       ]
@@ -111,7 +115,8 @@
           "damage": "1d10+3",
           "damageType": "slashing",
           "style": "heavy",
-          "telegraph": "Lord Karas raises his cleaver high above his crowned skull..."
+          "telegraph": "Lord Karas raises his cleaver high above his crowned skull...",
+          "description": "The ancient warlord brings down his corroded greatsword with crushing weight."
         },
         {
           "name": "Grave Chill Wave",
@@ -119,6 +124,7 @@
           "damage": "2d6+2",
           "damageType": "cold",
           "style": "normal",
+          "description": "Freezing sepulchral frost radiates outward across the chamber floor.",
           "inflicts": { "status": "weakened", "chance": 0.6, "rounds": 2 }
         }
       ]

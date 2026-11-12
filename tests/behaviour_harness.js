@@ -120,6 +120,7 @@ async function startCampaign(env, engine, campaignId, opts = {}) {
   if (opts.backgroundId) engine.selectBackground(opts.backgroundId);
   if (opts.trait) engine.selectTrait(opts.trait);
   if (opts.origin) engine.selectOrigin(opts.origin);
+  while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
   engine.confirmHeroCreation();
   env.flushTimers();
   return engine;

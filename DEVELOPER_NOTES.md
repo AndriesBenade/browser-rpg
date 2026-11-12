@@ -1,12 +1,22 @@
-# Greek Mythology Text RPG — Developer & AI Collaboration Hand-Off Notes
+# Browser-RPG - Developer & AI Collaboration Hand-Off Notes
 
 > **Notice to AI Assistants (Claude, ChatGPT, Antigravity, Gemini, Codex, DeepSeek, etc.):**  
-> Two friends are collaborating on this browser-based Greek Mythology RPG and passing this repository back and forth. Each friend pairs with their AI assistant to implement features, fix issues, and improve the game.  
+> Two friends are collaborating on this browser-based modular RPG engine (`Browser-RPG`, shipping with the Greek Mythology campaign) and passing this repository back and forth. Each friend pairs with their AI assistant to implement features, fix issues, and improve the game.  
 > Whenever you (the AI) perform a work session on this codebase, you **MUST** read this file first and update the **Chronological Hand-Off Log** at the top before concluding your turn so the next AI and friend can smoothly pick up where you left off.
 
 ---
 
 ## 📜 Chronological AI & Developer Hand-Off Log
+
+### Session 18 - 2026-11-11 (gameplay refinement, system consistency, difficulty & audio)
+* **Collaborator / Model**: User & Antigravity (Google DeepMind)
+* **Creation & Progression**: Removed the nonbinary option from the creation UI (`#wiz-gender-select`) while safely preserving existing saves via `migrateState()`; Step 3 now enforces spending all 5 bonus attribute points (`validateCharacterCreationPoints()` + disabled Next button); Level-Up Skills switched to a 4-column responsive grid (`.levelup-skills-grid`); Feats now enforce `minLevel`, `minAttributes`, and `minSkills` (`checkFeatEligibility()`).
+* **UI, Tooltips, Modals & Inventory**: Replaced native `title=` attributes with a themed hover/focus `#gm-ui-tooltip` (`data-tooltip`); fixed button hover overflow; added centralized `MODAL_CONFIG` (`Escape` & backdrop dismisses non-critical dialogs while protecting Combat, Level-Up, Confrontation, Defeat, and Game Over modals); added dynamic `#nav-badge-quests` unseen counter; implemented full Inventory drag-and-drop equipment assignment/swapping (`ring_1`/`ring_2` preservation, two-handed vs off-hand mutual exclusion, keyboard/click consistency).
+* **Dependencies, Skill Utility, Social & Confrontations**: Implemented Primary + Secondary governing attributes across all 12 skills (`getSkillDependencyTable()`, `getEffectiveSkillBreakdown()`) and all 7 crafting professions (`secondaryAttribute` in `professions.json`, `getCraftingSkillBreakdown()`); rendered visible requirement pills (`evaluateRequirementDisplay()`); gave active uses to all 12 skills (Combat `Field Triage` & `Assess Foe`, Medicine healing boost, Wilderness `trackQuarryLocation` & `forageLocation`, Camp Survival ambush mitigation, `inspectObjectTrap` for Investigation). Decoupled Persuasion and Deception into independent cooldown channels (`worldState.actionCooldowns` + `cooldownRules`) and centralized `recordHostileAct()` bystander standing penalties. Made rest/ambush/combat narration weapon- and cloak-aware; persisted confrontation preps in `worldState.confrontationStates` across `withdraw`; fixed `Field Triage` cure check (`c.status.player`).
+* **Minigames, Difficulty, Audio & Policy Validation**: Added persistent seeded Mulberry32 PRNG (`worldState.challengeStates`) with guaranteed-solvable randomized Asklepian Mortar states (`isMortarStateSolvable()`) and randomized Stalk/Clash/Forge targets; added clean descriptions to all `dev_test_campaign` creature actions; added 4 selectable Difficulty Presets (`easy`, `normal`, `hard` 3-respawn cap + non-essential supply loss sparing equipped/quest items, `extreme` permadeath `#gameover-modal`); added centralized throttled `AudioManager` (`playSound(category)` + `#view-settings` volume/mute saved in `localStorage.gm_audio_settings`); added `item_dev_broadsword` to Lycus' haven stock (`characters.json` + synced `index.html`); renamed universal engine branding to `Browser-RPG`; enforced zero `\u2014` em dashes and guaranteed early obtainable weapons in combat campaigns inside `validateCampaign()` (Sections 15-16) and updated all documentation.
+* **Save v1.9.0**: Adds `difficultyConfig`, `difficultyLocked`, `playerRespawnsUsed`, `playerDead`, `actionCooldowns`, `confrontationStates`, and `challengeStates` (migrated safely from older saves).
+* **Size**: `index.html` = `1,089,459 bytes` / `17,807 lines` (baseline `973,091 bytes`).
+* **Tests**: `npm test` passed (`74 / 74` legacy unit tests + `101 / 101` behaviour tests + `sync-embedded-dev-content.js --check`).
 
 ### Session 17 — 2026-11-11 (combat depth and exploration depth)
 * **Collaborator / Model**: User & Claude (Anthropic)

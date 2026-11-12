@@ -1,6 +1,6 @@
-# Greek Mythology RPG — Content Creation & Authoring Guide
+# Browser-RPG - Content Creation & Authoring Guide
 
-> **Document Version:** 2.0.0  
+> **Document Version:** 2.1.0  
 > **Target Audience:** Developers, Content Authors, and AI Assistants (ChatGPT, Claude, Gemini, Antigravity, etc.)  
 > **Core Principle:** **Engine built once, expanded through content indefinitely.**  
 > New locations, dialogue trees, quests, actions, riddles, encounters, and items are added through standalone JSON definitions without needing to modify core engine functions.
@@ -24,7 +24,7 @@
 
 ## 1. Architecture Overview & Content Philosophy
 
-The Greek Mythology RPG engine is a content-agnostic interpreter. It provides:
+The **Browser-RPG** engine is a content-agnostic interpreter. It provides:
 - Classical d20 tabletop mechanics with literary outcome translation (no raw dice jargon).
 - Persistent state, stamina/rest economics, travel fatigue, and calendar cycles.
 - Declarative event dispatchers that execute actions, dialogues, puzzles, and encounters based purely on JSON properties.
@@ -170,9 +170,9 @@ NPCs are registered in `content/world/characters.json` or inside an adventure pa
 - `giveItem`: `"item_id"` (given once per save, and only if the hero does not already carry it)
 - `giveDrachmae`: integer (given once per save)
 - `awardXP`: integer (given once per save; also grants renown = XP / 10)
-- `updateQuest`: `{ "questId": "...", "objectiveId": "...", "completed": true }` — objectives of later quest stages may be used; the quest moves to that stage
+- `updateQuest`: `{ "questId": "...", "objectiveId": "...", "completed": true }` - objectives of later quest stages may be used; the quest moves to that stage
 - `startQuest`: `"quest_id"` (no effect if already started)
-- `completeQuest`: `"quest_id"` — completes **that** quest (the tutorial quest additionally shows its victory screen)
+- `completeQuest`: `"quest_id"` - completes **that** quest (the tutorial quest additionally shows its victory screen)
 - `addJournalKnowledge`: `{ "title": "...", "text": "..." }`
 - `addJournalChronicle`: `{ "title": "...", "text": "..." }`
 
@@ -446,6 +446,8 @@ Before committing new content:
 - [ ] Ancient literary source cited (`author`, `work`, `passage`).
 - [ ] Connect new locations back to existing locations so the player can travel to and from them.
 - [ ] Plain-English outcomes used in action narratives (no raw D&D calculation formulas).
+- [ ] **No em dashes (`\u2014`)** anywhere in authored campaign JSON files, manifests, or documentation (use `-`, `,`, or `:` instead; `validateCampaign()` rejects em dashes as errors).
+- [ ] **Guaranteed usable weapon**: any combat-enabled campaign provides at least one obtainable, equippable weapon (`type: "weapon"` or `slot: "main_hand"` / `"two_hand"`) in starting equipment, at `startingLocationId`, or via a starting-location merchant.
 - [ ] Run the test suites: `npm test` (legacy + behaviour tests, no dependencies) and, if Playwright is installed, `npm run test:browser`.
 - [ ] Run **Validate Campaign** on the campaign screen: it now also reports item ids referenced by loot tables, creature loot, merchant stock and class/background starting equipment that do not exist.
 
@@ -702,3 +704,15 @@ Field details: CONTENT_SCHEMA §26–§28.
 * **Sell food**: mark provisions `ration: true` and stock them with a merchant near every long road.
 
 Field details: CONTENT_SCHEMA §29–§30.
+
+---
+
+## 17. Gameplay Consistency, Difficulty Modes & Policy Rules (v1.9.0)
+
+* **Forbidden Em Dashes (`U+2014`)**: Never use Unicode em dashes in generated campaign JSON, manifests, or documentation. `GreekMythologyEngine.validateCampaign()` scans the manifest and all loaded content sections and flags any `\u2014` as an error.
+* **Guaranteed Usable Weapon**: Every combat campaign (`features.combat !== false` with creatures present) must define at least one weapon (`type: "weapon"` or `slot: "main_hand"` / `"two_hand"`) that can be obtained immediately from `startingEquipment` (manifest/classes/backgrounds) or from merchants/locations/dialogues at `startingLocationId`.
+* **Primary & Secondary Dependencies**: Every skill in `campaign.json` (`skillDependencies`) and profession in `professions.json` (`governingAttribute` + `secondaryAttribute`) uses one primary attribute modifier plus `Math.ceil(Math.max(0, secMod) / 2)` from its secondary attribute.
+* **Action Cooldowns**: Configure per-campaign cooldown durations in hours via `cooldownRules` in `campaign.json` (`persuade`, `deceive`, `negotiate`, `bluff`, `pickpocket`, `track`, `forage`, `confrontation_prep`). Cooldowns are tracked purely from in-game world timestamps (`worldState.actionCooldowns`).
+* **Campaign Difficulty Modes**: Players choose `easy`, `normal`, `hard`, or `extreme` before starting a campaign. Authors can set `defaultDifficulty` or customize presets via `difficultyPresets` in `campaign.json` (`maxRespawns`, `dropNonEssentialPct`, `deathPenaltyDrachmae`, `respawnHealthPct`). Equipped gear and quest/key/relic items are always spared when dropping non-essential supplies on defeat.
+
+Field details: CONTENT_SCHEMA §31.

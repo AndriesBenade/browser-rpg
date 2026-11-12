@@ -282,6 +282,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.selectOrigin('laconia');
     const strBefore = engine.creationState.attributes.strength;
     engine.renderWizardStep(2);
+    while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
     engine.confirmHeroCreation();
     const p = engine.state.player;
     const cls = engine.getCampaignClasses().find(c => c.id === p.class);
@@ -1094,7 +1095,9 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.state.player.attributes.strength = 16;
     engine.currentCraftingProfession = 'metalworking';
     engine.renderCraftingView();
-    assert.strictEqual(env.el('crafting-fieldcraft-badge').innerText, 'd20 + 3 (Strength)');
+    const prof = engine.getCampaignProfessions().find(p => p.id === 'metalworking');
+    const cb = engine.getCraftingSkillBreakdown(prof, 0);
+    assert.strictEqual(env.el('crafting-fieldcraft-badge').innerText, `d20 + ${cb.totalBonus} (Strength + END)`);
   });
 
   // ---------------------------------------------------------------------------
@@ -1679,7 +1682,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     delete old.worldState.companions; delete old.worldState.rumouredLocations; delete old.worldState.travelPace; delete old.worldState.hunger;
     old.worldState.foundItems = { loc_dev_haven: ['item_dev_iron_lockpick'] };
     const m = engine.migrateState(old);
-    assert.strictEqual(m.version, '1.8.0');
+    assert.strictEqual(m.version, env.Engine.SAVE_VERSION);
     assert.deepStrictEqual(plain(m.worldState.merchants), {});
     assert.deepStrictEqual(plain(m.worldState.foundSpots), { loc_dev_haven: ['item:item_dev_iron_lockpick'] });
     assert.strictEqual(m.worldState.foundItems, undefined);
@@ -2097,6 +2100,406 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
       assert.strictEqual(copy.worldState.campaignId, campaignId);
     });
   }
+
+  // ---------------------------------------------------------------------------
+  // Session 18: Gameplay refinement, consistency, difficulty & audio
+  // ---------------------------------------------------------------------------
+  await test('Creation: binary gender options in UI while legacy nonbinary saves migrate safely', async () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const genderBlock = html.match(/id="wiz-gender-select"[\s\S]*?<\/select>/);
+    assert.ok(genderBlock, 'wiz-gender-select must exist');
+    assert.ok(genderBlock[0].includes('value="male"') && genderBlock[0].includes('value="female"'));
+    assert.ok(!genderBlock[0].includes('nonbinary'), 'nonbinary option must be removed from creation UI');
+
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const legacySave = JSON.parse(JSON.stringify(engine.state));
+    legacySave.version = '1.7.0';
+    legacySave.player.gender = 'nonbinary';
+    const migrated = engine.migrateState(legacySave);
+    assert.strictEqual(migrated.player.gender, 'nonbinary', 'existing nonbinary save gender must be preserved safely');
+  });
+
+  await test('Creation: Step 3 requires spending all attribute points in both UI and engine logic', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    engine.openCharacterCreationWizard();
+    engine.renderWizardStep(3);
+    assert.strictEqual(engine.creationState.pointsLeft, 5);
+    assert.strictEqual(engine.validateCharacterCreationPoints().valid, false);
+    assert.strictEqual(env.el('wiz-step3-next').disabled, true, 'Next button stays disabled while points remain');
+    assert.strictEqual(engine.wizardNext(3), false, 'engine blocks advancing Step 3 with unspent points');
+
+    for (let i = 0; i < 3; i++) engine.alterWizAttr('strength', 1);
+    for (let i = 0; i < 2; i++) engine.alterWizAttr('agility', 1);
+    assert.strictEqual(engine.creationState.pointsLeft, 0);
+    assert.strictEqual(engine.validateCharacterCreationPoints().valid, true);
+    assert.strictEqual(env.el('wiz-step3-next').disabled, false, 'Next button unlocks once all 5 points are spent');
+    assert.strictEqual(engine.wizardNext(3), true);
+
+    // Reject excessive/invalid allocations even if bypassed
+    engine.creationState.attributes.strength = 25;
+    assert.strictEqual(engine.validateCharacterCreationPoints().valid, false);
+  });
+
+  await test('Level-up: 4-column skill grid and feat level/attribute prerequisites', async () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    assert.ok(/\.levelup-skills-grid[\s\S]*?repeat\(4,\s*minmax\(0,\s*1fr\)\)/.test(html), 'Level-up skills grid must be 4 columns');
+
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    const p = engine.state.player;
+    p.level = 1;
+    p.attributes.endurance = 10;
+    const locked = engine.checkFeatEligibility('laconian_iron');
+    assert.strictEqual(locked.eligible, false, 'Laconian Iron requires level 3 and END 12');
+    assert.ok(locked.reasons.some(r => /Level 3/i.test(r)) && locked.reasons.some(r => /ENDURANCE 12/i.test(r)));
+
+    engine.triggerLevelUp();
+    engine.selectLevelUpFeat('laconian_iron');
+    assert.notStrictEqual(engine.levelUpState.selectedFeat, 'laconian_iron', 'locked feat cannot be selected');
+
+    p.level = 3;
+    p.attributes.endurance = 12;
+    const unlocked = engine.checkFeatEligibility('laconian_iron');
+    assert.strictEqual(unlocked.eligible, true);
+  });
+
+  await test('Quests & Modals: unseen update nav badge and critical modal protection', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+
+    engine.markQuestUpdate('quest_dev_merchant_delivery');
+    const badge = env.el('nav-badge-quests');
+    assert.strictEqual(badge.innerText, '1');
+    assert.strictEqual(badge.style.display, 'inline-block');
+    engine.clearQuestUpdates();
+    assert.strictEqual(badge.innerText, '0');
+    assert.strictEqual(badge.style.display, 'none');
+
+    assert.strictEqual(engine.isModalDismissible('trade-modal'), true);
+    assert.strictEqual(engine.isModalDismissible('dialogue-modal'), true);
+    assert.strictEqual(engine.isModalDismissible('combat-modal'), false);
+    assert.strictEqual(engine.isModalDismissible('levelup-modal'), false);
+    assert.strictEqual(engine.isModalDismissible('confront-modal'), false);
+    assert.strictEqual(engine.isModalDismissible('gameover-modal'), false);
+
+    env.el('combat-modal').style.display = 'flex';
+    env.el('trade-modal').style.display = 'flex';
+    assert.strictEqual(engine.closeModalById('combat-modal'), false, 'combat-modal must not dismiss via backdrop/Escape');
+    assert.strictEqual(env.el('combat-modal').style.display, 'flex');
+    assert.strictEqual(engine.closeModalById('trade-modal'), true, 'trade-modal is dismissible');
+  });
+
+  await test('Inventory: slot compatibility, dual ring swaps without loss, and two-handed exclusion', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_greek_mythology');
+    const p = engine.state.player;
+    const equippedIn = (slot) => {
+      const e = p.inventory.find(i => i.equipped && i.slot === slot);
+      return e ? e.itemId : null;
+    };
+    p.inventory = [];
+
+    engine.state.worldState.dynamicItems.test_ring_a = { id: 'test_ring_a', name: 'Ring Alpha', slot: 'ring', category: 'equipment', rarity: 'common', stats: {} };
+    engine.state.worldState.dynamicItems.test_ring_b = { id: 'test_ring_b', name: 'Ring Beta', slot: 'ring', category: 'equipment', rarity: 'common', stats: {} };
+    engine.buildContentMaps();
+    engine.addItem('test_ring_a', 1);
+    engine.addItem('test_ring_b', 1);
+    engine.addItem('item_hunting_bow_001', 1);
+    engine.addItem('item_aspis_shield_001', 1);
+
+    assert.strictEqual(engine.isItemCompatibleWithSlot('item_aspis_shield_001', 'off_hand'), true);
+    assert.strictEqual(engine.isItemCompatibleWithSlot('item_aspis_shield_001', 'head'), false);
+
+    engine.equipItem('test_ring_a', { targetSlot: 'ring_1' });
+    engine.equipItem('test_ring_b', { targetSlot: 'ring_2' });
+    // Swap ring_a from ring_1 into ring_2 (occupied by ring_b): both stay in inventory, ring_a now in ring_2
+    engine.equipItem('test_ring_a', { targetSlot: 'ring_2', fromSlot: 'ring_1' });
+    assert.strictEqual(equippedIn('ring_2'), 'test_ring_a');
+    assert.strictEqual(p.inventory.filter(e => e.itemId === 'test_ring_b').length, 1, 'displaced ring must stay in inventory');
+
+    // Equipping two-handed bow unequips shield; equipping shield unequips two-handed bow
+    engine.equipItem('item_aspis_shield_001', { targetSlot: 'off_hand' });
+    assert.strictEqual(equippedIn('off_hand'), 'item_aspis_shield_001');
+    engine.equipItem('item_hunting_bow_001', { targetSlot: 'main_hand' });
+    assert.strictEqual(equippedIn('main_hand'), 'item_hunting_bow_001');
+    assert.strictEqual(equippedIn('off_hand'), null, 'two-handed weapon unequips off-hand');
+    engine.equipItem('item_aspis_shield_001', { targetSlot: 'off_hand' });
+    assert.strictEqual(equippedIn('main_hand'), null, 'off-hand unequips two-handed weapon');
+  });
+
+  await test('Dependencies & Skills: primary+secondary math, requirement pills, and all 12 skills usable', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.attributes.wisdom = 14;      // +2 primary for medicine
+    p.attributes.intelligence = 14; // +2 secondary -> ceil(2/2) = +1
+    p.skills.medicine = 3;
+    const medBreakdown = engine.getEffectiveSkillBreakdown('medicine');
+    assert.strictEqual(medBreakdown.attrMod, 2);
+    assert.strictEqual(medBreakdown.secondaryBonus, 1);
+    assert.strictEqual(medBreakdown.skillRank, 3);
+    assert.strictEqual(medBreakdown.totalWithoutInspiration, 9);
+
+    const prof = { id: 'metalworking', governingAttribute: 'strength', secondaryAttribute: 'endurance' };
+    p.attributes.strength = 12; // +1
+    p.attributes.endurance = 14; // +2 -> +1
+    const craftBk = engine.getCraftingSkillBreakdown(prof, 1);
+    assert.strictEqual(craftBk.totalBonus, 3);
+
+    const pill = engine.evaluateRequirementDisplay({ type: 'skill_check', skill: 'medicine', dc: 11 });
+    assert.strictEqual(pill.currentText, '+9');
+
+    // Meaningful skill uses: Field Triage (medicine) & Assess Foe (mythology_lore) in combat
+    p.vitals.health = p.vitals.maxHealth = 40;
+    p.vitals.health = 25;
+    engine.startCombat({ id: 'creature_dev_wolf', name: 'Timber Wolf', level: 1, armorClass: 11, vitals: { health: 40, maxHealth: 40, morale: 12 }, actions: [{ name: 'Bite', damage: '1', attackBonus: -10 }] });
+    engine.applyCombatStatus('player', 'bleeding', 2, 3);
+    fixedRoll(engine, 15);
+    engine.combatAction('triage');
+    assert.ok(p.vitals.health > 25, 'Field Triage heals in combat');
+    assert.ok(!engine.hasCombatStatus('player', 'bleeding'), 'Field Triage cures bleeding');
+    engine.combatAction('assess_foe');
+    assert.strictEqual(engine.combatSession.foeAssessed, true);
+    engine.combatSession = null;
+
+    // Wilderness Tracking & Foraging + cooldowns
+    p.skills.tracking = 8;
+    p.skills.survival = 8;
+    fixedRoll(engine, 15);
+    const tr1 = engine.trackQuarryLocation('loc_dev_whispering_woods');
+    assert.strictEqual(tr1.success, true);
+    const tr2 = engine.trackQuarryLocation('loc_dev_whispering_woods');
+    assert.strictEqual(tr2.blocked, true, 'Tracking enforces cooldown');
+
+    const fg1 = engine.forageLocation('loc_dev_whispering_woods');
+    assert.strictEqual(fg1.success, true);
+    const fg2 = engine.forageLocation('loc_dev_whispering_woods');
+    assert.strictEqual(fg2.blocked, true, 'Foraging enforces cooldown');
+
+    // Investigation inspects & disarms trapped object safely
+    engine.state.worldState.currentLocationId = 'loc_dev_haven';
+    engine.state.worldState.unlockedObjects.obj_treasury_iron_door = true;
+    p.skills.investigation = 10;
+    fixedRoll(engine, 18);
+    const invRes = engine.inspectObjectTrap('obj_trapped_coffer');
+    assert.strictEqual(invRes.success, true);
+    assert.strictEqual(engine.state.worldState.objectTrapDisarmed.obj_trapped_coffer, true);
+  });
+
+  await test('Social & Hostility: independent Persuasion/Deception channels and witnessed hostile standing loss', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    engine.state.worldState.currentLocationId = 'loc_dev_haven';
+    fixedRoll(engine, 16);
+
+    const pRes1 = engine.attemptPersuadeNpc('npc_dev_merchant_lycus');
+    assert.strictEqual(pRes1.blocked, undefined, 'first persuasion runs');
+    const pRes2 = engine.attemptPersuadeNpc('npc_dev_merchant_lycus');
+    assert.strictEqual(pRes2.blocked, true, 'second persuasion immediately hits persuade cooldown');
+
+    // Deception must NOT be blocked by persuasion cooldown
+    const dRes1 = engine.attemptDeceiveNpc('npc_dev_merchant_lycus');
+    assert.strictEqual(dRes1.blocked, undefined, 'deception uses an independent cooldown channel');
+    const dRes2 = engine.attemptDeceiveNpc('npc_dev_merchant_lycus');
+    assert.strictEqual(dRes2.blocked, true, 'second deception hits deceive cooldown');
+
+    // Hostile act reduces target standing AND bystander witnesses in Haven
+    const capBefore = engine.getNpcStanding('npc_dev_guard_captain').score;
+    const res = engine.recordHostileAct('npc_dev_merchant_lycus', 'assault', { severity: 20, witnessSeverity: 6, witnessed: true });
+    assert.ok(res.witnesses.length > 0, 'present Haven witnesses notice the hostile act');
+    const capAfter = engine.getNpcStanding('npc_dev_guard_captain').score;
+    assert.ok(capAfter < capBefore, 'witnessing NPCs lose standing');
+  });
+
+  await test('Narrative & Confrontations: weaponless prose adaptation and persistent pre-fight prep across withdraw', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const p = engine.state.player;
+    p.inventory = [];
+    engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
+
+    // Trigger rest ambush without weapons or cloak
+    fixedRoll(engine, 1);
+    engine.executeRest('long');
+    const logText = (engine.state.worldState.transcript || []).map(t => t.text).join(' ');
+    assert.ok(!/pull your cloak|draw your weapon|glinting blade/i.test(logText), 'unarmed cloakless hero prose must not mention weapons/cloaks');
+
+    // Confrontation pre-fight prep persists across withdraw/reopen
+    engine.confrontation = null;
+    engine.combatSession = null;
+    engine.engageCreature('creature_dev_forest_wolf');
+    assert.ok(engine.confrontation, 'confrontation opened');
+    const prepOpt = engine.getConfrontationOptions().find(o => o.id === 'tactic' && !o.disabled);
+    assert.ok(prepOpt, 'at least one preparation option is available');
+    fixedRoll(engine, 16);
+    engine.chooseConfrontation('tactic', prepOpt.arg);
+    const savedUsed = engine.confrontation.used.slice();
+    assert.strictEqual(savedUsed.length, 1);
+    engine.chooseConfrontation('withdraw');
+    assert.strictEqual(engine.confrontation, null);
+
+    engine.engageCreature('creature_dev_forest_wolf');
+    assert.ok(engine.confrontation, 're-opened confrontation');
+    assert.deepStrictEqual(plain(engine.confrontation.used), plain(savedUsed), 'previous preparation remains consumed after withdraw');
+  });
+
+  await test('Minigames & Logs: seeded solvable Mortar randomization and clean dev creature descriptions', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+
+    // Verify all dev_test creatures have clean action descriptions and no undefined/null
+    const devCreatures = readJson('content/campaigns/dev_test_campaign/world/creatures.json').creatures;
+    devCreatures.forEach(cr => {
+      cr.actions.forEach(a => assert.ok(typeof a.description === 'string' && a.description.length > 5 && !/undefined|null/.test(a.description), `${cr.id}.${a.name} description`));
+    });
+
+    // Randomized seeded Asklepian Mortar: persists across close without completing, changes when stirred
+    engine.clearChallengeSeed('mortar');
+    engine.initAsklepianMortar();
+    const s1 = Object.assign({}, engine.mortarState);
+    assert.strictEqual(engine.isMortarStateSolvable(s1.heat, s1.moisture, s1.astringency, s1.maxIngredients), true, 'initial mortar state must be solvable');
+    engine.closeMinigame(false);
+    engine.initAsklepianMortar();
+    const s2 = Object.assign({}, engine.mortarState);
+    assert.deepStrictEqual([s1.heat, s1.moisture, s1.astringency], [s2.heat, s2.moisture, s2.astringency], 'unfinished puzzle keeps exact state until resolved');
+    engine.stirMortarPestle();
+    assert.ok(!engine.state.worldState.challengeStates.mortar, 'completing mortar clears seed so next run gets fresh challenge');
+  });
+
+  await test('Difficulty Modes & Permadeath: Hard respawn limit & item loss sparing gear/quests vs Extreme permadeath', async () => {
+    const startWithDiff = async (env, engine, diffId) => {
+      engine.skipWalkthrough();
+      engine.selectCampaign('campaign_dev_test');
+      engine.selectCampaignDifficulty(diffId);
+      await engine.confirmCampaignSelection();
+      engine.renderWizardStep(2);
+      while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
+      engine.confirmHeroCreation();
+      env.flushTimers();
+    };
+
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startWithDiff(env, engine, 'hard');
+
+    const p = engine.state.player;
+    assert.strictEqual(engine.getActiveDifficultyConfig().id, 'hard');
+    assert.strictEqual(engine.getActiveDifficultyConfig().maxRespawns, 3);
+
+    engine.addItem('item_dev_broadsword', 1);
+    engine.equipItem('item_dev_broadsword', { targetSlot: 'main_hand' });
+    engine.addItem('item_dev_sunstone_relic', 1); // unique/quest-grade
+    engine.addItem('item_dev_trail_rations', 4); // non-essential supply
+
+    // First 3 defeats on Hard use up respawns, drop part of supplies, spare sword & relic
+    for (let i = 1; i <= 3; i++) {
+      engine.combatSession = { enemy: { id: 'creature_dev_wolf', name: 'Timber Wolf' } };
+      p.vitals.health = 0;
+      engine.handlePlayerDefeat();
+      assert.strictEqual(engine.state.worldState.playerRespawnsUsed, i);
+      assert.strictEqual(engine.state.worldState.playerDead, false);
+      assert.ok(p.inventory.some(e => e.equipped && e.slot === 'main_hand' && e.itemId === 'item_dev_broadsword'), 'equipped weapon must be spared');
+      assert.ok(engine.hasItem('item_dev_sunstone_relic'), 'unique/quest items must be spared');
+    }
+
+    // 4th defeat exceeds 3 respawns -> permanent death & Game Over modal
+    engine.combatSession = { enemy: { id: 'creature_dev_wolf', name: 'Timber Wolf' } };
+    p.vitals.health = 0;
+    engine.handlePlayerDefeat();
+    assert.strictEqual(engine.state.worldState.playerDead, true);
+    assert.strictEqual(env.el('gameover-modal').style.display, 'flex');
+
+    // Extreme difficulty triggers Game Over on the very first defeat
+    const env2 = createSandbox();
+    const eng2 = await bootEngine(env2);
+    await startWithDiff(env2, eng2, 'extreme');
+    eng2.combatSession = { enemy: { id: 'creature_dev_wolf', name: 'Timber Wolf' } };
+    eng2.state.player.vitals.health = 0;
+    eng2.handlePlayerDefeat();
+    assert.strictEqual(eng2.state.worldState.playerDead, true);
+    assert.strictEqual(env2.el('gameover-modal').style.display, 'flex');
+  });
+
+  await test('AudioManager & UI Polish: mute/volume persistence, sound throttle, Browser-RPG branding, zero title=', async () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    assert.ok(/<title>Browser-RPG/.test(html), 'HTML title must use Browser-RPG branding');
+    assert.ok(html.includes('class="brand-title">Browser-RPG<'), 'Header brand title must say Browser-RPG');
+    const htmlHead = html.slice(0, html.indexOf('<script>'));
+    assert.ok(!/<\w+[^>]*\stitle\s*=/.test(htmlHead), 'Interactive markup should use data-tooltip instead of native title=');
+
+    const env = createSandbox();
+    let toneCount = 0;
+    const engine = await bootEngine(env);
+    engine._tone = () => { toneCount++; return true; };
+    engine.setAudioVolume(0.4);
+    engine.setAudioMuted(false);
+    const savedCfg = JSON.parse(env.storage.gm_audio_settings);
+    assert.strictEqual(savedCfg.volume, 0.4);
+    assert.strictEqual(savedCfg.muted, false);
+
+    assert.strictEqual(engine.playSound('coin'), true);
+    const countAfterFirst = toneCount;
+    assert.ok(countAfterFirst >= 1);
+    assert.strictEqual(engine.playSound('coin'), false, '45ms category throttle prevents rapid duplicate sound spam');
+    assert.strictEqual(toneCount, countAfterFirst);
+
+    engine.toggleAudioMute();
+    assert.strictEqual(engine.audioMuted, true);
+    assert.strictEqual(engine.playSound('equip'), false, 'muted audio suppresses sound playback');
+  });
+
+  await test('Policy Validation: rejects em dashes (U+2014) and combat campaigns lacking obtainable early weapons', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+
+    // 1. Forbidden em dash check
+    const emManifest = { id: 'camp_em', name: 'Em\u2014Test', version: '1.0.0', startingLocationId: 'loc_1' };
+    const emRes = env.Engine.validateCampaign(emManifest, {
+      locations: [{ id: 'loc_1', name: 'Start', connections: [] }],
+      characters: [],
+      creatures: [],
+      items: []
+    });
+    assert.strictEqual(emRes.valid, false);
+    assert.ok(emRes.errors.some(e => /em dash/i.test(e)));
+
+    // 2. Combat campaign with 0 weapons defined
+    const noWepRes = env.Engine.validateCampaign(
+      { id: 'camp_nowep', name: 'No Weapons', version: '1.0.0', startingLocationId: 'loc_1', features: { combat: true } },
+      {
+        locations: [{ id: 'loc_1', name: 'Start', connections: [] }],
+        characters: [],
+        creatures: [{ id: 'cr_1', name: 'Rat', vitals: { health: 10 } }],
+        items: [{ id: 'it_potion', name: 'Potion', category: 'consumable', slot: 'inventory' }]
+      }
+    );
+    assert.strictEqual(noWepRes.valid, false);
+    assert.ok(noWepRes.errors.some(e => /0 usable weapons/i.test(e)));
+
+    // 3. Combat campaign where weapon exists in items.json but cannot be obtained at start or anywhere
+    const unobtainableRes = env.Engine.validateCampaign(
+      { id: 'camp_unobt', name: 'Unobtainable Weapon', version: '1.0.0', startingLocationId: 'loc_1', features: { combat: true } },
+      {
+        locations: [{ id: 'loc_1', name: 'Start', connections: [] }],
+        characters: [],
+        creatures: [{ id: 'cr_1', name: 'Rat', vitals: { health: 10 } }],
+        items: [{ id: 'it_sword', name: 'Lost Sword', type: 'weapon', slot: 'main_hand' }]
+      }
+    );
+    assert.strictEqual(unobtainableRes.valid, false);
+    assert.ok(unobtainableRes.errors.some(e => /none are obtainable/i.test(e)));
+  });
 
   // ---------------------------------------------------------------------------
   const failed = results.filter(r => !r.ok);

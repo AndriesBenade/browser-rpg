@@ -279,7 +279,7 @@
         }
       ],
       "narrative": {
-        "overview": "A sheer limestone precipice overlooking the narrow pass between Thebes and Delphi. Bleached bones and battered bronze shields litter the scree below. Perched high upon the jagged rock sits the Sphinx—daughter of Typhon and Echidna—her eagle wings half-spread, golden lion claws digging into the stone, staring with chilling human eyes at anyone who dares tread the pass.",
+        "overview": "A sheer limestone precipice overlooking the narrow pass between Thebes and Delphi. Bleached bones and battered bronze shields litter the scree below. Perched high upon the jagged rock sits the Sphinx (daughter of Typhon and Echidna), her eagle wings half-spread, golden lion claws digging into the stone, staring with chilling human eyes at anyone who dares tread the pass.",
         "shortDescription": "The chilling precipice where the riddle-demanding Sphinx perches above the road."
       },
       "presentNPCs": [],
@@ -568,7 +568,7 @@
         }
       ],
       "narrative": {
-        "overview": "A rugged inland valley framed by low oak-crested ridges. At its center stands the sanctuary of Nemean Zeus with its limestone columns. In the surrounding thorn thickets and limestone grottos of Mount Tretos dwelt the invulnerable Nemean Lion—spawn of Typhon and Echidna—whose golden pelt turned aside all bronze arrows and spears.",
+        "overview": "A rugged inland valley framed by low oak-crested ridges. At its center stands the sanctuary of Nemean Zeus with its limestone columns. In the surrounding thorn thickets and limestone grottos of Mount Tretos dwelt the invulnerable Nemean Lion (spawn of Typhon and Echidna), whose golden pelt turned aside all bronze arrows and spears.",
         "shortDescription": "Rugged oak valley sacred to Zeus, ancient stalking ground of the invulnerable Lion."
       },
       "presentNPCs": [],
@@ -603,7 +603,7 @@
         }
       ],
       "narrative": {
-        "overview": "A treacherous coastal fen fed by the fathomless Lake Alcyonia, through which Dionysus was said to have descended into the Underworld. Stagnant green water bubbles with foul miasma beneath sprawling plane trees. Here in the reed-choked mud lurks the Lernaean Hydra—the venomous nine-headed draconic terror whose breath wilts crops and rots mortal flesh.",
+        "overview": "A treacherous coastal fen fed by the fathomless Lake Alcyonia, through which Dionysus was said to have descended into the Underworld. Stagnant green water bubbles with foul miasma beneath sprawling plane trees. Here in the reed-choked mud lurks the Lernaean Hydra, the venomous nine-headed draconic terror whose breath wilts crops and rots mortal flesh.",
         "shortDescription": "A foul sulfurous swamp reputed to hide an entrance to the Underworld and the multi-headed Hydra."
       },
       "presentNPCs": [],
@@ -699,7 +699,7 @@
         }
       ],
       "narrative": {
-        "overview": "The southernmost tip of the Peloponnese where the black rocks plunge violently into the wine-dark sea. In the sea cliffs opens a gloomy subterranean cavern—the gate through which Herakles dragged the three-headed hound Kerberos up into the sunlight. The air is icy cold and carries the solemn smell of asphodel and river mist from the Styx.",
+        "overview": "The southernmost tip of the Peloponnese where the black rocks plunge violently into the wine-dark sea. In the sea cliffs opens a gloomy subterranean cavern, the gate through which Herakles dragged the three-headed hound Kerberos up into the sunlight. The air is icy cold and carries the solemn smell of asphodel and river mist from the Styx.",
         "shortDescription": "The southernmost sea cliff cavern where an entrance descends directly to Hades."
       },
       "presentNPCs": ["npc_chiron_mentor", "npc_charon_ferryman_shade"],
