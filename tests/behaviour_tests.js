@@ -2501,6 +2501,78 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(unobtainableRes.errors.some(e => /none are obtainable/i.test(e)));
   });
 
+  await test('Death rules cannot be bypassed: older saves keep spent respawns and permadeath; a fight in progress survives save and load', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    engine.skipWalkthrough();
+    engine.selectCampaign('campaign_dev_test');
+    engine.selectCampaignDifficulty('hard');
+    await engine.confirmCampaignSelection();
+    engine.renderWizardStep(2);
+    while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
+    engine.confirmHeroCreation();
+    env.flushTimers();
+    const w0 = engine.state.worldState;
+    assert.ok(w0.runId, 'every new run gets a run id');
+    const homeSlot = engine.state.saveSlot;
+    await engine.saveGameSilently(5); // an "insurance" save made before dying
+    engine.state.saveSlot = homeSlot;
+
+    for (let i = 0; i < 2; i++) {
+      engine.combatSession = { enemy: { id: 'creature_dev_wolf', name: 'Timber Wolf' } };
+      engine.state.player.vitals.health = 0;
+      engine.handlePlayerDefeat();
+    }
+    await Promise.resolve(); env.flushTimers();
+    assert.strictEqual(engine.state.worldState.playerRespawnsUsed, 2);
+    await engine.loadGame(5);
+    assert.strictEqual(engine.state.worldState.playerRespawnsUsed, 2, 'loading an older save must not refund respawns');
+
+    // A fight in progress is saved and resumed after loading (e.g. a page refresh mid-battle).
+    engine.startCombat('creature_dev_wolf');
+    engine.combatAction('thrust');
+    const round = engine.combatSession.round;
+    const enemyHp = engine.combatSession.enemy.hp;
+    await engine.saveGameSilently(engine.state.saveSlot);
+    assert.ok(engine.state.worldState.activeCombat, 'live fight is written into the save');
+    engine.combatSession = null;
+    await engine.loadGame(engine.state.saveSlot);
+    assert.ok(engine.combatSession && !engine.combatSession.ended, 'the fight resumes after loading');
+    assert.strictEqual(engine.combatSession.round, round);
+    assert.strictEqual(engine.combatSession.enemy.hp, enemyHp);
+    assert.strictEqual(env.el('combat-modal').style.display, 'flex');
+
+    // Final death, then try to revive by loading the insurance save of the same run.
+    engine.state.worldState.playerRespawnsUsed = 3;
+    engine.state.player.vitals.health = 0;
+    engine.handlePlayerDefeat();
+    await Promise.resolve(); env.flushTimers();
+    assert.strictEqual(engine.state.worldState.playerDead, true);
+    env.el('gameover-modal').style.display = 'none';
+    await engine.loadGame(5);
+    assert.strictEqual(engine.state.worldState.playerDead, true, 'an older save of a fallen run stays fallen');
+    assert.strictEqual(env.el('gameover-modal').style.display, 'flex');
+    assert.ok(!engine.combatSession, 'no fight resumes for a fallen hero');
+  });
+
+  await test('Social failures have consequences: failed persuasion and exposed ruses make the NPC warier (higher DC) for a day', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_test');
+    const npc = engine.world.characters.find(c => c.id === 'npc_dev_lycus') || engine.world.characters[0];
+    const dc0 = engine.getPersuadeDc(npc.id);
+    const dd0 = engine.getDeceiveDc(npc.id);
+    engine.resolveD20 = (o) => ({ natural: 2, total: 2 + (o.modifier || 0) - 30, success: false, isCriticalSuccess: false, isCriticalFailure: false, dc: o.dc });
+    engine.attemptPersuadeNpc(npc.id);
+    assert.strictEqual(engine.getPersuadeDc(npc.id), dc0 + 1);
+    engine.advanceTime(5, 0);
+    engine.attemptDeceiveNpc(npc.id);
+    assert.strictEqual(engine.getDeceiveDc(npc.id), dd0 + 2);
+    engine.advanceTime(30, 0);
+    assert.strictEqual(engine.getSocialWariness(npc.id), 0, 'wariness fades after a day');
+    env.flushTimers();
+  });
+
   // ---------------------------------------------------------------------------
   const failed = results.filter(r => !r.ok);
   console.log('\n=================================================================');

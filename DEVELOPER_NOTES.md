@@ -8,6 +8,22 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 19 - 2026-11-12 (verification of Session 18, death-rule and retry exploits closed)
+* **Collaborator / Model**: User & Claude (Anthropic)
+* **Verified working (real browser + harness)**: Browser-RPG branding; 4 difficulty cards before launch, locked after creation; male/female only; Step 3 must spend every point (engine rejects a bypass); level-up skills in 4 columns (2 on narrow screens), locked feats shown with reasons and refused by the engine; themed tooltips (hover and keyboard focus, no `title=` left); popups close on outside click/Escape while combat, confrontation and game over stay; inventory drag-and-drop (replace, two-handed clears the off-hand, off-hand clears a two-hander, ring_1/ring_2, wrong slot refused) with the Equip button as the keyboard route; quest badge clears when the Quests tab is viewed; audio volume/mute persist; game over offers a new hero; combat log scan of every creature action (incl. Lord Karas' Grave Chill Wave) shows no `undefined`/`null`/`NaN`; no cut-off content.
+* **Fixed in this pass**:
+  * Refreshing the page mid-fight escaped the battle (combat was never saved). A fight in progress is now saved with the game (`worldState.activeCombat`, written at each round through `queueAutosave()`, a single microtask, no timers) and resumes on load (`resumeSavedCombat()`).
+  * Loading an older save of the same run refunded spent respawns and revived a permanently dead hero. Each run now has `worldState.runId`, and a per-browser record (`localStorage.gm_run_records`) keeps the highest respawn count and the death flag; `reconcileRunState()` applies it on every load. The game-over button now reads "Load Another Hero".
+  * Failed-action cooldowns, confrontation preparations and new minigame seeds were only in memory until the next autosave, so a reload could undo them; they now save immediately.
+  * Hostile acts can be "discovered later": a narrow, unnoticed pickpocket may be found out 2 to 6 hours later (event `hostile_act_discovered`), costing standing with the victim only (no witnesses).
+  * Failed persuasion and exposed ruses make the NPC warier: +1 DC per failure (max +3) for 24 in-game hours (`worldState.socialWariness`).
+  * Requirement pills now always state `Required | Current | Sufficient` for gates, and the roll needed with the rough chance for checks.
+  * Weaponless prose: surrender, mercy and the heavy-blow hint no longer mention a weapon or shield you do not have.
+  * Difficulty cards are keyboard selectable and explain that saves cannot undo deaths. DEVELOPER_NOTES no longer contains em dashes.
+* **Save**: still v1.9.0 (new fields are optional and filled in by `migrateState()`).
+* **Measured** (headless Chrome, Greek campaign): boot about 0.66 s (0.76 s before), `renderAll()` 3.7 ms (4.4 ms), save 3.9 ms, save size 4.6 KB. `index.html` 1,089,459 to about 1,097,400 bytes (+8 KB for the fixes above).
+* **Tests**: behaviour 103/103 (2 new: death rules vs older saves and mid-fight reload; social wariness), legacy 74/74, sync check, browser smoke 8/8; stress fuzz 12,200 steps / 2,044 fights clean with a new text scan for `undefined`/`null`/`NaN`; tutorial and all Dev quests played through in a real browser.
+
 ### Session 18 - 2026-11-11 (gameplay refinement, system consistency, difficulty & audio)
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **Creation & Progression**: Removed the nonbinary option from the creation UI (`#wiz-gender-select`) while safely preserving existing saves via `migrateState()`; Step 3 now enforces spending all 5 bonus attribute points (`validateCharacterCreationPoints()` + disabled Next button); Level-Up Skills switched to a 4-column responsive grid (`.levelup-skills-grid`); Feats now enforce `minLevel`, `minAttributes`, and `minSkills` (`checkFeatEligibility()`).
@@ -18,7 +34,7 @@
 * **Size**: `index.html` = `1,089,459 bytes` / `17,807 lines` (baseline `973,091 bytes`).
 * **Tests**: `npm test` passed (`74 / 74` legacy unit tests + `101 / 101` behaviour tests + `sync-embedded-dev-content.js --check`).
 
-### Session 17 — 2026-11-11 (combat depth and exploration depth)
+### Session 17 - 2026-11-11 (combat depth and exploration depth)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **Combat** (ENGINE_ARCHITECTURE §7.15, CONTENT_SCHEMA §29): telegraphed enemy moves with a Side-step action and a brace bonus against heavy blows; status effects (bleeding, poisoned, entangled, frightened, stunned, confused, weakened); all class features given real mechanics as data (`effect` / `combat`), with ability buttons in combat; creature morale and flight; surrender to guards (fine or cells); companions and hirelings (Dev: Brannoch for hire, Silas after the villainous pact; Greek: Lykos at Thebes).
 * **Exploration** (§7.16, CONTENT_SCHEMA §30): hidden spots revealed one per search (Dev: a goat track linking the Crags and the Woods); travel pace; night and weather effects (event-driven weather); NPC rumours with "?" map markers; rations, hunger and camp events.
@@ -28,7 +44,7 @@
 * **Size**: `index.html` +72 KB (901 → 973 KB; about 17 KB of that is the embedded class and Dev content).
 * **Tests**: behaviour 89/89 (7 new), legacy 74/74, browser smoke 8/8 (new: page-level windows really visible); real-browser play-throughs of the tutorial (HTTP and file://) and all Dev quests; no cut-off content at 4 window sizes; stress fuzz 12,000 steps / 2,192 fights clean.
 
-### Session 16 — 2026-11-11 (play-test fixes, quest log, NPC standing, trading, confrontations)
+### Session 16 - 2026-11-11 (play-test fixes, quest log, NPC standing, trading, confrontations)
 * **Collaborator / Model**: User & Claude (Anthropic). Builds on Session 15 (its travel-time fix is kept).
 * **Play-test bugs fixed (tutorial + Dev campaign)**: all 8 Dev quests were active on day 1 and 6 of them could not be finished (no turn-in, no delivery target, moral paths unreachable, rescue/monolith had no actions, objects updated quests nobody had). Each now has a start and an end through dialogue, actions or fights; the 48-hour rescue starts when the Captain asks. Quests completed by objects/dialogue never paid their `rewards`; `completeQuest()` pays them once. Dialogue nodes ignored `consumeItem` (the Sunstone stayed in your pack). A creature with an encounter also had a plain "Attack" card that skipped the encounter's quest outcome. Persuade/Deceive had no buttons; Pickpocket showed a wrong DC. `presentItems` could never be picked up (Search card). Resting in Haven/Thebes counted as wilderness. A yielding NPC was always recorded as killed. The strongbox could be picked through the locked vault door. The presence list missed NPCs placed by `locationId`. Combat text named every foe "the beast" on a "cavern floor"; feats and sacred rest used Greek names in the Dev campaign.
 * **Quest log**: Active / Completed / Failed tabs; ☆ Focus pins (max 3) drive the sidebar.
@@ -40,7 +56,7 @@
 * **Size**: `index.html` +104 KB (797 → 901 KB, of which 11 KB is the regenerated embedded Dev content).
 * **Tests**: behaviour 82/82 (8 new, incl. a full Dev campaign play-through), legacy 74/74, browser smoke 7/7; real-browser play-throughs of the tutorial and every Dev quest; no cut-off content at 4 window sizes (trade and confrontation windows included); stress fuzz 12,000 steps with 1,868 fights clean.
 
-### Session 15 — 2026-11-11 (engine capabilities summary & time system audit)
+### Session 15 - 2026-11-11 (engine capabilities summary & time system audit)
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: Generate downloadable comprehensive summary of all capabilities; verify and explain how time passing works.
 * **Deliverables & Verification**:
@@ -49,41 +65,41 @@
   3. Micro-fix in `getActivityDuration("travel")` to gracefully sum composite `{ travelHours, travelMinutes }` structures.
   4. Tests: full suite passing (`npm test` &rarr; 74/74 legacy, 74/74 behaviour, embedded sync clean = 148 passing tests).
 
-### Session 14 — 2026-11-11 (creation catalogs, grouped actions, resizable UI)
+### Session 14 - 2026-11-11 (creation catalogs, grouped actions, resizable UI)
 * **Origins & traits** are campaign content like classes/backgrounds: `greek_mythology/origins.json`, `greek_mythology/traits.json`, reusable `content/shared/origins.json` + `traits.json`, and Dev `world/origins.json`. Modules may list several files (`fetchCatalog()`), for classes and backgrounds too. Trait effects are data (`checkBonus`, `libationMultiplier`, perk fields) instead of hard-coded ids; old saves resolve their trait by id. The Dev campaign no longer shows Greek traits. Trait card texts now describe what the engine actually does (e.g. Dauntless: +2 max Morale).
 * **Selection screens**: wizard widened to 1500 px, no more 260 px class/background boxes, sticky Back/Next, wider level-up window.
 * **Action deck** grouped per NPC / creature / object / place with openable lists (single action = plain button); open lists stay open between actions.
 * **Resizable**: drag grips (action list height, sidebar width), resize corners on selection lists, dialogue text, level-up lists, crafting disciplines, campaign cards; text-size slider + reset in Settings; saved in `localStorage.gm_ui_sizes`.
 * **Tests**: behaviour 74/74 (3 new), legacy 74/74, browser smoke 7/7 (reads hidden card text with textContent), no cut-off content at 4 window sizes.
 
-### Session 13 — 2026-11-11 (D20 criticals, Reliable Talent, scrolling)
+### Session 13 - 2026-11-11 (D20 criticals, Reliable Talent, scrolling)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **User Request**: universal D20 critical success / critical failure and Reliable Talent system (shared engine logic, campaign-configurable); keep the project lean; fix "cannot scroll down to see everything".
 * **D20 system** (ENGINE_ARCHITECTURE §7.11, CONTENT_SCHEMA §24): `resolveD20()` is the single resolver for skill checks, attacks, feints, escapes, crafting and creature/NPC attacks; criticals use the natural die. `applyCriticalEffects(activity, roll, ctx)` applies contextual consequences (defaults in `CRITICAL_EFFECTS`; overridable per campaign via `d20Rules.criticalOutcomes` and per action via `criticalSuccess`/`criticalFailure`). Reliable Talent: non-combat skill at rank ≥ threshold (default 8, per-skill configurable) turns natural 1–5 into 6 for that skill only. Character sheet shows `★ Reliable` / progress.
-* **Behaviour changes to know**: a natural 1 now always fails crafting and ruins one primary material (ordinary failures still keep materials); a natural 20 on a social or stealing check no longer gives the location discovery cache (that stays with exploration and heaving) — it gives that activity's own reward instead. Combat fumbles now give the opponent +2 to hit for the round, and creature fumbles give the hero +2 on the next strike.
+* **Behaviour changes to know**: a natural 1 now always fails crafting and ruins one primary material (ordinary failures still keep materials); a natural 20 on a social or stealing check no longer gives the location discovery cache (that stays with exploration and heaving) - it gives that activity's own reward instead. Combat fumbles now give the opponent +2 to hit for the round, and creature fumbles give the hero +2 on the next strike.
 * **Deception is a separate skill** (save v1.6.0; old saves copy the persuasion rank so odds do not change). The level-up window lists it automatically.
 * **Scrolling**: the campaign screen (Launch button, modules) and the crafting screen were cut off with no way to scroll on laptop-sized windows. `.viewport` and `.view-card-wrapper` now scroll when their content is taller than the window; checked at 1920×960, 1366×650, 1280×600 and 1024×700 for every view, wizard step and modal.
-* **Also**: the story sidebar's travel list now hides closed roads (`requiresFlag`), like the cards and the map. Session 12's claim that most of the map was unreachable was wrong — the sidebar list offered every road — and has been corrected in the audit report.
+* **Also**: the story sidebar's travel list now hides closed roads (`requiresFlag`), like the cards and the map. Session 12's claim that most of the map was unreachable was wrong - the sidebar list offered every road - and has been corrected in the audit report.
 * **Size**: `index.html` +13 KB (≈1.7 %), no new files or dependencies in the game itself.
 * **Tests**: `npm test` → legacy 74/74, behaviour 71/71 (6 new D20 tests), embedded-content check. Stress fuzz 24,000 steps clean.
 
-### Session 12 — 2026-11-11 (second audit pass)
+### Session 12 - 2026-11-11 (second audit pass)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **User Request**: the same FINAL PROJECT AUDIT brief, run again. Session 11's work was re-checked independently (diff review + new probes), then the audit continued into areas it had not covered.
 * **Critical fixes**:
   1. **Save overwrites**: launching a campaign mid-game (or *Restart*) silently replaced the running game and its new hero overwrote Slot 1; importing a save reused the slot number stored in the file and overwrote whatever game was in that slot. New games and imports now autosave the current game, use the first free slot (`findSlotForNewGame()`), and ask before replacing anything. *Save* into another hero's slot asks; *Load* of another slot saves the current game first. The slot list shows hero/level/campaign/time.
   2. *(re-rated High)* **Travel controls disagreed**: the action cards and the map only offered discovered places, while the story sidebar offered every road but ignored road predicates (`requiresFlag`), so the fissure cave and the Dev Sunken Grotto could be entered too early. Below 900 px width the sidebar is hidden and new places could not be reached at all. All three controls now offer every *open* road. *(An earlier version of this entry said most of the world was unreachable; the sidebar had been overlooked.)*
-* **High fixes**: clicking a campaign card while browsing switched the running game's rules without loading content (now only *Launch* switches; *Validate* checks the highlighted campaign against its own content); non-repeatable encounters could be re-fought forever for full rewards (Dev Shadow Stalker: 440 XP per 15 min) — encounters are one-time unless `repeatable`, and `triggerCondition` is honoured; `events.json` world events were loaded but never processed (now event-driven via `setWorldFlags()`/`addItem()`/`emitEvent()`, fired once, saved); interactive objects' `unlockOutcome` was never applied (the Dev boulder never opened the grotto path); the embedded `file://` Dev content had stale classes/backgrounds and wrote faction standings into whatever game was running.
+* **High fixes**: clicking a campaign card while browsing switched the running game's rules without loading content (now only *Launch* switches; *Validate* checks the highlighted campaign against its own content); non-repeatable encounters could be re-fought forever for full rewards (Dev Shadow Stalker: 440 XP per 15 min) - encounters are one-time unless `repeatable`, and `triggerCondition` is honoured; `events.json` world events were loaded but never processed (now event-driven via `setWorldFlags()`/`addItem()`/`emitEvent()`, fired once, saved); interactive objects' `unlockOutcome` was never applied (the Dev boulder never opened the grotto path); the embedded `file://` Dev content had stale classes/backgrounds and wrote faction standings into whatever game was running.
 * **Medium/low fixes**: scheduled quest deadlines now use `setQuestStage()`/`failQuest()`; one pending respawn per creature; `athletics` skill added (heaving rolls it; 5 backgrounds train it; old saves migrate) and the level-up window lists every skill; lockpicking/heaving take time (10 min, configurable) and an open lock gives no second XP; a pending level-up reopens after loading; campaign `progression` (XP table, titles) with neutral titles outside the Greek campaign; `moralityConfig` accepts the documented `alignmentTiers` format, labels and `initialVirtue/Hubris`; equipped `<attribute>Bonus`, `<skill>Bonus` and `damageReduction` are applied; damage dice parser handles `-K` and flat numbers; ambush narration names the real creature; crafting header shows the real roll bonus; calendar migration shifts each old timestamp by its own year; campaign-neutral export file names.
 * **Content**: Dev vault door, coffer and boulder `unlockOutcome`s now update/complete the heist and grotto quests. Embedded Dev content is generated by `scripts/sync-embedded-dev-content.js` (`npm run sync:embedded`); `npm test` fails if it drifts.
 * **Docs corrected**: CONTENT_SCHEMA §20 (respawn), §21 (morality) and §22 (timed/moral quests) described fields the engine never read; now they match the code. New field reference for encounters, world events, unlock outcomes, item bonuses, progression, road predicates.
 * **Save format**: 1.5.0 (adds `worldState.firedWorldEvents`, `player.skills.athletics`). Older saves migrate automatically.
 * **Tests**: `npm test` → legacy 74/74, behaviour 65/65, embedded-content check; 19 new behaviour tests fail on the Session 11 engine and pass now. Browser smoke 7/7 (Chrome, IndexedDB). Extended stress fuzz: 48,000 random steps incl. 1,749 page reloads, no errors.
-* **Still open**: class features, merchant trading, campaign module toggles, NPC yield-vs-death, Greek `file://` subset, rarity caps for Greek tier names, crafting balance, unused random-encounter types (peaceful/discovery), `attributeRequirement` not enforced, five Dev quests still have no content path to completion (boar menace turn-in, merchant delivery, urgent rescue, bandit alliance — `resolveMoralChoice()` has no UI entry — and ancient ruins). See the audit report.
+* **Still open**: class features, merchant trading, campaign module toggles, NPC yield-vs-death, Greek `file://` subset, rarity caps for Greek tier names, crafting balance, unused random-encounter types (peaceful/discovery), `attributeRequirement` not enforced, five Dev quests still have no content path to completion (boar menace turn-in, merchant delivery, urgent rescue, bandit alliance - `resolveMoralChoice()` has no UI entry - and ancient ruins). See the audit report.
 
-### Session 11 — 2026-11-11
+### Session 11 - 2026-11-11
 * **Collaborator / Model**: User & Claude (Anthropic)
-* **User Request**: FINAL PROJECT AUDIT — independent code review, bug fixing, system validation and optimisation across the whole project, without rebuilding the game or adding new gameplay features.
+* **User Request**: FINAL PROJECT AUDIT - independent code review, bug fixing, system validation and optimisation across the whole project, without rebuilding the game or adding new gameplay features.
 * **How it was verified**: added `tests/behaviour_harness.js` + `tests/behaviour_tests.js`, which load the **real** engine from `index.html` with the real JSON content (the legacy suite mostly tests mock re-implementations), and `tests/browser_smoke.js` (headless Chromium via Playwright). Each fix has a regression test.
 * **Critical fixes**:
   1. Saves of non-default campaigns resumed with Greek content after a reload (content was loaded before the save was read). `init()` now reads the save first; `loadGame`/import switch content via `applyLoadedState()`.
@@ -94,11 +110,11 @@
   6. Clicking during the victory/defeat delay re-ran combat (duplicate XP, double defeat penalty). Sessions now have an `ended` guard.
 * **High-severity fixes**: dialogue `completeQuest` always ran the Greek tutorial completion (wrong quest, double rewards, Greek rewards in other campaigns); the clue-based riddle answer (`known_answer`) did nothing and puzzle data was ignored; `giveDrachmae` outcomes were lost; creature `xpReward` was ignored (always 50 XP); every creature scheduled a "boss respawn"; the absolute clock jumped 5 days at each new year (365 vs 360 days); recurring events lost occurrences and re-scheduled ids never ran again; social cooldowns broke at month boundaries; Dev NPC dialogues (`dialogueId`) never opened and 11 Greek NPCs had no conversation; the action deck showed duplicated cards/groups; defeat and ambushes used Greek locations/creatures in every campaign; 9 item ids referenced by Greek classes/merchants/creatures did not exist (7 items added, 2 ids remapped); infinite money/XP farms (pickpocket, natural-20 caches, Venus cast re-rolls, zero-time minigames, free Shield Clash every round).
 * **Other**: quest stages now reveal later objectives and advance; manifest consequence rules use the shared scheduler and apply `failQuest`/`piety`/`morality`; NPC death failover is data-driven; morality thresholds and respawn rules read the campaign config; ranged weapons use Agility; consumables work with either `stats` or `effect`; crafting validates materials and keeps them on failure (as documented); inline creature loot was rolled twice; origin perks and traits now apply; HUD/labels no longer show raw `&bull;`/`&rarr;`; transcript DOM capped at 400 entries; validator checks item references.
-* **Known gaps (not changed — see the audit report)**: class `classFeatures` and proficiency effects are not implemented; there is no merchant buy/sell system; campaign module toggles on the selection screen have no effect; NPCs who "yield and flee" are recorded as killed; the Greek `file://` fallback is a reduced subset; rarity caps only cover `epic/legendary/mythic` names.
+* **Known gaps (not changed - see the audit report)**: class `classFeatures` and proficiency effects are not implemented; there is no merchant buy/sell system; campaign module toggles on the selection screen have no effect; NPCs who "yield and flee" are recorded as killed; the Greek `file://` fallback is a reduced subset; rarity caps only cover `epic/legendary/mythic` names.
 * **Correction to earlier log entries**: Sessions 9–10 list class/background/profession names, material properties, a `socialCooldowns` field and alignment thresholds (±40) that do not match the code/content. `documentation/ENGINE_ARCHITECTURE.md` §7–9 now describes the actual implementation.
 * **Tests**: `npm test` → legacy 74/74 + behaviour 44/44; `npm run test:browser` → 6/6 (requires Playwright).
 
-### Session 10 — 2026-11-11
+### Session 10 - 2026-11-11
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: DEVELOPMENT TASK: DYNAMIC WORLD TIME, QUEST CONSEQUENCES, RESPAWNING, MORALITY, PROJECT OPTIMISATION AND COMPRESSION (PART A & PART B). Implement dynamic world time, activity durations, event-driven scheduler with ZERO polling loops, time-sensitive quests, creature/boss respawns, permanent NPC deaths, morality & karma (Virtue/Hubris), full project optimization, memory pruning, and comprehensive automated test suite.
 * **Core Systems Overhauled & Implemented**:
@@ -139,7 +155,7 @@
      - Automated test suite expanded from 65 to **74 / 74 passing tests** (100% pass rate) running in ~250ms.
      - Total repository size: 1175.67 KB across 49 files, runnable standalone via `file:///` and HTTP with zero external runtime dependencies.
 
-### Session 9 — 2026-11-11
+### Session 9 - 2026-11-11
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: MASTER DEVELOPMENT SPECIFICATION: Universal RPG Engine, Campaign Architecture, Character Progression, World Systems, Loot, Crafting and Minigames. Implement all universal campaign independence, 14 Greek heroic classes, 16 backgrounds, 1 primary + 2 secondary points progression, 14-slot paper doll, centralized loot caps, recipe-free dynamic crafting, forge minigame, settlement economy, NPC defensive flee/yield, and social anti-exploit cooldowns.
 * **Core Systems Overhauled & Implemented**:
@@ -192,7 +208,7 @@
   10. **Automated Verification**:
      - Automated test suite expanded to **65 / 65 passing unit tests** (100% pass rate) with new tests 39–46 covering campaign independence, classes, backgrounds, 14-slot paper doll, loot caps, dynamic crafting, settlement merchants, and NPC behaviors.
 
-### Session 8 — 2026-11-11
+### Session 8 - 2026-11-11
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: MASTER IMPLEMENTATION PROMPT: COMPLETE CAMPAIGN SYSTEM OVERHAUL. Perform a comprehensive architectural and functional overhaul turning the RPG engine into a content-driven campaign framework capable of hosting entirely different worlds/genres simply by importing compatible content packages without engine modification.
 * **Core Systems Overhauled & Implemented**:
@@ -245,7 +261,7 @@
   12. **Automated Verification**:
       - Automated test suite expanded to **57 / 57 passing unit tests** (100% pass rate).
 
-### Session 7 — 2026-11-10
+### Session 7 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: Implement a modular content architecture so content can be added easily via standalone JSON without modifying major engine functions; provide an option to delete saved content to start completely fresh; author comprehensive developer documentation and reusable templates.
 * **Modular Systems Implemented**:
@@ -270,7 +286,7 @@
   6. **Automated Verification**:
      - Suite expanded to **49 / 49 passing automated unit tests**!
 
-### Session 6 — 2026-11-10
+### Session 6 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: Implement the Dynamic Minigame Integration System with dedicated contextual cards, occasional triggers in rest/combat, surprise thematic minigames, and lightweight zero-asset synthesized audio to keep the folder minimal.
 * **Minigame Systems Implemented**:
@@ -293,7 +309,7 @@
   5. **Automated Verification**:
      - Test suite expanded to **45 / 45 passing tests**.
 
-### Session 5 — 2026-11-10
+### Session 5 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Request**: "Please optimize and compress where possible while trying best not to break anything."
 * **Optimizations Implemented**:
@@ -307,10 +323,10 @@
   4. **Automated Verification**:
      - Expanded test suite from 42 to **43 passing tests** verifying hash map lookups, compact fallback integrity, and DOM caching.
 
-### Session 4 — 2026-11-10
+### Session 4 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **Friend's Request & Requirements Implemented**:
-  1. **Custom Action Bar — Always Visible**:
+  1. **Custom Action Bar - Always Visible**:
      - Docked a prominent, persistent custom action input (`#persistent-action-bar`) permanently at the base of the interface outside `#viewports-stage`.
      - Remains visible, accessible, and fully operational across all interface panels (Story, Map, Character, Inventory, Quests, Journal, Codex, Pantheon, Settings) without scrolling or search.
      - Automatically routes commands to the narrative chronicle (`switchView('view-story')`) so results are immediately visible.
@@ -336,7 +352,7 @@
   5. **Automated Testing**:
      - Expanded test suite from 35 to **42 tests**, verifying glossary schema, text enrichment regex, idempotency, natural check cards, toast notifications, persistent action bar DOM presence, and plain-English attribute explanations.
 
-### Session 3 — 2026-11-10
+### Session 3 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Requests**:
   1. Conduct in-depth research on authentic Greek mythology and add items, creatures, NPCs, gods, places, and lore specific to regions in Greek mythology so players can learn authentic mythology in a fun, interactive way.
@@ -406,7 +422,7 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
-### Session 2 — 2026-11-10
+### Session 2 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Requests**:
   1. Add a **Critical Success (Natural 20 / Arete)** option:
@@ -443,7 +459,7 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
-### Session 1 — 2026-11-10
+### Session 1 - 2026-11-10
 * **Collaborator / Model**: User & Antigravity (Google DeepMind)
 * **User Requests**:
   1. Inspect the game and evaluate ability to improve it.

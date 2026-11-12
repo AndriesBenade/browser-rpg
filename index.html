@@ -3515,7 +3515,7 @@
       </div>
       <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.65rem; justify-content: center;">
         <button class="btn-classical" onclick="window.engine.closeGameOverToNewHero()">Begin New Hero</button>
-        <button class="nav-btn" onclick="window.engine.closeGameOverToSaves()">Load Earlier Save</button>
+        <button class="nav-btn" onclick="window.engine.closeGameOverToSaves()">Load Another Hero</button>
       </div>
     </div>
   </div>
@@ -4299,11 +4299,12 @@
 
         if (resumeSave) {
           this.state = this.migrateState(existingSave);
+          this.reconcileRunState(this.state);
           this.logTranscript("System", `Welcome back, ${this.state.player.name}. Continued from Slot ${this.state.saveSlot || 1}.`, "entry-discovery");
           this.renderAll();
           if (this.state.player.dead || this.state.worldState.playerDead) {
-            this.showGameOverModal("Loaded hero has fallen in Mortal Fate.");
-          } else {
+            this.showGameOverModal("Loaded hero has fallen permanently.");
+          } else if (!this.resumeSavedCombat()) {
             this.checkPendingLevelUp();
           }
         } else {
@@ -4898,6 +4899,13 @@
       async saveGameSilently(slot = 1) {
         this.state.saveSlot = slot;
         this.state.timestamp = Date.now();
+        // A fight in progress is saved with the game, so reloading mid-battle resumes it instead of
+        // escaping it (difficulty death rules cannot be bypassed by refreshing the page).
+        if (this.state.worldState) {
+          const live = this.combatSession && !this.combatSession.ended && !this.combatSession.awaitingMercy ? this.combatSession : null;
+          this.state.worldState.activeCombat = live;
+          this.recordRunState();
+        }
         const snapshot = JSON.stringify(this.state);
         let stored = false;
         if (this.db) {
@@ -4983,8 +4991,8 @@
           this.logTranscript("System", `Game loaded from Slot ${slot}.`, "entry-discovery");
           this.renderAll();
           if (this.state.player.dead || this.state.worldState.playerDead) {
-            this.showGameOverModal(`Loaded save from Slot ${slot} is permanently deceased.`);
-          } else {
+            this.showGameOverModal(`The hero in Slot ${slot} has fallen permanently.`);
+          } else if (!this.resumeSavedCombat()) {
             this.checkPendingLevelUp();
           }
         } else {
@@ -4998,6 +5006,7 @@
        */
       async applyLoadedState(loaded) {
         const migrated = this.migrateState(loaded);
+        this.reconcileRunState(migrated);
         const campaignId = migrated.worldState.campaignId;
         if (campaignId && this.campaigns.has(campaignId) && (campaignId !== this.activeCampaignId || this._loadedContentCampaignId !== campaignId)) {
           this.activeCampaignId = campaignId;
@@ -5028,7 +5037,7 @@
         // --- World state containers ---
         const objectKeys = ["flags", "npcStates", "deadEntities", "permanentNpcDeaths", "lootedEntities", "unlockedObjects", "factions",
           "encounterCooldowns", "defeatedEncounters", "grantedUniqueItems", "executedEventIds", "quests", "socialInteractions",
-          "actionCooldowns", "confrontationStates", "challengeStates", "objectTrapDisarmed", "objectMechanismInspected",
+          "actionCooldowns", "socialWariness", "confrontationStates", "challengeStates", "objectTrapDisarmed", "objectMechanismInspected",
           "deceivedTargets", "appeasedTargets", "criticalDiscoveries", "dialogueRewardsClaimed", "dynamicItems",
           "firedWorldEvents", "merchants", "foundSpots", "rumouredLocations"];
         // 1.7 kept searched items in foundItems; they are hidden spots now.
@@ -6914,6 +6923,8 @@
           untilMinutes: now + durMins,
           label
         };
+        // Saved at once: reloading cannot clear a failed attempt's cooldown.
+        this.queueAutosave();
       }
 
       getEffectiveSkillBreakdown(skillName, attributeName = null, opts = {}) {
@@ -7066,7 +7077,19 @@
         const esc = (s) => String(s).replace(/"/g, "&quot;");
         return `<div class="req-pills-row">${pills.map(p => {
           const shortInfo = p.type === "cooldown" ? p.label : (p.isHardGate ? p.label : `${p.label} (${p.currentText})`);
-          return `<span class="req-pill ${p.status}" data-tooltip="${esc(p.tooltip)}">${shortInfo}</span>`;
+          // Every pill states the same three facts: what is required, what you have, and whether it is enough.
+          // Hard gates block the action; skill checks are rolled, so they show the odds instead.
+          let summary = "";
+          if (p.isHardGate && p.requiredText !== undefined) {
+            summary = ` Required: ${p.requiredText} | Current: ${p.currentText} | Sufficient: ${p.met ? "Yes" : "No"} (requirement, blocks the action until met).`;
+          } else if (!p.isHardGate && /^DC \d+/.test(p.requiredText || "")) {
+            const dc = parseInt(String(p.requiredText).slice(3), 10);
+            const bonus = parseInt(p.currentText, 10) || 0;
+            const need = Math.min(20, Math.max(2, dc - bonus));
+            const chance = Math.round(((21 - need) / 20) * 100);
+            summary = ` Required: ${p.requiredText} | Current: ${p.currentText} | Roll needed: ${need}+ on the d20 (about ${chance}%). A check, not a gate: you may always try.`;
+          }
+          return `<span class="req-pill ${p.status}" data-tooltip="${esc(p.tooltip + summary)}">${shortInfo}</span>`;
         }).join("")}</div>`;
       }
 
@@ -7490,12 +7513,13 @@
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 0.5rem;">
                 ${Object.values(this.getCampaignDifficultyPresets(activeCamp)).map(d => {
                   const selDiff = (this.selectedDifficultyId || (activeCamp && activeCamp.defaultDifficulty) || "normal") === d.id;
-                  return `<div class="selectable-choice-card ${selDiff ? "selected" : ""}" style="padding: 0.5rem; cursor: pointer;" onclick="window.engine.selectCampaignDifficulty('${d.id}')">
+                  return `<div class="selectable-choice-card ${selDiff ? "selected" : ""}" style="padding: 0.5rem; cursor: pointer;" role="button" tabindex="0" aria-pressed="${selDiff}" onclick="window.engine.selectCampaignDifficulty('${d.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.engine.selectCampaignDifficulty('${d.id}');}">
                     <div style="font-weight: bold; font-size: 0.84rem; color: #ffe680;">${d.icon} ${d.label}</div>
                     <div style="font-size: 0.72rem; color: var(--marble-dim); margin-top: 0.2rem; line-height: 1.3;">${d.desc}</div>
                   </div>`;
                 }).join("")}
               </div>
+              <div style="font-size: 0.72rem; color: var(--marble-dim); margin-top: 0.35rem;">The difficulty is locked once your hero is created. A fight in progress is saved with the game, and loading an older save never revives a fallen hero or refunds spent respawns.</div>
             </div>
 
             <h4 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; margin-bottom: 0.4rem;">Included Campaign Modules</h4>
@@ -7671,6 +7695,8 @@
         w.difficultyLocked = true;
         w.playerRespawnsUsed = 0;
         w.playerDead = false;
+        w.runId = `run_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e6).toString(36)}`;
+        w.activeCombat = null;
         p.dead = false;
         const locExists = (id) => (this.world.locations || []).some(l => l.id === id);
         const startLoc = (campaign.startingLocationId && locExists(campaign.startingLocationId))
@@ -8624,6 +8650,13 @@
           this.state.player.currencies.drachmae += stolenDrachmae;
           this.awardXP(25, `Pickpocket: ${npc.name}`);
           this.logTranscript("Thievery Success", `With deft fingers, you cut ${npc.name}'s coin purse and slip away unnoticed (+${stolenDrachmae} silver drachmae).`, "entry-discovery");
+          // Unnoticed is not unknown forever: a narrow success may be discovered later, and the
+          // victim then suspects you (no witnesses, smaller penalty). A clear success stays unknown.
+          const margin = (check.total || 0) - dc;
+          if (!check.isArete && margin < 5 && Math.random() < 0.5) {
+            this.scheduleEvent({ id: `hostile_discovered_${npc.id}`, type: "hostile_act_discovered", targetId: npc.id, inHours: 2 + Math.floor(Math.random() * 5),
+              payload: { actType: "theft_discovered", severity: 12, reason: `${npc.name} found the purse cut and suspects you` } });
+          }
           if (this.showToast) this.showToast("currency", `+${stolenDrachmae} Silver Drachmae`, "positive", "🖐️", "Pickpocket success");
           this.renderAll();
           return { success: true, roll: check.total, stolenDrachmae };
@@ -8826,7 +8859,8 @@
           if (check.isAte) {
             this.changeNpcStanding(npcId, -5, "Clumsy entreaty");
           }
-          this.logTranscript("Rhetorical Misfire", `${npc.name} shakes their head, unmoved by your honest appeal.`, "entry-prose");
+          this.addSocialWariness(npcId);
+          this.logTranscript("Rhetorical Misfire", `${npc.name} shakes their head, unmoved by your honest appeal, and will be harder to win over for a while.`, "entry-prose");
           this.renderAll();
           return { success: false, mode: "persuasion", roll: check.total, d20: check.d20, dc, disposition: this.getNpcDisposition(npcId), critical: check.critical };
         }
@@ -8872,6 +8906,7 @@
           return { success: true, mode: "deception", gulled: true, roll: check.total, d20: check.d20, dc, critical: check.critical };
         } else {
           const sev = 10;
+          this.addSocialWariness(npcId);
           this.recordHostileAct(npcId, "deception_exposed", {
             severity: sev,
             factionDelta: 0,
@@ -9020,12 +9055,31 @@
 
       getPersuadeDc(npcId) {
         const st = this.getNpcStanding(npcId);
-        return 12 + (this.getStandingConfig().persuasionDc[st.tier] || 0);
+        return 12 + (this.getStandingConfig().persuasionDc[st.tier] || 0) + this.getSocialWariness(npcId);
       }
 
       getDeceiveDc(npcId) {
         const npc = this.getCharacter(npcId);
-        return 12 + Math.floor((((npc && npc.attributes && npc.attributes.wisdom) || 12) - 10) / 2);
+        return 12 + Math.floor((((npc && npc.attributes && npc.attributes.wisdom) || 12) - 10) / 2) + this.getSocialWariness(npcId);
+      }
+
+      /**
+       * Recent failed appeals or ruses make an NPC warier: +1 DC per failure (max +3) for a day.
+       * Stored as { count, untilMinutes } so it survives saves and expires without timers.
+       */
+      getSocialWariness(npcId) {
+        const w = this.state && this.state.worldState;
+        const e = w && w.socialWariness && w.socialWariness[npcId];
+        return e && e.untilMinutes > this.getTotalInGameMinutes() ? Math.min(3, e.count || 0) : 0;
+      }
+
+      addSocialWariness(npcId) {
+        const w = this.state.worldState;
+        w.socialWariness = w.socialWariness || {};
+        const now = this.getTotalInGameMinutes();
+        const cur = w.socialWariness[npcId];
+        const count = cur && cur.untilMinutes > now ? (cur.count || 0) + 1 : 1;
+        w.socialWariness[npcId] = { count: Math.min(3, count), untilMinutes: now + 24 * 60 };
       }
 
       getPickpocketDc(npcId) {
@@ -10105,6 +10159,14 @@
               const name = creat ? creat.name : "wild creature";
               this.logTranscript("Ecology", `A prowling ${name} has migrated back into the surrounding territory.`, "entry-discovery");
             }
+            break;
+          }
+          case "hostile_act_discovered": {
+            const npc = this.getCharacter(evt.targetId);
+            if (!npc || !this.isNpcAlive(evt.targetId)) break;
+            const pl = evt.payload || {};
+            this.recordHostileAct(evt.targetId, pl.actType || "discovered", { severity: pl.severity || 10, witnessed: false, reason: pl.reason || `${npc.name} discovered what you did` });
+            this.logTranscript("Discovered", `${npc.name} has discovered your earlier deed and now regards you with suspicion.`, "entry-consequence");
             break;
           }
           case "boss_respawn": {
@@ -11814,6 +11876,60 @@
         this.updateCombatUI();
       }
 
+      /** Saves once after the current step (one microtask, no timers or polling). Used by combat rounds and new challenge seeds. */
+      queueAutosave() {
+        if (this._combatSaveQueued || !this.state || !this.state.hasCompletedCreation) return;
+        this._combatSaveQueued = true;
+        Promise.resolve().then(() => { this._combatSaveQueued = false; this.autosave(); });
+      }
+
+      /** Reopens a battle that was in progress when the game was saved (e.g. after a page reload). */
+      resumeSavedCombat() {
+        const w = this.state && this.state.worldState;
+        const saved = w && w.activeCombat;
+        if (!saved || !saved.enemy || this.state.player.dead || w.playerDead) { if (w) w.activeCombat = null; return false; }
+        this.combatSession = saved;
+        saved.ended = false;
+        const modal = document.getElementById("combat-modal");
+        if (modal) modal.style.display = "flex";
+        const bar = document.getElementById("combat-actions-bar");
+        if (bar) bar.style.display = "";
+        const feed = document.getElementById("combat-log-feed");
+        if (feed) feed.innerHTML = `<div style="color: #ff9d82; font-style: italic; margin-bottom: 0.5rem;">The battle against ${saved.enemy.name} resumes where it stood (round ${saved.round || 1}).</div>`;
+        if (!saved.intent) saved.intent = this.pickEnemyIntent();
+        this.updateCombatUI();
+        return true;
+      }
+
+      /**
+       * Per-run death record kept outside the save slots. Loading an older save of the same run can
+       * never refund spent respawns or revive a hero who died permanently.
+       */
+      getRunRecords() {
+        try { return JSON.parse(localStorage.getItem("gm_run_records") || "{}") || {}; } catch (e) { return {}; }
+      }
+
+      recordRunState() {
+        const w = this.state && this.state.worldState;
+        if (!w || !w.runId || !this.state.hasCompletedCreation) return;
+        const all = this.getRunRecords();
+        const rec = all[w.runId] || { respawnsUsed: 0, dead: false };
+        const next = { respawnsUsed: Math.max(rec.respawnsUsed || 0, w.playerRespawnsUsed || 0), dead: !!(rec.dead || w.playerDead) };
+        if (next.respawnsUsed === rec.respawnsUsed && next.dead === rec.dead && all[w.runId]) return;
+        all[w.runId] = next;
+        try { localStorage.setItem("gm_run_records", JSON.stringify(all)); } catch (e) { /* non-critical */ }
+      }
+
+      reconcileRunState(state) {
+        const w = state && state.worldState;
+        if (!w) return;
+        if (!w.runId) w.runId = `run_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e6).toString(36)}`;
+        const rec = this.getRunRecords()[w.runId];
+        if (!rec) return;
+        w.playerRespawnsUsed = Math.max(w.playerRespawnsUsed || 0, rec.respawnsUsed || 0);
+        if (rec.dead) { w.playerDead = true; state.player.dead = true; w.activeCombat = null; }
+      }
+
       /** Current value of a round-limited combat modifier. */
       getCombatMod(key) {
         const m = this.combatSession && this.combatSession.mods && this.combatSession.mods[key];
@@ -11971,7 +12087,7 @@
       describeIntent() {
         const c = this.combatSession;
         if (!c || !c.intent || c.ended) return "";
-        const hint = c.enemyStunned > 0 ? "It is reeling and will not strike." : c.intent.style === "heavy" ? "Heavy blow: brace your shield (+2 more AC) or side-step (easier)."
+        const hint = c.enemyStunned > 0 ? "It is reeling and will not strike." : c.intent.style === "heavy" ? `Heavy blow: ${this.hasShield() ? "brace your shield" : "brace your guard"} (+2 more AC) or side-step (easier).`
           : c.intent.style === "quick" ? "Quick strike: hard to side-step; it hits more often but for less." : "";
         return `⚠ Next: ${c.intent.text} ${hint}`;
       }
@@ -12230,7 +12346,7 @@
         if (this.confrontation) { const m = document.getElementById("confront-modal"); if (m) m.style.display = "none"; this.confrontation = null; }
         if (purse >= fine) {
           this.state.player.currencies.drachmae = purse - fine;
-          this.logTranscript("The Law", `You lay down your weapon before ${npc.name} and pay a fine of ${fine} drachmae.`, "entry-consequence");
+          this.logTranscript("The Law", `You ${this.hasEquippedWeapon() ? "lay down your weapon" : "raise your empty hands"} before ${npc.name} and pay a fine of ${fine} drachmae.`, "entry-consequence");
         } else {
           this.state.player.currencies.drachmae = 0;
           const jail = (law.jailLocationId && this.getLocation(law.jailLocationId)) ? law.jailLocationId : npc.locationId;
@@ -12385,6 +12501,8 @@
           alertedUntilMinutes: cf.initiator === "enemy" ? (this.getTotalInGameMinutes() + ((this.getCooldownRules().confrontation_prep || 24) * 60)) : 0,
           updatedAtMinutes: this.getTotalInGameMinutes()
         };
+        // Saved at once: reloading cannot roll preparations back to a fresh start.
+        this.queueAutosave();
       }
 
       clearConfrontationState(spec) {
@@ -12718,6 +12836,7 @@
       updateCombatUI() {
         const c = this.combatSession;
         if (!c) return;
+        this.queueAutosave();
         const p = this.state.player;
         document.getElementById("combat-player-name").innerText = p.name;
         document.getElementById("combat-player-archetype").innerText = `${this.getHeroIdentityLine()} (AC: ${this.getPlayerArmorClass()})`;
@@ -13292,7 +13411,7 @@
           this.setNpcDisposition(npcId, Math.min(this.getNpcDisposition(npcId), -60));
           this.setNpcAbsent(npcId, 24);
         }
-        this.logTranscript("Mercy", `You lower your weapon. ${c.enemy.name} staggers away to tend their wounds and will not soon forget this.`, "entry-consequence");
+        this.logTranscript("Mercy", `You ${this.hasEquippedWeapon() ? "lower your weapon" : "lower your fists"}. ${c.enemy.name} staggers away to tend their wounds and will not soon forget this.`, "entry-consequence");
         this.autosave();
         this.renderAll();
       }
@@ -16673,6 +16792,8 @@
         if (!w.challengeStates[challengeKey]) {
           const seed = ((Date.now() ^ Math.floor(Math.random() * 0x7fffffff) ^ (this.getTotalInGameMinutes() * 2654435761)) >>> 0) || 1;
           w.challengeStates[challengeKey] = { seed, state: seed, layout: null };
+          // Persist the freshly rolled challenge straight away so a reload cannot reroll it.
+          this.queueAutosave();
         }
         return w.challengeStates[challengeKey];
       }
