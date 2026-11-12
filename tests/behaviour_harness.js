@@ -106,7 +106,38 @@ async function bootEngine(env) {
   const engine = new env.Engine();
   env.sandbox.engine = engine;
   await engine.init();
+  registerTestFixtures(engine);
   env.flushTimers();
+  return engine;
+}
+
+/**
+ * The original Developer campaign is frozen as a hidden test fixture (campaign_dev_legacy) so the
+ * regression tests keep a stable world while the playable Dev campaign can change freely.
+ */
+const LEGACY_DEV_MANIFEST = 'content/campaigns/fixtures/dev_legacy/campaign.json';
+function registerTestFixtures(engine) {
+  engine.registerCampaign(JSON.parse(fs.readFileSync(path.join(ROOT, LEGACY_DEV_MANIFEST), 'utf8')));
+}
+
+/** Synchronously load the legacy Dev fixture content into an engine (no fetch, no game started). */
+function loadLegacyDevContent(engine) {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, LEGACY_DEV_MANIFEST), 'utf8'));
+  const read = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
+  const m = manifest.modules;
+  const enc = read(m.encounters);
+  const catalog = (paths, key) => { const byId = new Map(); [].concat(paths || []).forEach(p => (read(p)[key] || []).forEach(e => byId.set(e.id, e))); return [...byId.values()]; };
+  const data = {
+    locations: read(m.locations).locations, characters: read(m.characters).characters, creatures: read(m.creatures).creatures,
+    items: read(m.items).items, lootTables: read(m.lootTables).lootTables, interactiveObjects: read(m.interactiveObjects).interactiveObjects,
+    factions: read(m.factions).factions, events: read(m.events).events, quests: read(m.quests).quests,
+    encounters: enc.encounters, randomEncounters: enc.randomEncounters, dialogues: read(m.dialogues).dialogues,
+    classes: catalog(m.classes, 'classes'), backgrounds: catalog(m.backgrounds, 'backgrounds'),
+    origins: catalog(m.origins, 'origins'), traits: catalog(m.traits, 'traits')
+  };
+  engine.registerCampaign(manifest);
+  engine.activeCampaignId = manifest.id;
+  engine.applyCampaignContent(manifest, data);
   return engine;
 }
 
@@ -126,4 +157,4 @@ async function startCampaign(env, engine, campaignId, opts = {}) {
   return engine;
 }
 
-module.exports = { createSandbox, bootEngine, startCampaign, ROOT };
+module.exports = { createSandbox, bootEngine, startCampaign, loadLegacyDevContent, ROOT, LEGACY_DEV_MANIFEST };

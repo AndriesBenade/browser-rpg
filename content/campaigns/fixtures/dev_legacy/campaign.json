@@ -1,0 +1,169 @@
+{
+  "id": "campaign_dev_legacy",
+  "name": "Legacy Dev Fixture (tests only)",
+  "version": "1.0.0",
+  "engineVersion": ">=1.0.0",
+  "author": "Engine Systems Architect",
+  "description": "Frozen copy of the original Developer Verification Campaign, kept for the automated regression tests. Hidden from the campaign list.",
+  "genre": "fantasy_sandbox",
+  "isDefault": false,
+  "isTestCampaign": true,
+  "startingLocationId": "loc_dev_haven",
+  "startingTime": {
+    "hour": 9,
+    "minute": 0,
+    "day": 1,
+    "month": 1,
+    "year": 1
+  },
+  "modules": {
+    "locations": "content/campaigns/fixtures/dev_legacy/world/locations.json",
+    "characters": "content/campaigns/fixtures/dev_legacy/world/characters.json",
+    "creatures": "content/campaigns/fixtures/dev_legacy/world/creatures.json",
+    "items": "content/campaigns/fixtures/dev_legacy/world/items.json",
+    "lootTables": "content/campaigns/fixtures/dev_legacy/world/loot_tables.json",
+    "interactiveObjects": "content/campaigns/fixtures/dev_legacy/world/interactive_objects.json",
+    "classes": "content/campaigns/fixtures/dev_legacy/world/classes.json",
+    "backgrounds": "content/campaigns/fixtures/dev_legacy/world/backgrounds.json",
+    "factions": "content/campaigns/fixtures/dev_legacy/world/factions.json",
+    "quests": "content/campaigns/fixtures/dev_legacy/world/quests.json",
+    "encounters": "content/campaigns/fixtures/dev_legacy/world/encounters.json",
+    "dialogues": "content/campaigns/fixtures/dev_legacy/world/dialogues.json",
+    "events": "content/campaigns/fixtures/dev_legacy/world/events.json",
+    "origins": [
+      "content/shared/origins.json",
+      "content/campaigns/fixtures/dev_legacy/world/origins.json"
+    ],
+    "traits": [
+      "content/shared/traits.json"
+    ]
+  },
+  "law": {
+    "guardFactions": [
+      "faction_dev_guards"
+    ],
+    "fineBase": 25,
+    "finePerOffence": 15,
+    "jailHours": 24,
+    "jailLocationId": "loc_dev_haven"
+  },
+  "activityDurations": {
+    "travel": "connection",
+    "combat": 15,
+    "rest_short": 60,
+    "rest_sacred": 120,
+    "rest_long": 480,
+    "crafting": 120,
+    "hunting": 90,
+    "foraging": 45,
+    "investigation": 30,
+    "social_interaction": 15,
+    "dialogue": 5
+  },
+  "respawnRules": {
+    "creatureNormalHours": 12,
+    "creatureRareHours": 48,
+    "bossHours": 24,
+    "preventNpcRespawn": true
+  },
+  "moralityConfig": {
+    "enabled": true,
+    "virtueLabel": "Virtue & Honor",
+    "hubrisLabel": "Infamy & Corruption",
+    "tiers": {
+      "heroic": 30,
+      "pragmatic": -15,
+      "ruthless": -40,
+      "villainous": -100
+    }
+  },
+  "factions": [
+    {
+      "id": "faction_dev_haven",
+      "name": "Haven Free Citizens",
+      "description": "Townsfolk, traders, and artisans of the Haven settlement.",
+      "defaultReputation": 15
+    },
+    {
+      "id": "faction_dev_guards",
+      "name": "Haven Town Watch",
+      "description": "Armed constabulary enforcing law, order, and tax collection in Haven.",
+      "defaultReputation": 10
+    },
+    {
+      "id": "faction_dev_outlaws",
+      "name": "Shadow Syndicate",
+      "description": "Renegades, smugglers, and bandits operating from the ruined crypt.",
+      "defaultReputation": -30
+    }
+  ],
+  "consequenceRules": [
+    {
+      "id": "rule_merchant_murder",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_dev_merchant_lycus"
+      },
+      "outcomes": {
+        "setFlags": {
+          "merchant_lycus_dead": true,
+          "haven_shop_closed": true
+        },
+        "modifyReputation": {
+          "faction_dev_haven": -50,
+          "faction_dev_guards": -60
+        },
+        "failQuest": "quest_dev_merchant_delivery",
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Merchant Lycus falls dead in a pool of blood! The shop's heavy iron shutters slam shut permanently. Word spreads rapidly: Haven Watch Captain is conducting a murder investigation!",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Murder of Merchant Lycus",
+          "text": "Slew the prominent Haven merchant Lycus. The shop is shuttered and the town watch is on high alert."
+        },
+        "scheduleEvent": {
+          "id": "event_curfew",
+          "delayHours": 4,
+          "title": "Haven Watch Curfew Enforced",
+          "text": "Town watch horns sound across Haven! Dusk curfew is enforced following Merchant Lycus' murder.",
+          "setFlags": {
+            "dev_haven_curfew_active": true
+          }
+        }
+      }
+    },
+    {
+      "id": "rule_questgiver_murder",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_dev_elena_scholar"
+      },
+      "outcomes": {
+        "setFlags": {
+          "elena_scholar_dead": true
+        },
+        "modifyReputation": {
+          "faction_dev_haven": -30
+        },
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Scholar Elena drops lifeless. Her research journal rolls across the floor. You can search her body to discover the notes she was guarding, unlocking an alternate path for the Sunstone quest!",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Death of Scholar Elena",
+          "text": "Scholar Elena was slain. Her research notes on the Sunstone can be retrieved directly from her belongings."
+        }
+      }
+    }
+  ],
+  "settings": {
+    "allowAnyEntityCombat": true,
+    "lockpickingEnabled": true,
+    "randomEncountersEnabled": true,
+    "livingWorldSimulation": true
+  },
+  "hidden": true
+}

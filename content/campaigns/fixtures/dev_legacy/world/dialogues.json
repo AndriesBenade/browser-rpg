@@ -1,0 +1,310 @@
+{
+  "dialogues": {
+    "dialogue_dev_lycus": {
+      "greeting": "Welcome to my stall, traveler! Lycus has the finest goods in Haven - durable lockpicks, healing draughts, and hearty rations.",
+      "nodes": {
+        "root": {
+          "text": "Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.",
+          "choices": [
+            { "label": "Show me what you have for sale.", "target": "node_browse" },
+            {
+              "label": "Any work for a wandering hero?",
+              "target": "node_quest",
+              "condition": { "questNotStarted": "quest_dev_merchant_delivery" }
+            },
+            {
+              "label": "Your parcel reached the Watch Post.",
+              "target": "node_paid",
+              "condition": {
+                "questStage": { "questId": "quest_dev_merchant_delivery", "stage": "return_lycus" }
+              }
+            },
+            {
+              "label": "Heard anything worth knowing, friend?",
+              "target": "node_rumour",
+              "condition": { "minStanding": "friendly" }
+            },
+            { "label": "Farewell, Lycus.", "target": "exit" }
+          ]
+        },
+        "node_browse": {
+          "text": "Inspect my goods freely! Everything is guaranteed genuine Haven quality.",
+          "openTrade": true,
+          "choices": [
+            { "label": "Back to inquiries.", "target": "root" }
+          ]
+        },
+        "node_quest": {
+          "text": "Take this sealed parcel to Captain Valerius at the Watch Post. Bring me word it arrived and I will pay you well.",
+          "setFlags": { "accepted_lycus_contract": true },
+          "startQuest": "quest_dev_merchant_delivery",
+          "giveItem": "item_dev_trade_parcel",
+          "choices": [
+            { "label": "I'll see it delivered.", "target": "root" }
+          ]
+        },
+        "node_paid": {
+          "text": "Delivered and signed for! Here is your fee, as promised. Haven needs more couriers like you.",
+          "completeQuest": "quest_dev_merchant_delivery",
+          "choices": [
+            { "label": "A pleasure doing business.", "target": "root" }
+          ]
+        },
+        "node_rumour": {
+          "text": "Between friends? The Captain keeps the brass key to the High Vault on his own belt. Earn his trust and he might lend it; cross him and the Watch will hang you.",
+          "addJournalKnowledge": {
+            "title": "The Vault Key",
+            "text": "Lycus says Captain Valerius carries the High Vault key. A trusted friend of the Watch might be given access."
+          },
+          "choices": [
+            { "label": "Good to know.", "target": "root" }
+          ],
+          "revealRumour": "loc_dev_obsidian_crag"
+        }
+      }
+    },
+    "dialogue_dev_captain": {
+      "greeting": "Halt and declare your business in Haven. The Watch keeps a sharp eye on all strangers.",
+      "nodes": {
+        "root": {
+          "text": "Captain Valerius stands rigid in iron chainmail, eyeing you with professional scrutiny.",
+          "choices": [
+            {
+              "label": "I heard there is a bounty on wild boars.",
+              "target": "node_boar_bounty",
+              "condition": { "questNotStarted": "quest_dev_boar_menace" }
+            },
+            {
+              "label": "The boar is dead. About that bounty...",
+              "target": "node_boar_paid",
+              "condition": {
+                "questStage": { "questId": "quest_dev_boar_menace", "stage": "return_captain" }
+              }
+            },
+            {
+              "label": "Lycus sent this parcel for the Watch.",
+              "target": "node_parcel",
+              "condition": { "hasItem": "item_dev_trade_parcel", "questActive": "quest_dev_merchant_delivery" }
+            },
+            {
+              "label": "Any urgent matters for the Watch?",
+              "target": "node_rescue_brief",
+              "condition": { "questNotStarted": "quest_dev_urgent_rescue" }
+            },
+            {
+              "label": "The apprentice is safe in Haven.",
+              "target": "node_rescue_done",
+              "condition": {
+                "questStage": { "questId": "quest_dev_urgent_rescue", "stage": "return_haven" }
+              }
+            },
+            { "label": "Has anyone breached the High Vault recently?", "target": "node_vault_warning" },
+            {
+              "label": "Could the Watch trust me with the High Vault key?",
+              "target": "node_vault_trust",
+              "condition": {
+                "minStanding": "trusted",
+                "notHasItem": "item_dev_treasury_key",
+                "flag": "treasury_door_unlocked",
+                "expected": false
+              }
+            },
+            { "label": "As you were, Captain.", "target": "exit" }
+          ]
+        },
+        "node_boar_bounty": {
+          "text": "Indeed. The bristle boars in the Whispering Woods have grown bold and aggressive. Bring one down and Haven will pay you in good silver.",
+          "startQuest": "quest_dev_boar_menace",
+          "choices": [
+            { "label": "Consider it done.", "target": "root" }
+          ]
+        },
+        "node_vault_warning": {
+          "text": "The High Vault is sealed under strict Watch decree. Anyone caught tampering with the iron lock will face immediate execution. Do not test our patience.",
+          "choices": [
+            { "label": "Understood, Captain.", "target": "root" }
+          ]
+        },
+        "node_boar_paid": {
+          "text": "So the beast is down? Good work. Haven pays its debts. Here is your bounty.",
+          "completeQuest": "quest_dev_boar_menace",
+          "choices": [
+            { "label": "Glad to help.", "target": "root" }
+          ]
+        },
+        "node_parcel": {
+          "text": "Ah, Lycus' delivery: lamp oil and bandages for the Watch. Tell him it arrived in good order.",
+          "consumeItem": "item_dev_trade_parcel",
+          "updateQuest": { "questId": "quest_dev_merchant_delivery", "objectiveId": "obj_carry_goods", "completed": true },
+          "choices": [
+            { "label": "I'll tell him.", "target": "root" }
+          ]
+        },
+        "node_rescue_brief": {
+          "text": "Beasts from the Obsidian Crags dragged off an apprentice artificer two nights ago. If they move the poor soul deeper, we'll never find them. Two days, no more. Go!",
+          "startQuest": "quest_dev_urgent_rescue",
+          "discoverLocation": "loc_dev_obsidian_crag",
+          "choices": [
+            { "label": "I'm on my way.", "target": "root" }
+          ]
+        },
+        "node_rescue_done": {
+          "text": "Alive and home! You have the thanks of the Watch, and its silver.",
+          "completeQuest": "quest_dev_urgent_rescue",
+          "choices": [
+            { "label": "All in a day's work.", "target": "root" }
+          ]
+        },
+        "node_vault_trust": {
+          "text": "You have earned the Watch's trust. Take the key. Whatever you find in the vault, the town's share stays the town's.",
+          "giveItem": "item_dev_treasury_key",
+          "choices": [
+            { "label": "You have my word.", "target": "root" }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_elena": {
+      "greeting": "Greetings, traveler. If you have an eye for ancient history, pray lend your ear to my inquiry.",
+      "nodes": {
+        "root": {
+          "text": "Elena adjusts her spectacles and unrolls a map of the Sunken Crypt.",
+          "choices": [
+            { "label": "Tell me of this Sunstone you seek.", "target": "node_sunstone_lore" },
+            {
+              "label": "I will venture into the crypt for you.",
+              "target": "node_accept_sunstone",
+              "condition": {
+                "flag": "accepted_sunstone_task",
+                "expected": false,
+                "questNotDone": true,
+                "questId": "quest_dev_sunstone_relic"
+              }
+            },
+            {
+              "label": "I have recovered the Sunstone!",
+              "target": "node_complete_sunstone",
+              "condition": { "hasItem": "item_dev_sunstone_relic", "questNotDone": true, "questId": "quest_dev_sunstone_relic" }
+            },
+            {
+              "label": "Do you know anything about the old monoliths?",
+              "target": "node_monoliths",
+              "condition": { "questNotStarted": "quest_dev_ancient_ruins" }
+            },
+            { "label": "Until later, Elena.", "target": "exit" }
+          ]
+        },
+        "node_sunstone_lore": {
+          "text": "Centuries ago, Lord Karas drew down solar fire into a radiant amber stone. When his dynasty fell, he was entombed with it in the Sunken Crypt. I seek it to restore Haven's lost chronicles.",
+          "choices": [
+            { "label": "A noble goal.", "target": "root" }
+          ]
+        },
+        "node_accept_sunstone": {
+          "text": "May the light guide your blade! The crypt lies southeast of Haven. Beware the guardian Karas; death has not dulled his steel.",
+          "startQuest": "quest_dev_sunstone_relic",
+          "choices": [
+            { "label": "I will return with the relic.", "target": "root" }
+          ],
+          "setFlags": { "accepted_sunstone_task": true },
+          "updateQuest": { "questId": "quest_dev_sunstone_relic", "objectiveId": "obj_speak_elena", "completed": true }
+        },
+        "node_complete_sunstone": {
+          "text": "Unbelievable! The true Radiant Sunstone! You have achieved what a dozen expeditions failed to accomplish. Take this scholarly purse with Haven's deepest gratitude!",
+          "completeQuest": "quest_dev_sunstone_relic",
+          "consumeItem": "item_dev_sunstone_relic",
+          "giveDrachmae": 60,
+          "awardXP": 250,
+          "choices": [
+            { "label": "It was my honor, Elena.", "target": "root" }
+          ]
+        },
+        "node_monoliths": {
+          "text": "Weathered standing stones dot the Whispering Woods, carved with runes older than Haven. Copy an inscription for me if you pass one; there is no hurry.",
+          "startQuest": "quest_dev_ancient_ruins",
+          "choices": [
+            { "label": "I'll keep an eye out.", "target": "root" }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_bandit": {
+      "greeting": "Step lightly, traveler. These woods belong to those swift enough to take what they want.",
+      "nodes": {
+        "root": {
+          "text": "Silas twirls a wicked hunting dagger between scarred knuckles.",
+          "choices": [
+            { "label": "Stand down, or taste cold steel.", "target": "node_threat" },
+            { "label": "What do you know of the hidden grotto nearby?", "target": "node_grotto_hint" },
+            {
+              "label": "You look like a man with a proposition.",
+              "target": "node_bargain",
+              "condition": { "questNotStarted": "quest_dev_bandit_alliance" }
+            },
+            {
+              "label": "About your bargain...",
+              "target": "node_bargain",
+              "condition": { "questActive": "quest_dev_bandit_alliance" }
+            },
+            { "label": "I'm moving on.", "target": "exit" }
+          ]
+        },
+        "node_threat": {
+          "text": "Big words for a stranger far from the safety of Haven's walls! Walk away while your purse is still in your belt.",
+          "choices": [
+            { "label": "Back down.", "target": "root" }
+          ]
+        },
+        "node_grotto_hint": {
+          "text": "Follow the overgrown fern trail east until you hit the cliff. There's a colossal granite boulder blocking a cave. Move the stone, and you'll find where the ancients washed silver.",
+          "addJournalKnowledge": {
+            "title": "Silas' Clue to the Grotto",
+            "text": "Silas mentioned a huge granite boulder in the woods sealing a subterranean silver cavern."
+          },
+          "choices": [
+            { "label": "A useful secret.", "target": "root" }
+          ],
+          "startQuest": "quest_dev_grotto_mystery"
+        },
+        "node_bargain": {
+          "text": "Sharp eyes. The Watch wants my head; Valerius most of all. Turn me in and be a hero, take my silver and forget you saw me... or help me put the Captain in the ground, and the Syndicate will remember you.",
+          "startQuest": "quest_dev_bandit_alliance",
+          "choices": [
+            { "label": "You're coming with me to the Watch.", "target": "node_arrest" },
+            { "label": "Your silver, my silence.", "target": "node_bribe" },
+            { "label": "The Captain is in our way. I'm in.", "target": "node_ally" },
+            { "label": "I need time to think.", "target": "root" }
+          ]
+        },
+        "node_arrest": {
+          "text": "Silas spits, but sees your blade and raises his hands. You march him to the Watch Post in irons.",
+          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "heroic" },
+          "removeCharacter": "npc_dev_bandit_renegade",
+          "setFlags": { "silas_arrested": true },
+          "disposition": { "npc_dev_guard_captain": 10 },
+          "choices": [
+            { "label": "Justice is served.", "target": "exit" }
+          ]
+        },
+        "node_bribe": {
+          "text": "A heavy purse lands in your palm. \"We never met,\" Silas grins.",
+          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "pragmatic" },
+          "disposition": 15,
+          "choices": [
+            { "label": "We never met.", "target": "exit" }
+          ]
+        },
+        "node_ally": {
+          "text": "\"Ha! I knew it.\" Silas presses a Syndicate token into your hand. Word of your pact will not stay secret for long; the Watch will treat you as an enemy.",
+          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "villainous" },
+          "disposition": { "npc_dev_bandit_renegade": 30, "npc_dev_guard_captain": -40 },
+          "setFlags": { "silas_pact": true },
+          "choices": [
+            { "label": "Let them come.", "target": "exit" }
+          ],
+          "recruitCompanion": "npc_dev_bandit_renegade"
+        }
+      }
+    }
+  }
+}

@@ -1,27 +1,39 @@
 {
   "origins": [
     {
-      "id": "haven_born",
-      "name": "Haven-Born",
-      "description": "Raised behind the palisades of Haven of the Crossways.",
-      "perks": "+1 Persuasion • Trusted by the Haven citizens",
+      "id": "dev_ford_born",
+      "name": "Ford-Born",
+      "description": "Born within earshot of the ferry bell.",
+      "perks": "+1 Persuasion • +5 standing with the Brindle Folk",
       "skills": {
         "persuasion": 1
       },
       "reputation": {
-        "faction_dev_haven": 5
+        "faction_dev_brindle": 5
       }
     },
     {
-      "id": "frontier_raised",
-      "name": "Frontier-Raised",
-      "description": "Grew up in the woods and crags beyond the town walls.",
+      "id": "dev_fen_raised",
+      "name": "Fen-Raised",
+      "description": "Grew up on stilts above the Old Moss.",
       "perks": "+1 Endurance • +1 Survival",
       "attributes": {
         "endurance": 1
       },
       "skills": {
         "survival": 1
+      }
+    },
+    {
+      "id": "dev_hive_foundling",
+      "name": "Hive Foundling",
+      "description": "Left as a baby on the Willowmere shrine steps.",
+      "perks": "+1 Medicine • +2 favour with the Hive Mother",
+      "skills": {
+        "medicine": 1
+      },
+      "piety": {
+        "hive_mother": 2
       }
     }
   ]

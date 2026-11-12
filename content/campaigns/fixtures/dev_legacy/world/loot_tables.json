@@ -1,0 +1,75 @@
+{
+  "lootTables": [
+    {
+      "id": "loot_dev_merchant_lycus",
+      "name": "Merchant Lycus Personal Possessions",
+      "currency": { "min": 35, "max": 50 },
+      "entries": [
+        { "itemId": "item_dev_iron_lockpick", "chance": 0.8, "minQuantity": 1, "maxQuantity": 3 },
+        { "itemId": "item_dev_healing_draught", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },
+        { "itemId": "item_dev_trail_rations", "chance": 0.9, "minQuantity": 2, "maxQuantity": 4 }
+      ]
+    },
+    {
+      "id": "loot_dev_guard_captain",
+      "name": "Captain Valerius Arms & Regalia",
+      "currency": { "min": 20, "max": 35 },
+      "entries": [
+        { "itemId": "item_dev_treasury_key", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item_dev_broadsword", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    },
+    {
+      "id": "loot_dev_scholar_elena",
+      "name": "Scholar Elena Satchel & Notes",
+      "currency": { "min": 10, "max": 20 },
+      "entries": [
+        { "itemId": "item_dev_elena_journal", "chance": 1.0, "guaranteed": true, "isUnique": true, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    },
+    {
+      "id": "loot_dev_bandit",
+      "name": "Renegade Silas Stash",
+      "currency": { "min": 12, "max": 25 },
+      "entries": [
+        { "itemId": "item_dev_iron_lockpick", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item_dev_trail_rations", "chance": 0.75, "minQuantity": 1, "maxQuantity": 2 }
+      ]
+    },
+    {
+      "id": "loot_dev_wild_boar",
+      "name": "Wild Boar Spoils",
+      "entries": [
+        { "itemId": "item_dev_boar_meat", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 2 },
+        { "itemId": "item_dev_boar_tusk", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 }
+      ]
+    },
+    {
+      "id": "loot_dev_forest_wolf",
+      "name": "Wolf Pelts & Bones",
+      "entries": [
+        { "itemId": "item_dev_wolf_pelt", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    },
+    {
+      "id": "loot_dev_shadow_stalker",
+      "name": "Shadow Stalker Crystals",
+      "currency": { "min": 25, "max": 40 },
+      "entries": [
+        { "itemId": "item_dev_chthonic_crystal", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    },
+    {
+      "id": "loot_dev_crypt_boss",
+      "name": "Lord Karas Sepulcher Spoils",
+      "currency": { "min": 80, "max": 120 },
+      "entries": [
+        { "itemId": "item_dev_sunstone_relic", "chance": 1.0, "guaranteed": true, "isUnique": true, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "repeatCurrency": { "min": 35, "max": 50 },
+      "repeatEntries": [
+        { "itemId": "item_dev_healing_draught", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "materials": [
+    {
+      "id": "mat_dev_river_iron",
+      "name": "River Iron Bar",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 1.2,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 7,
+        "durability": 7,
+        "flexibility": 3,
+        "heatResistance": 7,
+        "magicalAffinity": 1,
+        "purity": 70
+      },
+      "compatibleProfessions": [
+        "dev_tinkering"
+      ],
+      "statModifiers": {
+        "damage": 1,
+        "defense": 1
+      },
+      "description": "Bog iron smelted on the riverbank. Brittle if you rush it."
+    },
+    {
+      "id": "mat_dev_driftwood",
+      "name": "Seasoned Driftwood",
+      "category": "wood",
+      "rarity": "common",
+      "weightKg": 0.8,
+      "valueDrachmae": 3,
+      "properties": {
+        "hardness": 4,
+        "durability": 5,
+        "flexibility": 6,
+        "heatResistance": 2,
+        "magicalAffinity": 2,
+        "purity": 60
+      },
+      "compatibleProfessions": [
+        "dev_tinkering",
+        "dev_leatherwork"
+      ],
+      "statModifiers": {},
+      "description": "Salt-hardened timber from the Saltreed strand."
+    },
+    {
+      "id": "mat_dev_bear_hide",
+      "name": "Bristle Bear Hide",
+      "category": "hide",
+      "rarity": "uncommon",
+      "weightKg": 2.0,
+      "valueDrachmae": 14,
+      "properties": {
+        "hardness": 4,
+        "durability": 8,
+        "flexibility": 6,
+        "heatResistance": 4,
+        "magicalAffinity": 2,
+        "purity": 75
+      },
+      "compatibleProfessions": [
+        "dev_leatherwork"
+      ],
+      "statModifiers": {
+        "defense": 2
+      },
+      "description": "Coarse, thick and almost arrow-proof."
+    },
+    {
+      "id": "mat_dev_eel_skin",
+      "name": "Cured Eel-Skin",
+      "category": "hide",
+      "rarity": "common",
+      "weightKg": 0.4,
+      "valueDrachmae": 6,
+      "properties": {
+        "hardness": 2,
+        "durability": 6,
+        "flexibility": 9,
+        "heatResistance": 3,
+        "magicalAffinity": 1,
+        "purity": 70
+      },
+      "compatibleProfessions": [
+        "dev_leatherwork"
+      ],
+      "statModifiers": {},
+      "description": "Supple and waterproof. Smells faintly of smoke."
+    },
+    {
+      "id": "mat_dev_yarrow",
+      "name": "Bundle of Yarrow",
+      "category": "herb",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 3,
+      "properties": {
+        "hardness": 1,
+        "durability": 2,
+        "flexibility": 8,
+        "heatResistance": 1,
+        "magicalAffinity": 4,
+        "purity": 80
+      },
+      "compatibleProfessions": [
+        "dev_herbalism"
+      ],
+      "statModifiers": {},
+      "description": "Feathery leaves that stop bleeding."
+    },
+    {
+      "id": "mat_dev_bog_myrtle",
+      "name": "Sprig of Bog Myrtle",
+      "category": "herb",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 3,
+      "properties": {
+        "hardness": 1,
+        "durability": 2,
+        "flexibility": 8,
+        "heatResistance": 1,
+        "magicalAffinity": 6,
+        "purity": 80
+      },
+      "compatibleProfessions": [
+        "dev_herbalism"
+      ],
+      "statModifiers": {},
+      "description": "Resinous and sharp. Keeps midges off and spirits up."
+    },
+    {
+      "id": "mat_dev_beeswax",
+      "name": "Block of Willowmere Beeswax",
+      "category": "supplement",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 5,
+      "properties": {
+        "hardness": 2,
+        "durability": 4,
+        "flexibility": 7,
+        "heatResistance": 2,
+        "magicalAffinity": 5,
+        "purity": 90
+      },
+      "compatibleProfessions": [
+        "dev_herbalism",
+        "dev_leatherwork",
+        "dev_tinkering"
+      ],
+      "statModifiers": {},
+      "description": "Seals, binds and soothes."
+    },
+    {
+      "id": "mat_dev_wisp_glass",
+      "name": "Shard of Wisp-Glass",
+      "category": "crystal",
+      "rarity": "rare",
+      "weightKg": 0.1,
+      "valueDrachmae": 25,
+      "properties": {
+        "hardness": 8,
+        "durability": 6,
+        "flexibility": 1,
+        "heatResistance": 9,
+        "magicalAffinity": 12,
+        "purity": 95
+      },
+      "compatibleProfessions": [
+        "dev_tinkering",
+        "dev_herbalism"
+      ],
+      "statModifiers": {
+        "damage": 1
+      },
+      "description": "Glass that formed where a wisp burned out. Faintly warm."
+    }
+  ]
+}

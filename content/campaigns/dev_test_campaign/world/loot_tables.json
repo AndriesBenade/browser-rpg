@@ -1,74 +1,373 @@
 {
   "lootTables": [
     {
-      "id": "loot_dev_merchant_lycus",
-      "name": "Merchant Lycus Personal Possessions",
-      "currency": { "min": 35, "max": 50 },
+      "id": "loot_dev_sparring_golem",
+      "name": "Golem Scraps",
       "entries": [
-        { "itemId": "item_dev_iron_lockpick", "chance": 0.8, "minQuantity": 1, "maxQuantity": 3 },
-        { "itemId": "item_dev_healing_draught", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item_dev_trail_rations", "chance": 0.9, "minQuantity": 2, "maxQuantity": 4 }
+        {
+          "itemId": "mat_dev_driftwood",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ]
     },
     {
-      "id": "loot_dev_guard_captain",
-      "name": "Captain Valerius Arms & Regalia",
-      "currency": { "min": 20, "max": 35 },
+      "id": "loot_dev_fogback_lurker",
+      "name": "Lurker Remains",
+      "currency": {
+        "min": 3,
+        "max": 8
+      },
       "entries": [
-        { "itemId": "item_dev_treasury_key", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item_dev_broadsword", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item_dev_lurker_gland",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        },
+        {
+          "itemId": "mat_dev_eel_skin",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     },
     {
-      "id": "loot_dev_scholar_elena",
-      "name": "Scholar Elena Satchel & Notes",
-      "currency": { "min": 10, "max": 20 },
+      "id": "loot_dev_wisp",
+      "name": "Wisp Ashes",
       "entries": [
-        { "itemId": "item_dev_elena_journal", "chance": 1.0, "guaranteed": true, "isUnique": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "mat_dev_wisp_glass",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     },
     {
-      "id": "loot_dev_bandit",
-      "name": "Renegade Silas Stash",
-      "currency": { "min": 12, "max": 25 },
+      "id": "loot_dev_reef_crab",
+      "name": "Crab Spoils",
       "entries": [
-        { "itemId": "item_dev_iron_lockpick", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item_dev_trail_rations", "chance": 0.75, "minQuantity": 1, "maxQuantity": 2 }
+        {
+          "itemId": "item_dev_pearl",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_dev_hare_haunch",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     },
     {
-      "id": "loot_dev_wild_boar",
-      "name": "Wild Boar Spoils",
+      "id": "loot_dev_bristle_bear",
+      "name": "Bear Spoils",
       "entries": [
-        { "itemId": "item_dev_boar_meat", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item_dev_boar_tusk", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 }
+        {
+          "itemId": "mat_dev_bear_hide",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        },
+        {
+          "itemId": "item_dev_bear_claw",
+          "chance": 0.8,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ]
     },
     {
-      "id": "loot_dev_forest_wolf",
-      "name": "Wolf Pelts & Bones",
+      "id": "loot_dev_gryphon",
+      "name": "Gryphon Nest",
+      "currency": {
+        "min": 15,
+        "max": 30
+      },
       "entries": [
-        { "itemId": "item_dev_wolf_pelt", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item_dev_gryphon_feather",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        },
+        {
+          "itemId": "item_dev_wisp_ring",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     },
     {
-      "id": "loot_dev_shadow_stalker",
-      "name": "Shadow Stalker Crystals",
-      "currency": { "min": 25, "max": 40 },
+      "id": "loot_dev_smuggler",
+      "name": "Smuggler's Pockets",
+      "currency": {
+        "min": 6,
+        "max": 14
+      },
       "entries": [
-        { "itemId": "item_dev_chthonic_crystal", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item_dev_smuggled_brandy",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_dev_lockpick_roll",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     },
     {
-      "id": "loot_dev_crypt_boss",
-      "name": "Lord Karas Sepulcher Spoils",
-      "currency": { "min": 80, "max": 120 },
+      "id": "loot_dev_drowned_keeper",
+      "name": "The Keeper's Hoard",
+      "currency": {
+        "min": 40,
+        "max": 70
+      },
       "entries": [
-        { "itemId": "item_dev_sunstone_relic", "chance": 1.0, "guaranteed": true, "isUnique": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item_dev_everflame_wick",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        },
+        {
+          "itemId": "item_dev_keepers_logbook",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        },
+        {
+          "itemId": "item_dev_keeper_coat",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        }
       ],
-      "repeatCurrency": { "min": 35, "max": 50 },
+      "repeatCurrency": {
+        "min": 20,
+        "max": 35
+      },
       "repeatEntries": [
-        { "itemId": "item_dev_healing_draught", "chance": 1.0, "guaranteed": true, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item_dev_healing_tonic",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        },
+        {
+          "itemId": "item_dev_pearl",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_smuggler_crates",
+      "name": "Smuggled Goods",
+      "currency": {
+        "min": 10,
+        "max": 20
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_smuggled_brandy",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 3,
+          "guaranteed": true
+        },
+        {
+          "itemId": "item_dev_fog_cloak",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        },
+        {
+          "itemId": "item_dev_pearl",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_reliquary",
+      "name": "Chapel Reliquary",
+      "currency": {
+        "min": 5,
+        "max": 10
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_chapel_censer",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        },
+        {
+          "itemId": "item_dev_lighthouse_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_tamsin",
+      "name": "Tamsin's Apron",
+      "currency": {
+        "min": 20,
+        "max": 35
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_healing_tonic",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_dev_honey_cake",
+          "chance": 0.9,
+          "minQuantity": 1,
+          "maxQuantity": 3
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_odile",
+      "name": "Examiner's Satchel",
+      "currency": {
+        "min": 10,
+        "max": 18
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_practice_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        },
+        {
+          "itemId": "item_dev_guild_whistle",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_garrow",
+      "name": "Captain's Belt",
+      "currency": {
+        "min": 15,
+        "max": 25
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_lighthouse_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true,
+          "isUnique": true
+        },
+        {
+          "itemId": "item_dev_watch_falchion",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "guaranteed": true
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_fennick",
+      "name": "Fennick's Many Pockets",
+      "currency": {
+        "min": 12,
+        "max": 24
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_lockpick_roll",
+          "chance": 0.8,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_dev_smuggled_brandy",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_watchman",
+      "name": "Watchman's Kit",
+      "currency": {
+        "min": 4,
+        "max": 10
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_tin_helm",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_dev_honey_cake",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_dev_villager",
+      "name": "A Few Belongings",
+      "currency": {
+        "min": 2,
+        "max": 8
+      },
+      "entries": [
+        {
+          "itemId": "item_dev_honey_cake",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ]
     }
   ]

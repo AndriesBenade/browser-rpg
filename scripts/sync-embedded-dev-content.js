@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Regenerates the embedded Developer Verification campaign content inside index.html
- * (`loadEmbeddedDevTestContent()`, used when the game is opened from file:// and fetch is blocked)
- * from the JSON files in content/campaigns/dev_test_campaign/world/.
+ * Regenerates the embedded copy of the Developer campaign inside index.html
+ * (`GreekMythologyEngine.EMBEDDED_DEV_CAMPAIGN`, used when the game is opened from file:// and
+ * fetch is blocked) from content/campaigns/dev_test_campaign/ (campaign.json and every module it lists).
  *
  *   node scripts/sync-embedded-dev-content.js          # rewrite index.html
  *   node scripts/sync-embedded-dev-content.js --check  # exit 1 if index.html is out of date
  *
- * Run it after editing any Dev campaign JSON file. tests/behaviour_tests.js fails when the two drift.
+ * Run it after editing any Dev campaign JSON file. `npm test` fails while the two differ.
  * No dependencies.
  */
 const fs = require('fs');
@@ -15,81 +15,63 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const HTML = path.join(ROOT, 'index.html');
-const DIR = 'content/campaigns/dev_test_campaign/world/';
-const read = (file) => JSON.parse(fs.readFileSync(path.join(ROOT, DIR, file), 'utf8'));
+const MANIFEST_PATH = 'content/campaigns/dev_test_campaign/campaign.json';
+const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 
-// engine catalog -> [json file, key inside the file]
-const WORLD = {
-  locations: ['locations.json', 'locations'],
-  characters: ['characters.json', 'characters'],
-  creatures: ['creatures.json', 'creatures'],
-  items: ['items.json', 'items'],
-  lootTables: ['loot_tables.json', 'lootTables'],
-  interactiveObjects: ['interactive_objects.json', 'interactiveObjects'],
-  factions: ['factions.json', 'factions'],
-  encounters: ['encounters.json', 'encounters'],
-  randomEncounters: ['encounters.json', 'randomEncounters'],
-  events: ['events.json', 'events'],
-  classes: ['classes.json', 'classes'],
-  backgrounds: ['backgrounds.json', 'backgrounds'],
+// module key -> key inside the JSON file (mirrors fetchModularCampaignData in index.html)
+const SINGLE = {
+  locations: 'locations', characters: 'characters', creatures: 'creatures', items: 'items',
+  lootTables: 'lootTables', interactiveObjects: 'interactiveObjects', factions: 'factions',
+  events: 'events', professions: 'professions', materials: 'materials', craftingTemplates: 'templates',
+  puzzles: 'puzzles', deities: 'deities', mythology: 'loreEntries', glossary: 'glossary', quests: 'quests'
 };
-const ADVENTURE = {
-  quests: ['quests.json', 'quests'],
-  dialogues: ['dialogues.json', 'dialogues'],
-  encounters: ['encounters.json', 'encounters'],
-};
+// Catalogs that may be one path or a list of paths, merged by id (like fetchCatalog).
+const CATALOGS = ['classes', 'backgrounds', 'origins', 'traits'];
 
-// Catalogs the Dev manifest loads from one or several (possibly shared) files: merged by id like fetchCatalog().
-const MANIFEST = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
-const fromModules = (key) => {
-  const byId = new Map();
-  [].concat(MANIFEST.modules[key] || []).forEach(p => (JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'))[key] || []).forEach(e => byId.set(e.id, e)));
-  return [...byId.values()];
-};
-const MODULE_CATALOGS = ['origins', 'traits'];
+function buildEmbedded() {
+  const manifest = readJson(MANIFEST_PATH);
+  const modules = manifest.modules || {};
+  const data = {};
+  for (const [key, prop] of Object.entries(SINGLE)) {
+    data[key] = modules[key] ? (readJson(modules[key])[prop] || []) : [];
+  }
+  const enc = modules.encounters ? readJson(modules.encounters) : {};
+  data.encounters = enc.encounters || [];
+  data.randomEncounters = enc.randomEncounters || [];
+  data.dialogues = modules.dialogues ? (readJson(modules.dialogues).dialogues || {}) : {};
+  for (const key of CATALOGS) {
+    const byId = new Map();
+    [].concat(modules[key] || []).forEach(p => (readJson(p)[key] || []).forEach(e => byId.set(e.id, e)));
+    data[key] = [...byId.values()];
+  }
+  return { manifest, data };
+}
 
+const MARK = '// @embedded-dev-campaign';
 function build(html) {
-  const start = html.indexOf('      loadEmbeddedDevTestContent() {');
-  if (start === -1) throw new Error('loadEmbeddedDevTestContent() not found in index.html');
-  const end = html.indexOf('\n      }\n', start);
-  let body = html.slice(start, end);
+  const at = html.indexOf(MARK);
+  if (at === -1) throw new Error('EMBEDDED_DEV_CAMPAIGN marker not found in index.html');
+  const lineStart = html.indexOf('\n', at) + 1;
+  const lineEnd = html.indexOf('\n', lineStart);
+  const line = `        return ${JSON.stringify(buildEmbedded())};`;
+  return html.slice(0, lineStart) + line + html.slice(lineEnd);
+}
 
-  const catalogs = Object.entries(WORLD).map(([key, [file, prop]]) => [key, read(file)[prop] || []])
-    .concat(MODULE_CATALOGS.map(key => [key, fromModules(key)]));
-  for (const [key, data] of catalogs) {
-    const json = JSON.stringify(data);
-    const line = `        this.world.${key} = ${json};`;
-    // A catalog is either a one-line JSON assignment or a multi-line literal ending in "];".
-    const re = new RegExp(`\\n        this\\.world\\.${key} = (\\[[^\\n]*\\];|\\[\\n[\\s\\S]*?\\n        \\];)`);
-    if (re.test(body)) {
-      body = body.replace(re, () => `\n${line}`);
-    } else {
-      // Not embedded yet: add it after the encounters catalog.
-      const anchor = body.match(/\n        this\.world\.encounters = [^\n]*;/);
-      if (!anchor) throw new Error(`cannot place embedded catalog ${key}`);
-      body = body.replace(anchor[0], () => `${anchor[0]}\n${line}`);
+if (require.main === module) {
+  const html = fs.readFileSync(HTML, 'utf8');
+  const updated = build(html);
+  if (process.argv.includes('--check')) {
+    if (updated !== html) {
+      console.error('index.html embedded Dev campaign is out of date. Run: node scripts/sync-embedded-dev-content.js');
+      process.exit(1);
     }
+    console.log('Embedded Dev campaign is in sync with the JSON files.');
+  } else if (updated !== html) {
+    fs.writeFileSync(HTML, updated);
+    console.log('index.html: embedded Dev campaign regenerated from JSON.');
+  } else {
+    console.log('index.html: embedded Dev campaign already up to date.');
   }
-  for (const [key, [file, prop]] of Object.entries(ADVENTURE)) {
-    const json = JSON.stringify(read(file)[prop] || (key === 'dialogues' ? {} : []));
-    const re = new RegExp(`\\n          ${key}: [^\\n]*,`);
-    if (!re.test(body)) throw new Error(`currentAdventure.${key} not found in embedded loader`);
-    body = body.replace(re, () => `\n          ${key}: ${json},`);
-  }
-  return html.slice(0, start) + body + html.slice(end);
 }
 
-const html = fs.readFileSync(HTML, 'utf8');
-const updated = build(html);
-if (process.argv.includes('--check')) {
-  if (updated !== html) {
-    console.error('index.html embedded Dev content is out of date. Run: node scripts/sync-embedded-dev-content.js');
-    process.exit(1);
-  }
-  console.log('Embedded Dev content is in sync with the JSON files.');
-} else if (updated !== html) {
-  fs.writeFileSync(HTML, updated);
-  console.log('index.html: embedded Dev content regenerated from JSON.');
-} else {
-  console.log('index.html: embedded Dev content already up to date.');
-}
+module.exports = { buildEmbedded, build };

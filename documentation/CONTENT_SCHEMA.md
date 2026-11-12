@@ -1080,3 +1080,50 @@ All keys are optional (defaults shown). Items: `noSell` / `questItem` / `categor
 * **Skill & Profession Dependencies**: `campaign.json` may declare `skillDependencies[skillName] = { "primary", "secondary", "label", "purpose" }`. `professions.json` entries accept `"secondaryAttribute"` alongside `"governingAttribute"`. Both skills and crafting add `Math.ceil(secMod / 2)` when `secMod > 0`.
 * **Feat Eligibility (`progression.feats[id]`)**: Supports `minLevel`, `minAttributes`, and `minSkills`; ineligible feats display their unmet prerequisites and cannot be selected during level-up.
 * **Content Validation Policies**: `validateCampaign()` enforces **zero `\u2014` em dashes** across `manifest` and loaded content files (Section 15), and requires combat-enabled campaigns to include at least one obtainable, early-reachable weapon (`type: "weapon"` or `main_hand`/`two_hand` slot) (Section 16).
+
+## 32. Modular Campaigns, Gameplay Events and New Content Fields (Session 20)
+
+Every campaign other than the built-in Greek one is loaded the same way (`fetchModularCampaignData` and
+`applyCampaignContent`). Each module listed in `campaign.json` is optional:
+`locations, characters, creatures, items, lootTables, interactiveObjects, factions, quests, encounters (+ randomEncounters),
+dialogues, events, puzzles, deities, mythology (loreEntries), glossary, professions, materials, craftingTemplates,
+classes, backgrounds, origins, traits`. See `content/campaigns/dev_test_campaign/` for a campaign that uses all of them.
+
+**Campaign manifest**
+* `defaultHeroName`: the name suggested in the creation wizard.
+* `startingPiety`: `{ "deity_key": n }`. A new hero's favour starts at 0 with each of the campaign's own deities (ids without `deity_`).
+* `labels`: `{ "xp", "crafting", "codex", "pantheon" }` replace the interface words for the XP counter and view titles.
+* `minigames`: names and rewards per minigame. `stalk: { title, subtitle, rewardItemId, rewardQty, perfectItemId, xp, successText, perfectText, failText }`,
+  `mortar: { title, subtitle, perfectItemId, perfectText }`, `astragaloi: { title, subtitle, deity, deityName, faceNames[4], perfectName, drachmae, castLabel }`,
+  `forge` / `shield_clash: { title, subtitle }`. Without it, non-Greek campaigns get neutral names and the first ration item as the stalk reward.
+* `cooldownRules.puzzle` (default 2 hours after a wrong answer) and `cooldownRules.action` (default 2 hours after a failed skill-check action).
+* `hidden: true` keeps a campaign out of the campaign list (used for test fixtures).
+
+**Gameplay events** (use as `trigger` in `events.json`; any other condition key must equal the payload key):
+| Trigger | Payload |
+| --- | --- |
+| `SOCIAL_SUCCESS` | `npcId`, `type` (`persuade` / `deceive`) |
+| `HIDDEN_SPOT_FOUND` | `spotId`, `locationId` |
+| `ITEM_PURCHASED` | `itemId`, `npcId`, `price` |
+| `ITEM_CRAFTED` | `itemId`, `templateId`, `professionId`, `quality` |
+| `MINIGAME_COMPLETED` | `minigame`, `success` |
+| `COMPANION_JOINED` | `npcId` |
+| `PLAYER_RESTED` | `restType` (`short` / `long` / `sacred`), `safety` (`sanctuary` / `settlement` / `wild`), `locationId` |
+| `OBJECT_OPENED` | `objectId`, `locationId` |
+Example: `{ "trigger": "PLAYER_RESTED", "conditions": { "restType": "long", "safety": "wild" }, "outcomes": { ... } }`.
+
+**Dialogue skill-check choices**: `{ "label": "...", "check": { "skill": "persuasion", "attribute": "charisma", "dc": 14, "success": "node_a", "failure": "node_b", "cooldownHours": 4, "id": "optional_key" } }`.
+`skill` may be null for a pure attribute check. A failure starts a cooldown for that choice; Persuasion and Deception
+checks also get harder after recent failures with that NPC. Successful Persuasion/Deception raises `SOCIAL_SUCCESS`.
+
+**Outcomes**: `updateQuest` and `startQuest` may be lists. Dialogue nodes also accept `inspiration`, `loseRation`, `restoreHealth`, `restoreStamina`.
+
+**Content actions**: `handlerType: "minigame"` accepts `successOutcome` / `failureOutcome`. A `skill_check` action that fails
+cannot be retried until `skillCheck.retryHours` (else `cooldownRules.action`) have passed; `retryHours: 0` turns this off.
+
+**Puzzles** (`puzzles.json`, `{ "puzzles": [...] }`): also `question`, `customAnswerLabel`, `wrongAnswerText`, `deductionFailText`.
+Wrong answers and failed deductions start the `puzzle` cooldown; a known answer (from the journal) always works.
+
+**Items**: `toolType: "lockpick"` marks a lockpicking tool (any id). **Class features**: `combat.heal` may be a number or dice (`"2d4+2"`).
+**Crafting templates**: `slot: "inventory"` with `category: "consumable"` and `restoreHealth` / `restoreStamina` make potions.
+**Professions**: optional `icon`. **Deities**: `domain`, `epithets`, `symbols`, `ancientGreek` are all optional.

@@ -1,22 +1,40 @@
 {
   "backgrounds": [
     {
-      "id": "dev_bg_haven_guard",
-      "name": "Haven Watch Veteran",
-      "category": "Martial",
-      "description": "Served three tours on the Haven palisades.",
-      "proficiencies": ["melee_combat", "athletics"],
-      "passiveBonus": "+1 Armor Class when near settlements.",
-      "dialoguePerk": "Recognized by town guards."
+      "id": "dev_bg_ferry_hand",
+      "name": "Ferry Hand",
+      "category": "River",
+      "description": "Years hauling the ferry rope across the Brindle in flood and fog.",
+      "proficiencies": [
+        "athletics",
+        "survival"
+      ],
+      "passiveBonus": "Strong back and steady feet.",
+      "dialoguePerk": "Every ferry crew in the vale knows your face."
     },
     {
-      "id": "dev_bg_frontier_trapper",
-      "name": "Frontier Trapper",
-      "category": "Wilderness",
-      "description": "Survived the dangerous crags and harvested wildlife hides.",
-      "proficiencies": ["survival", "tracking"],
-      "passiveBonus": "20% bonus resource yield when gathering.",
-      "dialoguePerk": "Can identify rare creature tracks."
+      "id": "dev_bg_hive_novice",
+      "name": "Hive Novice",
+      "category": "Faith",
+      "description": "Raised among the Hive Sisters; you know your herbs and your manners.",
+      "proficiencies": [
+        "medicine",
+        "persuasion"
+      ],
+      "passiveBonus": "Remedies come easily to you.",
+      "dialoguePerk": "The Sisters treat you as family."
+    },
+    {
+      "id": "dev_bg_dockside_runner",
+      "name": "Dockside Runner",
+      "category": "Streetwise",
+      "description": "Carried messages, and sometimes other people's purses, along the Saltreed docks.",
+      "proficiencies": [
+        "stealth",
+        "deception"
+      ],
+      "passiveBonus": "Quick hands, quicker excuses.",
+      "dialoguePerk": "Smugglers assume you are one of them."
     }
   ]
 }

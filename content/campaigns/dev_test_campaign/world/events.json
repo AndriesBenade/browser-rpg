@@ -1,32 +1,253 @@
 {
   "events": [
     {
-      "id": "event_dev_guard_alert",
-      "name": "Haven Guard Murder Investigation",
-      "trigger": "FLAG_SET",
-      "conditions": { "flag": "merchant_lycus_dead", "expected": true },
+      "id": "event_dev_trial_word",
+      "name": "Trial: obj_trial_word",
+      "trigger": "SOCIAL_SUCCESS",
+      "conditions": {},
       "outcomes": {
-        "setFlags": { "haven_under_curfew": true },
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_word",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: talked someone round. Odile will want to hear how.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_search",
+      "name": "Trial: obj_trial_search",
+      "trigger": "HIDDEN_SPOT_FOUND",
+      "conditions": {},
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_search",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: found something hidden. Sharp eyes count.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_craft",
+      "name": "Trial: obj_trial_craft",
+      "trigger": "ITEM_CRAFTED",
+      "conditions": {},
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_craft",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: made something with your own hands.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_challenge",
+      "name": "Trial: obj_trial_challenge",
+      "trigger": "MINIGAME_COMPLETED",
+      "conditions": {
+        "success": true
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_challenge",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: passed a hands-on challenge.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_trade",
+      "name": "Trial: obj_trial_trade",
+      "trigger": "ITEM_PURCHASED",
+      "conditions": {},
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_trade",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: struck a bargain at a market stall.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_ally",
+      "name": "Trial: obj_trial_ally",
+      "trigger": "COMPANION_JOINED",
+      "conditions": {},
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_ally",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: found someone to travel with.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_trial_night",
+      "name": "Trial: obj_trial_night",
+      "trigger": "PLAYER_RESTED",
+      "conditions": {
+        "restType": "long",
+        "safety": "wild"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_night",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Trial Ledger",
+          "text": "Ledger: survived a night in the wild.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_lurker_bounty",
+      "name": "Lurker slain",
+      "trigger": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "creature_dev_fogback_lurker"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_bounty",
+          "objectiveId": "obj_slay_lurker",
+          "completed": true
+        }
+      }
+    },
+    {
+      "id": "event_dev_bear_gone",
+      "name": "Bear slain",
+      "trigger": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "creature_dev_bristle_bear"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_dev_honey",
+          "objectiveId": "obj_stop_bear",
+          "completed": true
+        }
+      }
+    },
+    {
+      "id": "event_dev_everflame",
+      "name": "The Everflame",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_dev_everflame_wick"
+      },
+      "outcomes": {
+        "transcript": {
+          "speaker": "The Everflame",
+          "text": "The wick is warm in your hand, though it has been underwater for a month. It wants to burn.",
+          "style": "entry-discovery"
+        },
+        "restoreHealth": 6
+      }
+    },
+    {
+      "id": "event_dev_key_found",
+      "name": "Lighthouse key",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_dev_lighthouse_key"
+      },
+      "outcomes": {
+        "transcript": {
+          "speaker": "Journal",
+          "text": "With the lighthouse key, the Gull Rock door will open without a fight.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_dev_fog_lifts",
+      "name": "Lanternfall ends",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "lantern_lit",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "fog_lifted": true
+        },
+        "modifyReputation": {
+          "faction_dev_brindle": 15,
+          "faction_dev_guild": 10
+        },
+        "addJournalChronicle": {
+          "title": "Lanternfall Ends",
+          "text": "The Gull Rock lantern burns again. Brindle Ford is celebrating."
+        }
+      }
+    },
+    {
+      "id": "event_dev_curfew",
+      "name": "Curfew",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "ford_curfew",
+        "expected": true
+      },
+      "outcomes": {
         "transcript": {
           "speaker": "Town Crier",
-          "text": "Oyez! By order of Captain Valerius, Haven is placed under dusk curfew following the murder of Merchant Lycus! Watch patrols are doubled!",
+          "text": "By order of the Watch: curfew on the ford! Doors barred after dusk!",
           "style": "entry-consequence"
         }
       }
     },
     {
-      "id": "event_dev_sunstone_radiance",
-      "name": "The Sunstone Resonates",
-      "trigger": "ITEM_ACQUIRED",
-      "conditions": { "itemId": "item_dev_sunstone_relic" },
+      "id": "event_dev_guild_robbed",
+      "name": "Guild robbed",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "robbed_guild",
+        "expected": true
+      },
       "outcomes": {
-        "transcript": {
-          "speaker": "Ancient Relic",
-          "text": "The Sunstone warms in your grasp, casting golden ripples of solar light across the ancient stones. Its power restores your vitality (+10 Health).",
-          "style": "entry-discovery"
-        },
-        "restoreHealth": 10,
-        "updateQuest": { "questId": "quest_dev_sunstone_relic", "objectiveId": "obj_recover_sunstone", "completed": true }
+        "scheduleEvent": {
+          "id": "event_dev_robbery_noticed",
+          "delayHours": 6,
+          "title": "The Guild counts its money",
+          "text": "Word goes round the ford: someone has robbed the Guild strongbox. Odile is furious.",
+          "setFlags": {
+            "guild_robbery_known": true
+          }
+        }
       }
     }
   ]

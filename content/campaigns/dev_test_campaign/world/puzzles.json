@@ -1,0 +1,65 @@
+{
+  "puzzles": [
+    {
+      "id": "puzzle_dev_bog_stone",
+      "title": "The Bog Stone",
+      "locationId": "loc_dev_old_moss",
+      "prompt": "Letters are cut into the leaning stone, filled with green moss:\n\n'I have no mouth, yet I swallow the bold.\nI have no hands, yet I hold what I hold.\nStand on me lightly, I bear you a while;\nStand on me long and I'll keep you a mile.\nWhat am I?'",
+      "question": "What does the Bog Stone want to hear?",
+      "customAnswerLabel": "Or say your own answer to the stone:",
+      "clueJournalIds": [
+        "The bog's own riddle"
+      ],
+      "acceptedKeywords": [
+        "bog",
+        "the bog",
+        "a bog",
+        "mire",
+        "the mire",
+        "marsh",
+        "quagmire",
+        "swamp",
+        "mud"
+      ],
+      "knownAnswerLabel": "Answer as Grandmother Rook told you: \"The bog itself.\"",
+      "deductionSkill": "investigation",
+      "deductionAttribute": "intelligence",
+      "deductionDc": 13,
+      "deductionHint": "Think about where you are standing.",
+      "deductionFailText": "You turn the words over and over, but the answer won't come. The stone seems smug about it.",
+      "wrongAnswerText": "Nothing happens, except that the bog burps. You think it is laughing at you.",
+      "distractors": [
+        "\"A grave.\"",
+        "\"Quicksand on the beach.\"",
+        "\"Time.\""
+      ],
+      "successOutcome": {
+        "transcript": {
+          "speaker": "The Bog Stone",
+          "text": "The moss in the letters glows green. With a long sucking sound, an old causeway of black stones rises out of the bog, leading west toward a drowned chapel spire.",
+          "style": "entry-discovery"
+        },
+        "setFlags": {
+          "bog_stone_answered": true
+        },
+        "discoverLocation": "loc_dev_sunken_chapel",
+        "updateQuest": {
+          "questId": "quest_dev_bog_stone",
+          "objectiveId": "obj_answer_stone",
+          "completed": true
+        },
+        "updateQuest2": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_riddle",
+          "completed": true
+        },
+        "completeQuest": "quest_dev_bog_stone",
+        "awardXP": 60,
+        "addJournalChronicle": {
+          "title": "The Stone's Riddle",
+          "text": "Answered the Bog Stone. A causeway now leads to the Sunken Chapel."
+        }
+      }
+    }
+  ]
+}

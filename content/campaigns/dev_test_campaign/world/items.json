@@ -1,159 +1,489 @@
 {
   "items": [
     {
-      "id": "item_dev_iron_lockpick",
-      "name": "Slender Iron Lockpick",
-      "category": "tool",
-      "slot": "accessory",
+      "id": "item_dev_guild_shortsword",
+      "name": "Guild Shortsword",
+      "category": "weapon",
+      "slot": "main_hand",
       "rarity": "common",
-      "weightKg": 0.1,
-      "valueDrachmae": 10,
-      "description": "A tempered iron tension wrench and pick suited for delicate mechanical locks."
-    },
-    {
-      "id": "item_dev_treasury_key",
-      "name": "Heavy Brass Vault Key",
-      "category": "key",
-      "rarity": "rare",
-      "weightKg": 0.2,
+      "weightKg": 1.4,
       "valueDrachmae": 25,
-      "description": "An ornate brass key engraved with the Haven crest, unlocking the High Vault."
+      "stats": {
+        "damageMin": 3,
+        "damageMax": 8,
+        "damageType": "slashing"
+      },
+      "description": "A plain, honest blade stamped with the Guild's lantern mark."
     },
     {
-      "id": "item_dev_crypt_key",
-      "name": "Rusted Iron Crypt Key",
-      "category": "key",
-      "rarity": "uncommon",
-      "weightKg": 0.3,
-      "valueDrachmae": 15,
-      "description": "An archaic iron skeleton key recovered from the wilderness."
-    },
-    {
-      "id": "item_dev_sunstone_relic",
-      "name": "Radiant Sunstone of Haven",
-      "category": "relic",
-      "rarity": "legendary",
-      "isUnique": true,
-      "weightKg": 0.5,
-      "valueDrachmae": 200,
-      "description": "An ancient radiant amber crystal pulsing with solar warmth. The legendary artifact sought by Scholar Elena."
-    },
-    {
-      "id": "item_dev_elena_journal",
-      "name": "Scholar Elena's Research Journal",
-      "category": "document",
-      "rarity": "rare",
-      "isUnique": true,
-      "weightKg": 0.4,
-      "valueDrachmae": 20,
-      "description": "Handwritten parchment notes detailing the secret mechanism of the Sunken Crypt where the Sunstone is hidden."
-    },
-    {
-      "id": "item_dev_healing_draught",
-      "name": "Apothecary Healing Draught",
-      "category": "consumable",
+      "id": "item_dev_tinker_knife",
+      "name": "Tinker's Knife",
+      "category": "weapon",
+      "slot": "main_hand",
       "rarity": "common",
-      "weightKg": 0.3,
-      "valueDrachmae": 15,
-      "effect": { "restoreHealth": 10 },
-      "description": "A glass vial of brewed dittany, willow bark, and honey that rapidly stitches flesh."
+      "weightKg": 0.6,
+      "valueDrachmae": 12,
+      "stats": {
+        "damageMin": 2,
+        "damageMax": 6,
+        "damageType": "piercing",
+        "investigationBonus": 1
+      },
+      "description": "Half knife, half screwdriver. Mostly knife when it matters."
     },
     {
-      "id": "item_dev_trail_rations",
-      "name": "Smoked Meat & Hardtack",
-      "category": "consumable",
-      "rarity": "common",
-      "weightKg": 0.5,
-      "valueDrachmae": 5,
-      "effect": { "restoreStamina": 8 },
-      "description": "Durable traveling provisions that revive weary muscles.",
-      "ration": true
-    },
-    {
-      "id": "item_dev_forest_berries",
-      "name": "Wild Mountain Blackberries",
-      "category": "consumable",
-      "rarity": "common",
-      "weightKg": 0.2,
-      "valueDrachmae": 2,
-      "effect": { "restoreStamina": 4 },
-      "description": "Plump wild berries gathered from the brambles of the Whispering Woods.",
-      "ration": true
-    },
-    {
-      "id": "item_dev_boar_tusk",
-      "name": "Curved Boar Tusk",
-      "category": "material",
-      "rarity": "common",
-      "weightKg": 0.4,
-      "valueDrachmae": 8,
-      "description": "A razor-sharp ivory tusk prize from a wild boar."
-    },
-    {
-      "id": "item_dev_boar_meat",
-      "name": "Fresh Boar Haunch",
-      "category": "consumable",
+      "id": "item_dev_reed_bow",
+      "name": "Reed-Strung Bow",
+      "category": "weapon",
+      "slot": "two_hand",
+      "twoHanded": true,
       "rarity": "common",
       "weightKg": 1.0,
-      "valueDrachmae": 6,
-      "effect": { "restoreHealth": 6, "restoreStamina": 6 },
-      "description": "A hearty cut of fresh game suitable for roasting over campfires."
+      "valueDrachmae": 30,
+      "stats": {
+        "damageMin": 3,
+        "damageMax": 9,
+        "damageType": "piercing",
+        "ranged": true
+      },
+      "description": "A fen bow of ash and waxed reed. Needs both hands."
     },
     {
-      "id": "item_dev_wolf_pelt",
-      "name": "Thick Grey Wolf Pelt",
-      "category": "material",
-      "rarity": "common",
-      "weightKg": 1.2,
-      "valueDrachmae": 12,
-      "description": "A thick winter wolf fur pelt valued by furriers and cloak makers."
+      "id": "item_dev_ferryman_pole",
+      "name": "Ferryman's Iron-Shod Pole",
+      "category": "weapon",
+      "slot": "two_hand",
+      "twoHanded": true,
+      "rarity": "uncommon",
+      "weightKg": 3.0,
+      "valueDrachmae": 40,
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 11,
+        "damageType": "bludgeoning"
+      },
+      "description": "Three metres of oak with an iron cap. Two hands, long reach, heavy knock."
     },
     {
-      "id": "item_dev_chthonic_crystal",
-      "name": "Flawless Obsidian Crystal",
-      "category": "material",
-      "rarity": "exceptional",
-      "weightKg": 0.8,
-      "valueDrachmae": 75,
-      "description": "An extremely rare crystalline growth harvested from high obsidian crags."
-    },
-    {
-      "id": "item_dev_silver_chalice",
-      "name": "Ancient Silver Liturgical Chalice",
-      "category": "treasure",
-      "rarity": "rare",
-      "weightKg": 0.6,
-      "valueDrachmae": 50,
-      "description": "An exquisite silver chalice recovered from the Sunken Grotto."
-    },
-    {
-      "id": "item_dev_crypt_torch",
-      "name": "Pitch-Soaked Cedar Torch",
-      "category": "utility",
-      "rarity": "common",
-      "weightKg": 0.5,
-      "valueDrachmae": 3,
-      "description": "A resinous torch that burns brightly in subterranean passages."
-    },
-    {
-      "id": "item_dev_broadsword",
-      "name": "Haven Watch Broadsword",
+      "id": "item_dev_watch_falchion",
+      "name": "Watch Falchion",
       "category": "weapon",
       "slot": "main_hand",
       "rarity": "uncommon",
       "weightKg": 1.8,
-      "valueDrachmae": 35,
-      "stats": { "damageMin": 4, "damageMax": 10, "damageType": "slashing" },
-      "description": "A double-edged forged steel broadsword issued to Haven guards."
+      "valueDrachmae": 45,
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 10,
+        "damageType": "slashing"
+      },
+      "description": "A broad, chopping blade issued to the Ford Watch."
     },
     {
-      "id": "item_dev_trade_parcel",
-      "name": "Lycus' Sealed Trade Parcel",
-      "category": "quest",
+      "id": "item_dev_ferry_shield",
+      "name": "Ferry-Plank Shield",
+      "category": "shield",
+      "slot": "off_hand",
+      "rarity": "common",
+      "weightKg": 3.0,
+      "valueDrachmae": 20,
+      "stats": {
+        "defenseBonus": 2
+      },
+      "description": "Cut from an old ferry plank and banded with iron."
+    },
+    {
+      "id": "item_dev_padded_jack",
+      "name": "Padded Jack",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "common",
+      "weightKg": 3.5,
+      "valueDrachmae": 22,
+      "stats": {
+        "defenseBonus": 2
+      },
+      "description": "Quilted wool, stiff with old sweat. Better than it looks."
+    },
+    {
+      "id": "item_dev_oilskin_coat",
+      "name": "Oilskin Coat",
+      "category": "armor",
+      "slot": "body",
       "rarity": "common",
       "weightKg": 2.0,
+      "valueDrachmae": 18,
+      "stats": {
+        "defenseBonus": 1,
+        "survivalBonus": 1
+      },
+      "description": "Keeps out rain, spray and the worst of a bite."
+    },
+    {
+      "id": "item_dev_tin_helm",
+      "name": "Tin Kettle Helm",
+      "category": "armor",
+      "slot": "head",
+      "rarity": "common",
+      "weightKg": 1.2,
+      "valueDrachmae": 15,
+      "stats": {
+        "defenseBonus": 1
+      },
+      "description": "Dented, unfashionable, and it has saved a lot of skulls."
+    },
+    {
+      "id": "item_dev_wading_boots",
+      "name": "Tarred Wading Boots",
+      "category": "armor",
+      "slot": "feet",
+      "rarity": "common",
+      "weightKg": 1.5,
+      "valueDrachmae": 14,
+      "stats": {
+        "defenseBonus": 1,
+        "athleticsBonus": 1
+      },
+      "description": "Waist-high and watertight. You hear the bog coming before it gets you."
+    },
+    {
+      "id": "item_dev_fog_cloak",
+      "name": "Fog-Grey Cloak",
+      "category": "armor",
+      "slot": "back",
+      "rarity": "uncommon",
+      "weightKg": 1.0,
+      "valueDrachmae": 35,
+      "stats": {
+        "stealthBonus": 2
+      },
+      "description": "Smuggler wool dyed the colour of sea mist."
+    },
+    {
+      "id": "item_dev_climbing_gloves",
+      "name": "Grippy Climbing Gloves",
+      "category": "armor",
+      "slot": "hands",
+      "rarity": "uncommon",
+      "weightKg": 0.3,
+      "valueDrachmae": 20,
+      "stats": {
+        "athleticsBonus": 2
+      },
+      "description": "Pitch-dipped leather that sticks to wet rock."
+    },
+    {
+      "id": "item_dev_keeper_coat",
+      "name": "Lantern Keeper's Greatcoat",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "rare",
+      "weightKg": 4.0,
+      "valueDrachmae": 90,
+      "stats": {
+        "defenseBonus": 3,
+        "damageReduction": 1
+      },
+      "description": "Heavy, salt-stiff, lined with sheepskin. Turns a claw."
+    },
+    {
+      "id": "item_dev_licence_ring",
+      "name": "Wayfarer's Licence Ring",
+      "category": "accessory",
+      "slot": "ring",
+      "rarity": "rare",
+      "isUnique": true,
+      "weightKg": 0.05,
+      "valueDrachmae": 60,
+      "noSell": true,
+      "stats": {
+        "persuasionBonus": 2
+      },
+      "description": "Brass ring stamped with the Guild lantern. Doors open a little wider for its wearer."
+    },
+    {
+      "id": "item_dev_wisp_ring",
+      "name": "Wisp-Glass Ring",
+      "category": "accessory",
+      "slot": "ring",
+      "rarity": "uncommon",
+      "weightKg": 0.05,
+      "valueDrachmae": 40,
+      "stats": {
+        "perceptionBonus": 2
+      },
+      "description": "A ring set with a bead of wisp-glass that glows faintly near anything hidden."
+    },
+    {
+      "id": "item_dev_hive_amulet",
+      "name": "Hive Sister's Amulet",
+      "category": "accessory",
+      "slot": "neck",
+      "rarity": "uncommon",
+      "weightKg": 0.1,
+      "valueDrachmae": 30,
+      "stats": {
+        "wisdomBonus": 1,
+        "medicineBonus": 1
+      },
+      "description": "A wax-sealed charm of the Hive Mother."
+    },
+    {
+      "id": "item_dev_healing_tonic",
+      "name": "Willowmere Healing Tonic",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 15,
+      "effect": {
+        "restoreHealth": 10
+      },
+      "description": "Honey, yarrow and something the Sisters won't name. Knits cuts in minutes."
+    },
+    {
+      "id": "item_dev_honey_cake",
+      "name": "Honey Oat Cake",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 4,
+      "effect": {
+        "restoreStamina": 6
+      },
+      "ration": true,
+      "description": "Dense, sticky and good for a day's walk."
+    },
+    {
+      "id": "item_dev_smoked_eel",
+      "name": "Smoked Eel",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.4,
+      "valueDrachmae": 5,
+      "effect": {
+        "restoreStamina": 7
+      },
+      "ration": true,
+      "description": "Brindle's finest export, apparently."
+    },
+    {
+      "id": "item_dev_hare_haunch",
+      "name": "Bog Hare Haunch",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.6,
+      "valueDrachmae": 5,
+      "effect": {
+        "restoreHealth": 3,
+        "restoreStamina": 6
+      },
+      "ration": true,
+      "description": "Lean, gamey and better roasted."
+    },
+    {
+      "id": "item_dev_bog_mead",
+      "name": "Bottle of Bog-Myrtle Mead",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.6,
+      "valueDrachmae": 8,
+      "effect": {
+        "restoreStamina": 3
+      },
+      "stats": {
+        "libationUse": true
+      },
+      "description": "Golden, bitter-sweet. The Hive Mother likes it poured on her stones."
+    },
+    {
+      "id": "item_dev_smelling_salts",
+      "name": "Smelling Salts",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 8,
+      "effect": {
+        "restoreStamina": 10
+      },
+      "description": "One sniff and you're wide awake, and slightly offended."
+    },
+    {
+      "id": "item_dev_lockpick_roll",
+      "name": "Guild Lockpick Roll",
+      "category": "tool",
+      "toolType": "lockpick",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 12,
+      "description": "Six picks and a tension bar in a leather roll."
+    },
+    {
+      "id": "item_dev_tinker_kit",
+      "name": "Tinker's Toolkit",
+      "category": "tool",
+      "rarity": "common",
+      "weightKg": 2.0,
+      "valueDrachmae": 30,
+      "description": "Files, tongs, a tiny anvil and a lot of wire. Needed for tinkering."
+    },
+    {
+      "id": "item_dev_herbal_kit",
+      "name": "Herbalist's Satchel",
+      "category": "tool",
+      "rarity": "common",
+      "weightKg": 1.2,
+      "valueDrachmae": 25,
+      "description": "Mortar, pestle, vials and labelled pouches. Needed for remedies."
+    },
+    {
+      "id": "item_dev_leather_kit",
+      "name": "Leatherworker's Roll",
+      "category": "tool",
+      "rarity": "common",
+      "weightKg": 1.0,
+      "valueDrachmae": 25,
+      "description": "Awls, waxed thread and a skiving knife. Needed for leatherwork."
+    },
+    {
+      "id": "item_dev_climbing_rope",
+      "name": "Coil of Climbing Rope",
+      "category": "tool",
+      "rarity": "common",
+      "weightKg": 2.0,
+      "valueDrachmae": 10,
+      "description": "Fifteen metres of good hemp."
+    },
+    {
+      "id": "item_dev_guild_whistle",
+      "name": "Guild Whistle",
+      "category": "tool",
+      "rarity": "uncommon",
+      "weightKg": 0.05,
+      "valueDrachmae": 10,
+      "noSell": true,
+      "description": "A brass whistle that can be heard across the whole ford."
+    },
+    {
+      "id": "item_dev_practice_key",
+      "name": "Examiner's Practice Key",
+      "category": "key",
+      "rarity": "common",
+      "weightKg": 0.05,
       "valueDrachmae": 0,
-      "description": "A wax-sealed bundle of goods Merchant Lycus is sending to the Haven Watch Post."
+      "description": "Opens the Guild's practice lockbox. Using it is technically allowed."
+    },
+    {
+      "id": "item_dev_lighthouse_key",
+      "name": "Gull Rock Lighthouse Key",
+      "category": "key",
+      "rarity": "rare",
+      "isUnique": true,
+      "weightKg": 0.3,
+      "valueDrachmae": 0,
+      "description": "A green-crusted bronze key as long as your hand."
+    },
+    {
+      "id": "item_dev_trial_ledger",
+      "name": "The Trial Ledger",
+      "category": "quest",
+      "rarity": "common",
+      "isUnique": true,
+      "weightKg": 0.2,
+      "valueDrachmae": 0,
+      "description": "Your Guild trials, ten lines long. Odile signs each one when you are done."
+    },
+    {
+      "id": "item_dev_honey_crate",
+      "name": "Crate of Hive Honey",
+      "category": "quest",
+      "rarity": "common",
+      "weightKg": 4.0,
+      "valueDrachmae": 0,
+      "description": "Sealed crock-jars bound for the Quill & Candle. Heavier than it looks."
+    },
+    {
+      "id": "item_dev_everflame_wick",
+      "name": "The Everflame Wick",
+      "category": "relic",
+      "rarity": "legendary",
+      "isUnique": true,
+      "weightKg": 0.2,
+      "valueDrachmae": 0,
+      "description": "A braided wick that has burned for a hundred years. It went out the night the Keeper drowned."
+    },
+    {
+      "id": "item_dev_keepers_logbook",
+      "name": "The Keeper's Logbook",
+      "category": "document",
+      "rarity": "rare",
+      "isUnique": true,
+      "weightKg": 0.4,
+      "valueDrachmae": 10,
+      "description": "Last entry: 'The bell rings on its own now. I will go down and see.'"
+    },
+    {
+      "id": "item_dev_smuggler_token",
+      "name": "Saltreed Token",
+      "category": "quest",
+      "rarity": "uncommon",
+      "isUnique": true,
+      "weightKg": 0.05,
+      "valueDrachmae": 0,
+      "description": "A carved fish on a cord. Show it in the cove and nobody draws steel."
+    },
+    {
+      "id": "item_dev_bear_claw",
+      "name": "Bristle Bear Claw",
+      "category": "material",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 8,
+      "description": "Longer than your finger and black as tar."
+    },
+    {
+      "id": "item_dev_lurker_gland",
+      "name": "Fogback Venom Gland",
+      "category": "material",
+      "rarity": "uncommon",
+      "weightKg": 0.2,
+      "valueDrachmae": 18,
+      "description": "Handle with gloves. Alchemists pay well for it."
+    },
+    {
+      "id": "item_dev_gryphon_feather",
+      "name": "Thornback Gryphon Feather",
+      "category": "treasure",
+      "rarity": "rare",
+      "weightKg": 0.1,
+      "valueDrachmae": 45,
+      "description": "Copper-barred and as long as your arm."
+    },
+    {
+      "id": "item_dev_smuggled_brandy",
+      "name": "Bottle of Smuggled Brandy",
+      "category": "treasure",
+      "rarity": "common",
+      "weightKg": 0.8,
+      "valueDrachmae": 14,
+      "description": "No tax stamp. Tamsin buys these and asks nothing."
+    },
+    {
+      "id": "item_dev_pearl",
+      "name": "Saltreed Pearl",
+      "category": "treasure",
+      "rarity": "uncommon",
+      "weightKg": 0.02,
+      "valueDrachmae": 30,
+      "description": "Slightly lumpy, definitely valuable."
+    },
+    {
+      "id": "item_dev_chapel_censer",
+      "name": "Tide Warden's Censer",
+      "category": "treasure",
+      "rarity": "rare",
+      "weightKg": 0.9,
+      "valueDrachmae": 70,
+      "description": "Silver, tarnished green, still smelling of incense."
     }
   ]
 }

@@ -1,140 +1,563 @@
 {
   "characters": [
     {
-      "id": "npc_dev_merchant_lycus",
-      "name": "Merchant Lycus",
-      "title": "Purveyor of Fine Goods",
-      "locationId": "loc_dev_haven",
-      "faction": "faction_dev_haven",
+      "id": "npc_dev_odile_marsh",
+      "name": "Examiner Odile Marsh",
+      "title": "Trial Examiner of the Wayfarers' Guild",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_guild",
+      "disposition": 15,
+      "isQuestGiver": true,
+      "dialogueId": "dialogue_dev_odile",
+      "lootTableId": "loot_dev_odile",
+      "rumours": [
+        "loc_dev_old_moss",
+        "loc_dev_willowmere"
+      ],
+      "vitals": {
+        "health": 18,
+        "maxHealth": 18
+      },
+      "combatStats": {
+        "armorClass": 12,
+        "attackBonus": 3,
+        "damage": "1d6+1",
+        "xpReward": 40,
+        "actions": [
+          {
+            "name": "Ledger-Edge Swat",
+            "attackBonus": 3,
+            "damage": "1d6+1",
+            "damageType": "bludgeoning",
+            "description": "She swings the heavy ledger like a club."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 10,
+        "agility": 12,
+        "endurance": 11,
+        "wisdom": 15,
+        "charisma": 13,
+        "intelligence": 16
+      },
+      "description": "A tall woman with ink on every finger and a ledger under her arm. She has failed more applicants than you have had hot dinners."
+    },
+    {
+      "id": "npc_dev_tamsin_quill",
+      "name": "Tamsin Quill",
+      "title": "Keeper of the Quill & Candle",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_brindle",
       "disposition": 20,
       "isMerchant": true,
-      "dialogueId": "dialogue_dev_lycus",
-      "lootTableId": "loot_dev_merchant_lycus",
-      "vitals": { "health": 16, "maxHealth": 16 },
-      "combatStats": {
-        "armorClass": 11,
-        "attackBonus": 2,
-        "damage": "1d4+1",
-        "xpReward": 25,
-        "actions": [
-          { "name": "Bronze Dagger Slash", "attackBonus": 2, "damage": "1d4+1", "damageType": "piercing" }
-        ]
-      },
+      "dialogueId": "dialogue_dev_tamsin",
+      "lootTableId": "loot_dev_tamsin",
+      "shopClosedFlag": "quill_shop_closed",
       "merchantInventory": [
-        { "itemId": "item_dev_broadsword", "price": 35, "stock": 2 },
-        { "itemId": "item_dev_iron_lockpick", "price": 10, "stock": 5 },
-        { "itemId": "item_dev_healing_draught", "price": 15, "stock": 3 },
-        { "itemId": "item_dev_trail_rations", "price": 5, "stock": 8 }
+        {
+          "itemId": "item_dev_honey_cake",
+          "price": 4,
+          "stock": 10
+        },
+        {
+          "itemId": "item_dev_smoked_eel",
+          "price": 5,
+          "stock": 8
+        },
+        {
+          "itemId": "item_dev_healing_tonic",
+          "price": 15,
+          "stock": 4
+        },
+        {
+          "itemId": "item_dev_climbing_rope",
+          "price": 10,
+          "stock": 2
+        },
+        {
+          "itemId": "item_dev_lockpick_roll",
+          "price": 12,
+          "stock": 3
+        },
+        {
+          "itemId": "item_dev_tin_helm",
+          "price": 15,
+          "stock": 1
+        },
+        {
+          "itemId": "item_dev_wading_boots",
+          "price": 14,
+          "stock": 1
+        },
+        {
+          "itemId": "item_dev_tinker_kit",
+          "price": 30,
+          "stock": 1
+        },
+        {
+          "itemId": "item_dev_leather_kit",
+          "price": 25,
+          "stock": 1
+        },
+        {
+          "itemId": "mat_dev_river_iron",
+          "price": 8,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_dev_driftwood",
+          "price": 3,
+          "stock": 6
+        }
       ],
-      "description": "A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests.",
-      "shopClosedFlag": "haven_shop_closed",
-      "rumours": ["loc_dev_ancient_crypt", "loc_dev_obsidian_crag"]
-    },
-    {
-      "id": "npc_dev_guard_captain",
-      "name": "Captain Valerius",
-      "title": "Commander of the Haven Watch",
-      "locationId": "loc_dev_haven",
-      "faction": "faction_dev_guards",
-      "disposition": 10,
-      "isGuard": true,
-      "dialogueId": "dialogue_dev_captain",
-      "lootTableId": "loot_dev_guard_captain",
-      "vitals": { "health": 28, "maxHealth": 28 },
-      "combatStats": {
-        "armorClass": 15,
-        "attackBonus": 4,
-        "damage": "1d8+2",
-        "xpReward": 60,
-        "actions": [
-          { "name": "Heavy Broadsword Slash", "attackBonus": 4, "damage": "1d8+2", "damageType": "slashing" }
-        ]
+      "rumours": [
+        "loc_dev_thornback",
+        "loc_dev_saltreed"
+      ],
+      "vitals": {
+        "health": 14,
+        "maxHealth": 14
       },
-      "description": "An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword.",
-      "hostileAction": "attack",
-      "attributes": { "strength": 14, "agility": 12, "endurance": 14, "wisdom": 13, "charisma": 11, "intelligence": 11 },
-      "rumours": ["loc_dev_obsidian_crag", "loc_dev_whispering_woods"]
-    },
-    {
-      "id": "npc_dev_elena_scholar",
-      "name": "Scholar Elena",
-      "title": "Antiquarian of the Sunken Marches",
-      "locationId": "loc_dev_haven",
-      "faction": "faction_dev_haven",
-      "disposition": 30,
-      "isQuestGiver": true,
-      "dialogueId": "dialogue_dev_elena",
-      "lootTableId": "loot_dev_scholar_elena",
-      "vitals": { "health": 14, "maxHealth": 14 },
       "combatStats": {
         "armorClass": 10,
         "attackBonus": 1,
         "damage": "1d4",
         "xpReward": 20,
         "actions": [
-          { "name": "Parchment Quell & Dagger", "attackBonus": 1, "damage": "1d4", "damageType": "piercing" }
+          {
+            "name": "Ladle Whack",
+            "attackBonus": 1,
+            "damage": "1d4",
+            "damageType": "bludgeoning",
+            "description": "A brass ladle, swung with feeling."
+          }
         ]
       },
-      "description": "A sharp-eyed scholar surrounded by rolled parchment scrolls and brass astrolabes, studying the lost Sunstone.",
-      "rumours": ["loc_dev_ancient_crypt"]
+      "attributes": {
+        "strength": 9,
+        "agility": 11,
+        "endurance": 10,
+        "wisdom": 12,
+        "charisma": 14,
+        "intelligence": 12
+      },
+      "description": "A round, quick-talking shopkeeper with a pencil behind each ear. Sells lamp oil, rope, food, picks and opinions."
     },
     {
-      "id": "npc_dev_bandit_renegade",
-      "name": "Renegade Silas",
-      "title": "Outlaw Scout",
-      "locationId": "loc_dev_whispering_woods",
-      "faction": "faction_dev_outlaws",
-      "disposition": -10,
-      "dialogueId": "dialogue_dev_bandit",
-      "lootTableId": "loot_dev_bandit",
-      "vitals": { "health": 20, "maxHealth": 20 },
-      "combatStats": {
-        "armorClass": 12,
-        "attackBonus": 3,
-        "damage": "1d6+2",
-        "xpReward": 45,
-        "actions": [
-          { "name": "Hunting Knife Stab", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" }
-        ]
-      },
-      "description": "A lean, hooded archer lurking in the shadows of the pine branches.",
+      "id": "npc_dev_hob_garrow",
+      "name": "Captain Hob Garrow",
+      "title": "Captain of the Ford Watch",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_watch",
+      "disposition": 5,
+      "isGuard": true,
       "hostileAction": "attack",
-      "attributes": { "strength": 12, "agility": 15, "endurance": 12, "wisdom": 12, "charisma": 13, "intelligence": 11 },
-      "rumours": ["loc_dev_sunken_grotto"],
-      "companion": {
-        "joinText": "\"Stick with me and keep your purse close,\" Silas grins.",
-        "perksText": "Fights beside you. +2 Stealth, +2 on lockpicking while he travels with you.",
-        "perks": {
-          "checkBonus": { "stealth": 2 },
-          "activityBonus": { "lockpick": 2 }
-        }
-      }
+      "dialogueId": "dialogue_dev_garrow",
+      "lootTableId": "loot_dev_garrow",
+      "rumours": [
+        "loc_dev_gull_rock",
+        "loc_dev_saltreed"
+      ],
+      "vitals": {
+        "health": 30,
+        "maxHealth": 30
+      },
+      "combatStats": {
+        "armorClass": 15,
+        "attackBonus": 5,
+        "damage": "1d8+2",
+        "xpReward": 70,
+        "actions": [
+          {
+            "name": "Watch Falchion",
+            "attackBonus": 5,
+            "damage": "1d8+2",
+            "damageType": "slashing",
+            "description": "A heavy chop from a well-oiled falchion."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 15,
+        "agility": 11,
+        "endurance": 14,
+        "wisdom": 13,
+        "charisma": 11,
+        "intelligence": 11
+      },
+      "description": "A barrel-chested man in a dented breastplate, moustache waxed into points. Fair, stubborn and very tired of fog."
     },
     {
-      "id": "npc_dev_sellsword_brannoch",
-      "name": "Brannoch",
-      "title": "Sellsword for Hire",
-      "locationId": "loc_dev_haven",
-      "faction": "faction_dev_haven",
+      "id": "npc_dev_abel_rush",
+      "name": "Watchman Abel Rush",
+      "title": "Ford Watch, very junior",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_watch",
+      "disposition": 5,
+      "isGuard": true,
+      "lootTableId": "loot_dev_watchman",
+      "vitals": {
+        "health": 16,
+        "maxHealth": 16
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 3,
+        "damage": "1d6+1",
+        "xpReward": 30,
+        "actions": [
+          {
+            "name": "Watch Cudgel",
+            "attackBonus": 3,
+            "damage": "1d6+1",
+            "damageType": "bludgeoning",
+            "description": "An eager, overenthusiastic cudgel swing."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 12,
+        "agility": 12,
+        "endurance": 12,
+        "wisdom": 10,
+        "charisma": 10,
+        "intelligence": 9
+      },
+      "description": "A gangly young watchman whose helmet is two sizes too big. He takes the job extremely seriously."
+    },
+    {
+      "id": "npc_dev_fennick_sly",
+      "name": "Fennick Sly",
+      "title": "Buyer of Interesting Things",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_saltreed",
       "disposition": 0,
-      "vitals": { "health": 24, "maxHealth": 24 },
+      "isMerchant": true,
+      "dialogueId": "dialogue_dev_fennick",
+      "lootTableId": "loot_dev_fennick",
+      "merchantInventory": [
+        {
+          "itemId": "item_dev_fog_cloak",
+          "price": 40,
+          "stock": 1
+        },
+        {
+          "itemId": "item_dev_lockpick_roll",
+          "price": 10,
+          "stock": 3
+        },
+        {
+          "itemId": "item_dev_smuggled_brandy",
+          "price": 16,
+          "stock": 2
+        },
+        {
+          "itemId": "item_dev_ferryman_pole",
+          "price": 40,
+          "stock": 1
+        }
+      ],
+      "rumours": [
+        "loc_dev_saltreed",
+        "loc_dev_sunken_chapel"
+      ],
+      "vitals": {
+        "health": 16,
+        "maxHealth": 16
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 3,
+        "damage": "1d4+2",
+        "xpReward": 35,
+        "actions": [
+          {
+            "name": "Hidden Stiletto",
+            "attackBonus": 3,
+            "damage": "1d4+2",
+            "damageType": "piercing",
+            "description": "A blade you did not see him draw."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 10,
+        "agility": 15,
+        "endurance": 11,
+        "wisdom": 14,
+        "charisma": 15,
+        "intelligence": 13
+      },
+      "description": "A thin man in a very good coat who leans on things. He buys what Tamsin won't and never asks where it came from."
+    },
+    {
+      "id": "npc_dev_marta_ironhook",
+      "name": "Marta Ironhook",
+      "title": "Retired Bargewoman, Available for Hire",
+      "locationId": "loc_dev_brindle_ford",
+      "faction": "faction_dev_brindle",
+      "disposition": 0,
+      "companion": {
+        "hireCost": 25,
+        "days": 3,
+        "joinText": "\"Twenty-five and I'll keep your back for three days. Don't make me carry you.\"",
+        "perksText": "A seasoned brawler: fights beside you for 3 days and draws some of the enemy's attacks. +2 Athletics while she travels with you.",
+        "perks": {
+          "checkBonus": {
+            "athletics": 2
+          }
+        }
+      },
+      "vitals": {
+        "health": 26,
+        "maxHealth": 26
+      },
       "combatStats": {
         "armorClass": 13,
         "attackBonus": 4,
         "damage": "1d8+1",
-        "xpReward": 40,
+        "xpReward": 45,
         "actions": [
-          { "name": "Notched Axe Chop", "attackBonus": 4, "damage": "1d8+1", "damageType": "slashing" }
+          {
+            "name": "Boathook Sweep",
+            "attackBonus": 4,
+            "damage": "1d8+1",
+            "damageType": "piercing",
+            "description": "A long hooked sweep that drags you off your feet."
+          }
         ]
       },
-      "companion": {
-        "hireCost": 30,
-        "days": 3,
-        "joinText": "\"Coin first, questions never.\"",
-        "perksText": "A hired blade: fights beside you for 3 days and draws some of the enemy's attacks."
+      "attributes": {
+        "strength": 15,
+        "agility": 11,
+        "endurance": 15,
+        "wisdom": 11,
+        "charisma": 11,
+        "intelligence": 10
       },
-      "description": "A scarred mercenary nursing a mug by the watch house, a notched axe across his knees.",
-      "attributes": { "strength": 14, "agility": 11, "endurance": 14, "wisdom": 10, "charisma": 9, "intelligence": 9 }
+      "description": "A grey-haired giant of a woman with a boathook and a laugh you can hear across the river. Fights for coin, and for fun."
+    },
+    {
+      "id": "npc_dev_sister_bramble",
+      "name": "Sister Bramble",
+      "title": "Healer of the Hive",
+      "locationId": "loc_dev_willowmere",
+      "faction": "faction_dev_hive",
+      "disposition": 25,
+      "isMerchant": true,
+      "isQuestGiver": true,
+      "dialogueId": "dialogue_dev_bramble",
+      "lootTableId": "loot_dev_villager",
+      "merchantInventory": [
+        {
+          "itemId": "item_dev_healing_tonic",
+          "price": 12,
+          "stock": 6
+        },
+        {
+          "itemId": "item_dev_bog_mead",
+          "price": 8,
+          "stock": 4
+        },
+        {
+          "itemId": "item_dev_herbal_kit",
+          "price": 25,
+          "stock": 1
+        },
+        {
+          "itemId": "mat_dev_yarrow",
+          "price": 3,
+          "stock": 8
+        },
+        {
+          "itemId": "mat_dev_beeswax",
+          "price": 5,
+          "stock": 6
+        },
+        {
+          "itemId": "item_dev_hive_amulet",
+          "price": 30,
+          "stock": 1
+        }
+      ],
+      "rumours": [
+        "loc_dev_old_moss"
+      ],
+      "vitals": {
+        "health": 14,
+        "maxHealth": 14
+      },
+      "combatStats": {
+        "armorClass": 10,
+        "attackBonus": 1,
+        "damage": "1d4",
+        "xpReward": 20,
+        "actions": [
+          {
+            "name": "Smoker Puff",
+            "attackBonus": 1,
+            "damage": "1d4",
+            "damageType": "fire",
+            "description": "A blast of bee-smoke right in your face."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 8,
+        "agility": 10,
+        "endurance": 10,
+        "wisdom": 16,
+        "charisma": 14,
+        "intelligence": 13
+      },
+      "description": "A tiny, wrinkled woman with a veil pushed back and bees in her hair. They don't sting her. Nothing would dare."
+    },
+    {
+      "id": "npc_dev_grandmother_rook",
+      "name": "Grandmother Rook",
+      "title": "Bog Hermit",
+      "locationId": "loc_dev_old_moss",
+      "faction": "faction_dev_brindle",
+      "disposition": 10,
+      "dialogueId": "dialogue_dev_rook",
+      "lootTableId": "loot_dev_villager",
+      "rumours": [
+        "loc_dev_sunken_chapel"
+      ],
+      "vitals": {
+        "health": 12,
+        "maxHealth": 12
+      },
+      "combatStats": {
+        "armorClass": 11,
+        "attackBonus": 2,
+        "damage": "1d4",
+        "xpReward": 25,
+        "actions": [
+          {
+            "name": "Walking Stick Rap",
+            "attackBonus": 2,
+            "damage": "1d4",
+            "damageType": "bludgeoning",
+            "description": "A sharp rap across the knuckles."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 8,
+        "agility": 10,
+        "endurance": 9,
+        "wisdom": 17,
+        "charisma": 12,
+        "intelligence": 15
+      },
+      "description": "An old woman in a coat of crow feathers, sitting on her stilt-hut steps and fishing with no hook."
+    },
+    {
+      "id": "npc_dev_jory_vane",
+      "name": "Jory Vane",
+      "title": "Captain of Saltreed (Unofficially)",
+      "locationId": "loc_dev_saltreed",
+      "faction": "faction_dev_saltreed",
+      "disposition": -5,
+      "dialogueId": "dialogue_dev_jory",
+      "lootTableId": "loot_dev_smuggler",
+      "hostileAction": "attack",
+      "companion": {
+        "joinText": "\"Partners, then. I'll do the talking.\"",
+        "perksText": "A smuggler captain: fights beside you, +2 Stealth and +2 on lockpicking.",
+        "perks": {
+          "checkBonus": {
+            "stealth": 2
+          },
+          "activityBonus": {
+            "lockpick": 2
+          }
+        }
+      },
+      "rumours": [
+        "loc_dev_gull_rock"
+      ],
+      "vitals": {
+        "health": 22,
+        "maxHealth": 22
+      },
+      "combatStats": {
+        "armorClass": 14,
+        "attackBonus": 4,
+        "damage": "1d6+2",
+        "xpReward": 60,
+        "actions": [
+          {
+            "name": "Twin Fish-Knives",
+            "attackBonus": 4,
+            "damage": "1d6+2",
+            "damageType": "slashing",
+            "description": "Two quick slashes, left and right."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 11,
+        "agility": 16,
+        "endurance": 12,
+        "wisdom": 13,
+        "charisma": 16,
+        "intelligence": 13
+      },
+      "description": "A grinning woman in a sealskin coat, with a gold tooth and three knives you can see. You assume there are more."
+    },
+    {
+      "id": "npc_dev_pip_tallow",
+      "name": "Pip Tallow",
+      "title": "Lamplighter's Apprentice",
+      "locationId": "loc_dev_thornback",
+      "faction": "faction_dev_brindle",
+      "disposition": 20,
+      "dialogueId": "dialogue_dev_pip",
+      "lootTableId": "loot_dev_villager",
+      "companion": {
+        "joinText": "\"I'll show you the way to Gull Rock! I know every lamp on this coast.\"",
+        "perksText": "Sharp eyes and a lamp: +2 Perception and +2 Investigation while Pip travels with you.",
+        "perks": {
+          "checkBonus": {
+            "perception": 2,
+            "investigation": 2
+          }
+        }
+      },
+      "rumours": [
+        "loc_dev_gull_rock"
+      ],
+      "vitals": {
+        "health": 12,
+        "maxHealth": 12
+      },
+      "combatStats": {
+        "armorClass": 11,
+        "attackBonus": 2,
+        "damage": "1d4+1",
+        "xpReward": 15,
+        "actions": [
+          {
+            "name": "Lamplighter's Pole",
+            "attackBonus": 2,
+            "damage": "1d4+1",
+            "damageType": "bludgeoning",
+            "description": "A surprisingly firm prod."
+          }
+        ]
+      },
+      "attributes": {
+        "strength": 9,
+        "agility": 13,
+        "endurance": 10,
+        "wisdom": 13,
+        "charisma": 12,
+        "intelligence": 13
+      },
+      "description": "A freckled apprentice with soot on their nose and a lamplighter's pole they refuse to let go of."
     }
   ]
 }

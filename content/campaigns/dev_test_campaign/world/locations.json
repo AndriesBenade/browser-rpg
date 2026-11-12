@@ -1,357 +1,899 @@
 {
   "locations": [
     {
-      "id": "loc_dev_haven",
-      "name": "Haven of the Crossways",
-      "ancientName": "Portus Asyli",
-      "region": "The Central Marches",
+      "id": "loc_dev_brindle_ford",
+      "name": "Brindle Ford",
+      "region": "The Brindle Vale",
       "recommendedLevel": 1,
-      "coordinates": { "x": 300, "y": 300 },
+      "coordinates": {
+        "x": 300,
+        "y": 300
+      },
       "terrain": "paved_road",
+      "restSafety": "settlement",
       "buildings": [
         {
-          "id": "bld_haven_apothecary",
-          "name": "Lycus' Fine Goods & Wares",
+          "id": "bld_dev_guildhall",
+          "name": "Wayfarers' Guildhall",
           "isOpen": true,
-          "ownerId": "npc_dev_merchant_lycus"
+          "ownerId": "npc_dev_odile_marsh"
         },
-        { "id": "bld_haven_guardhouse", "name": "Haven Watch Post", "isOpen": true, "ownerId": "npc_dev_guard_captain" },
-        { "id": "bld_haven_treasury", "name": "The High Vault", "isOpen": false, "requiresLockpick": true }
+        {
+          "id": "bld_dev_quill_candle",
+          "name": "The Quill & Candle",
+          "isOpen": true,
+          "ownerId": "npc_dev_tamsin_quill"
+        },
+        {
+          "id": "bld_dev_watch_house",
+          "name": "Ford Watch House",
+          "isOpen": true,
+          "ownerId": "npc_dev_hob_garrow"
+        },
+        {
+          "id": "bld_dev_ferry_inn",
+          "name": "The Ferry Inn",
+          "isOpen": true
+        }
       ],
       "connections": [
         {
-          "targetLocationId": "loc_dev_whispering_woods",
-          "name": "The Old Forest Trail",
-          "distanceKm": 4.0,
+          "targetLocationId": "loc_dev_willowmere",
+          "name": "The Hedge Lane",
+          "distanceKm": 3.5,
           "travelHours": 1.0,
-          "staminaCost": 3,
-          "terrain": "rocky_scrubland",
-          "dangerRating": 1
+          "staminaCost": 2,
+          "terrain": "paved_road",
+          "dangerRating": 0
         },
         {
-          "targetLocationId": "loc_dev_ancient_crypt",
-          "name": "Road to the Sunken Crypt",
-          "distanceKm": 6.5,
-          "travelHours": 2.0,
-          "staminaCost": 5,
-          "terrain": "mountain_trail",
+          "targetLocationId": "loc_dev_old_moss",
+          "name": "The Plank Road",
+          "distanceKm": 5.0,
+          "travelHours": 1.5,
+          "staminaCost": 4,
+          "terrain": "wetlands",
           "dangerRating": 2
         },
         {
-          "targetLocationId": "loc_dev_obsidian_crag",
-          "name": "The Jagged Ascent",
-          "distanceKm": 10.0,
-          "travelHours": 3.0,
-          "staminaCost": 8,
+          "targetLocationId": "loc_dev_saltreed",
+          "name": "The Salt Road",
+          "distanceKm": 6.0,
+          "travelHours": 1.5,
+          "staminaCost": 3,
+          "terrain": "coastal",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_thornback",
+          "name": "The Goat Climb",
+          "distanceKm": 7.0,
+          "travelHours": 2.0,
+          "staminaCost": 6,
           "terrain": "mountain_trail",
-          "dangerRating": 4
+          "dangerRating": 2
         }
       ],
       "narrative": {
-        "overview": "Haven of the Crossways is a fortified settlement set amidst limestone ridges. Cobblestone pathways link timber-framed houses, a lively merchant stall, and the imposing town watch house.",
-        "shortDescription": "A bustling crossroads settlement fortified by stout wooden palisades."
+        "overview": "Brindle Ford is a muddy, cheerful river town built around a ferry rope as thick as your arm. The Guildhall flies a lantern banner, the Quill & Candle sells everything, and the Watch House has a very loud bell. Out past the estuary, the lighthouse on Gull Rock stands dark.",
+        "shortDescription": "A river-crossing town of ferries, gossip and mud."
       },
-      "presentNPCs": ["npc_dev_merchant_lycus", "npc_dev_guard_captain", "npc_dev_elena_scholar"],
-      "presentItems": ["item_dev_iron_lockpick"]
+      "rumour": "Brindle Ford: where the river road crosses the Brindle. Everyone passes through sooner or later.",
+      "presentNPCs": [
+        "npc_dev_odile_marsh",
+        "npc_dev_tamsin_quill",
+        "npc_dev_hob_garrow",
+        "npc_dev_abel_rush",
+        "npc_dev_fennick_sly",
+        "npc_dev_marta_ironhook"
+      ],
+      "presentItems": [
+        "item_dev_climbing_rope"
+      ],
+      "criticalDiscovery": {
+        "itemId": "item_dev_smelling_salts",
+        "quantity": 1,
+        "drachmae": 5,
+        "title": "Lost Under the Ferry Steps",
+        "narrative": "Wedged between the ferry steps you spot a dropped purse and a twist of smelling salts. Finders keepers."
+      },
+      "hiddenSpots": [
+        {
+          "id": "loose_cobble",
+          "name": "a loose cobble",
+          "dc": 10,
+          "text": "One cobble by the Guildhall rocks underfoot. Someone's emergency savings are tucked beneath it.",
+          "outcome": {
+            "giveDrachmae": 6
+          }
+        },
+        {
+          "id": "ferry_dock",
+          "name": "a crate under the ferry dock",
+          "dc": 13,
+          "text": "Under the dock, out of the rain, someone has stashed a bottle of Saltreed brandy. No stamp, of course.",
+          "outcome": {
+            "giveItem": "item_dev_smuggled_brandy"
+          }
+        }
+      ],
+      "tactics": [
+        {
+          "id": "market_crowd",
+          "icon": "🧺",
+          "label": "Use the market crowd",
+          "desc": "Slip between stalls and strike from where you are not expected.",
+          "skill": "stealth",
+          "attribute": "agility",
+          "dc": 12,
+          "effect": {
+            "attack": 2,
+            "rounds": 2
+          },
+          "text": "You vanish among the carts and come out swinging."
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_dev_notice_board",
+          "category": "The Guildhall",
+          "title": "Read the Guild notice board",
+          "desc": "Jobs, warnings and a very rude drawing of the Watch captain.",
+          "badge": "Explore",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "read_notice_board",
+          "handlerType": "narrative",
+          "outcome": {
+            "transcript": {
+              "speaker": "Notice Board",
+              "text": "URGENT: Pip Tallow, the lamplighter's apprentice, went up Thornback Ridge yesterday to look at the dark lighthouse and has not come back. Storm due. See Captain Garrow. ALSO: Bounty on the thing in the Old Moss. ALSO: Whoever keeps stealing the Guild's pencils, stop.",
+              "style": "entry-discovery"
+            },
+            "setFlags": {
+              "read_notice_board": true
+            },
+            "startQuest": [
+              "quest_dev_stranded"
+            ],
+            "revealRumour": "loc_dev_thornback",
+            "addJournalKnowledge": {
+              "title": "The Notice Board",
+              "text": "Pip Tallow is stranded on Thornback Ridge with a storm coming. There is a bounty on a creature in the Old Moss."
+            }
+          }
+        },
+        {
+          "id": "act_dev_arm_wrestle",
+          "category": "The Ferry Inn",
+          "title": "Arm-wrestle the bargemen",
+          "desc": "Five drachmae on the table. A pure test of Strength.",
+          "badge": "Strength",
+          "type": "primary-quest-action",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "attribute": "strength",
+            "dc": 13,
+            "name": "Arm-wrestle Big Nell",
+            "retryHours": 4,
+            "success": {
+              "transcript": {
+                "speaker": "The Ferry Inn",
+                "text": "Big Nell's arm hits the table with a bang. The whole inn cheers and pays up.",
+                "style": "entry-discovery"
+              },
+              "giveDrachmae": 5,
+              "awardXP": 10
+            },
+            "failure": {
+              "text": "Nell slams your hand down so hard the mugs jump. 'Come back when you've eaten something,' she grins.",
+              "speaker": "The Ferry Inn",
+              "staminaDamage": 2
+            },
+            "criticalSuccess": {
+              "giveDrachmae": 10,
+              "text": "You win so fast that Nell buys you a drink and a second purse is pushed your way."
+            },
+            "criticalFailure": {
+              "minutes": 30,
+              "text": "Something pops in your shoulder. You spend half an hour with your arm in a bucket of cold water."
+            }
+          }
+        }
+      ]
     },
     {
-      "id": "loc_dev_whispering_woods",
-      "name": "The Whispering Woods",
-      "ancientName": "Silva Murmuris",
-      "region": "The Central Marches",
+      "id": "loc_dev_willowmere",
+      "name": "Willowmere Apiary",
+      "region": "The Brindle Vale",
       "recommendedLevel": 1,
-      "coordinates": { "x": 200, "y": 250 },
-      "terrain": "rocky_scrubland",
+      "coordinates": {
+        "x": 170,
+        "y": 230
+      },
+      "terrain": "sacred_grove",
+      "restSafety": "sanctuary",
       "connections": [
         {
-          "targetLocationId": "loc_dev_haven",
-          "name": "The Haven Road",
-          "distanceKm": 4.0,
+          "targetLocationId": "loc_dev_brindle_ford",
+          "name": "The Hedge Lane",
+          "distanceKm": 3.5,
+          "travelHours": 1.0,
+          "staminaCost": 2,
+          "terrain": "paved_road",
+          "dangerRating": 0
+        },
+        {
+          "targetLocationId": "loc_dev_old_moss",
+          "name": "The Hive Path",
+          "distanceKm": 3.0,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "wetlands",
+          "dangerRating": 1
+        }
+      ],
+      "narrative": {
+        "overview": "Hundreds of straw hives hum among the willows. The Hive Sisters move between them in veils, and at the centre of the garden the Hive Mother's shrine stones glisten with spilled honey.",
+        "shortDescription": "A humming monastery garden of hives and healers."
+      },
+      "rumour": "Willowmere: the Hive Sisters heal anyone who asks politely.",
+      "presentNPCs": [
+        "npc_dev_sister_bramble"
+      ],
+      "presentItems": [
+        "mat_dev_yarrow"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "comb_cellar",
+          "name": "a comb cellar",
+          "dc": 12,
+          "text": "Behind the shrine is a cool cellar of old honeycomb, and a forgotten bottle of mead.",
+          "outcome": {
+            "giveItem": "item_dev_bog_mead"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_dev_offer_mead",
+          "category": "The Hive Mother's Shrine",
+          "title": "Pour mead on the shrine stones",
+          "desc": "An offering to the Hive Mother. She likes the good stuff.",
+          "badge": "Offering",
+          "type": "sacred-action",
+          "handlerType": "item_action",
+          "consumeItem": "item_dev_bog_mead",
+          "outcome": {
+            "transcript": {
+              "speaker": "The Hive Mother",
+              "text": "The mead soaks into the warm stones. Every bee in the garden hums one note, and your tiredness lifts.",
+              "style": "entry-discovery"
+            },
+            "piety": {
+              "hive_mother": 2
+            },
+            "restoreStamina": 4,
+            "setFlags": {
+              "offered_to_hive": true
+            }
+          }
+        },
+        {
+          "id": "act_dev_hive_blessing",
+          "category": "The Hive Mother's Shrine",
+          "title": "Ask the Sisters for a blessing",
+          "desc": "After an offering, the Sisters will bless travellers once.",
+          "badge": "Blessing",
+          "type": "sacred-action",
+          "requiresFlag": "offered_to_hive",
+          "requiresNotFlag": "hive_blessing_received",
+          "handlerType": "narrative",
+          "outcome": {
+            "transcript": {
+              "speaker": "Sister Bramble",
+              "text": "A Sister dabs honey on your forehead and mutters something about patience. You feel ready for anything (+2 on your next check).",
+              "style": "entry-discovery"
+            },
+            "inspiration": true,
+            "restoreHealth": 5,
+            "setFlags": {
+              "hive_blessing_received": true
+            }
+          }
+        },
+        {
+          "id": "act_dev_augury",
+          "category": "The Hive Mother's Shrine",
+          "title": "Cast the augury bones",
+          "desc": "Four bones, one cup, the Hive Mother's opinion of your day.",
+          "badge": "Minigame",
+          "type": "sacred-action",
+          "handlerType": "minigame",
+          "minigameType": "astragaloi",
+          "successOutcome": {
+            "text": "A Sister nods at your cast. 'She is watching you,' she says, which is either nice or worrying.",
+            "speaker": "Willowmere"
+          }
+        }
+      ]
+    },
+    {
+      "id": "loc_dev_old_moss",
+      "name": "The Old Moss",
+      "region": "The Old Moss",
+      "recommendedLevel": 2,
+      "coordinates": {
+        "x": 110,
+        "y": 390
+      },
+      "terrain": "wetlands",
+      "restSafety": "wild",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_brindle_ford",
+          "name": "The Plank Road",
+          "distanceKm": 5.0,
+          "travelHours": 1.5,
+          "staminaCost": 4,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_willowmere",
+          "name": "The Hive Path",
+          "distanceKm": 3.0,
           "travelHours": 1.0,
           "staminaCost": 3,
           "terrain": "paved_road",
           "dangerRating": 1
         },
         {
-          "targetLocationId": "loc_dev_sunken_grotto",
-          "name": "Overgrown Fern Hollow",
-          "distanceKm": 3.0,
+          "targetLocationId": "loc_dev_saltreed",
+          "name": "The Old Boardwalk",
+          "distanceKm": 3.5,
           "travelHours": 1.0,
-          "staminaCost": 4,
-          "terrain": "rocky_scrubland",
+          "staminaCost": 3,
+          "terrain": "coastal",
           "dangerRating": 2,
-          "requiresFlag": "discovered_sunken_grotto"
+          "requiresFlag": "moss_boardwalk_found"
         },
         {
-          "targetLocationId": "loc_dev_obsidian_crag",
-          "name": "The Hidden Goat Track",
-          "distanceKm": 5.0,
-          "travelHours": 1.5,
-          "staminaCost": 4,
-          "terrain": "mountain_trail",
-          "dangerRating": 2,
-          "requiresFlag": "crag_goat_track_found"
+          "targetLocationId": "loc_dev_sunken_chapel",
+          "name": "The Black Causeway",
+          "distanceKm": 1.5,
+          "travelHours": 0.5,
+          "staminaCost": 2,
+          "terrain": "wetlands",
+          "dangerRating": 1,
+          "requiresFlag": "bog_stone_answered"
         }
       ],
       "narrative": {
-        "overview": "Towering ancient pines and dense briars cast cool, dappled shadows across the mossy floor. The air rustles with wild boar foraging in the undergrowth.",
-        "shortDescription": "A verdant, windswept pine forest sheltering game and hidden hollows."
+        "overview": "Black pools, cotton-grass and duckweed as far as you can see. Grandmother Rook's stilt hut leans over the water, and in the middle of the bog a single standing stone leans the other way, as if the two are arguing.",
+        "shortDescription": "A wide, sucking peat bog full of secrets and hares."
       },
-      "presentCreatures": ["creature_dev_wild_boar", "creature_dev_forest_wolf"],
-      "presentItems": ["item_dev_forest_berries"],
+      "rumour": "The Old Moss: a bog with a talking stone and something under the duckweed.",
+      "presentNPCs": [
+        "npc_dev_grandmother_rook"
+      ],
+      "presentCreatures": [
+        "creature_dev_fogback_lurker"
+      ],
+      "presentItems": [
+        "mat_dev_bog_myrtle"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "drowned_pack",
+          "name": "a drowned pedlar's pack",
+          "dc": 11,
+          "text": "Half sunk in a pool is a pedlar's pack. The coins are fine; the pedlar, presumably, is not.",
+          "outcome": {
+            "giveDrachmae": 8,
+            "giveItem": "item_dev_smelling_salts"
+          }
+        },
+        {
+          "id": "old_boardwalk",
+          "name": "an old boardwalk",
+          "dc": 13,
+          "text": "Under a mat of sedge you find rotting planks: an old boardwalk heading south toward the sea. It would take you straight to Saltreed Cove.",
+          "outcome": {
+            "setFlags": {
+              "moss_boardwalk_found": true
+            },
+            "awardXP": 15,
+            "addJournalKnowledge": {
+              "title": "The Old Boardwalk",
+              "text": "A hidden boardwalk links the Old Moss and Saltreed Cove."
+            }
+          }
+        },
+        {
+          "id": "wisp_glass_reeds",
+          "name": "wisp-glass in the reeds",
+          "dc": 15,
+          "text": "Something glints green among the reeds: a shard of wisp-glass, still warm.",
+          "outcome": {
+            "giveItem": "mat_dev_wisp_glass",
+            "awardXP": 10
+          }
+        }
+      ],
+      "tactics": [
+        {
+          "id": "sucking_mud",
+          "icon": "🟫",
+          "label": "Lure it into the sucking mud",
+          "desc": "Draw your foe onto the soft ground where it flounders.",
+          "skill": "survival",
+          "attribute": "wisdom",
+          "dc": 13,
+          "effect": {
+            "enemyAttack": 2,
+            "attack": 1,
+            "rounds": 3
+          },
+          "text": "Your foe sinks to the knees in black mud and thrashes."
+        }
+      ],
       "actions": [
         {
-          "id": "act_study_monolith",
-          "category": "Exploration & Investigation",
-          "title": "Study the Weathered Monolith",
-          "desc": "Copy the runes from a moss-covered standing stone among the pines.",
+          "id": "act_dev_stalk_hares",
+          "category": "The Reeds",
+          "title": "Stalk bog hares in the reeds",
+          "desc": "Step only when the wind rattles the reeds. A good meal if you are patient.",
+          "badge": "Minigame",
+          "type": "primary-quest-action",
+          "handlerType": "minigame",
+          "minigameType": "stalk",
+          "minigameConfig": {
+            "subTitle": "Bog hares: quick ears, quicker legs"
+          }
+        },
+        {
+          "id": "act_dev_bog_stone",
+          "category": "The Bog Stone",
+          "title": "Read the Bog Stone",
+          "desc": "The leaning stone has a riddle cut into it, and a causeway of black stones sunk below it.",
+          "badge": "Riddle",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "bog_stone_answered",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_dev_bog_stone"
+        }
+      ]
+    },
+    {
+      "id": "loc_dev_saltreed",
+      "name": "Saltreed Cove",
+      "region": "Saltreed Coast",
+      "recommendedLevel": 2,
+      "coordinates": {
+        "x": 420,
+        "y": 460
+      },
+      "terrain": "coastal",
+      "restSafety": "wild",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_brindle_ford",
+          "name": "The Salt Road",
+          "distanceKm": 6.0,
+          "travelHours": 1.5,
+          "staminaCost": 3,
+          "terrain": "paved_road",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_old_moss",
+          "name": "The Old Boardwalk",
+          "distanceKm": 3.5,
+          "travelHours": 1.0,
+          "staminaCost": 3,
+          "terrain": "wetlands",
+          "dangerRating": 2,
+          "requiresFlag": "moss_boardwalk_found"
+        },
+        {
+          "targetLocationId": "loc_dev_gull_rock",
+          "name": "Row Across to Gull Rock",
+          "distanceKm": 2.0,
+          "travelHours": 1.0,
+          "staminaCost": 4,
+          "terrain": "coastal",
+          "dangerRating": 3,
+          "requiresFlag": "gull_rock_crossing"
+        }
+      ],
+      "narrative": {
+        "overview": "A crescent of grey shingle hidden by reed beds. Upturned boats, tarred sheds and a lot of crates that say FISH but clink. Across the water, Gull Rock and its dead lighthouse.",
+        "shortDescription": "A smugglers' cove of shingle, reeds and crates that clink."
+      },
+      "rumour": "Saltreed Cove: officially a fishing beach. Unofficially, Jory Vane's.",
+      "presentNPCs": [
+        "npc_dev_jory_vane"
+      ],
+      "presentCreatures": [
+        "creature_dev_reef_crab"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "tide_pool",
+          "name": "a tide pool",
+          "dc": 12,
+          "text": "In a tide pool, among the anemones, an oyster gapes around a lumpy pearl.",
+          "outcome": {
+            "giveItem": "item_dev_pearl"
+          }
+        }
+      ],
+      "tactics": [
+        {
+          "id": "sea_spray",
+          "icon": "🌊",
+          "label": "Fight with the sea at your back",
+          "desc": "Wait for a breaker to hit your foe first.",
+          "skill": "athletics",
+          "attribute": "strength",
+          "dc": 12,
+          "effect": {
+            "stun": 1
+          },
+          "text": "A wave knocks your foe sprawling as you charge."
+        }
+      ]
+    },
+    {
+      "id": "loc_dev_thornback",
+      "name": "Thornback Ridge",
+      "region": "The Brindle Vale",
+      "recommendedLevel": 2,
+      "coordinates": {
+        "x": 470,
+        "y": 200
+      },
+      "terrain": "mountain_trail",
+      "restSafety": "wild",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_brindle_ford",
+          "name": "The Goat Climb",
+          "distanceKm": 7.0,
+          "travelHours": 2.0,
+          "staminaCost": 4,
+          "terrain": "mountain_trail",
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_dev_gull_rock",
+          "name": "The Cliff Stair",
+          "distanceKm": 3.0,
+          "travelHours": 1.5,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 3,
+          "requiresFlag": "gull_stair_found"
+        }
+      ],
+      "narrative": {
+        "overview": "A razor ridge of gorse and grey rock running out to the sea cliffs. The wind never stops. Far below, Gull Rock stands in the surf, and somewhere above you a gryphon screams.",
+        "shortDescription": "A windy ridge of gorse, ledges and big birds."
+      },
+      "rumour": "Thornback Ridge: gorse, goats and a gryphon. Pip Tallow went up there and has not come down.",
+      "presentNPCs": [
+        "npc_dev_pip_tallow"
+      ],
+      "presentCreatures": [
+        "creature_dev_bristle_bear"
+      ],
+      "presentItems": [
+        "item_dev_climbing_gloves"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "cliff_stair",
+          "name": "a cliff stair",
+          "dc": 14,
+          "text": "Behind a gorse thicket, steps cut into the cliff zigzag down toward Gull Rock. A gryphon's nest sits right above them, and its owner is home.",
+          "outcome": {
+            "setFlags": {
+              "gull_stair_found": true,
+              "gryphon_roused": true
+            },
+            "updateQuest": {
+              "questId": "quest_dev_lantern",
+              "objectiveId": "obj_find_crossing",
+              "completed": true
+            },
+            "startEncounter": "enc_dev_gryphon"
+          }
+        }
+      ],
+      "tactics": [
+        {
+          "id": "rockslide",
+          "icon": "🪨",
+          "label": "Start a rockslide",
+          "desc": "Lever a boulder loose above your foe.",
+          "skill": "athletics",
+          "attribute": "strength",
+          "dc": 14,
+          "effect": {
+            "damage": "2d6"
+          },
+          "text": "Stones thunder down the slope onto your foe!"
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_dev_climb_to_pip",
+          "category": "Pip's Ledge",
+          "title": "Climb down to Pip's ledge",
+          "desc": "Pip is stuck on a ledge below the path. A climb, no rope.",
+          "badge": "Athletics",
+          "type": "primary-quest-action",
+          "conditions": [
+            {
+              "type": "quest_stage",
+              "questId": "quest_dev_stranded",
+              "stage": "reach_pip"
+            }
+          ],
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "athletics",
+            "attribute": "strength",
+            "dc": 13,
+            "name": "Climb to the ledge",
+            "retryHours": 1,
+            "success": {
+              "transcript": {
+                "speaker": "Rescue",
+                "text": "Hand over hand you reach the ledge. Pip grabs your arm like a limpet. 'I knew someone would come! Mostly knew. Hoped.'",
+                "style": "entry-discovery"
+              },
+              "updateQuest": {
+                "questId": "quest_dev_stranded",
+                "objectiveId": "obj_reach_pip",
+                "completed": true
+              },
+              "recruitCompanion": "npc_dev_pip_tallow",
+              "awardXP": 30
+            },
+            "failure": {
+              "text": "The rock crumbles under your fingers and you scramble back up, heart pounding. Better catch your breath before trying again.",
+              "speaker": "Narrator",
+              "staminaDamage": 2
+            },
+            "criticalFailure": {
+              "minutes": 30,
+              "text": "You slip and slide twenty feet before a gorse bush catches you. It takes half an hour to pick out the thorns."
+            }
+          }
+        },
+        {
+          "id": "act_dev_rope_to_pip",
+          "category": "Pip's Ledge",
+          "title": "Lower a rope to Pip",
+          "desc": "Tie off a rope and let Pip climb up. Safe and boring.",
+          "badge": "Rope",
+          "type": "primary-quest-action",
+          "requiresItem": "item_dev_climbing_rope",
+          "conditions": [
+            {
+              "type": "quest_stage",
+              "questId": "quest_dev_stranded",
+              "stage": "reach_pip"
+            }
+          ],
+          "handlerType": "narrative",
+          "outcome": {
+            "transcript": {
+              "speaker": "Rescue",
+              "text": "You lash the rope to a rock and Pip shins up it, babbling thanks the whole way.",
+              "style": "entry-discovery"
+            },
+            "updateQuest": {
+              "questId": "quest_dev_stranded",
+              "objectiveId": "obj_reach_pip",
+              "completed": true
+            },
+            "recruitCompanion": "npc_dev_pip_tallow",
+            "awardXP": 20
+          }
+        },
+        {
+          "id": "act_dev_search_pip_cave",
+          "category": "Pip's Ledge",
+          "title": "Search the storm caves for Pip",
+          "desc": "The storm drove Pip off the ledge into the caves. Find the right one.",
           "badge": "Investigation",
           "type": "primary-quest-action",
-          "requiresNotFlag": "monolith_runes_copied",
+          "conditions": [
+            {
+              "type": "quest_stage",
+              "questId": "quest_dev_stranded",
+              "stage": "pip_cave"
+            }
+          ],
           "handlerType": "skill_check",
           "skillCheck": {
             "skill": "investigation",
             "attribute": "intelligence",
             "dc": 12,
-            "name": "Decipher the Monolith",
+            "name": "Follow Pip's trail into the caves",
+            "retryHours": 1,
             "success": {
               "transcript": {
-                "speaker": "Discovery",
-                "text": "Beneath the moss you trace a spiral of ancient runes and copy them carefully onto parchment.",
+                "speaker": "Rescue",
+                "text": "Chalk marks on the rock, shaped like little lanterns. Pip left a trail. You find the apprentice wrapped in a sailcloth, very cold and very glad to see you.",
                 "style": "entry-discovery"
               },
-              "setFlags": { "monolith_runes_copied": true },
-              "updateQuest": { "questId": "quest_dev_ancient_ruins", "objectiveId": "obj_read_monolith", "completed": true },
-              "completeQuest": "quest_dev_ancient_ruins",
-              "addJournalKnowledge": {
-                "title": "The Whispering Monolith",
-                "text": "Copied a spiral of runes from a standing stone in the Whispering Woods."
-              }
+              "updateQuest": {
+                "questId": "quest_dev_stranded",
+                "objectiveId": "obj_find_pip_cave",
+                "completed": true
+              },
+              "recruitCompanion": "npc_dev_pip_tallow",
+              "awardXP": 30
             },
             "failure": {
-              "text": "The runes blur under the moss and failing light. You could try again later.",
+              "text": "Every cave looks the same and the wind howls through all of them. You will have to warm up and try again.",
               "speaker": "Narrator"
             }
           }
         }
-      ],
-      "tactics": [
-        {
-          "id": "bramble_lure",
-          "icon": "🌿",
-          "label": "Lure it into the bramble thicket",
-          "desc": "Draw your quarry into thorns where it cannot turn.",
-          "skill": "survival",
-          "attribute": "wisdom",
-          "dc": 13,
-          "effect": { "enemyAttack": 2, "attack": 1, "rounds": 3 },
-          "text": "Thorns tear at your foe as it blunders into the thicket."
-        }
-      ],
-      "hiddenSpots": [
-        {
-          "id": "hunters_cache",
-          "name": "a hunter's cache",
-          "dc": 12,
-          "text": "Under a fallen pine you find a hunter's cache wrapped in oilcloth: smoked meat, still good.",
-          "outcome": { "giveItem": "item_dev_trail_rations" }
-        },
-        {
-          "id": "hollow_oak",
-          "name": "a hollow oak",
-          "dc": 15,
-          "text": "Inside a hollow oak someone has hidden a small purse.",
-          "outcome": { "giveDrachmae": 12, "awardXP": 10 }
-        }
       ]
     },
     {
-      "id": "loc_dev_ancient_crypt",
-      "name": "The Sunken Crypt of Karas",
-      "ancientName": "Crypta Karatis",
-      "region": "The Desolate Lowlands",
-      "recommendedLevel": 2,
-      "coordinates": { "x": 420, "y": 380 },
-      "terrain": "mountain_cave",
-      "connections": [
-        {
-          "targetLocationId": "loc_dev_haven",
-          "name": "Highway to Haven",
-          "distanceKm": 6.5,
-          "travelHours": 2.0,
-          "staminaCost": 5,
-          "terrain": "paved_road",
-          "dangerRating": 1
-        }
-      ],
-      "narrative": {
-        "overview": "Chilly mist seeps from the shattered archway of the sunken crypt. Dark stone sepulchers flank an archaic sanctuary hall where an ancient warlord slumbers.",
-        "shortDescription": "A subterranean limestone crypt heavy with cold subterranean mist."
+      "id": "loc_dev_gull_rock",
+      "name": "Gull Rock Lighthouse",
+      "region": "Saltreed Coast",
+      "recommendedLevel": 3,
+      "coordinates": {
+        "x": 560,
+        "y": 380
       },
-      "presentCreatures": ["creature_dev_crypt_boss"],
-      "presentItems": ["item_dev_crypt_torch"],
-      "tactics": [
-        {
-          "id": "topple_brazier",
-          "icon": "🔥",
-          "label": "Topple the burning brazier",
-          "desc": "Tip the old sepulchre brazier onto the dead lord.",
-          "skill": "athletics",
-          "attribute": "strength",
-          "dc": 13,
-          "effect": { "damage": "2d6", "enemyAttack": 1, "rounds": 2 },
-          "text": "Burning coals cascade over your foe!"
-        }
-      ]
-    },
-    {
-      "id": "loc_dev_obsidian_crag",
-      "name": "The Obsidian Crags",
-      "ancientName": "Rupes Atra",
-      "region": "Highland Peaks",
-      "recommendedLevel": 4,
-      "coordinates": { "x": 500, "y": 180 },
-      "terrain": "mountain_trail",
+      "terrain": "coastal",
+      "restSafety": "wild",
       "connections": [
         {
-          "targetLocationId": "loc_dev_haven",
-          "name": "Descent to Haven",
-          "distanceKm": 10.0,
-          "travelHours": 3.0,
-          "staminaCost": 8,
-          "terrain": "mountain_trail",
-          "dangerRating": 4
-        },
-        {
-          "targetLocationId": "loc_dev_whispering_woods",
-          "name": "The Hidden Goat Track",
-          "distanceKm": 5.0,
-          "travelHours": 1.5,
-          "staminaCost": 4,
-          "terrain": "mountain_trail",
-          "dangerRating": 2,
-          "requiresFlag": "crag_goat_track_found"
-        }
-      ],
-      "narrative": {
-        "overview": "Razor-sharp black obsidian pinnacles rise into freezing winds. Lethal shadow beasts stalk the high passes, hunting any mortal foolish enough to climb without heroic armament.",
-        "shortDescription": "Treacherous obsidian pinnacles shrouded in howling winds."
-      },
-      "presentCreatures": ["creature_dev_shadow_stalker"],
-      "actions": [
-        {
-          "id": "act_sneak_to_apprentice",
-          "category": "Exploration & Investigation",
-          "title": "Sneak to the Bound Apprentice",
-          "desc": "Creep past the stalker's perch and cut the captive free.",
-          "badge": "Stealth",
-          "type": "primary-quest-action",
-          "requiresNotFlag": "crag_stalker_slain",
-          "conditions": [
-            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "rescue_crag" }
-          ],
-          "handlerType": "skill_check",
-          "skillCheck": {
-            "skill": "stealth",
-            "attribute": "agility",
-            "dc": 14,
-            "name": "Sneak past the Shadow Stalker",
-            "success": {
-              "transcript": {
-                "speaker": "Rescue",
-                "text": "You slip between the black pinnacles, cut the apprentice's bonds and lead them away before the stalker stirs.",
-                "style": "entry-discovery"
-              },
-              "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice", "completed": true },
-              "awardXP": 40
-            },
-            "failure": {
-              "text": "Loose obsidian skitters under your boot. A shriek answers from the pinnacle above!",
-              "speaker": "Narrator",
-              "startEncounter": "enc_dev_shadow_stalker",
-              "encounterReason": "The Shadow Stalker drops from its perch, talons spread!"
-            }
-          }
-        },
-        {
-          "id": "act_free_apprentice",
-          "category": "Exploration & Investigation",
-          "title": "Free the Bound Apprentice",
-          "desc": "With the stalker dead, cut the captive loose.",
-          "badge": "Rescue",
-          "type": "primary-quest-action",
-          "requiresFlag": "crag_stalker_slain",
-          "conditions": [
-            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "rescue_crag" }
-          ],
-          "handlerType": "narrative",
-          "outcome": {
-            "transcript": {
-              "speaker": "Rescue",
-              "text": "You cut the apprentice's bonds. Shaking but unhurt, they follow you down toward Haven.",
-              "style": "entry-discovery"
-            },
-            "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice", "completed": true }
-          }
-        }
-      ],
-      "hiddenSpots": [
-        {
-          "id": "goat_track",
-          "name": "a hidden goat track",
-          "dc": 14,
-          "text": "Between two black pinnacles you find a narrow goat track winding down toward the Whispering Woods: a secret way off the crags.",
-          "outcome": {
-            "setFlags": { "crag_goat_track_found": true },
-            "awardXP": 20,
-            "addJournalKnowledge": { "title": "The Goat Track", "text": "A hidden path links the Obsidian Crags and the Whispering Woods." }
-          }
-        }
-      ]
-    },
-    {
-      "id": "loc_dev_sunken_grotto",
-      "name": "The Sunken Grotto",
-      "ancientName": "Antrum Ocultum",
-      "region": "The Central Marches",
-      "recommendedLevel": 2,
-      "coordinates": { "x": 150, "y": 180 },
-      "terrain": "mountain_cave",
-      "connections": [
-        {
-          "targetLocationId": "loc_dev_whispering_woods",
-          "name": "Path Back to the Pines",
-          "distanceKm": 3.0,
+          "targetLocationId": "loc_dev_saltreed",
+          "name": "Row Back to Saltreed",
+          "distanceKm": 2.0,
           "travelHours": 1.0,
           "staminaCost": 4,
-          "terrain": "rocky_scrubland",
-          "dangerRating": 1
+          "terrain": "coastal",
+          "dangerRating": 2,
+          "requiresFlag": "gull_rock_crossing"
+        },
+        {
+          "targetLocationId": "loc_dev_thornback",
+          "name": "The Cliff Stair",
+          "distanceKm": 3.0,
+          "travelHours": 1.5,
+          "staminaCost": 5,
+          "terrain": "mountain_trail",
+          "dangerRating": 2,
+          "requiresFlag": "gull_stair_found"
         }
       ],
       "narrative": {
-        "overview": "A secluded subterranean pool lit by bioluminescent moss clinging to limestone stalactites. The water reflects shimmering veins of silver ore.",
-        "shortDescription": "A tranquil subterranean grotto with glowing limestone pools."
+        "overview": "A stump of black rock crusted with gulls and barnacles. The lighthouse tower is white with salt, its great lantern dark. The door is shut, and from somewhere inside, a bell tolls by itself.",
+        "shortDescription": "A dark lighthouse on a rock in the surf."
       },
-      "presentItems": ["item_dev_silver_chalice"],
+      "rumour": "Gull Rock: the lighthouse that went dark. The keeper went inside and never came out.",
+      "hiddenSpots": [
+        {
+          "id": "storm_locker",
+          "name": "a storm locker",
+          "dc": 12,
+          "text": "Bolted to the rock is the keeper's storm locker. Inside: dry matches, a tonic and a note that says DO NOT GO DOWN TO THE BELL.",
+          "outcome": {
+            "giveItem": "item_dev_healing_tonic"
+          }
+        }
+      ],
       "actions": [
         {
-          "id": "act_free_apprentice_grotto",
-          "category": "Exploration & Investigation",
-          "title": "Free the Apprentice in the Grotto",
-          "desc": "The captive was dragged here. Find them in the dark.",
-          "badge": "Rescue",
+          "id": "act_dev_relight",
+          "category": "The Lantern Room",
+          "title": "Relight the lantern with the Everflame",
+          "desc": "Climb to the lantern room and set the Everflame wick in its cradle.",
+          "badge": "Main Quest",
           "type": "primary-quest-action",
-          "conditions": [
-            { "type": "quest_stage", "questId": "quest_dev_urgent_rescue", "stage": "stage_hostage_moved" }
-          ],
+          "requiresFlag": "keeper_defeated",
+          "requiresNotFlag": "lantern_lit",
+          "requiresItem": "item_dev_everflame_wick",
           "handlerType": "narrative",
           "outcome": {
             "transcript": {
-              "speaker": "Rescue",
-              "text": "Deep in the grotto you find the apprentice chained to a stalagmite and pry the shackle open.",
+              "speaker": "Gull Rock",
+              "text": "The wick catches with a sound like a held breath let go. Light pours out over the sea, the fog tears open, and from the shore you hear the ferry bell ringing and ringing.",
               "style": "entry-discovery"
             },
-            "updateQuest": { "questId": "quest_dev_urgent_rescue", "objectiveId": "obj_free_apprentice_grotto", "completed": true }
+            "setFlags": {
+              "lantern_lit": true
+            },
+            "consumeItem": "item_dev_everflame_wick",
+            "updateQuest": {
+              "questId": "quest_dev_lantern",
+              "objectiveId": "obj_relight",
+              "completed": true
+            },
+            "completeQuest": "quest_dev_lantern",
+            "piety": {
+              "tide_warden": 3
+            },
+            "addJournalChronicle": {
+              "title": "The Lantern Burns",
+              "text": "Relit the Gull Rock lantern with the Everflame. Lanternfall is over."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "loc_dev_sunken_chapel",
+      "name": "The Sunken Chapel",
+      "region": "The Old Moss",
+      "recommendedLevel": 2,
+      "coordinates": {
+        "x": 60,
+        "y": 290
+      },
+      "terrain": "ruins",
+      "restSafety": "sanctuary",
+      "connections": [
+        {
+          "targetLocationId": "loc_dev_old_moss",
+          "name": "The Black Causeway",
+          "distanceKm": 1.5,
+          "travelHours": 0.5,
+          "staminaCost": 2,
+          "terrain": "wetlands",
+          "dangerRating": 1,
+          "requiresFlag": "bog_stone_answered"
+        }
+      ],
+      "narrative": {
+        "overview": "Half a chapel rises from the bog, its nave full of black water. Barnacles on the walls, though the sea is miles away. On the altar a carved lantern, and blue lights drifting where the congregation used to sit.",
+        "shortDescription": "A drowned chapel of the Tide Warden, haunted by wisps."
+      },
+      "rumour": "The Sunken Chapel: the Tide Warden's old church, swallowed by the bog.",
+      "presentCreatures": [
+        "creature_dev_will_o_wisp"
+      ],
+      "criticalDiscovery": {
+        "itemId": "item_dev_wisp_ring",
+        "quantity": 1,
+        "drachmae": 0,
+        "title": "A Ring in the Font",
+        "narrative": "In the old font, under green water, a ring set with wisp-glass glows faintly. It slides onto your finger like it was waiting."
+      },
+      "noHiddenCache": true,
+      "actions": [
+        {
+          "id": "act_dev_tide_offering",
+          "category": "The Tide Warden's Altar",
+          "title": "Offer a pearl at the altar",
+          "desc": "The Tide Warden liked pearls. So say the carvings.",
+          "badge": "Offering",
+          "type": "sacred-action",
+          "handlerType": "item_action",
+          "consumeItem": "item_dev_pearl",
+          "outcome": {
+            "transcript": {
+              "speaker": "The Tide Warden",
+              "text": "The pearl rolls into the carved lantern and the wisps all turn toward you at once. Then they bow. You feel the old sea-power notice you.",
+              "style": "entry-discovery"
+            },
+            "piety": {
+              "tide_warden": 2
+            },
+            "restoreHealth": 8
           }
         }
       ]

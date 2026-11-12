@@ -1,0 +1,159 @@
+{
+  "items": [
+    {
+      "id": "item_dev_iron_lockpick",
+      "name": "Slender Iron Lockpick",
+      "category": "tool",
+      "slot": "accessory",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 10,
+      "description": "A tempered iron tension wrench and pick suited for delicate mechanical locks."
+    },
+    {
+      "id": "item_dev_treasury_key",
+      "name": "Heavy Brass Vault Key",
+      "category": "key",
+      "rarity": "rare",
+      "weightKg": 0.2,
+      "valueDrachmae": 25,
+      "description": "An ornate brass key engraved with the Haven crest, unlocking the High Vault."
+    },
+    {
+      "id": "item_dev_crypt_key",
+      "name": "Rusted Iron Crypt Key",
+      "category": "key",
+      "rarity": "uncommon",
+      "weightKg": 0.3,
+      "valueDrachmae": 15,
+      "description": "An archaic iron skeleton key recovered from the wilderness."
+    },
+    {
+      "id": "item_dev_sunstone_relic",
+      "name": "Radiant Sunstone of Haven",
+      "category": "relic",
+      "rarity": "legendary",
+      "isUnique": true,
+      "weightKg": 0.5,
+      "valueDrachmae": 200,
+      "description": "An ancient radiant amber crystal pulsing with solar warmth. The legendary artifact sought by Scholar Elena."
+    },
+    {
+      "id": "item_dev_elena_journal",
+      "name": "Scholar Elena's Research Journal",
+      "category": "document",
+      "rarity": "rare",
+      "isUnique": true,
+      "weightKg": 0.4,
+      "valueDrachmae": 20,
+      "description": "Handwritten parchment notes detailing the secret mechanism of the Sunken Crypt where the Sunstone is hidden."
+    },
+    {
+      "id": "item_dev_healing_draught",
+      "name": "Apothecary Healing Draught",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.3,
+      "valueDrachmae": 15,
+      "effect": { "restoreHealth": 10 },
+      "description": "A glass vial of brewed dittany, willow bark, and honey that rapidly stitches flesh."
+    },
+    {
+      "id": "item_dev_trail_rations",
+      "name": "Smoked Meat & Hardtack",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.5,
+      "valueDrachmae": 5,
+      "effect": { "restoreStamina": 8 },
+      "description": "Durable traveling provisions that revive weary muscles.",
+      "ration": true
+    },
+    {
+      "id": "item_dev_forest_berries",
+      "name": "Wild Mountain Blackberries",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 2,
+      "effect": { "restoreStamina": 4 },
+      "description": "Plump wild berries gathered from the brambles of the Whispering Woods.",
+      "ration": true
+    },
+    {
+      "id": "item_dev_boar_tusk",
+      "name": "Curved Boar Tusk",
+      "category": "material",
+      "rarity": "common",
+      "weightKg": 0.4,
+      "valueDrachmae": 8,
+      "description": "A razor-sharp ivory tusk prize from a wild boar."
+    },
+    {
+      "id": "item_dev_boar_meat",
+      "name": "Fresh Boar Haunch",
+      "category": "consumable",
+      "rarity": "common",
+      "weightKg": 1.0,
+      "valueDrachmae": 6,
+      "effect": { "restoreHealth": 6, "restoreStamina": 6 },
+      "description": "A hearty cut of fresh game suitable for roasting over campfires."
+    },
+    {
+      "id": "item_dev_wolf_pelt",
+      "name": "Thick Grey Wolf Pelt",
+      "category": "material",
+      "rarity": "common",
+      "weightKg": 1.2,
+      "valueDrachmae": 12,
+      "description": "A thick winter wolf fur pelt valued by furriers and cloak makers."
+    },
+    {
+      "id": "item_dev_chthonic_crystal",
+      "name": "Flawless Obsidian Crystal",
+      "category": "material",
+      "rarity": "exceptional",
+      "weightKg": 0.8,
+      "valueDrachmae": 75,
+      "description": "An extremely rare crystalline growth harvested from high obsidian crags."
+    },
+    {
+      "id": "item_dev_silver_chalice",
+      "name": "Ancient Silver Liturgical Chalice",
+      "category": "treasure",
+      "rarity": "rare",
+      "weightKg": 0.6,
+      "valueDrachmae": 50,
+      "description": "An exquisite silver chalice recovered from the Sunken Grotto."
+    },
+    {
+      "id": "item_dev_crypt_torch",
+      "name": "Pitch-Soaked Cedar Torch",
+      "category": "utility",
+      "rarity": "common",
+      "weightKg": 0.5,
+      "valueDrachmae": 3,
+      "description": "A resinous torch that burns brightly in subterranean passages."
+    },
+    {
+      "id": "item_dev_broadsword",
+      "name": "Haven Watch Broadsword",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "uncommon",
+      "weightKg": 1.8,
+      "valueDrachmae": 35,
+      "stats": { "damageMin": 4, "damageMax": 10, "damageType": "slashing" },
+      "description": "A double-edged forged steel broadsword issued to Haven guards."
+    },
+    {
+      "id": "item_dev_trade_parcel",
+      "name": "Lycus' Sealed Trade Parcel",
+      "category": "quest",
+      "rarity": "common",
+      "weightKg": 2.0,
+      "valueDrachmae": 0,
+      "description": "A wax-sealed bundle of goods Merchant Lycus is sending to the Haven Watch Post."
+    }
+  ]
+}

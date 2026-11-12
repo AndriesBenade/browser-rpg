@@ -10,7 +10,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { createSandbox, bootEngine, startCampaign, ROOT } = require('./behaviour_harness');
+const { createSandbox, bootEngine, startCampaign, loadLegacyDevContent, ROOT } = require('./behaviour_harness');
 
 const results = [];
 async function test(name, fn) {
@@ -43,7 +43,17 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   // ---------------------------------------------------------------------------
   // Content integrity (data validation)
   // ---------------------------------------------------------------------------
-  await test('Content: every item/creature/location/NPC reference in both campaigns resolves', () => {
+  await test('Content: every item/creature/location/NPC reference in every campaign resolves', () => {
+    // Modular campaigns: every JSON file in the campaign folder is checked against its own catalogs.
+    const modular = (dir) => {
+      const world = fs.readdirSync(path.join(ROOT, dir, 'world')).filter(f => f.endsWith('.json')).map(f => `${dir}/world/${f}`);
+      const has = (f) => fs.existsSync(path.join(ROOT, dir, 'world', f));
+      return {
+        items: [`${dir}/world/items.json`], materials: has('materials.json') ? `${dir}/world/materials.json` : null,
+        refs: world.concat([`${dir}/campaign.json`]),
+        creatures: `${dir}/world/creatures.json`, locations: `${dir}/world/locations.json`, characters: `${dir}/world/characters.json`,
+      };
+    };
     const campaigns = {
       greek: {
         items: ['content/world/items.json'], materials: 'content/campaigns/greek_mythology/materials.json',
@@ -52,13 +62,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
           'content/campaigns/greek_mythology/professions.json', 'content/campaigns/greek_mythology/crafting_templates.json', 'content/adventures/tutorial.json'],
         creatures: 'content/world/creatures.json', locations: 'content/world/locations.json', characters: 'content/world/characters.json',
       },
-      dev: {
-        items: ['content/campaigns/dev_test_campaign/world/items.json'],
-        refs: ['characters', 'creatures', 'locations', 'loot_tables', 'interactive_objects', 'classes', 'backgrounds', 'quests', 'dialogues', 'encounters', 'events']
-          .map(f => `content/campaigns/dev_test_campaign/world/${f}.json`),
-        creatures: 'content/campaigns/dev_test_campaign/world/creatures.json', locations: 'content/campaigns/dev_test_campaign/world/locations.json',
-        characters: 'content/campaigns/dev_test_campaign/world/characters.json',
-      },
+      dev: modular('content/campaigns/dev_test_campaign'),
+      legacy: modular('content/campaigns/fixtures/dev_legacy'),
     };
     const problems = [];
     for (const [cName, c] of Object.entries(campaigns)) {
@@ -84,7 +89,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Content: rarity vocabulary used by items is known to the engine rarity table', () => {
     const env = createSandbox();
     const engine = new env.Engine();
-    const files = ['content/world/items.json', 'content/campaigns/dev_test_campaign/world/items.json'];
+    const files = ['content/world/items.json', 'content/campaigns/dev_test_campaign/world/items.json', 'content/campaigns/fixtures/dev_legacy/world/items.json'];
     const unknown = [];
     files.forEach(f => readJson(f).items.forEach(i => { if (engine.getRarityRank(i.rarity) === null) unknown.push(`${i.id}:${i.rarity}`); }));
     assert.deepStrictEqual(unknown, []);
@@ -104,7 +109,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
       assert.ok(engine.getLocation('loc_cithaeron_crossroads').id === 'loc_cithaeron_crossroads', 'running campaign content restored after validation');
     }
     await engine.loadContent();
-    const broken = env.Engine.validateCampaign(engine.campaigns.get('campaign_dev_test'), {
+    const broken = env.Engine.validateCampaign(engine.campaigns.get('campaign_dev_legacy'), {
       locations: engine.world.locations, items: [{ id: 'item_a', name: 'A' }], classes: [{ id: 'c', name: 'C', startingEquipment: ['item_missing'] }],
     });
     assert.ok(broken.errors.some(e => e.includes('item_missing')));
@@ -116,9 +121,9 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Campaign isolation: starting the Dev campaign carries no Greek state or content', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState, p = engine.state.player;
-    assert.strictEqual(w.campaignId, 'campaign_dev_test');
+    assert.strictEqual(w.campaignId, 'campaign_dev_legacy');
     assert.strictEqual(w.currentLocationId, 'loc_dev_haven');
     assert.deepStrictEqual(plain(Object.keys(w.factions).sort()), ['faction_dev_guards', 'faction_dev_haven', 'faction_dev_outlaws']);
     assert.ok(w.discoveredLocations.every(id => engine.world.locations.some(l => l.id === id)), 'discovered locations must exist in campaign: ' + w.discoveredLocations);
@@ -132,7 +137,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Campaign isolation: switching Dev -> Greek in one session leaves no Dev content behind', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    engine.selectCampaign('campaign_dev_test'); await engine.loadContent();
+    engine.selectCampaign('campaign_dev_legacy'); await engine.loadContent();
     engine.selectCampaign('campaign_greek_mythology'); await engine.loadContent();
     assert.ok(!engine.world.factions.some(f => f.id.startsWith('faction_dev')), 'dev factions leaked');
     assert.ok(!engine.world.encounters.some(e => e.id.startsWith('enc_dev')), 'dev encounters leaked');
@@ -150,19 +155,19 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     env.sandbox.engine = engine2;
     await engine2.init();
     assert.strictEqual(engine2.activeCampaignId, 'campaign_dev_test');
-    assert.strictEqual(engine2.world.locations[0].id.startsWith('loc_dev'), true, 'Dev content must be loaded for a Dev save');
-    assert.strictEqual(engine2.getLocation(engine2.state.worldState.currentLocationId).id, 'loc_dev_haven');
+    assert.ok(engine2.world.locations.every(l => !l.id.startsWith('loc_cithaeron')), 'Dev content must be loaded for a Dev save');
+    assert.strictEqual(engine2.getLocation(engine2.state.worldState.currentLocationId).id, engine2.activeCampaign.startingLocationId);
   });
 
   await test('Save identity: loading a slot from another campaign switches content to that campaign', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     await engine.saveGameSilently(2);
     await startCampaign(env, engine, 'campaign_greek_mythology');
     assert.ok(engine.world.locations.some(l => l.id === 'loc_cithaeron_crossroads'));
     await engine.loadGame(2);
-    assert.strictEqual(engine.activeCampaignId, 'campaign_dev_test');
+    assert.strictEqual(engine.activeCampaignId, 'campaign_dev_legacy');
     assert.ok(engine.world.locations.some(l => l.id === 'loc_dev_haven'), 'content must follow the loaded save');
   });
 
@@ -217,27 +222,17 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
 
   await test('Dual content: embedded file:// fallback stays in sync with the JSON content files', () => {
     const env = createSandbox();
-    const dev = new env.Engine();
-    dev.loadEmbeddedDevTestContent();
-    const devDir = 'content/campaigns/dev_test_campaign/world/';
     const ids = (arr) => plain(arr.map(x => x.id).sort());
     // The embedded Dev campaign must be IDENTICAL to its JSON (it is generated by
     // scripts/sync-embedded-dev-content.js); a stale copy changed classes/backgrounds in file:// mode.
-    const same = (embedded, file, key, label) => assert.deepStrictEqual(plain(embedded), readJson(devDir + file)[key], `${label} differs from ${file}: run node scripts/sync-embedded-dev-content.js`);
-    same(dev.world.locations, 'locations.json', 'locations', 'locations');
-    same(dev.world.characters, 'characters.json', 'characters', 'characters');
-    same(dev.world.creatures, 'creatures.json', 'creatures', 'creatures');
-    same(dev.world.items, 'items.json', 'items', 'items');
-    same(dev.world.lootTables, 'loot_tables.json', 'lootTables', 'loot tables');
-    same(dev.world.interactiveObjects, 'interactive_objects.json', 'interactiveObjects', 'interactive objects');
-    same(dev.world.factions, 'factions.json', 'factions', 'factions');
-    same(dev.world.encounters, 'encounters.json', 'encounters', 'encounters');
-    same(dev.world.randomEncounters, 'encounters.json', 'randomEncounters', 'random encounters');
-    same(dev.world.events, 'events.json', 'events', 'events');
-    same(dev.world.classes, 'classes.json', 'classes', 'classes');
-    same(dev.world.backgrounds, 'backgrounds.json', 'backgrounds', 'backgrounds');
-    same(dev.currentAdventure.quests, 'quests.json', 'quests', 'quests');
-    same(dev.currentAdventure.dialogues, 'dialogues.json', 'dialogues', 'dialogues');
+    const { buildEmbedded } = require('../scripts/sync-embedded-dev-content.js');
+    assert.deepStrictEqual(plain(env.Engine.EMBEDDED_DEV_CAMPAIGN), buildEmbedded(), 'embedded Dev campaign differs from its JSON: run node scripts/sync-embedded-dev-content.js');
+    const dev = new env.Engine();
+    dev.loadEmbeddedDevTestContent();
+    const fileData = buildEmbedded().data;
+    assert.deepStrictEqual(ids(dev.world.locations), ids(fileData.locations));
+    assert.deepStrictEqual(ids(dev.currentAdventure.quests), ids(fileData.quests));
+    assert.strictEqual(dev.activeCampaign.id, 'campaign_dev_test');
     const greek = new env.Engine();
     greek.loadEmbeddedFallbackContent();
     const jsonItems = new Set(readJson('content/world/items.json').items.map(i => i.id));
@@ -436,7 +431,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Combat: consumable button works with any campaign healing item (Dev campaign potion)', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const potion = engine.world.items.find(i => engine.getConsumableEffects(i).restoreHealth > 0);
     assert.ok(potion, 'dev campaign must have a healing consumable');
     engine.addItem(potion.id, 1);
@@ -497,7 +492,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Exploit: a natural-20 discovery in the Dev campaign never awards Greek items', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     fixedRoll(engine, 20);
     engine.checkSkill('perception', 'wisdom', 10, 'test');
     const foreign = engine.state.player.inventory.filter(e => !engine.world.items.some(i => i.id === e.itemId));
@@ -507,7 +502,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Exploit: pickpocketing the same NPC repeatedly is limited and takes time', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     fixedRoll(engine, 18);
     const d0 = engine.state.player.currencies.drachmae, t0 = engine.getTotalInGameMinutes();
     for (let i = 0; i < 10; i++) engine.attemptPickpocket('npc_dev_merchant_lycus');
@@ -657,7 +652,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Social: cooldowns survive month rollover and disposition changes persist in the save', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.state.worldState.time = { hour: 22, minute: 0, day: 30, month: 1, year: 1 };
     fixedRoll(engine, 18);
     const r1 = engine.attemptPersuadeNpc('npc_dev_merchant_lycus');
@@ -675,7 +670,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('NPC death: quest failover comes from quest data and the journal item is not duplicated', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     fixedRoll(engine, 15);
     engine.startCombatWithEntity('npc_dev_elena_scholar', 'npc');
     engine.combatSession.enemy.hp = 1;
@@ -689,7 +684,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Dialogue: completing a non-tutorial quest completes that quest (no tutorial side effects)', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const tree = Object.entries(engine.currentAdventure.dialogues).find(([, t]) => Object.values(t.nodes).some(n => n.completeQuest === 'quest_dev_sunstone_relic'));
     const [treeId, t] = tree;
     const nodeId = Object.keys(t.nodes).find(k => t.nodes[k].completeQuest === 'quest_dev_sunstone_relic');
@@ -712,7 +707,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Defeat: the hero recovers at a location that exists in the active campaign', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.handlePlayerDefeat();
     const id = engine.state.worldState.currentLocationId;
     assert.ok(engine.world.locations.some(l => l.id === id), 'defeat location must exist, got ' + id);
@@ -721,7 +716,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Ambush: rest/travel ambushes use creatures from the active campaign', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const cid = engine.getAmbushCreatureId(engine.getLocation('loc_dev_whispering_woods'));
     assert.ok(engine.getCreature(cid), 'ambush creature must exist in campaign: ' + cid);
   });
@@ -755,18 +750,18 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.advanceTime(3, 0); // unsaved progress
     // Cancelling the confirmation leaves the running game untouched
     setConfirm(env, false);
-    engine.openCampaignSelectView(); engine.selectCampaign('campaign_dev_test');
+    engine.openCampaignSelectView(); engine.selectCampaign('campaign_dev_legacy');
     assert.strictEqual(await engine.confirmCampaignSelection(), false);
     assert.strictEqual(engine.state.player.name, 'GreekHero');
     assert.strictEqual(engine.activeCampaignId, 'campaign_greek_mythology');
     // Confirming starts the new game in a free slot; the Greek game (with its latest progress) stays in Slot 1
     setConfirm(env, true);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     await new Promise(r => setTimeout(r, 5));
     assert.strictEqual(slotName(env, 1), 'GreekHero', 'Slot 1 must still hold the Greek game');
     assert.strictEqual(JSON.parse(env.storage.gm_save_slot_1).worldState.time.hour, engine.getInitialState().worldState.time.hour + 3);
     assert.strictEqual(engine.state.saveSlot, 2);
-    assert.strictEqual(JSON.parse(env.storage.gm_save_slot_2).worldState.campaignId, 'campaign_dev_test');
+    assert.strictEqual(JSON.parse(env.storage.gm_save_slot_2).worldState.campaignId, 'campaign_dev_legacy');
   });
 
   await test('Save safety: importing a save never overwrites the slot number stored in the file', async () => {
@@ -806,7 +801,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     const engine = await bootEngine(env);
     await startCampaign(env, engine, 'campaign_greek_mythology');
     engine.openCampaignSelectView();
-    engine.selectCampaign('campaign_dev_test');
+    engine.selectCampaign('campaign_dev_legacy');
     engine.switchView('view-story');
     assert.strictEqual(engine.activeCampaignId, 'campaign_greek_mythology');
     assert.strictEqual(engine.usesDefaultContentFallbacks(), true);
@@ -816,7 +811,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Encounters: one-time encounters cannot be farmed; repeatable ones wait for their cooldown', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const win = (encId) => {
       const enc = engine.world.encounters.find(e => e.id === encId);
       engine.state.worldState.currentLocationId = enc.locationId;
@@ -849,7 +844,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('World events: events.json triggers fire once (FLAG_SET, ITEM_ACQUIRED) and the ledger is saved', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     assert.ok(engine.world.events.length >= 2, 'Dev events.json is loaded');
     engine.emitEvent('ENTITY_DEATH', { entityId: 'npc_dev_merchant_lycus' }); // consequence rule sets merchant_lycus_dead
     assert.strictEqual(engine.state.worldState.flags.merchant_lycus_dead, true);
@@ -867,7 +862,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Scheduler: quest deadlines move stages through the quest system and failures cancel later milestones', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     if (!w.quests.quest_dev_urgent_rescue) engine.startQuest('quest_dev_urgent_rescue');
     engine.advanceTime(49, 0);
@@ -887,7 +882,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Respawn: killing the same creature twice leaves one pending respawn event', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     for (let i = 0; i < 2; i++) {
       engine.startCombat('creature_dev_wild_boar', {});
       engine.combatSession.enemy.hp = 0; engine.handleCombatVictory();
@@ -919,7 +914,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Time: lockpicking and heaving take time; an open lock gives no second XP award', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const obj = engine.world.interactiveObjects.find(o => o.isPickable !== false && !engine.isObjectOpen(o));
     engine.state.worldState.currentLocationId = obj.locationId;
     engine.addItem('item_dev_iron_lockpick', 1);
@@ -947,7 +942,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Progression: campaigns can define XP thresholds and titles; other campaigns get neutral titles', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     assert.ok(!/Ephebos|Hellas|Hoplite/.test(engine.state.player.heroTitle), 'no Greek title in Dev campaign: ' + engine.state.player.heroTitle);
     engine.activeCampaign = Object.assign({}, engine.activeCampaign, { progression: { xpTable: { 1: 80 }, levelTitles: { 1: 'Recruit', 2: 'Scout' } } });
     assert.strictEqual(engine.getXPForNextLevel(1), 80);
@@ -958,7 +953,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Morality: the documented alignmentTiers format and campaign labels are honoured', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.activeCampaign = Object.assign({}, engine.activeCampaign, { moralityConfig: { virtueLabel: 'Honor', alignmentTiers: { heroic: { minScore: 40, title: 'Paragon' } } } });
     engine.state.player.morality = { virtue: 35, hubris: 0 };
     assert.strictEqual(engine.getMoralityAlignment(), 'pragmatic');
@@ -1017,7 +1012,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Narration: ambushes in a non-Greek campaign never describe a mountain wolf', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const logs = [];
     const orig = engine.logTranscript.bind(engine);
     engine.logTranscript = (sp, text, cls) => { logs.push(String(text)); return orig(sp, text, cls); };
@@ -1035,11 +1030,11 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   });
 
   await test('Travel: every location of both campaigns can be reached through the travel cards; path predicates are enforced', async () => {
-    for (const campaignId of ['campaign_greek_mythology', 'campaign_dev_test']) {
+    for (const campaignId of ['campaign_greek_mythology', 'campaign_dev_legacy']) {
       const env = createSandbox();
       const engine = await bootEngine(env);
       await startCampaign(env, engine, campaignId);
-      if (campaignId === 'campaign_dev_test') engine.setWorldFlags({ discovered_sunken_grotto: true });
+      if (campaignId === 'campaign_dev_legacy') engine.setWorldFlags({ discovered_sunken_grotto: true });
       const seen = new Set([engine.state.worldState.currentLocationId]);
       const queue = [...seen];
       while (queue.length) {
@@ -1059,7 +1054,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     // A road with an unmet requiresFlag is neither offered nor travellable
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
     assert.ok(!engine.getContextualActionGroups().flatMap(g => g.actions).some(a => a.id === 'act_travel_loc_dev_sunken_grotto'));
     const conn = engine.getLocation('loc_dev_whispering_woods').connections.find(c => c.targetLocationId === 'loc_dev_sunken_grotto');
@@ -1070,7 +1065,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Objects: authored unlockOutcomes apply once (Dev boulder opens the grotto path and completes its quest)', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     if (!w.quests.quest_dev_grotto_mystery) engine.startQuest('quest_dev_grotto_mystery');
     engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
@@ -1108,7 +1103,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('D20: criticals come from the natural die, never from the modified total', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const r = (natural, modifier, dc) => plain(engine.resolveD20({ natural, modifier, dc }));
     let x = r(1, 15, 5);
     assert.ok(x.isCriticalFailure && x.success === false, 'natural 1 + 15 is a critical failure even against DC 5');
@@ -1125,7 +1120,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('D20: Reliable Talent lifts natural 1-5 to 6 on a mastered non-combat skill only', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.skills.persuasion = engine.getReliableTalentThreshold('persuasion');
     p.skills.deception = 2;
@@ -1153,7 +1148,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('D20: critical consequences are contextual (social, stealing, lockpicking, exploration, crafting)', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const npc = 'npc_dev_merchant_lycus';
     // Persuasion: critical success = ordinary +10 plus an extra +10
     const d0 = engine.getNpcDisposition(npc);
@@ -1220,7 +1215,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('D20: creatures and the hero share combat criticals; Reliable Talent never applies to attacks', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.skills.melee_combat = 40;
     const brute = { id: 'x', name: 'Test Brute', vitals: { health: 999, maxHealth: 999 }, armorClass: 5, actions: [{ name: 'Smash', style: 'normal', attackBonus: 0, damage: '1' }] };
@@ -1241,7 +1236,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('D20: campaigns configure criticals, Reliable Talent skills and thresholds; mastery survives save/load', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.activeCampaign = Object.assign({}, engine.activeCampaign, { d20Rules: {
       reliableTalent: { eligibleSkills: ['stealth'], thresholds: { stealth: 3 } },
       criticalOutcomes: { exploration: { failure: { loseStamina: 5, text: 'Custom fumble.' } } }
@@ -1280,7 +1275,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Creation: origins and traits load per campaign like classes, and shared files are reusable', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test', { origin: 'haven_born', trait: 'eloquent' });
+    await startCampaign(env, engine, 'campaign_dev_legacy', { origin: 'haven_born', trait: 'eloquent' });
     assert.deepStrictEqual(plain(engine.getCampaignOrigins().map(o => o.id)), ['wanderer', 'haven_born', 'frontier_raised'], 'shared + Dev origin files merged');
     assert.deepStrictEqual(plain(engine.getCreationTraits().map(t => t.id)), ['vigilant', 'eloquent', 'resolute'], 'Dev reuses the shared trait file');
     const p = engine.state.player;
@@ -1298,7 +1293,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Action deck: one openable list per NPC / creature / object / place; a single action stays a button', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const loc = engine.getLocation(engine.state.worldState.currentLocationId);
     const groups = {};
     engine.getContextualActionGroups().flatMap(g => g.actions).forEach(a => {
@@ -1330,7 +1325,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Action menu: next steps, focus panel with compact tiles, friendly vs hostile acts, layout setting', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const loc = engine.getLocation('loc_dev_haven');
     assert.strictEqual(engine.getActionLayout(), 'focus', 'focus panel is the default');
     const actions = () => engine.getContextualActionGroups().flatMap(g => g.actions);
@@ -1388,7 +1383,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Dev campaign: every quest can be started and completed through dialogue, actions and fights', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     fixedRoll(engine, 15);
     engine.state.player.vitals.maxHealth = engine.state.player.vitals.health = 500;
@@ -1456,7 +1451,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Standing: personal favour + faction share, tiers change persuasion, dialogue, trade and hostility', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const st = (id) => engine.getNpcStanding(id);
     assert.strictEqual(st('npc_dev_merchant_lycus').personal, 20);
     assert.strictEqual(st('npc_dev_merchant_lycus').regional, Math.round(engine.getFactionReputation('faction_dev_haven') / 2));
@@ -1501,7 +1496,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Trading: buy and sell with standing prices, buy-back, event-driven restock, saved in the game', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const npc = 'npc_dev_merchant_lycus';
     engine.state.player.currencies.drachmae = 100;
     engine.openTrade(npc);
@@ -1549,7 +1544,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Confrontations: the side that starts the fight decides the options; preparations shape the opening', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     w.currentLocationId = 'loc_dev_whispering_woods';
     // Player-initiated: terrain tactics (+ location tactic), opening strike, attack, back off
@@ -1603,7 +1598,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Gameplay fixes: search finds placed items once, rest is safe in towns, NPCs can be spared, feats are campaign-neutral', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     // Search the area for presentItems (previously never obtainable)
     fixedRoll(engine, 15);
@@ -1645,7 +1640,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Quest log: completed and failed quests are separate; focused quests drive the sidebar', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     engine.startQuest('quest_dev_boar_menace');
     engine.startQuest('quest_dev_ancient_ruins');
@@ -1675,7 +1670,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Save migration: 1.6 saves gain merchants and focused quests; 1.7 found items become hidden spots', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const old = JSON.parse(JSON.stringify(engine.state));
     old.version = '1.6.0';
     delete old.worldState.merchants; delete old.worldState.focusedQuests; delete old.worldState.foundSpots;
@@ -1702,7 +1697,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Combat: telegraphed moves reward bracing and side-stepping', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.vitals.health = p.vitals.maxHealth = 100; p.vitals.stamina = p.vitals.maxStamina = 30;
     engine.startCombat(dummy());
@@ -1742,7 +1737,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Combat: status effects (bleeding, entangled, frightened, stunned) tick, expire and respect immunities', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.vitals.health = p.vitals.maxHealth = 100; p.vitals.stamina = p.vitals.maxStamina = 30;
     engine.startCombat(dummy({ armorClass: 40, actions: [{ name: 'Bite', style: 'normal', attackBonus: 50, damage: '1', inflicts: { status: 'bleeding', rounds: 2, value: 3 } }] }));
@@ -1815,7 +1810,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.combatAction('ability:heavenly_aegis');
     assert.strictEqual(engine.combatSession.abilityUses.heavenly_aegis, 1, 'once per fight');
     // Dev classes too
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.state.player.class = 'dev_sentinel';
     engine.startCombat(dummy());
     engine.combatAction('ability:shield_bash');
@@ -1826,7 +1821,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Morale and the law: beasts can break and flee; guards accept surrender (fine or cells)', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState, p = engine.state.player;
     // A wounded wolf fails its morale check and runs: half XP, not dead, no loot
     engine.startCombat('creature_dev_forest_wolf');
@@ -1873,7 +1868,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Companions: hirelings and allies fight beside the hero, give perks, and leave when their time is up', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState, p = engine.state.player;
     p.currencies.drachmae = 50;
     const hire = engine.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_hire_npc_dev_sellsword_brannoch');
@@ -1909,7 +1904,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Exploration: hidden spots one at a time, secret paths, travel pace, light and weather', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState;
     // Hidden spots: one find per search, easiest first; a secret path opens a new road
     w.currentLocationId = 'loc_dev_whispering_woods';
@@ -1972,7 +1967,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Exploration: rumours mark places on the map; rations, hunger and camp events', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const w = engine.state.worldState, p = engine.state.player;
     // Rumours
     const card = () => engine.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_rumour_npc_dev_merchant_lycus');
@@ -2027,7 +2022,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   // ---------------------------------------------------------------------------
   // Integration fuzzing: random play through the real action deck
   // ---------------------------------------------------------------------------
-  for (const campaignId of ['campaign_greek_mythology', 'campaign_dev_test']) {
+  for (const campaignId of ['campaign_greek_mythology', 'campaign_dev_legacy']) {
     await test(`Fuzz: 600 seeded random actions in ${campaignId} raise no errors and keep state invariants`, async () => {
       const env = createSandbox();
       let seed = 1234567;
@@ -2113,7 +2108,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
 
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const legacySave = JSON.parse(JSON.stringify(engine.state));
     legacySave.version = '1.7.0';
     legacySave.player.gender = 'nonbinary';
@@ -2124,7 +2119,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Creation: Step 3 requires spending all attribute points in both UI and engine logic', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.openCharacterCreationWizard();
     engine.renderWizardStep(3);
     assert.strictEqual(engine.creationState.pointsLeft, 5);
@@ -2171,7 +2166,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Quests & Modals: unseen update nav badge and critical modal protection', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
 
     engine.markQuestUpdate('quest_dev_merchant_delivery');
     const badge = env.el('nav-badge-quests');
@@ -2237,7 +2232,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Dependencies & Skills: primary+secondary math, requirement pills, and all 12 skills usable', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.attributes.wisdom = 14;      // +2 primary for medicine
     p.attributes.intelligence = 14; // +2 secondary -> ceil(2/2) = +1
@@ -2297,7 +2292,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Social & Hostility: independent Persuasion/Deception channels and witnessed hostile standing loss', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     engine.state.worldState.currentLocationId = 'loc_dev_haven';
     fixedRoll(engine, 16);
 
@@ -2323,7 +2318,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Narrative & Confrontations: weaponless prose adaptation and persistent pre-fight prep across withdraw', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const p = engine.state.player;
     p.inventory = [];
     engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
@@ -2356,10 +2351,10 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Minigames & Logs: seeded solvable Mortar randomization and clean dev creature descriptions', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
 
     // Verify all dev_test creatures have clean action descriptions and no undefined/null
-    const devCreatures = readJson('content/campaigns/dev_test_campaign/world/creatures.json').creatures;
+    const devCreatures = readJson('content/campaigns/dev_test_campaign/world/creatures.json').creatures.concat(readJson('content/campaigns/fixtures/dev_legacy/world/creatures.json').creatures);
     devCreatures.forEach(cr => {
       cr.actions.forEach(a => assert.ok(typeof a.description === 'string' && a.description.length > 5 && !/undefined|null/.test(a.description), `${cr.id}.${a.name} description`));
     });
@@ -2380,7 +2375,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Difficulty Modes & Permadeath: Hard respawn limit & item loss sparing gear/quests vs Extreme permadeath', async () => {
     const startWithDiff = async (env, engine, diffId) => {
       engine.skipWalkthrough();
-      engine.selectCampaign('campaign_dev_test');
+      engine.selectCampaign('campaign_dev_legacy');
       engine.selectCampaignDifficulty(diffId);
       await engine.confirmCampaignSelection();
       engine.renderWizardStep(2);
@@ -2505,7 +2500,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     const env = createSandbox();
     const engine = await bootEngine(env);
     engine.skipWalkthrough();
-    engine.selectCampaign('campaign_dev_test');
+    engine.selectCampaign('campaign_dev_legacy');
     engine.selectCampaignDifficulty('hard');
     await engine.confirmCampaignSelection();
     engine.renderWizardStep(2);
@@ -2529,7 +2524,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.strictEqual(engine.state.worldState.playerRespawnsUsed, 2, 'loading an older save must not refund respawns');
 
     // A fight in progress is saved and resumed after loading (e.g. a page refresh mid-battle).
-    engine.startCombat('creature_dev_wolf');
+    engine.startCombat('creature_dev_forest_wolf');
+    engine.combatSession.enemy.hp = engine.combatSession.enemy.maxHp = 500; // must survive one round
     engine.combatAction('thrust');
     const round = engine.combatSession.round;
     const enemyHp = engine.combatSession.enemy.hp;
@@ -2558,7 +2554,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   await test('Social failures have consequences: failed persuasion and exposed ruses make the NPC warier (higher DC) for a day', async () => {
     const env = createSandbox();
     const engine = await bootEngine(env);
-    await startCampaign(env, engine, 'campaign_dev_test');
+    await startCampaign(env, engine, 'campaign_dev_legacy');
     const npc = engine.world.characters.find(c => c.id === 'npc_dev_lycus') || engine.world.characters[0];
     const dc0 = engine.getPersuadeDc(npc.id);
     const dd0 = engine.getDeceiveDc(npc.id);

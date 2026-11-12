@@ -1,20 +1,46 @@
 {
   "id": "campaign_dev_test",
-  "name": "Developer Verification Campaign",
-  "version": "1.0.0",
+  "name": "Lanternfall: The Brindle Ford Trials",
+  "version": "2.0.0",
   "engineVersion": ">=1.0.0",
-  "author": "Engine Systems Architect",
-  "description": "Comprehensive testbed campaign engineered to exercise all core RPG systems: open-world freedom, NPC combat and death, multi-table loot, lockpicking, interactive objects, multi-phase bosses, faction dynamics, and persistent world consequences.",
+  "author": "Browser-RPG Developers",
+  "description": "The developer campaign. Sit the Wayfarers' Guild trials in the river town of Brindle Ford, then relight the dark lighthouse on Gull Rock before the sea fog swallows the coast. Short, varied and built to touch every system in the engine: combat, confrontations, crafting, minigames, riddles, trade, companions, the law, timed quests, moral choices and more.",
   "genre": "fantasy_sandbox",
   "isDefault": false,
   "isTestCampaign": true,
-  "startingLocationId": "loc_dev_haven",
+  "startingLocationId": "loc_dev_brindle_ford",
   "startingTime": {
-    "hour": 9,
+    "hour": 8,
     "minute": 0,
     "day": 1,
-    "month": 1,
-    "year": 1
+    "month": 4,
+    "year": 312
+  },
+  "defaultHeroName": "Wren",
+  "startingJournalNotes": "Arrived in Brindle Ford to sit the Wayfarers' Guild trials. Examiner Odile Marsh has the Trial Ledger. Everyone keeps talking about the dark lighthouse on Gull Rock.",
+  "defaultDifficulty": "normal",
+  "difficultyPresets": {
+    "easy": {
+      "label": "Easy (Story)",
+      "icon": "🌼",
+      "desc": "Unlimited respawns at the Willowmere Apiary. Nothing is lost when you fall."
+    },
+    "normal": {
+      "label": "Normal",
+      "icon": "⚔️",
+      "desc": "Unlimited respawns; you lose 5 drachmae and up to a quarter of your loose supplies when you fall."
+    },
+    "hard": {
+      "label": "Hard (3 lives)",
+      "icon": "🛡️",
+      "maxRespawns": 3,
+      "desc": "Three respawns, then the hero is gone for good. Up to half your loose supplies are lost each time."
+    },
+    "extreme": {
+      "label": "Extreme (One life)",
+      "icon": "💀",
+      "desc": "No respawns. Falling once ends the run."
+    }
   },
   "modules": {
     "locations": "content/campaigns/dev_test_campaign/world/locations.json",
@@ -23,13 +49,20 @@
     "items": "content/campaigns/dev_test_campaign/world/items.json",
     "lootTables": "content/campaigns/dev_test_campaign/world/loot_tables.json",
     "interactiveObjects": "content/campaigns/dev_test_campaign/world/interactive_objects.json",
-    "classes": "content/campaigns/dev_test_campaign/world/classes.json",
-    "backgrounds": "content/campaigns/dev_test_campaign/world/backgrounds.json",
     "factions": "content/campaigns/dev_test_campaign/world/factions.json",
     "quests": "content/campaigns/dev_test_campaign/world/quests.json",
     "encounters": "content/campaigns/dev_test_campaign/world/encounters.json",
     "dialogues": "content/campaigns/dev_test_campaign/world/dialogues.json",
     "events": "content/campaigns/dev_test_campaign/world/events.json",
+    "puzzles": "content/campaigns/dev_test_campaign/world/puzzles.json",
+    "deities": "content/campaigns/dev_test_campaign/world/deities.json",
+    "mythology": "content/campaigns/dev_test_campaign/world/lore.json",
+    "glossary": "content/campaigns/dev_test_campaign/world/glossary.json",
+    "professions": "content/campaigns/dev_test_campaign/world/professions.json",
+    "materials": "content/campaigns/dev_test_campaign/world/materials.json",
+    "craftingTemplates": "content/campaigns/dev_test_campaign/world/crafting_templates.json",
+    "classes": "content/campaigns/dev_test_campaign/world/classes.json",
+    "backgrounds": "content/campaigns/dev_test_campaign/world/backgrounds.json",
     "origins": [
       "content/shared/origins.json",
       "content/campaigns/dev_test_campaign/world/origins.json"
@@ -38,106 +71,403 @@
       "content/shared/traits.json"
     ]
   },
-  "law": { "guardFactions": ["faction_dev_guards"], "fineBase": 25, "finePerOffence": 15, "jailHours": 24, "jailLocationId": "loc_dev_haven" },
+  "factions": [
+    {
+      "id": "faction_dev_brindle",
+      "name": "Brindle Folk",
+      "description": "Ferry crews, stallholders and families of Brindle Ford.",
+      "defaultReputation": 10
+    },
+    {
+      "id": "faction_dev_watch",
+      "name": "The Ford Watch",
+      "description": "Captain Garrow's watchmen. They keep the toll, the peace and the cells.",
+      "defaultReputation": 5
+    },
+    {
+      "id": "faction_dev_guild",
+      "name": "Wayfarers' Guild",
+      "description": "Licensed guides, couriers and monster-hunters. You want to join them.",
+      "defaultReputation": 0
+    },
+    {
+      "id": "faction_dev_hive",
+      "name": "Hive Sisters of Willowmere",
+      "description": "Beekeepers, healers and keepers of the Hive Mother's shrine.",
+      "defaultReputation": 15
+    },
+    {
+      "id": "faction_dev_saltreed",
+      "name": "Saltreed Smugglers",
+      "description": "Jory Vane's crew, running brandy and secrets through the cove.",
+      "defaultReputation": -20
+    }
+  ],
+  "law": {
+    "guardFactions": [
+      "faction_dev_watch"
+    ],
+    "fineBase": 20,
+    "finePerOffence": 15,
+    "jailHours": 12,
+    "jailLocationId": "loc_dev_brindle_ford"
+  },
+  "maxCompanions": 2,
+  "defeatRecoveryLocationId": "loc_dev_willowmere",
+  "defeatNarrative": "You wake on a cot that smells of beeswax. The Hive Sisters found you and carried you to Willowmere.",
+  "timeOfDayNarration": {
+    "Morning": "Mist lifts off the river and the ferry bell rings for the first crossing.",
+    "Afternoon": "Gulls wheel over the reeds and the market is loud with haggling.",
+    "Dusk": "Lamps are lit along the ford. Out at sea, Gull Rock stays dark.",
+    "Night": "Sea fog rolls inland. Somewhere a bell tolls that nobody is ringing."
+  },
   "activityDurations": {
     "travel": "connection",
     "combat": 15,
     "rest_short": 60,
     "rest_sacred": 120,
     "rest_long": 480,
-    "crafting": 120,
-    "hunting": 90,
-    "foraging": 45,
-    "investigation": 30,
-    "social_interaction": 15,
-    "dialogue": 5
+    "crafting": 90,
+    "hunting": 60,
+    "foraging": 40,
+    "investigation": 20,
+    "social_interaction": 10,
+    "dialogue": 5,
+    "divination": 20,
+    "lockpicking": 10,
+    "heave": 10
   },
   "respawnRules": {
     "creatureNormalHours": 12,
-    "creatureRareHours": 48,
+    "creatureRareHours": 36,
     "bossHours": 24,
     "preventNpcRespawn": true
   },
   "moralityConfig": {
-    "enabled": true,
-    "virtueLabel": "Virtue & Honor",
-    "hubrisLabel": "Infamy & Corruption",
-    "tiers": {
-      "heroic": 30,
-      "pragmatic": -15,
-      "ruthless": -40,
-      "villainous": -100
+    "virtueLabel": "Honour",
+    "hubrisLabel": "Infamy",
+    "initialVirtue": 5,
+    "initialHubris": 0,
+    "alignmentTiers": {
+      "heroic": {
+        "minScore": 30,
+        "title": "Guild Paragon"
+      },
+      "pragmatic": {
+        "minScore": -15,
+        "title": "Practical Wayfarer"
+      },
+      "ruthless": {
+        "minScore": -40,
+        "title": "Hard Case"
+      },
+      "villainous": {
+        "title": "Wanted Name"
+      }
     }
   },
-  "factions": [
+  "progression": {
+    "xpTable": {
+      "1": 100,
+      "2": 250,
+      "3": 450,
+      "4": 700,
+      "5": 1000,
+      "6": 1400
+    },
+    "levelTitles": {
+      "1": "Applicant",
+      "2": "Licensed Wayfarer",
+      "3": "Road Warden",
+      "4": "Fogbreaker",
+      "5": "Lanternbearer",
+      "6": "Guild Veteran"
+    },
+    "maxLevelTitle": "Legend of the Ford",
+    "feats": {
+      "hydra_bane": {
+        "name": "Monster Hunter",
+        "desc": "+2 bonus damage on melee attacks against beasts and monsters."
+      },
+      "hermes_swift_stride": {
+        "name": "Ferryman's Legs",
+        "desc": "Overland travel costs 1 less Stamina (minimum 1)."
+      }
+    }
+  },
+  "d20Rules": {
+    "criticals": true,
+    "reliableTalent": {
+      "enabled": true,
+      "minimumRoll": 6,
+      "defaultThreshold": 6,
+      "thresholds": {
+        "persuasion": 5,
+        "stealth": 6
+      }
+    },
+    "criticalOutcomes": {
+      "persuasion": {
+        "success": {
+          "disposition": 15,
+          "text": "They laugh, clap you on the shoulder and tell everyone how sensible you are."
+        },
+        "failure": {
+          "disposition": -10,
+          "reputation": -3,
+          "text": "You mispronounce their name twice. They will remember."
+        }
+      }
+    }
+  },
+  "npcStanding": {
+    "labels": {
+      "hostile": "Hostile",
+      "unfriendly": "Wary",
+      "neutral": "Neutral",
+      "friendly": "Friendly",
+      "trusted": "Trusted"
+    },
+    "restockHours": 12
+  },
+  "combatPreparation": {
+    "enabled": true,
+    "maxPreparations": 2,
+    "tactics": [
+      {
+        "id": "guild_whistle",
+        "icon": "📯",
+        "label": "Blow the Guild whistle",
+        "desc": "A shrill blast that rattles anything with ears.",
+        "skill": "persuasion",
+        "attribute": "charisma",
+        "dc": 12,
+        "requiresFlag": "has_guild_whistle",
+        "effect": {
+          "enemyAttack": 2,
+          "rounds": 2
+        },
+        "text": "The whistle shrieks. Your foe flinches and loses its rhythm."
+      }
+    ]
+  },
+  "cooldownRules": {
+    "puzzle": 2,
+    "action": 2,
+    "track": 8,
+    "forage": 6
+  },
+  "survival": {
+    "enabled": true,
+    "rationItems": [
+      "item_dev_honey_cake",
+      "item_dev_smoked_eel",
+      "item_dev_hare_haunch"
+    ],
+    "campEventChance": 0.4,
+    "hiddenCaches": true
+  },
+  "campEvents": [
     {
-      "id": "faction_dev_haven",
-      "name": "Haven Free Citizens",
-      "description": "Townsfolk, traders, and artisans of the Haven settlement.",
-      "defaultReputation": 15
+      "id": "fog_bell",
+      "weight": 3,
+      "text": "Far out at sea a bell tolls three times. You lie awake listening, and somehow feel braver for it (+2 on your next check).",
+      "outcome": {
+        "inspiration": true
+      }
     },
     {
-      "id": "faction_dev_guards",
-      "name": "Haven Town Watch",
-      "description": "Armed constabulary enforcing law, order, and tax collection in Haven.",
-      "defaultReputation": 10
+      "id": "otters",
+      "weight": 2,
+      "text": "A family of otters raids your pack and makes off with some food.",
+      "outcome": {
+        "loseRation": 1
+      }
     },
     {
-      "id": "faction_dev_outlaws",
-      "name": "Shadow Syndicate",
-      "description": "Renegades, smugglers, and bandits operating from the ruined crypt.",
-      "defaultReputation": -30
+      "id": "pedlar",
+      "weight": 2,
+      "text": "A pedlar with a lantern shares your fire and gossip from the road.",
+      "outcome": {
+        "revealRumour": true,
+        "restoreStamina": 2
+      }
+    },
+    {
+      "id": "damp",
+      "weight": 2,
+      "text": "The fog soaks through your blanket. You wake stiff and cold.",
+      "outcome": {
+        "staminaDamage": 3
+      }
+    },
+    {
+      "id": "lost_coin",
+      "weight": 2,
+      "text": "Raking the embers in the morning you find someone's lost coins.",
+      "outcome": {
+        "giveDrachmae": 4
+      }
     }
   ],
+  "travelPaces": {
+    "careful": {
+      "label": "Watchful",
+      "icon": "👀",
+      "desc": "Slower; you read the reeds and spot trouble first."
+    }
+  },
+  "weather": {
+    "enabled": true,
+    "types": {
+      "sea_fog": {
+        "label": "Sea fog",
+        "icon": "🌫️",
+        "weight": 20,
+        "perception": -3,
+        "stealth": 3,
+        "ranged": -2,
+        "ambush": 1,
+        "travelTime": 1.2
+      },
+      "squall": {
+        "label": "Squall",
+        "icon": "🌧️",
+        "weight": 10,
+        "perception": -1,
+        "ranged": -2,
+        "travelTime": 1.25,
+        "travelStamina": 1.25
+      }
+    }
+  },
+  "minigames": {
+    "stalk": {
+      "title": "The Reed Stalk",
+      "subtitle": "Creep through the reeds while the wind covers you",
+      "rewardItemId": "item_dev_hare_haunch",
+      "rewardQty": 1,
+      "perfectItemId": "mat_dev_wisp_glass",
+      "xp": 10,
+      "successText": "You bag a fat bog hare.",
+      "perfectText": "Not one reed stirred. You bag a hare and spot a glint of wisp-glass in the mud.",
+      "failText": "A heron shrieks, the hares scatter and the reeds go still."
+    },
+    "mortar": {
+      "title": "The Hive Mortar",
+      "subtitle": "Balance heat, moisture and bitterness while you rest",
+      "perfectItemId": "item_dev_healing_tonic",
+      "perfectText": "A flawless remedy! The Sisters would approve."
+    },
+    "astragaloi": {
+      "title": "Augury Bones",
+      "subtitle": "Cast the Hive Mother's four bones",
+      "deity": "hive_mother",
+      "deityName": "Hive Mother",
+      "faceNames": [
+        "Drone",
+        "Comb",
+        "Queen",
+        "Swarm"
+      ],
+      "perfectName": "The Full Hive",
+      "drachmae": 6,
+      "castLabel": "Cast the Bones"
+    },
+    "forge": {
+      "title": "Tinker's Anvil",
+      "subtitle": "Strike while the metal glows"
+    },
+    "shield_clash": {
+      "title": "Shield Clash",
+      "subtitle": "Brace at the moment of impact"
+    }
+  },
   "consequenceRules": [
     {
-      "id": "rule_merchant_murder",
+      "id": "rule_dev_tamsin_murder",
       "event": "ENTITY_DEATH",
       "conditions": {
-        "targetEntityId": "npc_dev_merchant_lycus"
+        "targetEntityId": "npc_dev_tamsin_quill"
       },
       "outcomes": {
         "setFlags": {
-          "merchant_lycus_dead": true,
-          "haven_shop_closed": true
+          "tamsin_dead": true,
+          "quill_shop_closed": true
         },
         "modifyReputation": {
-          "faction_dev_haven": -50,
-          "faction_dev_guards": -60
+          "faction_dev_brindle": -40,
+          "faction_dev_watch": -40
         },
-        "failQuest": "quest_dev_merchant_delivery",
+        "failQuest": "quest_dev_parcel",
         "transcript": {
           "speaker": "World Consequence",
-          "text": "Merchant Lycus falls dead in a pool of blood! The shop's heavy iron shutters slam shut permanently. Word spreads rapidly: Haven Watch Captain is conducting a murder investigation!",
+          "text": "Tamsin Quill falls among her spilled ribbons and lamp oil. The Quill & Candle is shuttered and the Watch starts asking questions.",
           "style": "entry-consequence"
         },
+        "scheduleEvent": {
+          "id": "event_dev_ford_curfew",
+          "delayHours": 3,
+          "title": "Curfew on the Ford",
+          "text": "The Watch rings the ferry bell three times: curfew on the ford until the killer is found.",
+          "setFlags": {
+            "ford_curfew": true
+          }
+        },
         "addJournalChronicle": {
-          "title": "Murder of Merchant Lycus",
-          "text": "Slew the prominent Haven merchant Lycus. The shop is shuttered and the town watch is on high alert."
+          "title": "Murder at the Quill & Candle",
+          "text": "Tamsin Quill was killed. Her shop is closed for good."
         }
       }
     },
     {
-      "id": "rule_questgiver_murder",
+      "id": "rule_dev_odile_murder",
       "event": "ENTITY_DEATH",
       "conditions": {
-        "targetEntityId": "npc_dev_elena_scholar"
+        "targetEntityId": "npc_dev_odile_marsh"
       },
       "outcomes": {
         "setFlags": {
-          "elena_scholar_dead": true
+          "odile_dead": true
         },
         "modifyReputation": {
-          "faction_dev_haven": -30
+          "faction_dev_guild": -60,
+          "faction_dev_brindle": -20
         },
         "transcript": {
           "speaker": "World Consequence",
-          "text": "Scholar Elena drops lifeless. Her research journal rolls across the floor. You can search her body to discover the notes she was guarding, unlocking an alternate path for the Sunstone quest!",
+          "text": "Examiner Odile Marsh is dead. Without an examiner the Guild trials are over, and the Guild will not forget who ended them.",
           "style": "entry-consequence"
         },
         "addJournalChronicle": {
-          "title": "Death of Scholar Elena",
-          "text": "Scholar Elena was slain. Her research notes on the Sunstone can be retrieved directly from her belongings."
+          "title": "The Examiner Falls",
+          "text": "Odile Marsh was killed. The Trial Ledger is void."
+        }
+      }
+    },
+    {
+      "id": "rule_dev_garrow_murder",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_dev_hob_garrow"
+      },
+      "outcomes": {
+        "setFlags": {
+          "garrow_dead": true
+        },
+        "modifyReputation": {
+          "faction_dev_watch": -80,
+          "faction_dev_brindle": -30,
+          "faction_dev_saltreed": 15
+        },
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Captain Hob Garrow goes down in the mud of his own ford. The Watch will never forgive this, but the smugglers of Saltreed raise a glass.",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Death of Captain Garrow",
+          "text": "The captain of the Ford Watch was killed. His lighthouse key is with his belongings."
         }
       }
     }

@@ -1603,6 +1603,8 @@ const scriptMatch = indexHtmlSource.match(/<script>([\s\S]*?)<\/script>/);
 if (scriptMatch) {
   eval(scriptMatch[1]);
 }
+// The original Developer campaign is frozen as a hidden fixture for these regression tests.
+const { loadLegacyDevContent } = require('./behaviour_harness');
 
 // -----------------------------------------------------------------------------
 // 31. Campaign Framework: Manifests & Configuration Architecture
@@ -1617,7 +1619,7 @@ runTest("Campaign Architecture: Greek Mythology and Dev Test campaign manifests 
   const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
   assert.equal(devManifest.id, "campaign_dev_test");
   assert.equal(devManifest.isTestCampaign, true, "Dev test campaign must have isTestCampaign: true");
-  assert.equal(devManifest.startingLocationId, "loc_dev_haven");
+  assert.ok(devManifest.startingLocationId, "Dev campaign must declare a starting location");
   assert.ok(devManifest.modules.lootTables && devManifest.modules.interactiveObjects, "Dev manifest must declare modular paths");
 });
 
@@ -1625,8 +1627,8 @@ runTest("Campaign Architecture: Greek Mythology and Dev Test campaign manifests 
 // 32. Campaign Content Validation Engine
 // -----------------------------------------------------------------------------
 runTest("Campaign Validation: validateCampaign correctly verifies valid campaigns and catches structural/logical flaws", () => {
-  const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
-  const devDir = path.join(__dirname, '../content/campaigns/dev_test_campaign/world');
+  const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/fixtures/dev_legacy/campaign.json'), 'utf8'));
+  const devDir = path.join(__dirname, '../content/campaigns/fixtures/dev_legacy/world');
   const devContent = {
     locations: JSON.parse(fs.readFileSync(path.join(devDir, 'locations.json'), 'utf8')).locations,
     characters: JSON.parse(fs.readFileSync(path.join(devDir, 'characters.json'), 'utf8')).characters,
@@ -1678,7 +1680,7 @@ runTest("Campaign Validation: validateCampaign correctly verifies valid campaign
 // -----------------------------------------------------------------------------
 runTest("Entity Interaction Freedom: Players can attack any living NPC, generating combat and handling death consequences", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
   engine.state.worldState.currentLocationId = "loc_dev_haven";
 
   // Before attack: Merchant Lycus is alive and present
@@ -1712,7 +1714,7 @@ runTest("Entity Interaction Freedom: Players can attack any living NPC, generati
 // -----------------------------------------------------------------------------
 runTest("Multi-Table Loot System: Evaluates drops and prevents duplicate unique relic exploitation on repeat kills", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   const karasBoss = {
     id: "creature_dev_crypt_boss",
@@ -1747,7 +1749,7 @@ runTest("Multi-Table Loot System: Evaluates drops and prevents duplicate unique 
 // -----------------------------------------------------------------------------
 runTest("Interactive Objects & Lockpicking: Requires tools, distinguishes unpickable boulders, breaks on Ate, triggers traps", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
   engine.state.worldState.currentLocationId = "loc_dev_haven";
 
   // 1. Unpickable Boulder: Physical barriers cannot be lockpicked
@@ -1798,7 +1800,7 @@ runTest("Interactive Objects & Lockpicking: Requires tools, distinguishes unpick
 // -----------------------------------------------------------------------------
 runTest("Quest Branching: Killing key NPCs triggers alternate quest pathways and handles failures", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
   engine.state.worldState.currentLocationId = "loc_dev_haven";
 
   // Start the Sunstone and Delivery quests
@@ -1830,7 +1832,7 @@ runTest("Quest Branching: Killing key NPCs triggers alternate quest pathways and
 // -----------------------------------------------------------------------------
 runTest("Boss Mechanics: Enrage phase triggered below threshold and cooldown hours enforced", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   const karasCreature = engine.getCreature("creature_dev_crypt_boss");
   assert.ok(karasCreature, "Lord Karas creature must exist");
@@ -1863,9 +1865,9 @@ runTest("Boss Mechanics: Enrage phase triggered below threshold and cooldown hou
 // -----------------------------------------------------------------------------
 runTest("Factions & Consequences: Reputation modifications, scheduled world events, and standings", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
   // Loading content no longer writes into the running game's state; starting a game does.
-  engine.activeCampaignId = "campaign_dev_test";
+  engine.activeCampaignId = "campaign_dev_legacy";
   engine.resetStateForActiveCampaign();
 
   // Initial reputation
@@ -1940,7 +1942,7 @@ runTest("Character Classes & Backgrounds: All 14 Greek classes and 16 background
 // -----------------------------------------------------------------------------
 runTest("Campaign Independence: Switching to Dev Test isolates classes and backgrounds without leaking Greek archetypes", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   const devClasses = engine.getCampaignClasses();
   assert.equal(devClasses.length, 2, "Dev test campaign must expose exactly 2 verified test classes");
@@ -2173,7 +2175,7 @@ runTest("Settlement Economy: Every major settlement merchant maintains at least 
 // -----------------------------------------------------------------------------
 runTest("NPC Interactivity: Wounded NPCs attempt to yield/flee below 25% HP and social checks enforce cooldowns", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // 1. Social Checks with Anti-Exploit Cooldown
   const persuadeResult1 = engine.attemptPersuadeNpc("npc_dev_merchant_lycus");
@@ -2250,7 +2252,7 @@ runTest("Dynamic World Time: Activities consume appropriate in-game time, abilit
 // -----------------------------------------------------------------------------
 runTest("Event-Driven Scheduler: Chronological execution, duplicate prevention, cancellation, rescheduling, zero polling loops", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   const executionLog = [];
   const startMin = engine.getTotalInGameMinutes();
@@ -2324,7 +2326,7 @@ runTest("Event-Driven Scheduler: Chronological execution, duplicate prevention, 
 // -----------------------------------------------------------------------------
 runTest("Quest Time Consequences: Urgent quests deteriorate or branch on missed deadlines; early completion awards bonus; timeless quests remain unaffected", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // 1. Time-Sensitive Quest: Urgent Rescue
   engine.startQuest("quest_dev_urgent_rescue");
@@ -2371,7 +2373,7 @@ runTest("Quest Time Consequences: Urgent quests deteriorate or branch on missed 
 // -----------------------------------------------------------------------------
 runTest("Creature & Boss Respawn: Defeated creatures and bosses respawn via event-driven scheduler; unique relics are never duplicated", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // 1. Defeat a normal creature (Wild Boar, respawnHours = 12)
   engine.startCombatWithEntity("creature_dev_wild_boar", "creature");
@@ -2421,7 +2423,7 @@ runTest("Creature & Boss Respawn: Defeated creatures and bosses respawn via even
 // -----------------------------------------------------------------------------
 runTest("Permanent NPC Death: NPCs never respawn, death is persistently recorded, triggers quest failover and scheduled murder inquest", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   const preHubris = engine.state.player.morality.hubris;
 
@@ -2459,7 +2461,7 @@ runTest("Permanent NPC Death: NPCs never respawn, death is persistently recorded
 // -----------------------------------------------------------------------------
 runTest("Morality & Quest Alignment: Virtue, Hubris, dynamic alignment tiers, and multi-path moral choices with divergent outcomes", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // 1. Morality Mechanics
   const m = engine.state.player.morality;
@@ -2487,7 +2489,7 @@ runTest("Morality & Quest Alignment: Virtue, Hubris, dynamic alignment tiers, an
 
   // Test Villainous Resolution on fresh instance
   const engine2 = new GreekMythologyEngine();
-  engine2.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine2);
   engine2.startQuest("quest_dev_bandit_alliance");
   const preOutlawsRep = engine2.getFactionReputation("faction_dev_outlaws");
   const preHubrisVal = engine2.state.player.morality.hubris;
@@ -2513,8 +2515,8 @@ runTest("Campaign Integration: Campaigns independently configure calendars, acti
 
   // Dev Test Campaign overrides
   const devEngine = new GreekMythologyEngine();
-  devEngine.loadEmbeddedDevTestContent();
-  assert.equal(devEngine.activeCampaign.id, "campaign_dev_test");
+  loadLegacyDevContent(devEngine);
+  assert.equal(devEngine.activeCampaign.id, "campaign_dev_legacy");
   assert.equal(devEngine.activeCampaign.respawnRules.bossHours, 24, "Dev test campaign can independently set boss respawn to 24 hours");
 });
 
@@ -2523,7 +2525,7 @@ runTest("Campaign Integration: Campaigns independently configure calendars, acti
 // -----------------------------------------------------------------------------
 runTest("Save & Load Persistence: Scheduled events, permanent NPC deaths, morality, and time serialize cleanly and prevent duplicate execution", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // Advance time, slay an NPC, schedule an event, modify morality
   engine.advanceTime(14, 30);
@@ -2546,7 +2548,7 @@ runTest("Save & Load Persistence: Scheduled events, permanent NPC deaths, morali
 
   // Load into fresh engine
   const restoredEngine = new GreekMythologyEngine();
-  restoredEngine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(restoredEngine);
   restoredEngine.state = JSON.parse(serialized);
 
   // Verify restored state
@@ -2565,7 +2567,7 @@ runTest("Save & Load Persistence: Scheduled events, permanent NPC deaths, morali
 // -----------------------------------------------------------------------------
 runTest("Project Optimisation: Event pruning prevents memory accumulation, fast binary insertion, zero continuous intervals or polling loops", () => {
   const engine = new GreekMythologyEngine();
-  engine.loadEmbeddedDevTestContent();
+  loadLegacyDevContent(engine);
 
   // 1. Verify scheduler pruning of completed events
   for (let i = 0; i < 20; i++) {

@@ -1,94 +1,197 @@
 {
   "interactiveObjects": [
     {
-      "id": "obj_treasury_iron_door",
-      "locationId": "loc_dev_haven",
-      "name": "Ironbound Vault Door",
-      "type": "door",
-      "locked": true,
-      "isPickable": true,
-      "lockDifficulty": 12,
-      "requiredKeyId": "item_dev_treasury_key",
-      "requiredToolId": "item_dev_iron_lockpick",
-      "description": "A reinforced oak and banded-iron portal securing the Haven High Vault.",
-      "failureConsequence": {
-        "breakToolOnAte": true,
-        "alertNpcId": "npc_dev_guard_captain",
-        "message": "A loud metallic clang echoes down the cobblestones as your pick jams in the tumblers!"
-      },
-      "unlockOutcome": {
-        "setFlags": { "treasury_door_unlocked": true },
-        "transcript": {
-          "speaker": "Physical Interaction",
-          "text": "With a satisfying click of heavy brass tumblers, the ironbound door creaks inward, granting access to the interior vault!",
-          "style": "entry-discovery"
-        },
-        "awardXP": 25,
-        "updateQuest": { "questId": "quest_dev_treasury_heist", "objectiveId": "obj_unlock_vault", "completed": true }
-      }
-    },
-    {
-      "id": "obj_trapped_coffer",
-      "locationId": "loc_dev_haven",
-      "name": "Gilded Treasury Strongbox",
+      "id": "obj_dev_practice_lockbox",
+      "locationId": "loc_dev_brindle_ford",
+      "name": "Guild Practice Lockbox",
       "type": "container",
       "locked": true,
       "isPickable": true,
-      "lockDifficulty": 14,
-      "requiredToolId": "item_dev_iron_lockpick",
-      "description": "A cedar coffer bound in brass filigree, sitting upon a stone pedestal inside the vault.",
-      "trap": {
-        "name": "Spring-Loaded Bronze Dart",
-        "disarmDC": 13,
-        "damage": 6,
-        "description": "A tensioned wire connected to a pressurized dart launcher inside the lock housing."
+      "lockDifficulty": 10,
+      "requiredKeyId": "item_dev_practice_key",
+      "description": "A battered iron box chained to the Guildhall porch. Applicants practise on it; it has seen things.",
+      "contents": {
+        "drachmae": 5,
+        "items": [
+          "item_dev_honey_cake"
+        ]
       },
-      "contents": { "drachmae": 60, "items": ["item_dev_silver_chalice"] },
       "unlockOutcome": {
-        "setFlags": { "treasury_coffer_unlocked": true },
         "transcript": {
-          "speaker": "Physical Interaction",
-          "text": "The lock springs open! Inside lies a velvet-lined cache containing 60 silver drachmae and an ancient silver chalice!",
+          "speaker": "The Guildhall",
+          "text": "The lockbox pops open. Inside: five drachmae and a note in Odile's hand: 'Well done. Put the cake back.' You do not put the cake back.",
           "style": "entry-discovery"
         },
-        "awardXP": 35,
-        "updateQuest": { "questId": "quest_dev_treasury_heist", "objectiveId": "obj_loot_coffer", "completed": true },
-        "completeQuest": "quest_dev_treasury_heist"
-      },
-      "requiresObjectOpen": "obj_treasury_iron_door"
+        "updateQuest": {
+          "questId": "quest_dev_trials",
+          "objectiveId": "obj_trial_lock",
+          "completed": true
+        },
+        "awardXP": 20
+      }
     },
     {
-      "id": "obj_boulder_seal",
-      "locationId": "loc_dev_whispering_woods",
-      "name": "Massive Overgrown Granite Boulder",
+      "id": "obj_dev_guild_strongbox",
+      "locationId": "loc_dev_brindle_ford",
+      "name": "Guild Strongbox",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 15,
+      "description": "The Guild's real money, behind the counter. Odile is right there. So is the Watch.",
+      "trap": {
+        "name": "Dye Bomb",
+        "disarmDC": 13,
+        "damage": 3,
+        "description": "A glass vial of blue dye wired to the lid."
+      },
+      "failureConsequence": {
+        "breakToolOnAte": true,
+        "alertNpcId": "npc_dev_hob_garrow",
+        "message": "Your pick skids with a screech that turns every head in the Guildhall."
+      },
+      "contents": {
+        "drachmae": 45,
+        "items": [
+          "item_dev_guild_whistle"
+        ]
+      },
+      "unlockOutcome": {
+        "transcript": {
+          "speaker": "The Guildhall",
+          "text": "The strongbox clicks open. Nobody saw. Probably.",
+          "style": "entry-consequence"
+        },
+        "morality": {
+          "hubris": 8,
+          "reason": "Robbed the Guild strongbox"
+        },
+        "setFlags": {
+          "robbed_guild": true,
+          "has_guild_whistle": true
+        },
+        "awardXP": 25
+      }
+    },
+    {
+      "id": "obj_dev_beached_rowboat",
+      "locationId": "loc_dev_saltreed",
+      "name": "Beached Rowboat",
       "type": "obstacle",
       "locked": true,
       "isPickable": false,
-      "unpickableReason": "A colossal solid granite boulder has no mechanical lock or keyhole. It cannot be lockpicked!",
+      "unpickableReason": "It is a boat stuck in shingle. There is no lock, only a lot of wet gravel.",
       "requiredAttribute": "strength",
-      "requiredScore": 14,
-      "description": "A monolithic boulder choked with ivy, completely sealing an arched fissure in the cliffside.",
+      "requiredScore": 13,
+      "description": "A sturdy rowboat dragged far up the shingle and left to rot. Push it back into the water and Gull Rock is an hour's row away.",
       "unlockOutcome": {
-        "setFlags": { "discovered_sunken_grotto": true },
         "transcript": {
-          "speaker": "Feat of Power",
-          "text": "Bracing your shoulders against the massive stone, you heave with all your might. With a grinding crunch, the boulder rolls aside, revealing the hidden passage to the Sunken Grotto!",
+          "speaker": "Saltreed Cove",
+          "text": "With a grinding heave you shove the boat into the surf. It floats. Mostly. Gull Rock is in reach.",
           "style": "entry-discovery"
         },
-        "awardXP": 30,
-        "updateQuest": { "questId": "quest_dev_grotto_mystery", "objectiveId": "obj_move_boulder", "completed": true },
-        "completeQuest": "quest_dev_grotto_mystery"
+        "setFlags": {
+          "gull_rock_crossing": true
+        },
+        "updateQuest": {
+          "questId": "quest_dev_lantern",
+          "objectiveId": "obj_find_crossing",
+          "completed": true
+        },
+        "awardXP": 25
       }
     },
     {
-      "id": "obj_crypt_sarcophagus",
-      "locationId": "loc_dev_ancient_crypt",
-      "name": "Lord Karas' Marble Sarcophagus",
+      "id": "obj_dev_smuggler_crates",
+      "locationId": "loc_dev_saltreed",
+      "name": "Stack of 'Fish' Crates",
       "type": "container",
-      "locked": false,
-      "isPickable": false,
-      "description": "A carved marble tomb relief depicting the warlord Karas holding a solar emblem.",
-      "contents": { "drachmae": 25, "items": ["item_dev_crypt_torch"] }
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 12,
+      "lootTableId": "loot_dev_smuggler_crates",
+      "description": "Padlocked crates stencilled FISH. They clink.",
+      "trap": {
+        "name": "Spring Needle",
+        "disarmDC": 12,
+        "damage": 4,
+        "description": "A needle on a spring inside the padlock hasp."
+      },
+      "failureConsequence": {
+        "breakToolOnAte": true,
+        "alertNpcId": "npc_dev_jory_vane",
+        "message": "The padlock clangs against the crate. Across the beach, Jory looks up."
+      },
+      "unlockOutcome": {
+        "transcript": {
+          "speaker": "Saltreed Cove",
+          "text": "The padlock gives. Brandy, a pearl, and a fine grey cloak packed in straw.",
+          "style": "entry-discovery"
+        },
+        "setFlags": {
+          "looted_smuggler_crates": true
+        },
+        "awardXP": 20
+      }
+    },
+    {
+      "id": "obj_dev_lighthouse_door",
+      "locationId": "loc_dev_gull_rock",
+      "name": "Lighthouse Door",
+      "type": "door",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 15,
+      "requiredKeyId": "item_dev_lighthouse_key",
+      "description": "An iron-bound door swollen with salt. Behind it, the bell tolls.",
+      "failureConsequence": {
+        "breakToolOnAte": true,
+        "message": "Salt has jammed the tumblers. Your pick bends."
+      },
+      "unlockOutcome": {
+        "transcript": {
+          "speaker": "Gull Rock",
+          "text": "The door grinds open on a spiral stair slick with seawater. The bell stops. Something wet starts climbing up.",
+          "style": "entry-consequence"
+        },
+        "setFlags": {
+          "lighthouse_open": true
+        },
+        "updateQuest": {
+          "questId": "quest_dev_lantern",
+          "objectiveId": "obj_open_door",
+          "completed": true
+        },
+        "awardXP": 30
+      }
+    },
+    {
+      "id": "obj_dev_reliquary",
+      "locationId": "loc_dev_sunken_chapel",
+      "name": "Tide Warden's Reliquary",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 13,
+      "lootTableId": "loot_dev_reliquary",
+      "description": "A barnacled stone chest on the altar steps, its lid carved with a lighthouse.",
+      "trap": {
+        "name": "Brine Jet",
+        "disarmDC": 12,
+        "damage": 4,
+        "description": "A pressurised jet of stinging brine behind the lock."
+      },
+      "unlockOutcome": {
+        "transcript": {
+          "speaker": "The Sunken Chapel",
+          "text": "Inside the reliquary: a silver censer and a long bronze key with a lighthouse on its bow. The chapel kept a spare.",
+          "style": "entry-discovery"
+        },
+        "setFlags": {
+          "reliquary_opened": true
+        },
+        "awardXP": 30
+      }
     }
   ]
 }

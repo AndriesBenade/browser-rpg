@@ -1,0 +1,37 @@
+{
+  "glossary": [
+    {
+      "key": "lanternfall",
+      "terms": [
+        "Lanternfall"
+      ],
+      "name": "Lanternfall",
+      "category": "Local Lore",
+      "simpleEnglish": "The fog that comes when the lighthouse goes dark",
+      "explanation": "When the Gull Rock lantern goes out, sea fog and worse roll inland. Relighting the Everflame ends it.",
+      "significance": "The main quest of this campaign."
+    },
+    {
+      "key": "wisp_glass",
+      "terms": [
+        "wisp-glass"
+      ],
+      "name": "Wisp-glass",
+      "category": "Material",
+      "simpleEnglish": "Glass left behind by a burnt-out wisp",
+      "explanation": "Rare, warm to the touch and prized by tinkers and herbalists.",
+      "significance": "A crafting material that also drops from wisps."
+    },
+    {
+      "key": "everflame",
+      "terms": [
+        "Everflame"
+      ],
+      "name": "The Everflame",
+      "category": "Relic",
+      "simpleEnglish": "The lighthouse's undying wick",
+      "explanation": "A braided wick said to have burned for a hundred years.",
+      "significance": "Needed to relight the Gull Rock lantern."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "loreEntries": [
+    {
+      "id": "lore_dev_lanternfall",
+      "title": "Lanternfall",
+      "category": "Local History",
+      "text": "Every few generations the Gull Rock lantern goes out, and the sea fog that follows is called Lanternfall. Ships run aground, wisps drift inland, and the bog creeps closer to the ford until someone relights the Everflame."
+    },
+    {
+      "id": "lore_dev_hive_sisters",
+      "title": "The Hive Sisters",
+      "category": "Faith",
+      "text": "The Sisters of Willowmere keep bees, heal the sick for free and accept payment in honey, gossip and good behaviour. Their shrine stones are always sticky."
+    },
+    {
+      "id": "lore_dev_bog_stone",
+      "title": "The Bog Stone",
+      "category": "Mystery",
+      "text": "A leaning standing stone in the Old Moss. Fen folk say it asks a question of every traveller, and that the answer is always the same thing the bog eats."
+    },
+    {
+      "id": "lore_dev_saltreed",
+      "title": "The Saltreed Trade",
+      "category": "Local History",
+      "text": "Brandy comes in at night, pearls go out, and the Watch is usually looking the other way. Jory Vane runs the cove the way a cat runs a barn."
+    }
+  ]
+}

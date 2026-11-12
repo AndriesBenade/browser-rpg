@@ -1,308 +1,1078 @@
 {
   "dialogues": {
-    "dialogue_dev_lycus": {
-      "greeting": "Welcome to my stall, traveler! Lycus has the finest goods in Haven - durable lockpicks, healing draughts, and hearty rations.",
+    "dialogue_dev_odile": {
+      "greeting": "Name, purpose, and please don't touch the golem.",
       "nodes": {
         "root": {
-          "text": "Merchant Lycus gestures to his array of wares displayed upon fine cedar tables.",
+          "text": "Odile Marsh looks at you over a ledger the size of a door.",
           "choices": [
-            { "label": "Show me what you have for sale.", "target": "node_browse" },
             {
-              "label": "Any work for a wandering hero?",
-              "target": "node_quest",
-              "condition": { "questNotStarted": "quest_dev_merchant_delivery" }
-            },
-            {
-              "label": "Your parcel reached the Watch Post.",
-              "target": "node_paid",
+              "label": "What are the trials?",
+              "target": "node_trials",
               "condition": {
-                "questStage": { "questId": "quest_dev_merchant_delivery", "stage": "return_lycus" }
+                "questActive": "quest_dev_trials"
               }
             },
             {
-              "label": "Heard anything worth knowing, friend?",
-              "target": "node_rumour",
-              "condition": { "minStanding": "friendly" }
+              "label": "Could I borrow the practice key? (Persuade)",
+              "check": {
+                "skill": "persuasion",
+                "attribute": "charisma",
+                "dc": 14,
+                "success": "node_key_yes",
+                "failure": "node_key_no"
+              },
+              "condition": {
+                "notHasItem": "item_dev_practice_key",
+                "questActive": "quest_dev_trials"
+              }
             },
-            { "label": "Farewell, Lycus.", "target": "exit" }
+            {
+              "label": "The Guild Master said I could skip the lockbox. (Lie)",
+              "check": {
+                "skill": "deception",
+                "attribute": "charisma",
+                "dc": 15,
+                "success": "node_lie_yes",
+                "failure": "node_lie_no"
+              },
+              "condition": {
+                "notHasItem": "item_dev_practice_key",
+                "questActive": "quest_dev_trials"
+              }
+            },
+            {
+              "label": "The ledger is full.",
+              "target": "node_licence",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_trials",
+                  "stage": "report"
+                }
+              }
+            },
+            {
+              "label": "What's wrong with the lighthouse?",
+              "target": "node_lighthouse",
+              "condition": {
+                "questNotDone": true,
+                "questId": "quest_dev_lantern"
+              }
+            },
+            {
+              "label": "Is there a Guild whistle going spare?",
+              "target": "node_whistle",
+              "condition": {
+                "minStanding": "friendly",
+                "notHasItem": "item_dev_guild_whistle"
+              }
+            },
+            {
+              "label": "The lantern is lit.",
+              "target": "node_epilogue",
+              "condition": {
+                "questCompleted": "quest_dev_lantern"
+              }
+            },
+            {
+              "label": "Good day, Examiner.",
+              "target": "exit"
+            }
           ]
         },
-        "node_browse": {
-          "text": "Inspect my goods freely! Everything is guaranteed genuine Haven quality.",
-          "openTrade": true,
+        "node_trials": {
+          "text": "Ten lines. Fight, lock, words, search, trade, craft, a hands-on challenge, the Bog Stone, a companion, a night in the wild. Any order. Come back when every line is signed.",
+          "giveItem": "item_dev_trial_ledger",
           "choices": [
-            { "label": "Back to inquiries.", "target": "root" }
+            {
+              "label": "Sounds simple.",
+              "target": "root"
+            },
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
           ]
         },
-        "node_quest": {
-          "text": "Take this sealed parcel to Captain Valerius at the Watch Post. Bring me word it arrived and I will pay you well.",
-          "setFlags": { "accepted_lycus_contract": true },
-          "startQuest": "quest_dev_merchant_delivery",
-          "giveItem": "item_dev_trade_parcel",
+        "node_key_yes": {
+          "text": "She sighs and slides a small key across the desk. 'Technically allowed. Spiritually disappointing.'",
+          "giveItem": "item_dev_practice_key",
           "choices": [
-            { "label": "I'll see it delivered.", "target": "root" }
+            {
+              "label": "Thank you!",
+              "target": "root"
+            }
           ]
         },
-        "node_paid": {
-          "text": "Delivered and signed for! Here is your fee, as promised. Haven needs more couriers like you.",
-          "completeQuest": "quest_dev_merchant_delivery",
+        "node_key_no": {
+          "text": "'No. Picks are under the counter at Tamsin's.' She goes back to her ledger. You will have to wait a while before asking again.",
           "choices": [
-            { "label": "A pleasure doing business.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         },
-        "node_rumour": {
-          "text": "Between friends? The Captain keeps the brass key to the High Vault on his own belt. Earn his trust and he might lend it; cross him and the Watch will hang you.",
+        "node_lie_yes": {
+          "text": "'Did he now.' She looks at you for a long moment, then hands over the key. 'Then you won't mind if I check.' You definitely mind.",
+          "giveItem": "item_dev_practice_key",
+          "choices": [
+            {
+              "label": "...Thanks.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_lie_no": {
+          "text": "'The Guild Master,' says Odile, 'has been dead for nine years.' She writes something in the margin of your ledger. It is not a compliment.",
+          "disposition": -10,
+          "choices": [
+            {
+              "label": "Ah.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_licence": {
+          "text": "She reads every line, initials the last, and hands you a brass ring. 'Welcome to the Guild, Wayfarer. Try not to die in the first week; the paperwork is awful.'",
+          "completeQuest": "quest_dev_trials",
+          "consumeItem": "item_dev_trial_ledger",
+          "choices": [
+            {
+              "label": "I'll do my best.",
+              "target": "root"
+            },
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_lighthouse": {
+          "text": "The lantern on Gull Rock went out a month ago and the keeper hasn't been seen since. Ships are running aground and the fog brings wisps right into town. Captain Garrow has the details, and the key.",
           "addJournalKnowledge": {
-            "title": "The Vault Key",
-            "text": "Lycus says Captain Valerius carries the High Vault key. A trusted friend of the Watch might be given access."
+            "title": "Lanternfall",
+            "text": "The Gull Rock lantern went out a month ago; the keeper vanished. Captain Garrow knows more."
+          },
+          "revealRumour": "loc_dev_gull_rock",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_whistle": {
+          "text": "'You've earned it.' A brass Guild whistle. 'Blow it before a fight and watch them flinch.'",
+          "giveItem": "item_dev_guild_whistle",
+          "setFlags": {
+            "has_guild_whistle": true
           },
           "choices": [
-            { "label": "Good to know.", "target": "root" }
-          ],
-          "revealRumour": "loc_dev_obsidian_crag"
+            {
+              "label": "Thank you.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_epilogue": {
+          "text": "'I saw it from my window. The whole town cried. I did not cry. There was dust.' She very nearly smiles.",
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
         }
       }
     },
-    "dialogue_dev_captain": {
-      "greeting": "Halt and declare your business in Haven. The Watch keeps a sharp eye on all strangers.",
+    "dialogue_dev_garrow": {
+      "greeting": "Watch business or ferry business? Make it quick, the fog's coming in.",
       "nodes": {
         "root": {
-          "text": "Captain Valerius stands rigid in iron chainmail, eyeing you with professional scrutiny.",
+          "text": "Captain Garrow chews his moustache and looks out at Gull Rock.",
           "choices": [
             {
-              "label": "I heard there is a bounty on wild boars.",
-              "target": "node_boar_bounty",
-              "condition": { "questNotStarted": "quest_dev_boar_menace" }
-            },
-            {
-              "label": "The boar is dead. About that bounty...",
-              "target": "node_boar_paid",
+              "label": "What happened to the lighthouse?",
+              "target": "node_lighthouse",
               "condition": {
-                "questStage": { "questId": "quest_dev_boar_menace", "stage": "return_captain" }
+                "questStage": {
+                  "questId": "quest_dev_lantern",
+                  "stage": "ask_around"
+                }
               }
             },
             {
-              "label": "Lycus sent this parcel for the Watch.",
-              "target": "node_parcel",
-              "condition": { "hasItem": "item_dev_trade_parcel", "questActive": "quest_dev_merchant_delivery" }
-            },
-            {
-              "label": "Any urgent matters for the Watch?",
-              "target": "node_rescue_brief",
-              "condition": { "questNotStarted": "quest_dev_urgent_rescue" }
-            },
-            {
-              "label": "The apprentice is safe in Haven.",
-              "target": "node_rescue_done",
-              "condition": {
-                "questStage": { "questId": "quest_dev_urgent_rescue", "stage": "return_haven" }
-              }
-            },
-            { "label": "Has anyone breached the High Vault recently?", "target": "node_vault_warning" },
-            {
-              "label": "Could the Watch trust me with the High Vault key?",
-              "target": "node_vault_trust",
+              "label": "Could the Watch lend me the lighthouse key?",
+              "target": "node_key_trust",
               "condition": {
                 "minStanding": "trusted",
-                "notHasItem": "item_dev_treasury_key",
-                "flag": "treasury_door_unlocked",
+                "notHasItem": "item_dev_lighthouse_key",
+                "questActive": "quest_dev_lantern"
+              }
+            },
+            {
+              "label": "Give me the key. I'm the only one going out there. (Persuade)",
+              "check": {
+                "skill": "persuasion",
+                "attribute": "charisma",
+                "dc": 15,
+                "success": "node_key_yes",
+                "failure": "node_key_no"
+              },
+              "condition": {
+                "notHasItem": "item_dev_lighthouse_key",
+                "questActive": "quest_dev_lantern"
+              }
+            },
+            {
+              "label": "The Guild sent me for the key. (Lie)",
+              "check": {
+                "skill": "deception",
+                "attribute": "charisma",
+                "dc": 14,
+                "success": "node_key_lie_yes",
+                "failure": "node_key_lie_no"
+              },
+              "condition": {
+                "notHasItem": "item_dev_lighthouse_key",
+                "questActive": "quest_dev_lantern"
+              }
+            },
+            {
+              "label": "Any bounties going?",
+              "target": "node_bounty",
+              "condition": {
+                "questNotStarted": "quest_dev_bounty"
+              }
+            },
+            {
+              "label": "The lurker is dead.",
+              "target": "node_bounty_paid",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_bounty",
+                  "stage": "claim"
+                }
+              }
+            },
+            {
+              "label": "Anyone need help?",
+              "target": "node_pip",
+              "condition": {
+                "questNotStarted": "quest_dev_stranded"
+              }
+            },
+            {
+              "label": "Pip is home safe.",
+              "target": "node_pip_done",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_stranded",
+                  "stage": "report_rescue"
+                }
+              }
+            },
+            {
+              "label": "I know who runs the smuggling in Saltreed.",
+              "target": "node_smugglers",
+              "condition": {
+                "questActive": "quest_dev_smugglers",
+                "flag": "jory_arrested",
                 "expected": false
               }
             },
-            { "label": "As you were, Captain.", "target": "exit" }
+            {
+              "label": "As you were, Captain.",
+              "target": "exit"
+            }
           ]
         },
-        "node_boar_bounty": {
-          "text": "Indeed. The bristle boars in the Whispering Woods have grown bold and aggressive. Bring one down and Haven will pay you in good silver.",
-          "startQuest": "quest_dev_boar_menace",
+        "node_lighthouse": {
+          "text": "Old Corwin, the keeper, said the bell had started ringing by itself. Went down to see. Lantern's been dark since. You'll need a boat from Saltreed, or the cliff stair off Thornback if you can find it, and the key. I hold the key. I don't hand it to strangers.",
+          "updateQuest": {
+            "questId": "quest_dev_lantern",
+            "objectiveId": "obj_ask_garrow",
+            "completed": true
+          },
+          "addJournalKnowledge": {
+            "title": "The Keeper's Bell",
+            "text": "Keeper Corwin went down to silence a bell that rang by itself and never came back. Routes to Gull Rock: a boat from Saltreed, or a cliff stair on Thornback. Garrow has the lighthouse key."
+          },
           "choices": [
-            { "label": "Consider it done.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         },
-        "node_vault_warning": {
-          "text": "The High Vault is sealed under strict Watch decree. Anyone caught tampering with the iron lock will face immediate execution. Do not test our patience.",
+        "node_key_trust": {
+          "text": "'You've done right by this town.' He unhooks a long bronze key from his belt. 'Bring it back.'",
+          "giveItem": "item_dev_lighthouse_key",
           "choices": [
-            { "label": "Understood, Captain.", "target": "root" }
+            {
+              "label": "I will.",
+              "target": "root"
+            }
           ]
         },
-        "node_boar_paid": {
-          "text": "So the beast is down? Good work. Haven pays its debts. Here is your bounty.",
-          "completeQuest": "quest_dev_boar_menace",
+        "node_key_yes": {
+          "text": "He stares at you, then at the fog, then sighs and hands it over. 'Fine. Someone has to. Don't make me regret it.'",
+          "giveItem": "item_dev_lighthouse_key",
           "choices": [
-            { "label": "Glad to help.", "target": "root" }
+            {
+              "label": "You won't.",
+              "target": "root"
+            }
           ]
         },
-        "node_parcel": {
-          "text": "Ah, Lycus' delivery: lamp oil and bandages for the Watch. Tell him it arrived in good order.",
-          "consumeItem": "item_dev_trade_parcel",
-          "updateQuest": { "questId": "quest_dev_merchant_delivery", "objectiveId": "obj_carry_goods", "completed": true },
+        "node_key_no": {
+          "text": "'No. Do something for this town first.' He turns back to the window. He won't hear it again today.",
           "choices": [
-            { "label": "I'll tell him.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         },
-        "node_rescue_brief": {
-          "text": "Beasts from the Obsidian Crags dragged off an apprentice artificer two nights ago. If they move the poor soul deeper, we'll never find them. Two days, no more. Go!",
-          "startQuest": "quest_dev_urgent_rescue",
-          "discoverLocation": "loc_dev_obsidian_crag",
+        "node_key_lie_yes": {
+          "text": "'The Guild, eh? About time they did something.' He hands you the key without a second look.",
+          "giveItem": "item_dev_lighthouse_key",
           "choices": [
-            { "label": "I'm on my way.", "target": "root" }
+            {
+              "label": "Very kind.",
+              "target": "root"
+            }
           ]
         },
-        "node_rescue_done": {
-          "text": "Alive and home! You have the thanks of the Watch, and its silver.",
-          "completeQuest": "quest_dev_urgent_rescue",
+        "node_key_lie_no": {
+          "text": "'Odile was in here an hour ago and said nothing of the sort.' His hand drifts to his falchion. 'Get out of my watch house.'",
+          "disposition": -15,
+          "modifyReputation": {
+            "faction_dev_watch": -5
+          },
           "choices": [
-            { "label": "All in a day's work.", "target": "root" }
+            {
+              "label": "Leaving.",
+              "target": "exit"
+            }
           ]
         },
-        "node_vault_trust": {
-          "text": "You have earned the Watch's trust. Take the key. Whatever you find in the vault, the town's share stays the town's.",
-          "giveItem": "item_dev_treasury_key",
+        "node_bounty": {
+          "text": "A fogback lurker in the Old Moss. Took two goats and a very loud man. Thirty-five drachmae for its tongue.",
+          "startQuest": "quest_dev_bounty",
           "choices": [
-            { "label": "You have my word.", "target": "root" }
+            {
+              "label": "I'll get it.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_bounty_paid": {
+          "text": "'Good riddance.' He counts out the bounty.",
+          "completeQuest": "quest_dev_bounty",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_pip": {
+          "text": "Pip Tallow went up Thornback to look at the lighthouse and never came down. Storm's coming. If you're going, go now.",
+          "startQuest": "quest_dev_stranded",
+          "choices": [
+            {
+              "label": "On my way.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_pip_done": {
+          "text": "'Thank the Warden.' He shakes your hand so hard your shoulder clicks. 'The Watch owes you.'",
+          "completeQuest": "quest_dev_stranded",
+          "disposition": 15,
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_smugglers": {
+          "text": "'Jory Vane. Of course it's Jory Vane.' He makes a note. 'If you can bring her in, the Watch will be grateful.'",
+          "addJournalKnowledge": {
+            "title": "The Watch and Jory",
+            "text": "Garrow would be grateful if Jory Vane were brought in."
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         }
       }
     },
-    "dialogue_dev_elena": {
-      "greeting": "Greetings, traveler. If you have an eye for ancient history, pray lend your ear to my inquiry.",
+    "dialogue_dev_tamsin": {
+      "greeting": "Welcome to the Quill & Candle! If we don't have it, you don't need it. If you do need it, we'll order it.",
       "nodes": {
         "root": {
-          "text": "Elena adjusts her spectacles and unrolls a map of the Sunken Crypt.",
+          "text": "Tamsin is up a ladder, pricing jars of pickled eel.",
           "choices": [
-            { "label": "Tell me of this Sunstone you seek.", "target": "node_sunstone_lore" },
             {
-              "label": "I will venture into the crypt for you.",
-              "target": "node_accept_sunstone",
+              "label": "Show me what you've got.",
+              "target": "node_browse"
+            },
+            {
+              "label": "Any errands?",
+              "target": "node_errand",
               "condition": {
-                "flag": "accepted_sunstone_task",
-                "expected": false,
-                "questNotDone": true,
-                "questId": "quest_dev_sunstone_relic"
+                "questNotStarted": "quest_dev_parcel"
               }
             },
             {
-              "label": "I have recovered the Sunstone!",
-              "target": "node_complete_sunstone",
-              "condition": { "hasItem": "item_dev_sunstone_relic", "questNotDone": true, "questId": "quest_dev_sunstone_relic" }
+              "label": "Your honey, as promised.",
+              "target": "node_honey",
+              "condition": {
+                "hasItem": "item_dev_honey_crate",
+                "questStage": {
+                  "questId": "quest_dev_parcel",
+                  "stage": "deliver"
+                }
+              }
             },
             {
-              "label": "Do you know anything about the old monoliths?",
-              "target": "node_monoliths",
-              "condition": { "questNotStarted": "quest_dev_ancient_ruins" }
+              "label": "Heard anything interesting?",
+              "target": "node_rumour",
+              "condition": {
+                "minStanding": "friendly"
+              }
             },
-            { "label": "Until later, Elena.", "target": "exit" }
+            {
+              "label": "Bye, Tamsin.",
+              "target": "exit"
+            }
           ]
         },
-        "node_sunstone_lore": {
-          "text": "Centuries ago, Lord Karas drew down solar fire into a radiant amber stone. When his dynasty fell, he was entombed with it in the Sunken Crypt. I seek it to restore Haven's lost chronicles.",
+        "node_browse": {
+          "text": "Browse away! Mind the eels.",
+          "openTrade": true,
           "choices": [
-            { "label": "A noble goal.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         },
-        "node_accept_sunstone": {
-          "text": "May the light guide your blade! The crypt lies southeast of Haven. Beware the guardian Karas; death has not dulled his steel.",
-          "startQuest": "quest_dev_sunstone_relic",
+        "node_errand": {
+          "text": "Sister Bramble owes me a crate of honey and I'm not walking to Willowmere with my knees. Fetch it and I'll pay you.",
+          "startQuest": "quest_dev_parcel",
           "choices": [
-            { "label": "I will return with the relic.", "target": "root" }
-          ],
-          "setFlags": { "accepted_sunstone_task": true },
-          "updateQuest": { "questId": "quest_dev_sunstone_relic", "objectiveId": "obj_speak_elena", "completed": true }
-        },
-        "node_complete_sunstone": {
-          "text": "Unbelievable! The true Radiant Sunstone! You have achieved what a dozen expeditions failed to accomplish. Take this scholarly purse with Haven's deepest gratitude!",
-          "completeQuest": "quest_dev_sunstone_relic",
-          "consumeItem": "item_dev_sunstone_relic",
-          "giveDrachmae": 60,
-          "awardXP": 250,
-          "choices": [
-            { "label": "It was my honor, Elena.", "target": "root" }
+            {
+              "label": "Leave it with me.",
+              "target": "root"
+            }
           ]
         },
-        "node_monoliths": {
-          "text": "Weathered standing stones dot the Whispering Woods, carved with runes older than Haven. Copy an inscription for me if you pass one; there is no hurry.",
-          "startQuest": "quest_dev_ancient_ruins",
+        "node_honey": {
+          "text": "'Oh, lovely. Not a jar broken!' She pays you on the spot.",
+          "consumeItem": "item_dev_honey_crate",
+          "updateQuest": {
+            "questId": "quest_dev_parcel",
+            "objectiveId": "obj_deliver_crate",
+            "completed": true
+          },
+          "completeQuest": "quest_dev_parcel",
           "choices": [
-            { "label": "I'll keep an eye out.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_rumour": {
+          "text": "Between us? Grandmother Rook says there's a chapel under the Old Moss. And Fennick's been buying a lot of brandy for a man who doesn't drink.",
+          "revealRumour": "loc_dev_sunken_chapel",
+          "choices": [
+            {
+              "label": "Interesting.",
+              "target": "root"
+            }
           ]
         }
       }
     },
-    "dialogue_dev_bandit": {
-      "greeting": "Step lightly, traveler. These woods belong to those swift enough to take what they want.",
+    "dialogue_dev_fennick": {
+      "greeting": "Ah. A person of taste. Or at least a person.",
       "nodes": {
         "root": {
-          "text": "Silas twirls a wicked hunting dagger between scarred knuckles.",
+          "text": "Fennick leans on a barrel that is not his.",
           "choices": [
-            { "label": "Stand down, or taste cold steel.", "target": "node_threat" },
-            { "label": "What do you know of the hidden grotto nearby?", "target": "node_grotto_hint" },
             {
-              "label": "You look like a man with a proposition.",
-              "target": "node_bargain",
-              "condition": { "questNotStarted": "quest_dev_bandit_alliance" }
+              "label": "What are you selling?",
+              "target": "node_browse"
             },
             {
-              "label": "About your bargain...",
-              "target": "node_bargain",
-              "condition": { "questActive": "quest_dev_bandit_alliance" }
+              "label": "Who runs Saltreed Cove?",
+              "target": "node_saltreed"
             },
-            { "label": "I'm moving on.", "target": "exit" }
+            {
+              "label": "Teach me a trick or two. (Wits)",
+              "check": {
+                "skill": null,
+                "attribute": "intelligence",
+                "dc": 12,
+                "success": "node_trick",
+                "failure": "node_no_trick"
+              }
+            },
+            {
+              "label": "Later, Fennick.",
+              "target": "exit"
+            }
           ]
         },
-        "node_threat": {
-          "text": "Big words for a stranger far from the safety of Haven's walls! Walk away while your purse is still in your belt.",
+        "node_browse": {
+          "text": "Everything is legitimate. Some of it is even legal.",
+          "openTrade": true,
           "choices": [
-            { "label": "Back down.", "target": "root" }
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
           ]
         },
-        "node_grotto_hint": {
-          "text": "Follow the overgrown fern trail east until you hit the cliff. There's a colossal granite boulder blocking a cave. Move the stone, and you'll find where the ancients washed silver.",
+        "node_saltreed": {
+          "text": "Jory Vane. Charming woman. Three knives you can see. If you need to get to Gull Rock, she has boats, and she always wants something.",
+          "revealRumour": "loc_dev_saltreed",
           "addJournalKnowledge": {
-            "title": "Silas' Clue to the Grotto",
-            "text": "Silas mentioned a huge granite boulder in the woods sealing a subterranean silver cavern."
+            "title": "Jory Vane",
+            "text": "Jory Vane runs Saltreed Cove and has boats that could reach Gull Rock."
           },
           "choices": [
-            { "label": "A useful secret.", "target": "root" }
-          ],
-          "startQuest": "quest_dev_grotto_mystery"
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
         },
-        "node_bargain": {
-          "text": "Sharp eyes. The Watch wants my head; Valerius most of all. Turn me in and be a hero, take my silver and forget you saw me... or help me put the Captain in the ground, and the Syndicate will remember you.",
-          "startQuest": "quest_dev_bandit_alliance",
+        "node_trick": {
+          "text": "He shows you how to palm a coin and how to look honest while doing it. You feel sharper (+2 on your next check).",
+          "inspiration": true,
           "choices": [
-            { "label": "You're coming with me to the Watch.", "target": "node_arrest" },
-            { "label": "Your silver, my silence.", "target": "node_bribe" },
-            { "label": "The Captain is in our way. I'm in.", "target": "node_ally" },
-            { "label": "I need time to think.", "target": "root" }
+            {
+              "label": "Neat.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_no_trick": {
+          "text": "'Watch the hand, not the coin. No, the other hand. No...' He gives up. Come back when you're paying attention.",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_bramble": {
+      "greeting": "Mind the bees, dear. They mind you.",
+      "nodes": {
+        "root": {
+          "text": "Sister Bramble is mending a hive with her bare hands while bees walk on her fingers.",
+          "choices": [
+            {
+              "label": "What do you sell?",
+              "target": "node_browse"
+            },
+            {
+              "label": "Is something wrong with the hives?",
+              "target": "node_honey_thief",
+              "condition": {
+                "questNotStarted": "quest_dev_honey"
+              }
+            },
+            {
+              "label": "The bear won't be back.",
+              "target": "node_bear_done",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_honey",
+                  "stage": "tell_bramble"
+                }
+              }
+            },
+            {
+              "label": "Tamsin sent me for her honey.",
+              "target": "node_crate",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_parcel",
+                  "stage": "fetch"
+                }
+              }
+            },
+            {
+              "label": "Tell me about the Hive Mother.",
+              "target": "node_hive_mother"
+            },
+            {
+              "label": "Goodbye, Sister.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_browse": {
+          "text": "Tonics, mead, wax and a satchel for anyone who wants to learn herb-craft.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_honey_thief": {
+          "text": "Something big has been tearing the hives open at night and walking off toward Thornback with the comb. Bristle bear, I'd wager. Make it stop, dear, but be kind if you can.",
+          "startQuest": "quest_dev_honey",
+          "choices": [
+            {
+              "label": "I'll see to it.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_bear_done": {
+          "text": "'Bless you.' She presses a wax amulet into your hand. 'From the Hive Mother. She noticed.'",
+          "completeQuest": "quest_dev_honey",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_crate": {
+          "text": "'Here, dear. Tell Tamsin she still owes me for the last one.' A heavy crate of crocks.",
+          "giveItem": "item_dev_honey_crate",
+          "updateQuest": {
+            "questId": "quest_dev_parcel",
+            "objectiveId": "obj_get_crate",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_hive_mother": {
+          "text": "She is patient, she remembers, and she likes mead poured on her stones. Do that, and the Sisters will bless you. Grind a remedy while you rest here and she guides your hand.",
+          "addJournalKnowledge": {
+            "title": "The Hive Mother",
+            "text": "Pour mead on the Willowmere shrine stones for her favour; the Sisters bless those who make offerings."
+          },
+          "piety": {
+            "hive_mother": 1
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_rook": {
+      "greeting": "Another one come to bother the Stone. Sit. Mind the eels.",
+      "nodes": {
+        "root": {
+          "text": "Grandmother Rook fishes with no hook and catches nothing, contentedly.",
+          "choices": [
+            {
+              "label": "What is the Bog Stone?",
+              "target": "node_stone"
+            },
+            {
+              "label": "Trade you an eel for the Stone's answer.",
+              "target": "node_answer_eel",
+              "condition": {
+                "hasItem": "item_dev_smoked_eel",
+                "flag": "rook_told_answer",
+                "expected": false
+              }
+            },
+            {
+              "label": "Please, Grandmother. Just a hint? (Persuade)",
+              "check": {
+                "skill": "persuasion",
+                "attribute": "charisma",
+                "dc": 13,
+                "success": "node_answer_free",
+                "failure": "node_answer_no"
+              },
+              "condition": {
+                "flag": "rook_told_answer",
+                "expected": false
+              }
+            },
+            {
+              "label": "Is there anything under the bog?",
+              "target": "node_chapel"
+            },
+            {
+              "label": "Goodbye, Grandmother.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_stone": {
+          "text": "It asks a riddle. Everyone gets it wrong, then everyone stands about looking clever. Answer it and the old causeway comes up. Very dramatic.",
+          "startQuest": "quest_dev_bog_stone",
+          "addJournalKnowledge": {
+            "title": "The Bog Stone",
+            "text": "The Bog Stone asks a riddle; answering it raises an old causeway."
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_answer_eel": {
+          "text": "She sniffs the eel, approves, and leans close. 'What swallows the bold and keeps you a mile? Look down, child. You are standing in it.'",
+          "consumeItem": "item_dev_smoked_eel",
+          "setFlags": {
+            "rook_told_answer": true
+          },
+          "addJournalKnowledge": {
+            "title": "The bog's own riddle",
+            "text": "Grandmother Rook says the answer to the Bog Stone is the bog itself."
+          },
+          "choices": [
+            {
+              "label": "The bog itself...",
+              "target": "root"
+            }
+          ]
+        },
+        "node_answer_free": {
+          "text": "'Oh, you've nice manners.' She taps her foot on the soggy ground. 'The answer's under your feet, dear.'",
+          "setFlags": {
+            "rook_told_answer": true
+          },
+          "addJournalKnowledge": {
+            "title": "The bog's own riddle",
+            "text": "Grandmother Rook says the answer to the Bog Stone is the bog itself."
+          },
+          "choices": [
+            {
+              "label": "Under my feet...",
+              "target": "root"
+            }
+          ]
+        },
+        "node_answer_no": {
+          "text": "'Ha! Nothing's free in the Moss.' She goes back to her fishing. Maybe bring her something tasty.",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_chapel": {
+          "text": "The Tide Warden's chapel sank there when my grandmother's grandmother was a girl. They kept a spare lighthouse key on the altar, if you believe that sort of thing.",
+          "revealRumour": "loc_dev_sunken_chapel",
+          "addJournalKnowledge": {
+            "title": "The Sunken Chapel",
+            "text": "A sunken chapel of the Tide Warden lies under the Old Moss; it may hold a spare lighthouse key."
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_jory": {
+      "greeting": "Lost, are we? The road's that way. Everything this way is fish.",
+      "nodes": {
+        "root": {
+          "text": "Jory Vane leans on a crate marked FISH, flipping a knife.",
+          "choices": [
+            {
+              "label": "You run this cove, don't you?",
+              "target": "node_offer",
+              "condition": {
+                "questNotStarted": "quest_dev_smugglers"
+              }
+            },
+            {
+              "label": "About your offer...",
+              "target": "node_offer",
+              "condition": {
+                "questActive": "quest_dev_smugglers"
+              }
+            },
+            {
+              "label": "I'm a buyer from inland. I need a boat to Gull Rock. (Lie)",
+              "check": {
+                "skill": "deception",
+                "attribute": "charisma",
+                "dc": 13,
+                "success": "node_buyer_yes",
+                "failure": "node_buyer_no"
+              },
+              "condition": {
+                "flag": "gull_rock_crossing",
+                "expected": false
+              }
+            },
+            {
+              "label": "The fog is bad for your business too. Row me to Gull Rock. (Persuade)",
+              "check": {
+                "skill": "persuasion",
+                "attribute": "charisma",
+                "dc": 15,
+                "success": "node_ferry_yes",
+                "failure": "node_ferry_no"
+              },
+              "condition": {
+                "flag": "gull_rock_crossing",
+                "expected": false
+              }
+            },
+            {
+              "label": "Just passing.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_offer": {
+          "text": "'Here's how it is. You can run to Garrow and be a hero. You can take a purse, forget my face, and I'll row you to Gull Rock as a favour. Or you can join the crew. Pay's better than the Guild.'",
+          "startQuest": "quest_dev_smugglers",
+          "choices": [
+            {
+              "label": "You're coming with me to the Watch.",
+              "target": "node_arrest"
+            },
+            {
+              "label": "Purse, silence, and a boat ride.",
+              "target": "node_hush"
+            },
+            {
+              "label": "Count me in.",
+              "target": "node_join"
+            },
+            {
+              "label": "I need to think.",
+              "target": "root"
+            }
           ]
         },
         "node_arrest": {
-          "text": "Silas spits, but sees your blade and raises his hands. You march him to the Watch Post in irons.",
-          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "heroic" },
-          "removeCharacter": "npc_dev_bandit_renegade",
-          "setFlags": { "silas_arrested": true },
-          "disposition": { "npc_dev_guard_captain": 10 },
+          "text": "Jory looks at you, at your weapon, at the empty beach. 'Fine. But I'm telling everyone you cheated.' You march her to the Watch House.",
+          "moralChoice": {
+            "questId": "quest_dev_smugglers",
+            "path": "heroic"
+          },
+          "removeCharacter": "npc_dev_jory_vane",
+          "setFlags": {
+            "jory_arrested": true
+          },
+          "disposition": {
+            "npc_dev_hob_garrow": 15
+          },
           "choices": [
-            { "label": "Justice is served.", "target": "exit" }
+            {
+              "label": "Justice.",
+              "target": "exit"
+            }
           ]
         },
-        "node_bribe": {
-          "text": "A heavy purse lands in your palm. \"We never met,\" Silas grins.",
-          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "pragmatic" },
-          "disposition": 15,
+        "node_hush": {
+          "text": "A heavy purse lands in your hand. 'Boat's yours whenever you want it. We never met.'",
+          "moralChoice": {
+            "questId": "quest_dev_smugglers",
+            "path": "pragmatic"
+          },
+          "setFlags": {
+            "gull_rock_crossing": true
+          },
+          "updateQuest": {
+            "questId": "quest_dev_lantern",
+            "objectiveId": "obj_find_crossing",
+            "completed": true
+          },
+          "disposition": 10,
           "choices": [
-            { "label": "We never met.", "target": "exit" }
+            {
+              "label": "We never met.",
+              "target": "exit"
+            }
           ]
         },
-        "node_ally": {
-          "text": "\"Ha! I knew it.\" Silas presses a Syndicate token into your hand. Word of your pact will not stay secret for long; the Watch will treat you as an enemy.",
-          "moralChoice": { "questId": "quest_dev_bandit_alliance", "path": "villainous" },
-          "disposition": { "npc_dev_bandit_renegade": 30, "npc_dev_guard_captain": -40 },
-          "setFlags": { "silas_pact": true },
+        "node_join": {
+          "text": "'Ha! Knew it.' She hangs a carved fish token round your neck. 'Partners. I'll row you to the rock myself.'",
+          "moralChoice": {
+            "questId": "quest_dev_smugglers",
+            "path": "villainous"
+          },
+          "giveItem": "item_dev_smuggler_token",
+          "setFlags": {
+            "gull_rock_crossing": true,
+            "joined_smugglers": true
+          },
+          "updateQuest": {
+            "questId": "quest_dev_lantern",
+            "objectiveId": "obj_find_crossing",
+            "completed": true
+          },
+          "recruitCompanion": "npc_dev_jory_vane",
+          "disposition": 30,
           "choices": [
-            { "label": "Let them come.", "target": "exit" }
-          ],
-          "recruitCompanion": "npc_dev_bandit_renegade"
+            {
+              "label": "Partners.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_buyer_yes": {
+          "text": "'Buyers get boats.' She whistles and a lad drags a rowboat to the water. 'Bring me back something shiny.'",
+          "setFlags": {
+            "gull_rock_crossing": true
+          },
+          "updateQuest": {
+            "questId": "quest_dev_lantern",
+            "objectiveId": "obj_find_crossing",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Pleasure doing business.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_buyer_no": {
+          "text": "'Inland buyers don't wear Guild boots.' She whistles, and it is not for a boat.",
+          "setFlags": {
+            "smugglers_hostile": true
+          },
+          "disposition": -15,
+          "startEncounter": "enc_dev_smuggler_ambush",
+          "choices": [
+            {
+              "label": "Uh oh.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_ferry_yes": {
+          "text": "'...You're not wrong. Ships on the rocks are no good to anyone.' She points at a rowboat. 'Take it. Bring it back.'",
+          "setFlags": {
+            "gull_rock_crossing": true
+          },
+          "updateQuest": {
+            "questId": "quest_dev_lantern",
+            "objectiveId": "obj_find_crossing",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Thank you.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_ferry_no": {
+          "text": "'My business is fine, thanks.' She flips the knife again. Try again when she's in a better mood.",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_dev_pip": {
+      "greeting": "Hello! Are you real? Sorry. It's been a long night.",
+      "nodes": {
+        "root": {
+          "text": "Pip Tallow clutches a lamplighter's pole and grins through the soot.",
+          "choices": [
+            {
+              "label": "Hang on, I'm coming!",
+              "target": "node_hang_on",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_dev_stranded",
+                  "stage": [
+                    "reach_pip",
+                    "pip_cave"
+                  ]
+                }
+              }
+            },
+            {
+              "label": "What were you doing up here?",
+              "target": "node_why"
+            },
+            {
+              "label": "What do you know about Gull Rock?",
+              "target": "node_rock"
+            },
+            {
+              "label": "Let's go.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_hang_on": {
+          "text": "'I'm hanging! I'm extremely hanging!'",
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_why": {
+          "text": "I wanted to see the lighthouse up close. Old Corwin taught me everything. I saw a light down in the bell chamber, blue, not lantern-yellow, and then the path fell off the mountain.",
+          "addJournalKnowledge": {
+            "title": "Pip's Blue Light",
+            "text": "Pip saw a blue light in the Gull Rock bell chamber, not lantern light."
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_rock": {
+          "text": "There's a stair cut in the cliff below the gryphon's nest, and Jory's lot have boats. Corwin kept a spare key at the old chapel too. The lantern needs the Everflame wick. If it's gone out, something took it.",
+          "revealRumour": "loc_dev_gull_rock",
+          "addJournalKnowledge": {
+            "title": "Pip's Advice",
+            "text": "Routes to Gull Rock: the cliff stair under the gryphon nest, or Jory's boats. A spare key may be at the chapel. The lantern needs the Everflame wick."
+          },
+          "choices": [
+            {
+              "label": "Back to other things.",
+              "target": "root"
+            }
+          ]
         }
       }
     }

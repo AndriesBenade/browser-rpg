@@ -1,131 +1,405 @@
 {
   "creatures": [
     {
-      "id": "creature_dev_wild_boar",
-      "name": "Wild Bristle Boar",
+      "id": "creature_dev_sparring_golem",
+      "name": "Guild Sparring Golem",
+      "title": "Wicker, Rope and Bad Intentions",
+      "tier": 1,
+      "level": 1,
+      "isMonster": true,
+      "fearless": true,
+      "immune": [
+        "frightened",
+        "bleeding",
+        "poisoned"
+      ],
+      "canParley": false,
+      "respawnHours": 6,
+      "xpReward": 30,
+      "vitals": {
+        "health": 16,
+        "maxHealth": 16,
+        "morale": 99
+      },
+      "armorClass": 11,
+      "lootTableId": "loot_dev_sparring_golem",
+      "description": "A wicker dummy on a clockwork spring. It swings back. Hard.",
+      "actions": [
+        {
+          "name": "Spring Arm Swing",
+          "attackBonus": 3,
+          "damage": "1d6+1",
+          "damageType": "bludgeoning",
+          "style": "heavy",
+          "telegraph": "The golem's spring winds tight with a rising creak...",
+          "description": "The arm whips round on its spring."
+        },
+        {
+          "name": "Wicker Jab",
+          "attackBonus": 2,
+          "damage": "1d4",
+          "damageType": "bludgeoning",
+          "style": "quick",
+          "description": "A quick, scratchy poke."
+        }
+      ]
+    },
+    {
+      "id": "creature_dev_fogback_lurker",
+      "name": "Fogback Lurker",
+      "title": "Something under the duckweed",
+      "tier": 2,
+      "level": 2,
+      "isMonster": true,
+      "respawnHours": 12,
+      "xpReward": 70,
+      "alertness": 13,
+      "vitals": {
+        "health": 26,
+        "maxHealth": 26,
+        "morale": 9
+      },
+      "armorClass": 12,
+      "lootTableId": "loot_dev_fogback_lurker",
+      "description": "A wide, flat, frog-mouthed thing that waits in bog pools.",
+      "actions": [
+        {
+          "name": "Venom Lash",
+          "attackBonus": 4,
+          "damage": "1d6+1",
+          "damageType": "piercing",
+          "style": "quick",
+          "description": "A barbed tongue lashes out of the murk.",
+          "inflicts": {
+            "status": "poisoned",
+            "chance": 0.5,
+            "rounds": 3,
+            "value": 2
+          }
+        },
+        {
+          "name": "Mud Coil",
+          "attackBonus": 3,
+          "damage": "1d4+1",
+          "damageType": "bludgeoning",
+          "style": "normal",
+          "description": "Slimy coils wrap your legs and pull.",
+          "inflicts": {
+            "status": "entangled",
+            "chance": 0.5,
+            "rounds": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "creature_dev_will_o_wisp",
+      "name": "Will-o'-Wisp",
+      "title": "A light that wants you lost",
+      "tier": 1,
+      "level": 1,
+      "isMonster": true,
+      "immune": [
+        "bleeding",
+        "poisoned",
+        "entangled"
+      ],
+      "respawnHours": 12,
+      "xpReward": 35,
+      "vitals": {
+        "health": 10,
+        "maxHealth": 10,
+        "morale": 6
+      },
+      "armorClass": 14,
+      "lootTableId": "loot_dev_wisp",
+      "description": "A drifting blue light. When you look straight at it, it looks back.",
+      "actions": [
+        {
+          "name": "Dazzling Pulse",
+          "attackBonus": 4,
+          "damage": "1d4",
+          "damageType": "radiant",
+          "style": "normal",
+          "description": "The light swells until you cannot tell up from down.",
+          "inflicts": {
+            "status": "confused",
+            "chance": 0.6,
+            "rounds": 2
+          }
+        },
+        {
+          "name": "Wail of the Drowned",
+          "attackBonus": 3,
+          "damage": "1d4+1",
+          "damageType": "psychic",
+          "style": "quick",
+          "description": "A thin scream that sounds like your own name.",
+          "inflicts": {
+            "status": "frightened",
+            "chance": 0.4,
+            "rounds": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "creature_dev_reef_crab",
+      "name": "Saltreed Reef Crab",
+      "title": "Armour with legs",
       "tier": 1,
       "level": 1,
       "isAnimal": true,
       "respawnHours": 12,
       "xpReward": 35,
-      "vitals": { "health": 18, "maxHealth": 18, "morale": 8 },
-      "armorClass": 12,
-      "lootTableId": "loot_dev_wild_boar",
+      "vitals": {
+        "health": 18,
+        "maxHealth": 18,
+        "morale": 7
+      },
+      "armorClass": 15,
+      "lootTableId": "loot_dev_reef_crab",
+      "description": "A crab the size of a wheelbarrow, encrusted with barnacles.",
       "actions": [
         {
-          "name": "Goring Tusk Thrust",
+          "name": "Crushing Pincer",
           "attackBonus": 3,
           "damage": "1d6+2",
-          "damageType": "piercing",
+          "damageType": "bludgeoning",
           "style": "heavy",
-          "telegraph": "The boar lowers its head and paws the ground...",
-          "description": "The beast charges forward with thick, curving tusks."
+          "telegraph": "The crab raises both claws high and clacks them together...",
+          "description": "A claw clamps shut like a vice.",
+          "inflicts": {
+            "status": "weakened",
+            "chance": 0.4,
+            "rounds": 2
+          }
         },
-        { "name": "Muddy Trample", "attackBonus": 2, "damage": "1d4+1", "damageType": "bludgeoning", "style": "quick", "description": "Heavy cloven hooves churn the earth beneath you." }
-      ]
-    },
-    {
-      "id": "creature_dev_forest_wolf",
-      "name": "Grey Timber Wolf",
-      "tier": 1,
-      "level": 1,
-      "isAnimal": true,
-      "respawnHours": 12,
-      "xpReward": 40,
-      "vitals": { "health": 16, "maxHealth": 16, "morale": 10 },
-      "armorClass": 13,
-      "lootTableId": "loot_dev_forest_wolf",
-      "actions": [
         {
-          "name": "Snapping Jaws",
-          "attackBonus": 4,
-          "damage": "1d6+2",
-          "damageType": "piercing",
-          "description": "Sharp canine fangs snap toward your limb.",
-          "inflicts": { "status": "bleeding", "chance": 0.35, "rounds": 2, "value": 1 }
+          "name": "Sideways Scuttle",
+          "attackBonus": 2,
+          "damage": "1d4",
+          "damageType": "slashing",
+          "style": "quick",
+          "description": "It scuttles in and nips at your ankles."
         }
       ]
     },
     {
-      "id": "creature_dev_shadow_stalker",
-      "name": "Obsidian Shadow Stalker",
-      "tier": 4,
-      "level": 4,
-      "isMonster": true,
-      "respawnHours": 48,
-      "xpReward": 220,
-      "vitals": { "health": 55, "maxHealth": 55, "morale": 16 },
-      "armorClass": 15,
-      "lootTableId": "loot_dev_shadow_stalker",
+      "id": "creature_dev_bristle_bear",
+      "name": "Bristle Bear",
+      "title": "Honey thief",
+      "tier": 2,
+      "level": 2,
+      "isAnimal": true,
+      "respawnHours": 24,
+      "xpReward": 80,
+      "vitals": {
+        "health": 30,
+        "maxHealth": 30,
+        "morale": 6
+      },
+      "armorClass": 12,
+      "lootTableId": "loot_dev_bristle_bear",
+      "description": "A shaggy, sticky-muzzled bear with porcupine-stiff fur. It has clearly been at the hives.",
       "actions": [
         {
-          "name": "Obsidian Talon Rend",
-          "attackBonus": 6,
-          "damage": "2d8+3",
+          "name": "Raking Claws",
+          "attackBonus": 4,
+          "damage": "1d8+2",
           "damageType": "slashing",
           "style": "heavy",
-          "telegraph": "The stalker rears back, talons spread wide...",
-          "description": "Razor-black claws slash in a vicious downward arc.",
-          "inflicts": { "status": "bleeding", "chance": 0.5, "rounds": 3, "value": 2 }
+          "telegraph": "The bear rears onto its hind legs with a roar...",
+          "description": "Four black claws tear across your guard.",
+          "inflicts": {
+            "status": "bleeding",
+            "chance": 0.5,
+            "rounds": 3,
+            "value": 2
+          }
         },
         {
-          "name": "Shadow Vapor Breath",
-          "attackBonus": 5,
-          "damage": "2d6+2",
-          "damageType": "necrotic",
+          "name": "Shoulder Barge",
+          "attackBonus": 3,
+          "damage": "1d6",
+          "damageType": "bludgeoning",
           "style": "normal",
-          "description": "Choking dark mist billows toward your lungs.",
-          "inflicts": { "status": "frightened", "chance": 0.5, "rounds": 2 }
+          "description": "A shove like a falling tree."
         }
       ]
     },
     {
-      "id": "creature_dev_crypt_boss",
-      "name": "Lord Karas the Undying",
-      "title": "Ancient Warlord of the Sunken Crypt",
+      "id": "creature_dev_thornback_gryphon",
+      "name": "Thornback Gryphon",
+      "title": "Queen of the ridge",
+      "tier": 3,
+      "level": 3,
+      "isMonster": true,
+      "respawnHours": 36,
+      "xpReward": 160,
+      "alertness": 15,
+      "immune": [
+        "frightened"
+      ],
+      "vitals": {
+        "health": 42,
+        "maxHealth": 42,
+        "morale": 12
+      },
+      "armorClass": 14,
+      "lootTableId": "loot_dev_gryphon",
+      "description": "Half eagle, half something with too many teeth, nesting on the highest ledge.",
+      "actions": [
+        {
+          "name": "Stooping Dive",
+          "attackBonus": 5,
+          "damage": "2d6+2",
+          "damageType": "piercing",
+          "style": "heavy",
+          "telegraph": "The gryphon climbs high and wheels, eyes locked on you...",
+          "description": "She folds her wings and drops like a stone.",
+          "inflicts": {
+            "status": "stunned",
+            "chance": 0.3,
+            "rounds": 1
+          }
+        },
+        {
+          "name": "Shrieking Buffet",
+          "attackBonus": 4,
+          "damage": "1d6+1",
+          "damageType": "bludgeoning",
+          "style": "normal",
+          "description": "Wings like sails beat the breath out of you.",
+          "inflicts": {
+            "status": "frightened",
+            "chance": 0.5,
+            "rounds": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "creature_dev_smuggler_bruiser",
+      "name": "Saltreed Bruiser",
+      "title": "Jory's least subtle employee",
+      "tier": 1,
+      "level": 2,
+      "canParley": true,
+      "respawnHours": 24,
+      "xpReward": 50,
+      "vitals": {
+        "health": 22,
+        "maxHealth": 22,
+        "morale": 8
+      },
+      "armorClass": 12,
+      "lootTableId": "loot_dev_smuggler",
+      "description": "A broad man with a gutting hook and a grudge against tax collectors.",
+      "actions": [
+        {
+          "name": "Gutting Hook",
+          "attackBonus": 4,
+          "damage": "1d6+2",
+          "damageType": "slashing",
+          "style": "normal",
+          "description": "The hook swings for your belly.",
+          "inflicts": {
+            "status": "bleeding",
+            "chance": 0.3,
+            "rounds": 2,
+            "value": 1
+          }
+        },
+        {
+          "name": "Brandy-Bottle Smash",
+          "attackBonus": 3,
+          "damage": "1d4+2",
+          "damageType": "bludgeoning",
+          "style": "quick",
+          "description": "Glass and cheap brandy everywhere."
+        }
+      ]
+    },
+    {
+      "id": "creature_dev_drowned_keeper",
+      "name": "The Drowned Keeper",
+      "title": "What came back up the lighthouse stairs",
       "tier": 3,
       "level": 3,
       "isBoss": true,
       "repeatable": true,
       "respawnHours": 24,
-      "xpReward": 180,
-      "vitals": { "health": 60, "maxHealth": 60, "morale": 20 },
+      "xpReward": 220,
+      "fearless": true,
+      "immune": [
+        "frightened",
+        "poisoned"
+      ],
+      "vitals": {
+        "health": 60,
+        "maxHealth": 60,
+        "morale": 30
+      },
       "armorClass": 14,
-      "lootTableId": "loot_dev_crypt_boss",
+      "lootTableId": "loot_dev_drowned_keeper",
+      "description": "The old lighthouse keeper, kelp-wrapped and dripping, still carrying the bell he went down to silence.",
       "bossPhases": [
         {
           "phase": 1,
-          "name": "Shield of the Tombs",
+          "name": "The Tolling Bell",
           "healthThreshold": 0.5,
-          "banner": "Lord Karas raises an archaic iron crest shield, deflecting incoming blows!"
+          "banner": "The Keeper swings his great bronze bell like a shield!"
         },
         {
           "phase": 2,
-          "name": "Enraged Chthonic Fury",
+          "name": "Undertow",
           "healthThreshold": 0.0,
           "enrage": true,
           "damageBonus": 3,
-          "banner": "Lord Karas roars with otherworldly rage as dark green spectral flames engulf his greatsword!"
+          "banner": "Seawater pours from the Keeper's mouth and the whole tower groans with the tide!"
         }
       ],
       "actions": [
         {
-          "name": "Crypt Cleaver",
+          "name": "Bell Toll",
           "attackBonus": 5,
           "damage": "1d10+3",
-          "damageType": "slashing",
+          "damageType": "thunder",
           "style": "heavy",
-          "telegraph": "Lord Karas raises his cleaver high above his crowned skull...",
-          "description": "The ancient warlord brings down his corroded greatsword with crushing weight."
+          "telegraph": "The Keeper heaves the bronze bell high over his head...",
+          "description": "The bell crashes down and the sound alone knocks you sideways.",
+          "inflicts": {
+            "status": "stunned",
+            "chance": 0.35,
+            "rounds": 1
+          }
         },
         {
-          "name": "Grave Chill Wave",
+          "name": "Drowning Grasp",
           "attackBonus": 4,
-          "damage": "2d6+2",
+          "damage": "2d6+1",
           "damageType": "cold",
           "style": "normal",
-          "description": "Freezing sepulchral frost radiates outward across the chamber floor.",
-          "inflicts": { "status": "weakened", "chance": 0.6, "rounds": 2 }
+          "description": "Cold, wet hands close round your throat.",
+          "inflicts": {
+            "status": "weakened",
+            "chance": 0.5,
+            "rounds": 2
+          }
+        },
+        {
+          "name": "Kelp Lash",
+          "attackBonus": 4,
+          "damage": "1d6+1",
+          "damageType": "slashing",
+          "style": "quick",
+          "description": "A whip of kelp cracks across your arms.",
+          "inflicts": {
+            "status": "entangled",
+            "chance": 0.3,
+            "rounds": 1
+          }
         }
       ]
     }

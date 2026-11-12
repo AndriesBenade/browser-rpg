@@ -1,31 +1,196 @@
 {
   "classes": [
     {
-      "id": "dev_sentinel",
-      "name": "Haven Sentinel",
-      "subtitle": "Test Vanguard",
+      "id": "dev_ford_warden",
+      "name": "Ford Warden",
+      "subtitle": "Shield and blade",
       "archetype": "Combat",
-      "description": "A fortified frontier guardian trained in test combat mechanics.",
-      "primaryAttributes": ["strength", "endurance"],
-      "statBonuses": { "strength": 1, "endurance": 1 },
-      "startingEquipment": ["item_dev_broadsword", "item_dev_trail_rations", "item_dev_trail_rations"],
+      "description": "A river-crossing guard: shield up, feet planted, nobody gets past the ferry rope.",
+      "primaryAttributes": [
+        "strength",
+        "endurance"
+      ],
+      "statBonuses": {
+        "strength": 1,
+        "endurance": 1
+      },
+      "proficiencies": [
+        "melee_combat",
+        "athletics"
+      ],
+      "startingEquipment": [
+        "item_dev_guild_shortsword",
+        "item_dev_ferry_shield",
+        "item_dev_padded_jack",
+        "item_dev_honey_cake",
+        "item_dev_honey_cake"
+      ],
       "classFeatures": [
-        { "level": 1, "name": "Aegis Guard", "type": "passive", "desc": "+2 Armor Class.", "effect": {"ac": 2} },
-        { "level": 1, "name": "Shield Bash", "type": "active", "desc": "Slam your foe: 1d4 damage and it loses its next attack (once per fight, 1 Stamina).", "combat": {"damage": "1d4", "enemyStatus": {"id": "stunned", "rounds": 1}, "uses": 1, "staminaCost": 1} }
+        {
+          "level": 1,
+          "name": "Hold the Rope",
+          "type": "passive",
+          "desc": "+2 Armour Class while you carry a shield.",
+          "effect": {
+            "acWithShield": 2
+          }
+        },
+        {
+          "level": 1,
+          "name": "Shield Bash",
+          "type": "active",
+          "desc": "Slam your foe: 1d4 damage and it loses its next attack (once per fight, 1 Stamina).",
+          "combat": {
+            "damage": "1d4",
+            "enemyStatus": {
+              "id": "stunned",
+              "rounds": 1
+            },
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "level": 3,
+          "name": "Second Wind",
+          "type": "active",
+          "desc": "Catch your breath mid-fight: heal 2d4+2 (once per fight, 2 Stamina).",
+          "combat": {
+            "heal": "2d4+2",
+            "uses": 1,
+            "staminaCost": 2
+          }
+        }
       ]
     },
     {
-      "id": "dev_infiltrator",
-      "name": "Shadow Infiltrator",
-      "subtitle": "Test Specialist",
-      "archetype": "Rogue",
-      "description": "A stealth operative specialized in lockpicking and scouting.",
-      "primaryAttributes": ["agility", "perception"],
-      "statBonuses": { "agility": 1, "perception": 1 },
-      "startingEquipment": ["item_dev_iron_lockpick", "item_dev_trail_rations", "item_dev_trail_rations"],
+      "id": "dev_fen_tracker",
+      "name": "Fen Tracker",
+      "subtitle": "Bow and patience",
+      "archetype": "Ranged",
+      "description": "Raised in the reeds. Reads tracks like print and shoots from where nobody is looking.",
+      "primaryAttributes": [
+        "agility",
+        "wisdom"
+      ],
+      "statBonuses": {
+        "agility": 1,
+        "wisdom": 1
+      },
+      "proficiencies": [
+        "ranged_combat",
+        "tracking",
+        "survival"
+      ],
+      "startingEquipment": [
+        "item_dev_reed_bow",
+        "item_dev_oilskin_coat",
+        "item_dev_smoked_eel",
+        "item_dev_smoked_eel"
+      ],
       "classFeatures": [
-        { "level": 1, "name": "Lockpick Mastery", "type": "passive", "desc": "+3 on lockpicking.", "effect": {"activityBonus": {"lockpick": 3}} },
-        { "level": 1, "name": "Crippling Cut", "type": "active", "desc": "A strike at +2 to hit that leaves the foe bleeding for 3 rounds (once per fight, 1 Stamina).", "combat": {"attack": true, "hitBonus": 2, "status": {"id": "bleeding", "rounds": 3, "value": 2}, "uses": 1, "staminaCost": 1} }
+        {
+          "level": 1,
+          "name": "Reed Sense",
+          "type": "passive",
+          "desc": "+2 on Tracking and Survival checks, +1 to hit with ranged weapons.",
+          "effect": {
+            "checkBonus": {
+              "tracking": 2,
+              "survival": 2
+            },
+            "attackRanged": 1
+          }
+        },
+        {
+          "level": 1,
+          "name": "Pinning Shot",
+          "type": "active",
+          "desc": "A shot at +2 to hit that pins your foe in place (entangled, 2 rounds; once per fight, 1 Stamina).",
+          "combat": {
+            "attack": true,
+            "hitBonus": 2,
+            "status": {
+              "id": "entangled",
+              "rounds": 2
+            },
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "level": 3,
+          "name": "Fogwalker",
+          "type": "passive",
+          "desc": "You see well in fog and dark: night and weather never blind you.",
+          "effect": {
+            "nightVision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "dev_guild_tinker",
+      "name": "Guild Tinker",
+      "subtitle": "Picks, powders and patience",
+      "archetype": "Rogue",
+      "description": "The Guild's lock-and-gadget specialist. Opens what is shut and makes what is missing.",
+      "primaryAttributes": [
+        "intelligence",
+        "agility"
+      ],
+      "statBonuses": {
+        "intelligence": 1,
+        "agility": 1
+      },
+      "proficiencies": [
+        "investigation",
+        "stealth"
+      ],
+      "startingEquipment": [
+        "item_dev_tinker_knife",
+        "item_dev_lockpick_roll",
+        "item_dev_tinker_kit",
+        "item_dev_honey_cake"
+      ],
+      "classFeatures": [
+        {
+          "level": 1,
+          "name": "Light Fingers",
+          "type": "passive",
+          "desc": "+3 on lockpicking and pickpocketing; your picks never snap.",
+          "effect": {
+            "activityBonus": {
+              "lockpick": 3,
+              "pickpocket": 3
+            },
+            "toolsSafe": true
+          }
+        },
+        {
+          "level": 1,
+          "name": "Flash Powder",
+          "type": "active",
+          "desc": "A pinch of powder in the eyes: your foe is confused for 2 rounds (once per fight, 1 Stamina).",
+          "combat": {
+            "enemyStatus": {
+              "id": "confused",
+              "rounds": 2
+            },
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "level": 3,
+          "name": "Field Engineer",
+          "type": "passive",
+          "desc": "Traps never catch you, and you spot weak points (+1 damage).",
+          "effect": {
+            "avoidTraps": true,
+            "damage": 1
+          }
+        }
       ]
     }
   ]

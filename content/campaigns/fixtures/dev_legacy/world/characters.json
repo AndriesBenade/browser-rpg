@@ -1,0 +1,140 @@
+{
+  "characters": [
+    {
+      "id": "npc_dev_merchant_lycus",
+      "name": "Merchant Lycus",
+      "title": "Purveyor of Fine Goods",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_haven",
+      "disposition": 20,
+      "isMerchant": true,
+      "dialogueId": "dialogue_dev_lycus",
+      "lootTableId": "loot_dev_merchant_lycus",
+      "vitals": { "health": 16, "maxHealth": 16 },
+      "combatStats": {
+        "armorClass": 11,
+        "attackBonus": 2,
+        "damage": "1d4+1",
+        "xpReward": 25,
+        "actions": [
+          { "name": "Bronze Dagger Slash", "attackBonus": 2, "damage": "1d4+1", "damageType": "piercing" }
+        ]
+      },
+      "merchantInventory": [
+        { "itemId": "item_dev_broadsword", "price": 35, "stock": 2 },
+        { "itemId": "item_dev_iron_lockpick", "price": 10, "stock": 5 },
+        { "itemId": "item_dev_healing_draught", "price": 15, "stock": 3 },
+        { "itemId": "item_dev_trail_rations", "price": 5, "stock": 8 }
+      ],
+      "description": "A stout, round-faced trader clad in dyed wool robes, tending his brass scales and cedar storage chests.",
+      "shopClosedFlag": "haven_shop_closed",
+      "rumours": ["loc_dev_ancient_crypt", "loc_dev_obsidian_crag"]
+    },
+    {
+      "id": "npc_dev_guard_captain",
+      "name": "Captain Valerius",
+      "title": "Commander of the Haven Watch",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_guards",
+      "disposition": 10,
+      "isGuard": true,
+      "dialogueId": "dialogue_dev_captain",
+      "lootTableId": "loot_dev_guard_captain",
+      "vitals": { "health": 28, "maxHealth": 28 },
+      "combatStats": {
+        "armorClass": 15,
+        "attackBonus": 4,
+        "damage": "1d8+2",
+        "xpReward": 60,
+        "actions": [
+          { "name": "Heavy Broadsword Slash", "attackBonus": 4, "damage": "1d8+2", "damageType": "slashing" }
+        ]
+      },
+      "description": "An austere, iron-jawed veteran encased in burnished chainmail, leaning upon a heavy broadsword.",
+      "hostileAction": "attack",
+      "attributes": { "strength": 14, "agility": 12, "endurance": 14, "wisdom": 13, "charisma": 11, "intelligence": 11 },
+      "rumours": ["loc_dev_obsidian_crag", "loc_dev_whispering_woods"]
+    },
+    {
+      "id": "npc_dev_elena_scholar",
+      "name": "Scholar Elena",
+      "title": "Antiquarian of the Sunken Marches",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_haven",
+      "disposition": 30,
+      "isQuestGiver": true,
+      "dialogueId": "dialogue_dev_elena",
+      "lootTableId": "loot_dev_scholar_elena",
+      "vitals": { "health": 14, "maxHealth": 14 },
+      "combatStats": {
+        "armorClass": 10,
+        "attackBonus": 1,
+        "damage": "1d4",
+        "xpReward": 20,
+        "actions": [
+          { "name": "Parchment Quell & Dagger", "attackBonus": 1, "damage": "1d4", "damageType": "piercing" }
+        ]
+      },
+      "description": "A sharp-eyed scholar surrounded by rolled parchment scrolls and brass astrolabes, studying the lost Sunstone.",
+      "rumours": ["loc_dev_ancient_crypt"]
+    },
+    {
+      "id": "npc_dev_bandit_renegade",
+      "name": "Renegade Silas",
+      "title": "Outlaw Scout",
+      "locationId": "loc_dev_whispering_woods",
+      "faction": "faction_dev_outlaws",
+      "disposition": -10,
+      "dialogueId": "dialogue_dev_bandit",
+      "lootTableId": "loot_dev_bandit",
+      "vitals": { "health": 20, "maxHealth": 20 },
+      "combatStats": {
+        "armorClass": 12,
+        "attackBonus": 3,
+        "damage": "1d6+2",
+        "xpReward": 45,
+        "actions": [
+          { "name": "Hunting Knife Stab", "attackBonus": 3, "damage": "1d6+2", "damageType": "piercing" }
+        ]
+      },
+      "description": "A lean, hooded archer lurking in the shadows of the pine branches.",
+      "hostileAction": "attack",
+      "attributes": { "strength": 12, "agility": 15, "endurance": 12, "wisdom": 12, "charisma": 13, "intelligence": 11 },
+      "rumours": ["loc_dev_sunken_grotto"],
+      "companion": {
+        "joinText": "\"Stick with me and keep your purse close,\" Silas grins.",
+        "perksText": "Fights beside you. +2 Stealth, +2 on lockpicking while he travels with you.",
+        "perks": {
+          "checkBonus": { "stealth": 2 },
+          "activityBonus": { "lockpick": 2 }
+        }
+      }
+    },
+    {
+      "id": "npc_dev_sellsword_brannoch",
+      "name": "Brannoch",
+      "title": "Sellsword for Hire",
+      "locationId": "loc_dev_haven",
+      "faction": "faction_dev_haven",
+      "disposition": 0,
+      "vitals": { "health": 24, "maxHealth": 24 },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d8+1",
+        "xpReward": 40,
+        "actions": [
+          { "name": "Notched Axe Chop", "attackBonus": 4, "damage": "1d8+1", "damageType": "slashing" }
+        ]
+      },
+      "companion": {
+        "hireCost": 30,
+        "days": 3,
+        "joinText": "\"Coin first, questions never.\"",
+        "perksText": "A hired blade: fights beside you for 3 days and draws some of the enemy's attacks."
+      },
+      "description": "A scarred mercenary nursing a mug by the watch house, a notched axe across his knees.",
+      "attributes": { "strength": 14, "agility": 11, "endurance": 14, "wisdom": 10, "charisma": 9, "intelligence": 9 }
+    }
+  ]
+}

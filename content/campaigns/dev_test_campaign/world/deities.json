@@ -1,0 +1,34 @@
+{
+  "deities": [
+    {
+      "id": "deity_hive_mother",
+      "name": "The Hive Mother",
+      "domain": "Healing, harvest, patience",
+      "epithets": [
+        "She Who Keeps the Comb",
+        "The Patient Queen"
+      ],
+      "symbols": [
+        "Honeycomb",
+        "Beeswax candle",
+        "Yarrow"
+      ],
+      "description": "Patron of the Willowmere Sisters. Offerings of mead and honey are poured on her shrine stones; she rewards patience and punishes waste."
+    },
+    {
+      "id": "deity_tide_warden",
+      "name": "The Tide Warden",
+      "domain": "Sea, storms, lighthouses",
+      "epithets": [
+        "Keeper of the Lamp",
+        "The Turning Tide"
+      ],
+      "symbols": [
+        "Lantern",
+        "Bell",
+        "Conch"
+      ],
+      "description": "Old sea-power of the coast. Lighthouse keepers swore oaths to the Warden; its chapel sank beneath the Old Moss long ago."
+    }
+  ]
+}

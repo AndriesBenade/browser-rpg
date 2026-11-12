@@ -1,0 +1,90 @@
+{
+  "templates": [
+    {
+      "id": "template_dev_knife",
+      "name": "Hunting Knife",
+      "professionId": "dev_tinkering",
+      "slot": "main_hand",
+      "category": "weapon",
+      "baseDamageMin": 2,
+      "baseDamageMax": 6,
+      "damageType": "piercing",
+      "baseWeightKg": 0.6,
+      "baseValueDrachmae": 14,
+      "baseDC": 11,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A short, sturdy blade for skinning and stabbing."
+    },
+    {
+      "id": "template_dev_buckler",
+      "name": "Buckler",
+      "professionId": "dev_tinkering",
+      "slot": "off_hand",
+      "category": "shield",
+      "baseDefense": 1,
+      "baseWeightKg": 2.0,
+      "baseValueDrachmae": 16,
+      "baseDC": 12,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A fist-sized round shield for turning blades."
+    },
+    {
+      "id": "template_dev_tonic",
+      "name": "Field Tonic",
+      "professionId": "dev_herbalism",
+      "slot": "inventory",
+      "category": "consumable",
+      "restoreHealth": 6,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 10,
+      "baseDC": 10,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A bitter green tonic that closes small wounds."
+    },
+    {
+      "id": "template_dev_draught",
+      "name": "Marsh Runner's Draught",
+      "professionId": "dev_herbalism",
+      "slot": "inventory",
+      "category": "consumable",
+      "restoreStamina": 8,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 10,
+      "baseDC": 11,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "Puts the spring back in tired legs."
+    },
+    {
+      "id": "template_dev_jerkin",
+      "name": "Jerkin",
+      "professionId": "dev_leatherwork",
+      "slot": "body",
+      "category": "armor",
+      "baseDefense": 2,
+      "baseWeightKg": 3.0,
+      "baseValueDrachmae": 22,
+      "baseDC": 12,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A stitched leather jerkin."
+    },
+    {
+      "id": "template_dev_gloves",
+      "name": "Work Gloves",
+      "professionId": "dev_leatherwork",
+      "slot": "hands",
+      "category": "armor",
+      "baseDefense": 1,
+      "baseWeightKg": 0.4,
+      "baseValueDrachmae": 10,
+      "baseDC": 10,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "Tough gloves for rope, rock and thorns."
+    }
+  ]
+}

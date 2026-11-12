@@ -1,43 +1,34 @@
 {
   "factions": [
     {
-      "id": "faction_dev_haven",
-      "name": "Haven Free Citizens",
-      "description": "Townsfolk, traders, and artisans of the Haven settlement.",
-      "defaultReputation": 15,
-      "thresholds": {
-        "hostile": -25,
-        "unfriendly": -1,
-        "neutral": 0,
-        "friendly": 25,
-        "revered": 75
-      }
+      "id": "faction_dev_brindle",
+      "name": "Brindle Folk",
+      "description": "Ferry crews, stallholders and families of Brindle Ford.",
+      "defaultReputation": 10
     },
     {
-      "id": "faction_dev_guards",
-      "name": "Haven Town Watch",
-      "description": "Armed constabulary enforcing law, order, and tax collection in Haven.",
-      "defaultReputation": 10,
-      "thresholds": {
-        "hostile": -20,
-        "unfriendly": -1,
-        "neutral": 0,
-        "friendly": 30,
-        "revered": 80
-      }
+      "id": "faction_dev_watch",
+      "name": "The Ford Watch",
+      "description": "Captain Garrow's watchmen.",
+      "defaultReputation": 5
     },
     {
-      "id": "faction_dev_outlaws",
-      "name": "Shadow Syndicate",
-      "description": "Renegades, smugglers, and bandits operating from the ruined crypt.",
-      "defaultReputation": -30,
-      "thresholds": {
-        "hostile": -10,
-        "unfriendly": 0,
-        "neutral": 10,
-        "friendly": 40,
-        "revered": 80
-      }
+      "id": "faction_dev_guild",
+      "name": "Wayfarers' Guild",
+      "description": "Licensed guides, couriers and monster-hunters.",
+      "defaultReputation": 0
+    },
+    {
+      "id": "faction_dev_hive",
+      "name": "Hive Sisters of Willowmere",
+      "description": "Beekeepers and healers.",
+      "defaultReputation": 15
+    },
+    {
+      "id": "faction_dev_saltreed",
+      "name": "Saltreed Smugglers",
+      "description": "Jory Vane's crew.",
+      "defaultReputation": -20
     }
   ]
 }

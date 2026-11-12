@@ -1,0 +1,44 @@
+{
+  "professions": [
+    {
+      "id": "dev_tinkering",
+      "name": "Tinkering",
+      "icon": "⚙️",
+      "governingAttribute": "intelligence",
+      "secondaryAttribute": "agility",
+      "requiredToolkitId": "item_dev_tinker_kit",
+      "workstation": "anvil",
+      "description": "Small metalwork: knives, bucklers, clasps and clever bits.",
+      "itemCategories": [
+        "weapon",
+        "shield"
+      ]
+    },
+    {
+      "id": "dev_herbalism",
+      "name": "Herbalism",
+      "icon": "🌿",
+      "governingAttribute": "wisdom",
+      "secondaryAttribute": "intelligence",
+      "requiredToolkitId": "item_dev_herbal_kit",
+      "workstation": "mortar",
+      "description": "Tonics and draughts in the Willowmere manner.",
+      "itemCategories": [
+        "consumable"
+      ]
+    },
+    {
+      "id": "dev_leatherwork",
+      "name": "Leatherwork",
+      "icon": "🧵",
+      "governingAttribute": "agility",
+      "secondaryAttribute": "endurance",
+      "requiredToolkitId": "item_dev_leather_kit",
+      "workstation": "bench",
+      "description": "Jerkins, gloves and straps from hide and eel-skin.",
+      "itemCategories": [
+        "armor"
+      ]
+    }
+  ]
+}

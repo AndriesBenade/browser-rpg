@@ -69,13 +69,13 @@ function serve() {
       engine.renderWizardStep(2);
       while (engine.creationState.pointsLeft > 0) engine.alterWizAttr('endurance', 1);
       engine.confirmHeroCreation();
-      const talk = [...document.querySelectorAll('#context-actions-container .action-card-btn')].find(b => /Speak with Merchant Lycus/.test(b.textContent));
+      const talk = [...document.querySelectorAll('#context-actions-container .action-card-btn')].find(b => /Speak with Tamsin Quill/.test(b.textContent));
       if (talk) talk.click();
       const speaker = document.getElementById('dialogue-speaker-name').innerText;
       await engine.saveGameSilently(1);
       return { speaker, factions: Object.keys(engine.state.worldState.factions) };
     });
-    check('Dev campaign: NPC dialogue opens', dev.speaker === 'Merchant Lycus', JSON.stringify(dev));
+    check('Dev campaign: NPC dialogue opens', dev.speaker === 'Tamsin Quill', JSON.stringify(dev));
     check('Dev campaign: only its own factions', dev.factions.every(f => f.startsWith('faction_dev')), JSON.stringify(dev.factions));
     check('Launching a campaign mid-game asks first and keeps the old game in its slot',
       dialogs.some(m => /Start a new game/.test(m) && /stays saved in Slot 1/.test(m)), JSON.stringify(dialogs));
@@ -84,7 +84,7 @@ function serve() {
     await page.waitForFunction(() => window.engine && window.engine.world && window.engine.world.locations.length > 0);
     await page.waitForTimeout(500);
     const resumed = await page.evaluate(() => ({ campaign: engine.activeCampaignId, loc: engine.state.worldState.currentLocationId, hud: document.getElementById('hud-location-name').innerText }));
-    check('Reload resumes the Dev campaign with its own content', resumed.campaign === 'campaign_dev_test' && resumed.loc === 'loc_dev_haven' && /Haven/.test(resumed.hud), JSON.stringify(resumed));
+    check('Reload resumes the Dev campaign with its own content', resumed.campaign === 'campaign_dev_test' && resumed.loc === 'loc_dev_brindle_ford' && /Brindle/.test(resumed.hud), JSON.stringify(resumed));
 
     // Session 17: page-level windows are really visible when opened (a mis-nested window is invisible).
     const windows = await page.evaluate(() => {
@@ -94,8 +94,8 @@ function serve() {
       document.querySelector('#side-travel-links button').click();
       out.travel = shown('map-travel-modal') && !!document.querySelector('#map-travel-modal .pace-btn');
       document.getElementById('map-travel-modal').style.display = 'none';
-      window.engine.openTrade('npc_dev_merchant_lycus'); out.trade = shown('trade-modal'); window.engine.closeTrade();
-      window.engine.engageCreature('creature_dev_forest_wolf'); out.confront = shown('confront-modal');
+      window.engine.openTrade('npc_dev_tamsin_quill'); out.trade = shown('trade-modal'); window.engine.closeTrade();
+      window.engine.engageCreature('creature_dev_reef_crab'); out.confront = shown('confront-modal');
       window.engine.chooseConfrontation('attack'); out.combat = shown('combat-modal') && /Next:/.test(document.getElementById('combat-intent-line').innerText);
       document.getElementById('combat-modal').style.display = 'none'; window.engine.combatSession = null;
       out.weather = /ration|Hungry/.test(document.getElementById('story-location-weather').innerText);
