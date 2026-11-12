@@ -517,6 +517,11 @@
       "disposition": 20,
       "dialogueId": "dialogue_dev_pip",
       "lootTableId": "loot_dev_villager",
+      "presenceCondition": {
+        "questNotFailed": "quest_dev_stranded",
+        "flag": "pip_lost",
+        "expected": false
+      },
       "companion": {
         "joinText": "\"I'll show you the way to Gull Rock! I know every lamp on this coast.\"",
         "perksText": "Sharp eyes and a lamp: +2 Perception and +2 Investigation while Pip travels with you.",

@@ -11,6 +11,11 @@
       },
       "terrain": "paved_road",
       "restSafety": "settlement",
+      "restRules": {
+        "facilityName": "a room at the Ferry Inn",
+        "blockedByFlag": "ford_curfew",
+        "blockedReason": "Curfew on the ford: the Watch has barred every door and the Ferry Inn will not take guests."
+      },
       "buildings": [
         {
           "id": "bld_dev_guildhall",
@@ -476,6 +481,10 @@
       },
       "terrain": "coastal",
       "restSafety": "wild",
+      "restRules": {
+        "blockedByFlag": "smugglers_hostile",
+        "blockedReason": "Jory's crew are watching you from the boat sheds. Sleep here and you would not wake up."
+      },
       "connections": [
         {
           "targetLocationId": "loc_dev_brindle_ford",
@@ -556,6 +565,12 @@
       },
       "terrain": "mountain_trail",
       "restSafety": "wild",
+      "restRules": {
+        "blockedInWeather": [
+          "squall"
+        ],
+        "weatherReason": "The squall would blow your tent clean off the ridge. Catch your breath, but nobody camps up here in this."
+      },
       "connections": [
         {
           "targetLocationId": "loc_dev_brindle_ford",
@@ -757,7 +772,12 @@
         "y": 380
       },
       "terrain": "coastal",
-      "restSafety": "wild",
+      "restSafety": "restricted",
+      "restRules": {
+        "restAllowed": true,
+        "campAllowed": false,
+        "campBlockedReason": "The tide covers Gull Rock at night. You can catch your breath, but nobody sleeps out here."
+      },
       "connections": [
         {
           "targetLocationId": "loc_dev_saltreed",

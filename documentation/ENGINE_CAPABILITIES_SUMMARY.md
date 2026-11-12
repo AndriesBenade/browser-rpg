@@ -401,4 +401,14 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 | **Scheduler Insertion** | Binary Search ($O(\log n)$) | Chronologically sorted; memory pruned on execution |
 | **Loot Hard Caps** | Normal Epic $\le 0.02\%$; Boss Mythic $\le 0.02\%$ | Anti-exploit unique relic duplication lock |
 | **Save Storage** | IndexedDB primary, LocalStorage fallback | Save v1.9.0 automated schema migration pipeline |
-| **Automated Tests** | 175 automated passing tests | Complete regression & behaviour coverage |
+| **Automated Tests** | Passing suite (`npm test`: engine, behaviour & Dev play-throughs) | Complete regression, campaign validation & behaviour coverage |
+
+---
+
+## 17. Session 21 Refinements: Validation Diagnostics, World Constraints & NPC Inspection
+
+* **Location-Enforced Rest & Camping**: Rest and camping controls live inside locations and respect `restSafety`, `noRest`, and declarative `restRules` (`allowRest`, `allowCamp`, flags, quest prerequisites, weather blocks, and required NPC hosts) at both UI and engine execution layers.
+* **Skyrim-Style NPC Equipment & Inventory Inspection**: Live NPCs expose worn gear, personal carried items, and coin purses (`openNpcInspectModal()`, backed by `worldState.npcStates[id].possessions`) integrated directly with stealth pickpocketing and death loot resolution.
+* **Mandatory Item & Condition Verification**: Action Deck choices, item consumption, and skill-check dialogue branches enforce item presence, stack quantities, and equipped requirements inside core engine executors (`validateActionRequirements()`, `checkDialogueCondition()`).
+* **Contextual Glossary & Quest Failover Consistency**: Empty glossary definitions are filtered out and flagged by validation while accessible hover/focus popups render rich term definitions; failed quests invoke `onFail` outcomes and evaluate NPC `presenceCondition` consistently across travel and save/load.
+* **Expanded Campaign Validation Modal**: Interactive in-app validator displays total checks, pass rate, critical/standard errors, warnings, affected module tags, and suggested fixes across manifests, locations, characters, quests, dialogues, items, loot tables, and glossaries.

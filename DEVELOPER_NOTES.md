@@ -8,6 +8,47 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 22 - 2026-11-12 (review of Session 21)
+* **Collaborator / Model**: User & Claude (Anthropic)
+* **Checked and kept**: glossary popups (the real cause was an empty popup element), validation report (the report looked for element ids that did not exist), themed sliders, creation draft and lock, rest rules, NPC inspection, engine-level item checks, failed-quest conditions. Validation of the Dev campaign: 194 checks, 194 passed.
+* **Fixed**:
+  * Creation lock also locked Settings, so with no finished hero you could not load a save, change audio or text size, and pressing "New Hero" by accident trapped you in creation. Settings now stays open (`isViewAllowedDuringCreation`).
+  * An unfinished hero could be written over a save slot (manual save, or any autosave during creation). `saveGameSilently()` now refuses and keeps the creation draft instead.
+  * A creation draft newer than the last autosave now resumes (it was always discarded when any finished autosave existed).
+  * Slider fill only updated when code changed the value; one shared `input` listener now updates every slider while dragging.
+  * The herbal mortar heals like a rest but ignored rest rules (button only); `openMinigame("mortar")` now checks `evaluateRestAvailability()`.
+  * Pip: the 36-hour fail milestone could fail the quest after Pip was rescued and remove Pip from the party. Milestone `ifStage` now accepts a list; the Dev fail milestone only applies while Pip is still stranded.
+  * NPC inspection used slot names the engine does not have (`torso`, `legs`, `accessory`), so armour, cloaks and rings showed as carried; it now uses the hero's slots. Unique items the hero already has (for example the lighthouse key Garrow handed over) no longer show on the NPC or drop again on death. Pickpocketed coins are capped at what the purse holds. Item stats show damage and defence.
+  * Neutral rest and glossary wording outside Hellas; docs used the wrong slot name.
+* **Dev campaign**: rest rules to test (curfew in Brindle Ford, hostile smugglers at Saltreed, no camping in a squall on Thornback, short rest only on Gull Rock); README rows for rest rules and inspection.
+* **Not done in Session 21**: the optimisation pass (Part J). `index.html` grew from 1,182 KB to about 1,262 KB.
+* **Tests**: Dev campaign 17/17 (5 new: rest rules incl. direct calls, creation lock and slot safety, Pip deadline after rescue, NPC possessions vs dialogue/pickpocket/death loot, engine-level item checks), behaviour 109/109, legacy 75/75, browser smoke 8/8, stress fuzz 7,200 steps clean, 121 action cards clicked in a real browser with no errors.
+
+### Session 21 - 2026-11-12 (UI Polish, World Constraints, NPC Inspection, Glossary & Validation Fix)
+* **Collaborator / Model**: User & Antigravity (Gemini)
+* **Themed Sliders & Tooltip Separation (`index.html`)**:
+  * Replaced default browser range inputs with shared campaign-themed `input[type="range"]` styling driven by `--slider-fill`, `--slider-track`, `--slider-border`, `--slider-glow`, and `--slider-pct` (`updateSliderVisual()`, `updateAllSliders()`), synchronized per campaign theme in `applyCampaignLabels()`, UI size controls, and audio controls.
+  * Fixed competing inventory tooltips by raising `#item-tooltip-popover` (`z-index: 99998`), removing conflicting `data-tooltip` from inventory item cards, integrating equipped-slot comparisons and drag/equip hints inside `#item-tooltip-popover`, and positioning popovers clear of `#paper-doll-slots`.
+* **Character Creation Lock & Draft Resume (`index.html`)**:
+  * Added `validateCharacterCreation()`, `isCreationLocked()`, `updateCreationNavigationLock()`, `saveCreationDraft()`, `loadCreationDraft()`, `clearCreationDraft()`, and `syncCreationIdentityInputs()`.
+  * `switchView()` prevents leaving incomplete creation to gameplay views; `confirmHeroCreation()` validates attribute spending, identity, class, and background independently of UI state; interrupted drafts resume cleanly on the exact campaign and step via `localStorage.gm_creation_draft`.
+* **Location-Enforced Rest & Camping (`index.html`)**:
+  * Removed global `Rest & Camp` from `#top-status-bar`.
+  * Added `evaluateRestAvailability(loc, restType)` enforcing `restSafety` (`sanctuary | settlement | wild | restricted | forbidden`), `noRest`, and declarative `restRules`/`restConfig` (`allowRest`, `allowCamp`, `sacredAllowed`, flags, quest completion, required NPC host, weather blocks) independently in `openRestModal()`, `executeRest()`, Action Deck camping, and travel exhaustion paths.
+* **Glossary Popups (`index.html`, `documentation/templates/glossary_template.json`)**:
+  * Restored missing `#glossary-popover-*` elements inside `#glossary-floating-tooltip` so hover, click, and keyboard focus (`tabindex="0"`) display rich contextual popups cleanly.
+  * Hardened `registerGlossaryTerms()` to normalize flexible fields and skip empty/incomplete entries, guaranteeing blank popups never appear.
+* **Skyrim-Style NPC Equipment & Inventory Inspection (`index.html`)**:
+  * Added `getNpcPossessions(npcId)` persisting `worldState.npcStates[id].possessions` (`equipment`, `carried`, `drachmae`) separated from commercial `merchantInventory`.
+  * Added `#npc-inspect-modal`, `openNpcInspectModal(npcId)`, `act_inspect_<npcId>` in the Action Deck, and inspect buttons in Nearby Presence and Dialogue headers; unified targeted/general `attemptPickpocket()` and corpse death loot (`resolveEntityLoot()`) against that same state.
+* **Mandatory Action Requirements & Failed Quest Consistency (`index.html`, `dev_test_campaign`)**:
+  * Fixed `evaluateActionCondition()` (`cond.itemId || cond.item`, quantity, equipped state, and `!q.failed` checks) and enforced `validateActionRequirements()` inside `executeGenericAction()`, `selectDialogueCheck()`, and `applyActionOutcome()`.
+  * Updated `failQuest()` (`failedAtMinutes` + quest `onFail`/`failOutcome`), `getNpcsAt()` (`presenceCondition` filtering), and `quest_dev_stranded` / `npc_dev_pip_tallow` (`pip_lost` flag + `removeCharacter` + `presenceCondition`) so failing *Stranded on Thornback* consistently removes Pip and Thornback rescue/search actions across visits and saves.
+* **Campaign Validation Diagnostics (`index.html`, `documentation/`)**:
+  * Fixed `showValidationReport()` / `#validation-modal` DOM id mismatch, wrapped `runComprehensiveCampaignValidation()` in error handling, expanded `collectValidationContent()` + `validateCampaign()` checks (duplicate IDs, glossary completeness, restRules references, dialogue node targets, action item refs), and added structured `checksTotal`, `checksPassed`, `criticalErrors`, and `findings`.
+  * Updated `CONTENT_CREATION_GUIDE.md`, `CONTENT_SCHEMA.md`, `ENGINE_ARCHITECTURE.md`, `ENGINE_CAPABILITIES_SUMMARY.md`, and added `documentation/templates/glossary_template.json` (zero em dashes).
+* **Tests & Verification**: Added regression tests in `tests/behaviour_tests.js` (6 new integration tests -> 109/109), `tests/dev_campaign_tests.js` (Thornback/Pip failure persistence -> 12/12), and `tests/engine_tests.js` (Glossary & validator check -> 75/75), plus embedded Dev sync verified cleanly (`npm test` passing 196/196).
+
 ### Session 20 - 2026-11-12 (new Developer campaign: Lanternfall)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **New Dev campaign** (`content/campaigns/dev_test_campaign/`, still `campaign_dev_test`): *Lanternfall: The Brindle Ford Trials*. A short river-town adventure with 7 locations, 10 NPCs, 8 creatures, 8 quests, 8 dialogue trees, a riddle, 2 deities, crafting (3 professions, 8 materials, 6 templates) and campaign-specific minigames. The Trial Ledger quest has one line per engine system, so finishing it means everything has been tried. `README.md` in that folder maps every engine system to where it is in the campaign.

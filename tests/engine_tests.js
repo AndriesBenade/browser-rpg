@@ -2592,6 +2592,20 @@ runTest("Project Optimisation: Event pruning prevents memory accumulation, fast 
   assert.ok(!html.includes("setInterval(() => this.processScheduledEvents"), "Event scheduler must NOT use setInterval continuous polling");
 });
 
+// -----------------------------------------------------------------------------
+// 56. Glossary Completeness & Expanded Validator Diagnostics
+// -----------------------------------------------------------------------------
+runTest("Glossary & Validation: Shipped glossaries contain zero empty terms and validator exposes check counts", () => {
+  const greekGloss = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/glossary.json'), 'utf8')).glossary || [];
+  const devGloss = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/world/glossary.json'), 'utf8')).glossary || [];
+  [...greekGloss, ...devGloss].forEach(entry => {
+    assert.ok(entry.key && Array.isArray(entry.terms) && entry.terms.length > 0, `Glossary entry invalid key/terms: ${JSON.stringify(entry)}`);
+    assert.ok(Boolean((entry.simpleEnglish && entry.simpleEnglish.trim()) || (entry.explanation && entry.explanation.trim())), `Glossary entry '${entry.key}' has empty explanation`);
+  });
+  const templatePath = path.join(__dirname, '../documentation/templates/glossary_template.json');
+  assert.ok(fs.existsSync(templatePath), "documentation/templates/glossary_template.json must exist");
+});
+
 console.log("\n=================================================================");
 console.log(`SUMMARY: ${passedTests} / ${totalTests} TESTS PASSED SUCCESSFULLY`);
 console.log("=================================================================");

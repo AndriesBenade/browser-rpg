@@ -716,3 +716,35 @@ Field details: CONTENT_SCHEMA §29–§30.
 * **Campaign Difficulty Modes**: Players choose `easy`, `normal`, `hard`, or `extreme` before starting a campaign. Authors can set `defaultDifficulty` or customize presets via `difficultyPresets` in `campaign.json` (`maxRespawns`, `dropNonEssentialPct`, `deathPenaltyDrachmae`, `respawnHealthPct`). Equipped gear and quest/key/relic items are always spared when dropping non-essential supplies on defeat.
 
 Field details: CONTENT_SCHEMA §31.
+
+---
+
+## 18. Rest Rules, Glossaries, NPC Possessions, Mandatory Items & Validation (Session 21)
+
+### 18.1 Location-Based Rest & Camping Rules
+Rest and camp actions are never available globally from the top status bar. Every location controls rest availability dynamically via `evaluateRestAvailability()`:
+* `restSafety`: `"sanctuary"` | `"settlement"` | `"wild"` | `"restricted"` | `"forbidden"`.
+* `noRest: true` or `restRules: { allowRest: false, allowCamp: false }`: blocks resting cleanly in both UI and engine execution.
+* `restRules` (or `restConfig`): supports `allowRest`, `allowCamp`, `sacredAllowed`, `requiresFlag`, `blockedByFlag` / `requiresNotFlag`, `requiresQuestCompleted`, `requiresNpcId`, `blockedInWeather`, `facilityName`, `restBlockedReason`, and `campBlockedReason`.
+
+### 18.2 Contextual Glossary Authoring (`glossary.json`)
+Copy [glossary_template.json](documentation/templates/glossary_template.json) when creating a campaign glossary:
+* Every entry MUST include non-empty `key`, `terms` (array of match strings), and explanatory text (`simpleEnglish` and/or `explanation`), plus optional `name`, `category`, and `significance`.
+* Empty entries without `simpleEnglish`/`explanation` are skipped at runtime so blank popups never appear, and are flagged as errors by `validateCampaign()`.
+
+### 18.3 NPC Equipment & Carried Inventory (`characters.json`)
+Give NPCs realistic inspectable gear and pocket items separate from `merchantInventory` shop stock:
+* `equipment`: object map (`{ "main_hand": "item_sword", "body": "item_leather" }`) or array of item ids.
+* `inventory`: array of personal carried item ids or `{ "itemId", "quantity" }` objects.
+* `drachmae`: optional explicit coin purse amount.
+* At first inspection, pickpocket, or combat defeat, `getNpcPossessions()` materializes one persistent state record so inspecting, stealing, and looting on death stay 100% consistent.
+
+### 18.4 Mandatory Action Item Checks & Failed Quest NPCs
+* Action conditions (`{ "type": "item", "itemId": "item_rope", "quantity": 1, "equipped": false }`) and shorthand fields (`requiresItem`, `requiresQuantity`, `requiresEquipped`) are validated in both UI pills and inside `executeGenericAction()`.
+* Quests may define `"onFail": { "setFlags": { ... }, "removeCharacter": "npc_id" }`, and NPCs may declare `"presenceCondition": { "questNotFailed": "quest_id", "flag": "...", "expected": false }` so NPCs and actions tied to a failed quest vanish consistently across travel and save/load.
+
+* Time milestones accept `"ifStage": ["stage_a", "stage_b"]` (one stage or a list). Give a `fail` milestone an `ifStage` so the deadline cannot fail a quest whose goal is already achieved (Pip in the Dev campaign fails only while still stranded).
+* Equipment slots for NPCs are the hero's slots: `main_hand`, `off_hand`, `head`, `body`, `hands`, `feet`, `back`, `neck`, `ring_1`, `ring_2`.
+* The herbal mortar heals like a rest, so it follows the same location rules as a short rest or camp.
+
+Field details: CONTENT_SCHEMA §33.

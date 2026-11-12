@@ -45,6 +45,8 @@ Thornback Ridge (cliffs) · Gull Rock Lighthouse (boss) · The Sunken Chapel (hi
 | Crafting | Tinkering, Herbalism, Leatherwork; 8 materials, 6 templates; toolkits from Tamsin and Bramble |
 | Pantheon and favour | The Hive Mother (mead offering, blessing, augury rerolls) and the Tide Warden (pearl offering, relighting the lantern) |
 | Rest | Sanctuary rest at Willowmere and the chapel, settlement rest in town, wild camps with campaign camp events |
+| Rest rules per location | Brindle Ford: rest at the Ferry Inn, barred during the curfew · Saltreed: no rest while the smugglers are hostile · Thornback: no camp in a squall · Gull Rock: short rest only |
+| NPC inspection | 👁️ next to any NPC: worn gear, carried items and purse; steal a single item or coins; what is left is what drops on death |
 | Travel, pace, weather, rations | Custom "Watchful" pace label, sea fog and squall weather, three ration items |
 | Progression | Fast XP table (levels at 100/250/450...), campaign level titles, two renamed feats |
 | Difficulty | Four presets with campaign labels; Hard has 3 lives |

@@ -1300,7 +1300,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
       const e = engine.getActionEntity(a, loc); (groups[`${e.kind}:${e.id}`] = groups[`${e.kind}:${e.id}`] || []).push(a.id);
     });
     assert.deepStrictEqual(groups['npc:npc_dev_merchant_lycus'].map(id => id.split('_')[1]).sort(),
-      ['attack', 'deceive', 'persuade', 'pickpocket', 'rumour', 'talk', 'trade'], 'talk, trade, rumours, persuade, deceive, attack and pickpocket grouped under Lycus');
+      ['attack', 'deceive', 'inspect', 'persuade', 'pickpocket', 'rumour', 'talk', 'trade'], 'talk, trade, inspect, rumours, persuade, deceive, attack and pickpocket grouped under Lycus');
     assert.strictEqual(groups['object:obj_treasury_iron_door'].length, 1);
     assert.ok(groups['place:loc_dev_whispering_woods'], 'travel belongs to the destination');
     // Rendering ("lists" layout): details elements for multi-action entities, plain cards otherwise
@@ -2567,6 +2567,194 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.advanceTime(30, 0);
     assert.strictEqual(engine.getSocialWariness(npc.id), 0, 'wariness fades after a day');
     env.flushTimers();
+  });
+
+  await test('UI Polish & Creation Lock: themed sliders, tooltip separation, top-bar rest removal, and creation navigation lock', async () => {
+    const fs = require('fs'), path = require('path');
+    const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+    // 1. Global themed range slider CSS & top-bar rest removal
+    assert.ok(/input\[type="range"\]::-webkit-slider-thumb/.test(html), 'themed WebKit range slider CSS exists');
+    assert.ok(/input\[type="range"\]::-moz-range-thumb/.test(html), 'themed Firefox range slider CSS exists');
+    const topBarMatch = html.match(/id="top-status-bar"[\s\S]{0,2500}MAIN VIEWPORT CONTAINER/);
+    assert.ok(topBarMatch && !/openRestModal/.test(topBarMatch[0]), 'top-status-bar no longer renders Rest & Camp button');
+    // 2. Inventory card leaves tooltip to floating item popover (#item-tooltip-popover)
+    assert.ok(!/class="item-card[\s\S]{0,120}data-tooltip=/.test(html), 'inventory item cards must not set competing data-tooltip');
+
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    engine.skipWalkthrough();
+    engine.selectCampaign('campaign_dev_legacy');
+    await engine.confirmCampaignSelection();
+    assert.strictEqual(engine.isCreationLocked(), true, 'creation navigation lock active before confirmation');
+    assert.strictEqual(engine.switchView('view-story'), false, 'switchView returns false while creation locked');
+    assert.strictEqual(env.el('view-char-creation').classList.contains('active-view'), true, 'blocked from switching to gameplay view during creation');
+    assert.strictEqual(engine.switchView('view-map'), false, 'switchView returns false for map while creation locked');
+    assert.strictEqual(env.el('view-char-creation').classList.contains('active-view'), true, 'blocked from switching to map view during creation');
+
+    // Incomplete attributes fail confirmation even if called directly on engine
+    engine.creationState.step = 3;
+    engine.creationState.pointsLeft = 5;
+    const blockedRes = engine.confirmHeroCreation();
+    assert.strictEqual(blockedRes, false, 'engine refuses incomplete hero creation confirmation');
+
+    // Creation draft persists in localStorage and resumes cleanly
+    engine.saveCreationDraft();
+    const rawDraft = env.sandbox.localStorage.getItem('gm_creation_draft');
+    assert.ok(rawDraft && JSON.parse(rawDraft).campaignId === 'campaign_dev_legacy', 'creation draft persisted');
+  });
+
+  await test('Rest Restrictions: location restSafety/noRest/restRules block resting in both UI and executeRest', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_legacy');
+    const loc = engine.getLocation(engine.state.worldState.currentLocationId);
+    const origSafety = loc.restSafety;
+    const origNoRest = loc.noRest;
+    const origRules = loc.restRules;
+    try {
+      loc.noRest = true;
+      const t0 = engine.getTotalInGameMinutes();
+      const blocked = engine.executeRest('long');
+      assert.strictEqual(blocked.success, false);
+      assert.strictEqual(blocked.blocked, true);
+      assert.strictEqual(engine.getTotalInGameMinutes(), t0, 'blocked rest does not advance time');
+
+      delete loc.noRest;
+      loc.restSafety = 'settlement';
+      loc.restRules = { allowRest: true, allowCamp: false, requiresFlag: 'inn_paid', restBlockedReason: 'Pay the innkeeper first.' };
+      const flagBlocked = engine.executeRest('short');
+      assert.strictEqual(flagBlocked.success, false);
+      assert.ok(/innkeeper/i.test(flagBlocked.reason));
+
+      engine.setWorldFlags({ inn_paid: true });
+      const campBlocked = engine.executeRest('long');
+      assert.strictEqual(campBlocked.success, false, 'allowCamp: false blocks long camp rest');
+      const shortAllowed = engine.executeRest('short');
+      assert.strictEqual(shortAllowed.success, true, 'short rest succeeds once flag is set');
+    } finally {
+      if (origSafety !== undefined) loc.restSafety = origSafety; else delete loc.restSafety;
+      if (origNoRest !== undefined) loc.noRest = origNoRest; else delete loc.noRest;
+      if (origRules !== undefined) loc.restRules = origRules; else delete loc.restRules;
+    }
+  });
+
+  await test('Glossary Popups & Empty Entry Filtering: renders populated popup and skips blank definitions', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    assert.ok(env.el('glossary-popover-title') && env.el('glossary-popover-desc'), 'glossary popover child elements exist in DOM');
+    engine.registerGlossaryTerms([
+      { key: 'valid_term', name: 'Aegis', category: 'Mythology', terms: ['aegis'], simpleEnglish: 'Protective shield.', explanation: 'Emblem of divine protection.' },
+      { key: 'empty_term', name: 'Blank', terms: ['blankword'], simpleEnglish: '', explanation: '' }
+    ]);
+    assert.strictEqual(engine.glossary.length, 1, 'empty glossary definition is filtered out');
+    const enriched = engine.enrichMythologicalText('Hold the aegis against blankword.');
+    assert.ok(enriched.includes('data-term-key="valid_term"') && enriched.includes('tabindex="0"'), 'valid term wrapped with keyboard focusable span');
+    assert.ok(!enriched.includes('data-term-key="empty_term"'), 'empty term is never highlighted');
+  });
+
+  await test('NPC Inspection & Unified Possessions: inspected gear/items stay consistent with pickpocket and death loot', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_legacy');
+    const npc = engine.getCharacter('npc_dev_merchant_lycus');
+    const weapon = engine.world.items.find(it => it.slot === 'main_hand' || it.type === 'weapon' || it.category === 'weapon') || engine.world.items[0];
+    const pouchItem = engine.world.items.find(it => it.id !== weapon.id && (it.category === 'consumable' || it.type === 'consumable')) || engine.world.items[1];
+    // Reset seeded state and assign explicit gear + personal pouch item (without random loot table additions)
+    const origLt = npc.lootTableId;
+    delete engine.state.worldState.npcStates[npc.id];
+    npc.lootTableId = null;
+    npc.equipment = { main_hand: weapon.id };
+    npc.inventory = [{ itemId: pouchItem.id, quantity: 1 }];
+    npc.drachmae = 25;
+
+    const inspectRes = engine.openNpcInspectModal(npc.id);
+    assert.strictEqual(inspectRes.success, true);
+    const bodyHtml = String(env.el('npc-inspect-body').innerHTML);
+    assert.ok(bodyHtml.includes(weapon.name), 'equipped weapon shown');
+    assert.ok(bodyHtml.includes(pouchItem.name), 'carried item shown');
+    assert.ok(bodyHtml.includes('25 silver drachmae'), 'coin purse shown');
+
+    // Targeted pickpocket removes item from NPC possessions & grants to player
+    fixedRoll(engine, 20);
+    const prevCarriedLen = engine.getNpcPossessions(npc.id).carried.length;
+    const stealRes = engine.attemptPickpocket(npc.id, { targetItemId: pouchItem.id });
+    assert.strictEqual(stealRes.success, true);
+    assert.strictEqual(engine.getItemQuantity(pouchItem.id) >= 1, true, 'stolen item added to player inventory');
+    assert.ok(!engine.getNpcPossessions(npc.id).carried.some(e => e.itemId === pouchItem.id), 'stolen item removed from NPC carried possessions');
+    assert.strictEqual(engine.getNpcPossessions(npc.id).carried.length, prevCarriedLen - 1, 'carried item count drops by 1');
+
+    // Killing NPC drops remaining equipped weapon + coins without re-dropping stolen item
+    const beforeCoins = engine.state.player.currencies.drachmae;
+    const lootRes = engine.resolveEntityLoot({ id: npc.id, name: npc.name, isNpc: true });
+    assert.strictEqual(lootRes.drachmaeWon, 25);
+    assert.strictEqual(engine.state.player.currencies.drachmae - beforeCoins, 25);
+    assert.ok(engine.hasItem(weapon.id), 'remaining worn weapon dropped on NPC death');
+    assert.strictEqual(engine.getNpcPossessions(npc.id).equipment.length, 0, 'dead NPC possessions cleared');
+    assert.strictEqual(engine.getNpcPossessions(npc.id).carried.length, 0, 'dead NPC carried possessions cleared');
+    npc.lootTableId = origLt;
+  });
+
+  await test('Mandatory Action Item Validation: engine blocks missing itemId, quantity, and equipped requirements', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_legacy');
+    const loc = engine.getLocation(engine.state.worldState.currentLocationId);
+    const weapon = engine.world.items.find(it => it.slot === 'main_hand' || it.type === 'weapon' || it.category === 'weapon') || engine.world.items[0];
+    const potion = engine.world.items.find(it => it.id !== weapon.id && (it.category === 'consumable' || it.type === 'consumable')) || engine.world.items[1];
+    loc.actions = loc.actions || [];
+    const act = {
+      id: 'act_test_strict_items',
+      title: 'Strict Check',
+      desc: 'Needs 2 consumables and an equipped weapon.',
+      conditions: [{ type: 'item', itemId: potion.id, quantity: 2 }],
+      requiresEquipped: weapon.id,
+      outcome: { setFlags: { strict_action_passed: true }, consumeItem: potion.id, consumeCount: 2 }
+    };
+    loc.actions.push(act);
+
+    // Clear inventory & equipment first
+    engine.state.player.inventory = [];
+    engine.state.player.equipped = {};
+    engine.addItem(potion.id, 1);
+    const failQty = engine.executeGenericAction(act);
+    assert.strictEqual(failQty.success, false);
+    assert.strictEqual(failQty.blocked, true);
+    assert.ok(!engine.state.worldState.flags.strict_action_passed, 'outcome blocked when quantity insufficient');
+
+    engine.addItem(potion.id, 1); // now 2
+    engine.addItem(weapon.id, 1);
+    const failEq = engine.executeGenericAction(act);
+    assert.strictEqual(failEq.success, false, 'outcome blocked when required weapon is only in bag, not equipped');
+
+    engine.equipItem(weapon.id, weapon.slot || 'main_hand');
+    const okRes = engine.executeGenericAction(act);
+    assert.strictEqual(okRes.success, true, 'executes once both stack quantity and equipped gear are valid');
+    assert.strictEqual(engine.state.worldState.flags.strict_action_passed, true);
+    assert.strictEqual(engine.getItemQuantity(potion.id), 0, 'consumes exact required count');
+  });
+
+  await test('Validation Diagnostics Modal: showValidationReport populates real DOM container & surfaces errors', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_dev_legacy');
+    const broken = env.Engine.validateCampaign(
+      { id: 'bad_camp', name: 'Broken Test', version: '1.0.0', startingLocationId: 'loc_1' },
+      {
+        locations: [{ id: 'loc_1', name: 'Here', coordinates: { x: 0, y: 0 }, restRules: { requiresNpcId: 'npc_ghost' } }],
+        characters: [{ id: 'npc_real', name: 'Keeper', locationId: 'loc_1' }],
+        glossary: [{ key: 'empty_g', terms: ['voidword'], simpleEnglish: '', explanation: '' }],
+        items: [{ id: 'it_dup', name: 'One' }, { id: 'it_dup', name: 'Two' }]
+      }
+    );
+    assert.strictEqual(broken.valid, false);
+    assert.ok(broken.checksTotal > 0 && broken.criticalErrors.length >= 1, 'tracks checksTotal & critical duplicate ID error');
+    assert.ok(broken.errors.some(e => /glossary/i.test(e)), 'flags empty glossary entry');
+    assert.ok(broken.errors.some(e => /requiresNpcId/i.test(e)), 'flags invalid restRules NPC reference');
+
+    engine.showValidationReport({ id: 'bad_camp', name: 'Broken Test' }, broken);
+    assert.strictEqual(env.el('validation-modal').style.display, 'flex', 'validation modal is displayed');
+    const bodyText = String(env.el('validation-modal-body').innerHTML);
+    assert.ok(bodyText.includes('empty_g') && bodyText.includes('it_dup'), 'validation modal body displays rendered diagnostics');
   });
 
   // ---------------------------------------------------------------------------

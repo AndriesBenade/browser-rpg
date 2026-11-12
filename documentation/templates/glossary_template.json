@@ -1,0 +1,17 @@
+{
+  "$schema": "browser-rpg-glossary-v1",
+  "glossary": [
+    {
+      "key": "example_key_underscore",
+      "name": "Display Title of Term",
+      "category": "Geography & Politics | Religion & Myth | Objects & Gear | History",
+      "terms": [
+        "example term",
+        "alternate phrasing"
+      ],
+      "simpleEnglish": "One crisp plain-language sentence explaining the concept immediately.",
+      "explanation": "Detailed contextual explanation shown in the floating glossary popup when hovered, tapped, or focused by keyboard.",
+      "significance": "Optional note describing why this term matters in the active campaign world or storylines."
+    }
+  ]
+}

@@ -282,6 +282,23 @@ async function newGame(opts = {}) {
     assert.ok(g.w().flags.pip_in_caves);
     e.advanceTime(20, 0); g.flush();
     assert.ok(g.quest('quest_dev_stranded').failed, 'fails after 36 hours');
+    assert.strictEqual(g.w().flags.pip_lost, true, 'pip_lost flag set on failure');
+
+    // Visit Thornback Ridge after failure: Pip & rescue/search actions must not appear
+    g.go('loc_dev_thornback');
+    const npcsAtRidge = e.getNpcsAt('loc_dev_thornback').map(c => c.id);
+    assert.ok(!npcsAtRidge.includes('npc_dev_pip_tallow'), 'Pip disappears from Thornback Ridge after failing Save Pip');
+    const ridgeActions = e.getContextualActionGroups().flatMap(gr => gr.actions).map(a => a.id);
+    assert.ok(!ridgeActions.includes('act_dev_climb_to_pip') && !ridgeActions.includes('act_dev_rope_to_pip') && !ridgeActions.includes('act_dev_search_pip_cave'),
+      'Pip rescue and search actions disappear when quest_dev_stranded fails');
+
+    // Save & reload preserves vanished Pip & blocked actions
+    await e.saveGameSilently(2);
+    await e.loadGame(2);
+    assert.ok(!e.getNpcsAt('loc_dev_thornback').some(c => c.id === 'npc_dev_pip_tallow'), 'Pip stays absent after save/load');
+    const postReloadActions = e.getContextualActionGroups().flatMap(gr => gr.actions).map(a => a.id);
+    assert.ok(!postReloadActions.includes('act_dev_climb_to_pip') && !postReloadActions.includes('act_dev_search_pip_cave'),
+      'Pip actions stay gone after reload');
   });
 
   await test('Moral choice and social paths at Saltreed: a failed lie starts the ambush; joining the crew recruits Jory and opens the crossing', async () => {
@@ -371,6 +388,110 @@ async function newGame(opts = {}) {
       assert.ok(!/undefined|NaN/.test(feed.replace(/<[^>]*>/g, ' ')), `${classId} combat log is clean`);
       e.combatSession = null;
     }
+  });
+
+  await test('Rest rules per location: blocked camps, weather, curfew and the mortar obey the same rules even when called directly', async () => {
+    const g = await newGame();
+    const e = g.engine;
+    // Brindle Ford: settlement rest at the inn, until the curfew bars the doors.
+    assert.ok(e.evaluateRestAvailability(e.getLocation('loc_dev_brindle_ford')).campAllowed);
+    e.setWorldFlags({ ford_curfew: true });
+    const r1 = e.executeRest('long');
+    assert.ok(r1 && r1.blocked && /Curfew/.test(r1.reason), 'curfew blocks resting in town');
+    assert.ok(e.openMinigame('mortar').blocked, 'the mortar (a rest activity) is blocked too');
+    e.setWorldFlags({ ford_curfew: false });
+    // Gull Rock: short rest only.
+    g.w().flags.gull_rock_crossing = true;
+    g.go('loc_dev_saltreed'); g.go('loc_dev_gull_rock');
+    const time0 = e.getTotalInGameMinutes();
+    const r2 = e.executeRest('long');
+    assert.ok(r2.blocked && /tide/.test(r2.reason), 'no camping on Gull Rock');
+    assert.strictEqual(e.getTotalInGameMinutes(), time0, 'a blocked rest passes no time');
+    assert.ok(e.executeRest('short').success, 'short rest still allowed');
+    // Thornback Ridge: no camp in a squall.
+    g.w().currentLocationId = 'loc_dev_thornback';
+    g.w().weather = { id: 'squall' };
+    assert.ok(e.executeRest('long').blocked, 'squall blocks camping on the ridge');
+    g.w().weather = { id: 'clear' };
+    assert.ok(e.evaluateRestAvailability(e.getLocation('loc_dev_thornback')).campAllowed);
+    // During a fight nothing works.
+    e.startCombat('creature_dev_bristle_bear');
+    assert.ok(e.executeRest('short').blocked, 'no rest in combat');
+    e.combatSession = null;
+  });
+
+  await test('Character creation: play screens stay locked until the hero is valid, Settings stays open, and an unfinished hero is never written to a save slot', async () => {
+    const env = createSandbox();
+    const e = await bootEngine(env);
+    e.skipWalkthrough(); e.selectCampaign(CAMPAIGN); await e.confirmCampaignSelection();
+    assert.ok(e.isCreationLocked());
+    assert.strictEqual(e.switchView('view-story'), false, 'story is locked');
+    assert.notStrictEqual(e.switchView('view-settings'), false, 'settings (load a save) stays reachable');
+    e.switchView('view-char-creation');
+    assert.strictEqual(await e.saveGameSilently(3), false, 'unfinished hero is not saved to a slot');
+    assert.strictEqual(e.confirmHeroCreation(), false, 'class and background must be chosen');
+    e.renderWizardStep(2); e.renderWizardStep(3);
+    assert.strictEqual(e.confirmHeroCreation(), false, 'points must be spent');
+    const c = e.creationState; c.attributes.strength += c.pointsLeft; c.pointsLeft = 0;
+    assert.ok(e.validateCharacterCreation().valid, JSON.stringify(e.validateCharacterCreation()));
+    e.confirmHeroCreation(); env.flushTimers();
+    assert.ok(!e.isCreationLocked() && e.switchView('view-story') !== false);
+  });
+
+  await test('Failed rescue only fails while Pip is still stranded: once Pip is with you, the deadline passes harmlessly', async () => {
+    const g = await newGame();
+    const e = g.engine;
+    g.action('act_dev_notice_board');
+    g.go('loc_dev_thornback');
+    g.action('act_dev_climb_to_pip', 18);
+    assert.ok(e.isCompanion('npc_dev_pip_tallow'));
+    e.advanceTime(40, 0); g.flush();
+    assert.ok(!g.quest('quest_dev_stranded').failed, 'rescued Pip is not failed by the deadline');
+    assert.ok(e.isCompanion('npc_dev_pip_tallow'), 'Pip is still with you');
+  });
+
+  await test('NPC inspection shows the real possessions: worn vs carried, items handed over vanish, pickpocketing takes from it, death loot matches it', async () => {
+    const g = await newGame();
+    const e = g.engine;
+    const poss = e.getNpcPossessions('npc_dev_hob_garrow');
+    assert.ok(poss.equipment.some(x => x.itemId === 'item_dev_watch_falchion' && x.slot === 'main_hand'), 'falchion is worn');
+    assert.ok(poss.carried.some(x => x.itemId === 'item_dev_lighthouse_key'), 'key is carried');
+    const open = e.openNpcInspectModal('npc_dev_hob_garrow');
+    assert.ok(open.success && /Watch Falchion/.test(String(g.env.el('npc-inspect-body').innerHTML)));
+    // Garrow hands the key over in dialogue: it is no longer on him
+    g.check('dialogue_dev_garrow', 'root', "I'm the only one", 19);
+    assert.ok(e.hasItem('item_dev_lighthouse_key'));
+    assert.ok(!e.getNpcPossessions('npc_dev_hob_garrow').carried.some(x => x.itemId === 'item_dev_lighthouse_key'), 'given key leaves his possessions');
+    // Pickpocketing coins cannot take more than the purse holds
+    const purse = e.getNpcPossessions('npc_dev_tamsin_quill');
+    purse.drachmae = 3; purse.purseEmptied = false;
+    const before = g.p().currencies.drachmae;
+    g.roll(20);
+    const pp = e.attemptPickpocket('npc_dev_tamsin_quill');
+    assert.ok(pp.success && pp.stolenDrachmae <= 3 && g.p().currencies.drachmae - before <= 3, 'coins capped at the purse');
+    // Death loot equals what is left
+    const left = e.getNpcPossessions('npc_dev_hob_garrow');
+    const expected = [...left.equipment, ...left.carried].map(x => x.itemId);
+    e.startCombatWithEntity('npc_dev_hob_garrow', 'npc'); g.fight();
+    assert.ok(g.w().flags.garrow_dead);
+    expected.forEach(id => assert.ok(e.hasItem(id), `death loot includes ${id}`));
+    assert.strictEqual(e.getItemQuantity('item_dev_lighthouse_key'), 1, 'no duplicate unique key');
+  });
+
+  await test('Item requirements are enforced by the engine, not the button: a direct call without the item does nothing', async () => {
+    const g = await newGame();
+    const e = g.engine;
+    const relight = e.getLocation('loc_dev_gull_rock').actions.find(a => a.id === 'act_dev_relight');
+    g.w().flags.keeper_defeated = true; g.w().currentLocationId = 'loc_dev_gull_rock';
+    const r = e.executeGenericAction(relight);
+    assert.ok(r && r.blocked && /Everflame/.test(r.reason), 'blocked with the missing item named');
+    assert.ok(!g.w().flags.lantern_lit);
+    const offer = e.getLocation('loc_dev_willowmere').actions.find(a => a.id === 'act_dev_offer_mead');
+    g.w().currentLocationId = 'loc_dev_willowmere';
+    e.addItem('item_dev_bog_mead', 1);
+    e.executeGenericAction(offer); e.executeGenericAction(offer);
+    assert.strictEqual(e.getItemQuantity('item_dev_bog_mead'), 0, 'one mead consumed once, never negative');
+    assert.strictEqual(g.p().piety.hive_mother, 2, 'second offering without mead did nothing');
   });
 
   await test('Content: every dialogue node, choice target and condition resolves; no em dashes; validator clean', async () => {

@@ -232,9 +232,22 @@
         {
           "hours": 36,
           "action": "fail",
-          "narrative": "Two days and no sign of Pip. The search is called off."
+          "setFlags": {
+            "pip_lost": true
+          },
+          "narrative": "Two days and no sign of Pip. The search is called off.",
+          "ifStage": [
+            "reach_pip",
+            "pip_cave"
+          ]
         }
       ],
+      "onFail": {
+        "setFlags": {
+          "pip_lost": true
+        },
+        "removeCharacter": "npc_dev_pip_tallow"
+      },
       "currentStage": "reach_pip",
       "stages": {
         "reach_pip": {

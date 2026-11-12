@@ -1127,3 +1127,21 @@ Wrong answers and failed deductions start the `puzzle` cooldown; a known answer 
 **Items**: `toolType: "lockpick"` marks a lockpicking tool (any id). **Class features**: `combat.heal` may be a number or dice (`"2d4+2"`).
 **Crafting templates**: `slot: "inventory"` with `category: "consumable"` and `restoreHealth` / `restoreStamina` make potions.
 **Professions**: optional `icon`. **Deities**: `domain`, `epithets`, `symbols`, `ancientGreek` are all optional.
+
+## 33. Rest Config, Glossary Schema, NPC Possessions & Quest Failover (Session 21)
+
+* **Location rest configuration** (`locations.json`):
+  * `"restSafety"`: `"sanctuary" | "settlement" | "wild" | "restricted" | "forbidden"` (`restricted`/`forbidden` block all rest; `noRest: true` also blocks resting).
+  * `"restRules"` (or `"restConfig"`): `{ "allowRest"?: boolean, "allowCamp"?: boolean, "sacredAllowed"?: boolean, "requiresFlag"?: string, "blockedByFlag"?: string, "requiresNotFlag"?: string, "requiresQuestCompleted"?: string, "requiresNpcId"?: string, "blockedInWeather"?: string|string[], "facilityName"?: string, "restBlockedReason"?: string, "campBlockedReason"?: string }`.
+* **Glossary schema** (`glossary.json`, template at `documentation/templates/glossary_template.json`):
+  * `{ "glossary": [{ "key": string, "name"?: string, "category"?: string, "terms": string[], "simpleEnglish": string, "explanation": string, "significance"?: string }] }`.
+  * Entries lacking both `simpleEnglish` and `explanation` (or lacking `key`/`terms`) fail `validateCampaign()` and are ignored by `registerGlossaryTerms()`.
+* **NPC Equipment & Personal Inventory** (`characters.json`):
+  * `"equipment"`: `{ [slot: string]: string | { "itemId": string } }` or `Array<string | { "itemId": string, "slot"?: string, "quantity"?: number }>`.
+  * `"inventory"`: `Array<string | { "itemId": string, "quantity"?: number }>`, `"drachmae"?: number`, `"destitute"?: boolean`. Kept separate from `"merchantInventory"`.
+  * `"presenceCondition"`: standard dialogue/world condition object checked by `getNpcsAt(locId)` (`flag`, `expected`, `questActive`, `questCompleted`, `questFailed`, `questNotFailed`, `questStage`, `hasItem`, `notHasItem`).
+* **Quest Failover & Conditional Requirements**:
+  * Quests (`quests.json`): `"onFail"` / `"failOutcome"` outcome object executed automatically by `failQuest(questId)` (`setFlags`, `removeCharacter` / `hideNpc`, reputation/journal updates).
+  * Actions (`locations.json`): item conditions support `{ "type": "item", "itemId": string, "quantity"?: number, "equipped"?: boolean }`, plus action properties `requiresItem`, `requiresQuantity`, `requiresEquipped`, `consumeItem`, `consumeCount`. Enforced in both UI availability and `executeGenericAction()`.
+  * Dialogue conditions (`dialogues.json`): also support `quantity` / `hasItemQuantity` alongside `hasItem`, `hasEquipped` / `requiresEquipped`, `questFailed`, and `questNotFailed`.
+* **Expanded Validator (`GreekMythologyEngine.validateCampaign`)**: returns `{ valid, errors, criticalErrors, warnings, info, findings, checksTotal, checksPassed }` covering duplicate IDs, location rest rules & actions, character gear/inventory/skills, quest stages & failovers, dialogue target nodes, glossary completeness, item/loot integrity, em-dash bans, and early weapon availability.

@@ -593,3 +593,14 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 * **Centralized `AudioManager` & `MODAL_CONFIG`**: `playSound(category)` throttles (45ms per category) synthesized Web Audio cues and saves `localStorage.gm_audio_settings` (`volume`, `muted`). `MODAL_CONFIG` marks popups as dismissible (`Escape` / backdrop) vs critical gameplay dialogs, and native `title` tooltips are replaced by `#gm-ui-tooltip` (`data-tooltip`).
 * **Inventory Drag-and-Drop**: `isItemCompatibleWithSlot()`, ring swaps (`ring_1`/`ring_2`), and two-handed/off-hand mutual exclusion share `equipItem()` / `unequipItem()`.
 * **Validator Policies (`validateCampaign()` Sections 15–16)**: Enforces zero `\u2014` em dashes across manifest/content and verifies obtainable, early-reachable weapons in combat campaigns.
+
+---
+
+## 11. World Constraints, Validation, Glossary & NPC Inspection Architecture (Session 21)
+
+* **Themed UI Controls & Creation State Guard**: Shared CSS variable-driven `input[type="range"]` theming (`updateSliderVisual()`, `--slider-fill`/`--slider-track` synced per campaign theme) pairs with floating tooltip z-ordering (`#item-tooltip-popover` at `z-index: 99998`, `#gm-ui-tooltip` at `99999`) and mandatory character creation locking (`validateCharacterCreation()`, `isCreationLocked()`, `localStorage.gm_creation_draft` auto-resume).
+* **Location-Enforced Rest (`evaluateRestAvailability()`)**: Rest actions are invoked per location and gated independently inside `openRestModal()`, `executeRest()`, Action Deck camping, and travel exhaustion paths based on `restSafety`, `noRest`, and `restRules`/`restConfig`.
+* **Glossary Pipeline (`registerGlossaryTerms()`, `setupGlossaryTooltips()`)**: Sanitizes incoming campaign glossary lists, rejects empty definitions cleanly, populates `#glossary-popover-*` elements inside `#glossary-floating-tooltip`, and supports hover, click, and keyboard focus (`tabindex="0"`).
+* **Unified NPC Possessions (`getNpcPossessions()`, `openNpcInspectModal()`)**: Materializes `worldState.npcStates[npcId].possessions` (equipment, carried items, coin purse) once per NPC, keeping Skyrim-style gear inspection, targeted/general `attemptPickpocket()`, and combat corpse loot (`resolveEntityLoot()`) synchronized without exposing shop stock (`merchantInventory`).
+* **Mandatory Action & Quest Integrity (`validateActionRequirements()`, `failQuest()`, `getNpcsAt()`)**: Validates required item ids, quantities, equipped state, and dialogue conditions inside execution methods (not only button state), applies quest `onFail` outcomes on failure, and evaluates NPC `presenceCondition` dynamically.
+* **Diagnostics Modal (`validateCampaign()`, `showValidationReport()`)**: Populates `#validation-modal-title`, `#validation-modal-subtitle`, and `#validation-modal-body` with check totals, pass/error/critical/warning metrics, module tags, and actionable fix suggestions across all loaded campaign modules.
