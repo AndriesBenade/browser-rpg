@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://greek-mythology-rpg.org/schemas/v2/content_pack.json",
+  "title": "Content Pack",
+  "description": "Descriptor for a loadable content pack. Declares its type, the data files it provides, and any packs it depends on.",
+  "type": "object",
+  "required": ["id", "name", "version", "schemaVersion", "type", "contents"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this content pack.",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name of the content pack.",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this pack (e.g. '1.0.0').",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "description": "The schema version this pack descriptor conforms to."
+    },
+    "type": {
+      "type": "string",
+      "description": "Declares the primary category of content this pack provides, used to validate the files it lists.",
+      "enum": [
+        "world",
+        "adventure",
+        "characters",
+        "creatures",
+        "items",
+        "loot_tables",
+        "quests",
+        "encounters",
+        "events",
+        "factions",
+        "locations",
+        "interactive_objects",
+        "dialogues"
+      ]
+    },
+    "contents": {
+      "type": "array",
+      "description": "Relative paths (from the pack descriptor's directory) to every content file this pack contributes.",
+      "items": {
+        "type": "string",
+        "description": "Relative file path to a JSON content file."
+      },
+      "minItems": 1
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Other content packs that must be loaded before this one.",
+      "items": {
+        "type": "object",
+        "required": ["id", "version"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the required content pack."
+          },
+          "version": {
+            "type": "string",
+            "description": "Required version (semver range) of the dependency pack."
+          }
+        }
+      }
+    }
+  }
+}

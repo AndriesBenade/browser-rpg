@@ -1,0 +1,97 @@
+{
+  "encounters": [
+    {
+      "id": "enc_nr_wolf_ambush",
+      "name": "Howling Pine Ambush",
+      "type": "combat",
+      "locationId": "loc_nr_pine_crossroads",
+      "creatureId": "creature_nr_timber_wolf",
+      "introProse": "Shadows dart across the snowdrifts! A pack of white wolves emerges with bared yellow fangs.",
+      "rewards": {
+        "xp": 35,
+        "drachmae": 4
+      }
+    },
+    {
+      "id": "enc_nr_troll_rockslide",
+      "name": "Frost Troll on the Ledge",
+      "type": "combat",
+      "locationId": "loc_nr_glacier_pass",
+      "creatureId": "creature_nr_frost_troll",
+      "introProse": "Boulders smash across the icy trail! A towering mountain frost troll blocks the glacier pass.",
+      "rewards": {
+        "xp": 80,
+        "drachmae": 15
+      }
+    },
+    {
+      "id": "enc_nr_skallagrim_boss",
+      "name": "The Crypt Lord Awakens",
+      "type": "boss",
+      "locationId": "loc_nr_barrow_depths",
+      "creatureId": "creature_nr_boss_skallagrim",
+      "introProse": "The heavy granite sarcophagus shatters! Chieftain Skallagrim steps forth with burning blue eyes and a raised waraxe.",
+      "rewards": {
+        "xp": 160,
+        "drachmae": 80
+      }
+    },
+    {
+      "id": "enc_nr_vyr_boss",
+      "name": "Wrath of Mount Wyrmfang",
+      "type": "boss",
+      "locationId": "loc_nr_wyrmfang_caldera",
+      "creatureId": "creature_nr_boss_vyr",
+      "introProse": "The caldera basalt shudders and splits! Vyr the Frost Wyrm spreads its colossal wings and roars with the fury of a thousand winters.",
+      "rewards": {
+        "xp": 400,
+        "drachmae": 200
+      }
+    }
+  ],
+  "randomEncounters": [
+    {
+      "id": "renc_nr_wolf_pack",
+      "type": "combat",
+      "creatureId": "creature_nr_timber_wolf",
+      "regions": [
+        "Whispering Woods",
+        "Valenfrost Highlands"
+      ],
+      "terrain": "mountain_trail",
+      "weight": 30
+    },
+    {
+      "id": "renc_nr_mire_bandits",
+      "type": "combat",
+      "creatureId": "creature_nr_mire_bandit_bruiser",
+      "regions": [
+        "Mistglen Fens"
+      ],
+      "terrain": "swamp_marsh",
+      "weight": 25
+    },
+    {
+      "id": "renc_nr_mountain_troll",
+      "type": "combat",
+      "creatureId": "creature_nr_frost_troll",
+      "regions": [
+        "Grimstone Crags",
+        "Frostpeak Glaciers"
+      ],
+      "terrain": "rocky_scrubland",
+      "weight": 20
+    },
+    {
+      "id": "renc_nr_barrow_draugr",
+      "type": "combat",
+      "creatureId": "creature_nr_draugr_wight",
+      "regions": [
+        "Whispering Woods",
+        "Grimstone Crags"
+      ],
+      "terrain": "limestone_cave",
+      "weight": 25
+    }
+  ]
+}

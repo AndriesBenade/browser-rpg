@@ -1,0 +1,25 @@
+# Serena MCP project configuration
+# Deployed by ai-sdlc install — do not remove
+# Docs: https://oraios.github.io/serena/
+
+project_name: "workspace"
+
+# Add your project's languages here. Common options:
+#   python, typescript, java, kotlin, cpp, go, rust
+# For JavaScript, use typescript. For C, use cpp.
+languages:
+- typescript
+
+encoding: "utf-8"
+
+ignore_all_files_in_gitignore: true
+
+ignored_paths:
+  - "node_modules/**"
+  - "dist/**"
+  - ".angular/**"
+  - "coverage/**"
+
+read_only: false
+excluded_tools: []
+included_optional_tools: []

@@ -1,0 +1,52 @@
+{
+  "origins": [
+    {
+      "id": "origin_nr_frostpeak_born",
+      "name": "Valenfrost Born",
+      "description": "Raised in the high shadow of Mount Wyrmfang amidst ringing anvils and clan songs.",
+      "perks": "+1 Strength, +5 reputation with Frostpeak Hold Guard",
+      "attributes": {
+        "strength": 1
+      },
+      "reputation": {
+        "faction_nr_frostpeak_watch": 5
+      }
+    },
+    {
+      "id": "origin_nr_mistglen_fenlander",
+      "name": "Mistglen Fenlander",
+      "description": "Grew up in stilt-cabins above the black water of the western bogs.",
+      "perks": "+1 Agility, +1 Stealth check bonus",
+      "attributes": {
+        "agility": 1
+      },
+      "skills": {
+        "stealth": 1
+      }
+    },
+    {
+      "id": "origin_nr_grimstone_miner",
+      "name": "Grimstone Prospector",
+      "description": "Worked alongside the Silver Kin dwarves extracting silver veins from deep granite shafts.",
+      "perks": "+1 Endurance, +5 reputation with The Silver Kin",
+      "attributes": {
+        "endurance": 1
+      },
+      "reputation": {
+        "faction_nr_silver_kin": 5
+      }
+    },
+    {
+      "id": "origin_nr_frostmere_initiate",
+      "name": "Frostmere Scribe",
+      "description": "Spent youth transcribing icy codices within the glacial tower of the Circle of Winter.",
+      "perks": "+1 Intelligence, +1 Mythology Lore bonus",
+      "attributes": {
+        "intelligence": 1
+      },
+      "skills": {
+        "mythology_lore": 1
+      }
+    }
+  ]
+}

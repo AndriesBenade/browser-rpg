@@ -1,0 +1,135 @@
+{
+  "events": [
+    {
+      "id": "event_nr_social_success",
+      "name": "Hold Influence",
+      "trigger": "SOCIAL_SUCCESS",
+      "conditions": {},
+      "outcomes": {
+        "modifyReputation": {
+          "faction_nr_frostpeak_watch": 2
+        },
+        "transcript": {
+          "speaker": "Reputation",
+          "text": "Your persuasive words spread among the hold guards and citizens.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_hidden_spot_found",
+      "name": "Wilderness Discovery",
+      "trigger": "HIDDEN_SPOT_FOUND",
+      "conditions": {},
+      "outcomes": {
+        "awardXP": 10,
+        "transcript": {
+          "speaker": "Discovery",
+          "text": "Sharp eyes uncover a hidden cache in the northern snows.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_item_crafted",
+      "name": "Runic Crafting",
+      "trigger": "ITEM_CRAFTED",
+      "conditions": {},
+      "outcomes": {
+        "awardXP": 15,
+        "transcript": {
+          "speaker": "Crafting",
+          "text": "You forge gear with your own hands at the northern workbench.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_item_combined",
+      "name": "Kit Improvement",
+      "trigger": "ITEM_COMBINED",
+      "conditions": {},
+      "outcomes": {
+        "awardXP": 10,
+        "transcript": {
+          "speaker": "Crafting",
+          "text": "You enhance your weapon in the field.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_troll_slain",
+      "name": "Troll Threat Cleared",
+      "trigger": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "creature_nr_frost_troll"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_nr_covenant_trial_of_steel",
+          "objectiveId": "stage_slay_troll",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Victory",
+          "text": "The mountain frost troll crashes down with a final dying shudder. The shafts are safe!",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_skallagrim_slain",
+      "name": "Barrow Lord Banished",
+      "trigger": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "creature_nr_boss_skallagrim"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_nr_side_barrow_curse",
+          "objectiveId": "stage_defeat_skallagrim",
+          "completed": true
+        },
+        "completeQuest": "quest_nr_side_barrow_curse",
+        "transcript": {
+          "speaker": "Ancestral Silence",
+          "text": "Chieftain Skallagrim crumbles to harmless ash, releasing the ancestral Star-Key Gamma into your grasp.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_vyr_slain",
+      "name": "The Dragon Falls",
+      "trigger": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "creature_nr_boss_vyr"
+      },
+      "outcomes": {
+        "setFlags": {
+          "dragon_slain": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_main_shadow_of_wyrmfang",
+          "objectiveId": "stage_confront_vyr",
+          "completed": true
+        },
+        "completeQuest": "quest_nr_main_shadow_of_wyrmfang",
+        "modifyReputation": {
+          "faction_nr_frostpeak_watch": 50,
+          "faction_nr_iron_covenant": 50
+        },
+        "addJournalChronicle": {
+          "title": "The Slumber of Vyr",
+          "text": "Vyr the Ancient Frost Wyrm has fallen in the crater of Mount Wyrmfang! The northern realms are saved!"
+        },
+        "transcript": {
+          "speaker": "Legendary Victory",
+          "text": "Vyr roars as its frozen heart shatters, collapsing upon the volcanic basalt. The Northern Realms celebrate eternal victory!",
+          "style": "entry-discovery"
+        }
+      }
+    }
+  ]
+}

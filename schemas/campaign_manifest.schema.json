@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://greek-mythology-rpg.org/schemas/v2/campaign_manifest.json",
+  "title": "Campaign Manifest",
+  "description": "Top-level descriptor for a campaign. References content packs, declares starting conditions, and sets global game rules.",
+  "type": "object",
+  "required": ["id", "name", "version", "engineVersion", "schemaVersion", "contentPacks", "startingConfig"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique campaign identifier. Must begin with 'camp_' followed by lowercase alphanumeric and underscores.",
+      "pattern": "^camp_[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name of the campaign.",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this campaign (e.g. '1.0.0').",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "engineVersion": {
+      "type": "string",
+      "description": "Semantic version range the campaign requires (e.g. '>=0.2.0'). Uses npm semver syntax."
+    },
+    "schemaVersion": {
+      "type": "string",
+      "description": "The schema version this manifest conforms to (e.g. 'gm-rpg-v2.0')."
+    },
+    "description": {
+      "type": "string",
+      "description": "Long-form summary of the campaign's narrative premise and scope."
+    },
+    "author": {
+      "type": "string",
+      "description": "Name of the campaign's author or design team."
+    },
+    "genre": {
+      "type": "string",
+      "description": "Genre tag such as 'Greek Mythology', 'Historical Fantasy', etc."
+    },
+    "contentPacks": {
+      "type": "array",
+      "description": "Ordered list of content packs that compose this campaign. Packs are loaded in declaration order.",
+      "items": {
+        "type": "object",
+        "required": ["id", "version"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the content pack."
+          },
+          "version": {
+            "type": "string",
+            "description": "Exact version of the content pack required.",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$"
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "If true, missing this pack emits a warning rather than an error.",
+            "default": false
+          }
+        }
+      }
+    },
+    "startingConfig": {
+      "type": "object",
+      "description": "Initial world state when a new game begins.",
+      "required": ["startLocationId"],
+      "additionalProperties": false,
+      "properties": {
+        "startLocationId": {
+          "type": "string",
+          "description": "ID of the location where the player character begins the campaign."
+        },
+        "startAdventureId": {
+          "type": "string",
+          "description": "ID of the first adventure pack to activate on campaign start."
+        },
+        "startingQuests": {
+          "type": "array",
+          "description": "List of quest IDs that are immediately active when the campaign begins.",
+          "items": { "type": "string" }
+        },
+        "startingInventory": {
+          "type": "array",
+          "description": "Items granted to the player character at campaign start.",
+          "items": {
+            "type": "object",
+            "required": ["itemId", "quantity"],
+            "properties": {
+              "itemId": { "type": "string", "description": "Reference to an item ID." },
+              "quantity": { "type": "integer", "minimum": 1, "description": "Number of units of this item granted." }
+            }
+          }
+        },
+        "characterCreationOptions": {
+          "type": "object",
+          "description": "Options for the character creation phase.",
+          "properties": {
+            "allowedOrigins": {
+              "type": "array",
+              "description": "List of valid character origin/background IDs.",
+              "items": { "type": "string" }
+            },
+            "startingAttributePoints": {
+              "type": "integer",
+              "description": "Number of attribute points available to distribute during character creation.",
+              "minimum": 0
+            },
+            "allowNameInput": {
+              "type": "boolean",
+              "description": "Whether the player can enter a custom character name.",
+              "default": true
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Global rule toggles for this campaign.",
+      "additionalProperties": false,
+      "properties": {
+        "allowPlayerAttackNPCs": {
+          "type": "boolean",
+          "description": "Whether the player may initiate combat against non-hostile NPCs.",
+          "default": true
+        },
+        "allowNPCDeath": {
+          "type": "boolean",
+          "description": "Whether NPCs marked isKillable can be permanently killed.",
+          "default": true
+        },
+        "lootOnDeath": {
+          "type": "boolean",
+          "description": "Whether defeated entities drop loot from their loot table.",
+          "default": true
+        },
+        "permadeath": {
+          "type": "boolean",
+          "description": "If true, player death ends the campaign run with no reload.",
+          "default": false
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "External campaigns or data packages this campaign depends on.",
+      "items": {
+        "type": "object",
+        "required": ["id", "version"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the dependency."
+          },
+          "version": {
+            "type": "string",
+            "description": "Required version (semver range) of the dependency."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "If false, the dependency is optional and its absence is non-fatal.",
+            "default": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "combinations": [
+    {
+      "id": "combo_nr_whetstone_broadsword",
+      "apply": "item_nr_mountain_whetstone",
+      "onto": "item_nr_iron_broadsword",
+      "result": "item_nr_honed_iron_broadsword",
+      "outcome": {
+        "transcript": {
+          "speaker": "Crafting",
+          "text": "You hone the edge of your broadsword against the coarse mountain whetstone. The blade gleams razor-sharp.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "combo_nr_venom_blade",
+      "apply": "item_nr_mire_venom_gland",
+      "onto": {
+        "category": "weapon"
+      },
+      "coating": {
+        "id": "mire_poison",
+        "name": "Mire Viper Venom",
+        "hitsRemaining": 3,
+        "damageBonus": 2,
+        "status": {
+          "id": "poisoned",
+          "value": 2,
+          "rounds": 2
+        }
+      },
+      "outcome": {
+        "transcript": {
+          "speaker": "Poisoner's Touch",
+          "text": "You coat the cutting edge in thick, greenish mire venom. Your next strikes will poison foes.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "combo_nr_herbal_remedy",
+      "apply": "mat_nr_frost_lichen",
+      "onto": "item_nr_stamina_draught",
+      "requiresItem": "item_nr_alembic_kit",
+      "result": "item_nr_potent_restorative",
+      "outcome": {
+        "transcript": {
+          "speaker": "Herbal Distillation",
+          "text": "Using your alembic kit, you refine the lichen into the stamina cordial, creating a potent restorative tonic.",
+          "style": "entry-discovery"
+        }
+      }
+    }
+  ]
+}

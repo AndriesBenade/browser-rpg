@@ -1,0 +1,52 @@
+{
+  "backgrounds": [
+    {
+      "id": "bg_nr_hearth_guard",
+      "name": "Hold Veteran",
+      "category": "Military",
+      "description": "Years standing watch on the freezing battlements of Valenfrost Keep against raiders and wolves.",
+      "": "Hold guards and huscarls treat you as an honorable comrade.",
+      "startingEquipment": [
+        "item_nr_iron_broadsword",
+        "item_nr_smoked_venison"
+      ],
+      "passiveBonus": "Accustomed to standing firm against biting mountain blizzards."
+    },
+    {
+      "id": "bg_nr_barrow_delver",
+      "name": "Barrow Delver",
+      "category": "Exploration",
+      "description": "You have plundered the sealed burial cairns of forgotten chieftains and survived the walking dead.",
+      "": "Scholars and antiquarians eagerly buy rare curiosities from your pack.",
+      "startingEquipment": [
+        "item_nr_mountain_torch",
+        "item_nr_dwarven_lockpicks"
+      ],
+      "passiveBonus": "Intuitive eye for tripwires, loose flagstones, and hidden wall alcoves."
+    },
+    {
+      "id": "bg_nr_apprentice_runecarver",
+      "name": "Apprentice Runecarver",
+      "category": "Scholarship",
+      "description": "Trained under the master enchanters of Frostmere Spire in the geometry of storm and frost runes.",
+      "": "Mages of the Winter Circle welcome you into their sanctums without suspicion.",
+      "startingEquipment": [
+        "item_nr_frost_rune_focus",
+        "item_nr_alembic_kit"
+      ],
+      "passiveBonus": "Instinctive recognition of ancient runic inscriptions and magical wards."
+    },
+    {
+      "id": "bg_nr_canal_smuggler",
+      "name": "Mistglen Smuggler",
+      "category": "Underworld",
+      "description": "Piloted flat-bottomed punts through the swamp mist of Mistglen, transporting contraband under the watch of the fog.",
+      "": "Fences, thieves, and informants whisper passwords to you freely.",
+      "startingEquipment": [
+        "item_nr_hunting_dagger",
+        "item_nr_hard_tack_bread"
+      ],
+      "passiveBonus": "Knows how to melt into marsh fog and strike deals in dingy dock taverns."
+    }
+  ]
+}

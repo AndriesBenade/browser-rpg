@@ -1,0 +1,99 @@
+{
+  "puzzles": [
+    {
+      "id": "puzzle_nr_rime_stone",
+      "title": "The Rime Pillar of Frostmere",
+      "locationId": "loc_nr_spire_frostmere",
+      "prompt": "Inscribed upon the spiraling ice pillar in ancient northern runes:\n\n'I fly without wings, I bite without teeth,\nI build up the glacier, I cover the heath.\nI howl without throat on the darkest of nights,\nYet wither to water when sun shows its lights.\nWhat am I?'",
+      "question": "What answer satisfies the icy pillar?",
+      "customAnswerLabel": "Speak your word to the frost pillar:",
+      "clueJournalIds": [
+        "The Rime Riddle of the Spire"
+      ],
+      "acceptedKeywords": [
+        "blizzard",
+        "the blizzard",
+        "snow",
+        "the snow",
+        "frost",
+        "the frost",
+        "ice",
+        "winter",
+        "rime"
+      ],
+      "knownAnswerLabel": "Answer with the scholar's riddle: \"The blizzard itself.\"",
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "intelligence",
+      "deductionDc": 12,
+      "deductionHint": "Think of what howls across the glacier peaks.",
+      "deductionFailText": "The runic words remain cold and silent. The frosty air stings your cheeks.",
+      "wrongAnswerText": "A burst of bitter frost puffs from the stone, freezing your breath.",
+      "distractors": [
+        "\"A mountain wolf.\"",
+        "\"The north wind.\"",
+        "\"A raven.\""
+      ],
+      "successOutcome": {
+        "transcript": {
+          "speaker": "The Rime Pillar",
+          "text": "The blue runes flare with brilliant cold fire. An inner niche slides open in the ice, presenting the Silver Key of the Winter Spire!",
+          "style": "entry-discovery"
+        },
+        "giveItem": "item_nr_key_frostmere_library",
+        "setFlags": {
+          "rime_pillar_solved": true
+        },
+        "awardXP": 50,
+        "addJournalChronicle": {
+          "title": "The Frost Pillar Solved",
+          "text": "Spoke the riddle of the blizzard. The pillar granted the Silver Key to the Spire's inner arcanum."
+        }
+      }
+    },
+    {
+      "id": "puzzle_nr_wyrm_pedestals",
+      "title": "The Triad of Star-Keys",
+      "locationId": "loc_nr_wyrmfang_caldera",
+      "prompt": "Three granite altars stand before the dormant Frost Wyrm Vyr. Each pedestal is etched with a celestial glyph:\n1. The Peak of Dawn (Alpha)\n2. The Spire of Rime (Beta)\n3. The Barrow of Old (Gamma)\nWhen all three Star-Keys are fitted into their sockets, the ancestral seal of High King Valen will either solidify the binding forever or awaken the dragon for mortal combat.",
+      "question": "Will you place the three Star-Keys into the ancient pedestals?",
+      "customAnswerLabel": "Chant the words of the Star-Father:",
+      "clueJournalIds": [
+        "The Dragon Binding Ritual"
+      ],
+      "acceptedKeywords": [
+        "valen",
+        "torvald",
+        "sky iron",
+        "bind",
+        "awaken"
+      ],
+      "knownAnswerLabel": "Invoke Torvald's name and insert the three Star-Keys.",
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "intelligence",
+      "deductionDc": 14,
+      "deductionHint": "Recall the teachings in the Frostmere Arcanum.",
+      "deductionFailText": "You hesitate before the cosmic weight of the dragon pedestals.",
+      "wrongAnswerText": "The pedestals rumble with hollow discordance.",
+      "distractors": [
+        "\"Let the beast sleep.\"",
+        "\"Strike the stone with an axe.\""
+      ],
+      "successOutcome": {
+        "transcript": {
+          "speaker": "Mount Wyrmfang",
+          "text": "The three star-keys lock into place with a thunderclap. Blazing columns of celestial light erupt into the storm clouds, shattering the Wyrm's shackles!",
+          "style": "entry-discovery"
+        },
+        "setFlags": {
+          "wyrm_pedestals_activated": true,
+          "vyr_awakened": true
+        },
+        "awardXP": 100,
+        "addJournalChronicle": {
+          "title": "The Dragon Unbound",
+          "text": "Inserted the three Star-Keys upon Mount Wyrmfang. Vyr the Frost Wyrm awakens!"
+        }
+      }
+    }
+  ]
+}

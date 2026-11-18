@@ -1,0 +1,304 @@
+{
+  "creatures": [
+    {
+      "id": "creature_nr_timber_wolf",
+      "name": "Northern White Wolf",
+      "tier": 1,
+      "vitals": {
+        "health": 14,
+        "maxHealth": 14,
+        "stamina": 12,
+        "maxStamina": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 3,
+        "damage": "1d6+1"
+      },
+      "xp": 25,
+      "lootTableId": "lt_nr_wolf_pack",
+      "loot": [
+        {
+          "itemId": "mat_nr_wolf_pelt",
+          "chance": 0.8
+        },
+        {
+          "itemId": "item_nr_smoked_venison",
+          "chance": 0.5
+        }
+      ],
+      "description": "A muscular white wolf adapted to deep mountain snowdrifts. Hunts in coordinated packs with chilling howls.",
+      "combatActions": [
+        {
+          "id": "act_wolf_bite",
+          "name": "Ripping Jaws",
+          "damage": "1d6+1",
+          "type": "melee",
+          "telegraph": "bares its yellow fangs and lunges low"
+        },
+        {
+          "id": "act_wolf_hamstring",
+          "name": "Hamstring Takedown",
+          "damage": "1d4+2",
+          "type": "melee",
+          "status": {
+            "id": "entangled",
+            "rounds": 1
+          },
+          "telegraph": "circles swiftly behind your flank"
+        }
+      ]
+    },
+    {
+      "id": "creature_nr_frost_troll",
+      "name": "Mountain Frost Troll",
+      "tier": 3,
+      "vitals": {
+        "health": 48,
+        "maxHealth": 48,
+        "stamina": 20,
+        "maxStamina": 20
+      },
+      "combatStats": {
+        "armorClass": 14,
+        "attackBonus": 6,
+        "damage": "2d6+3"
+      },
+      "xp": 75,
+      "lootTableId": "lt_nr_frost_troll",
+      "loot": [
+        {
+          "itemId": "mat_nr_frost_troll_hide",
+          "chance": 1
+        },
+        {
+          "itemId": "item_nr_smoked_venison",
+          "chance": 0.8
+        }
+      ],
+      "description": "A hulking blue-furred monstrosity with three yellow eyes and stone-hard claws. Feared by miners and mountain travelers.",
+      "combatActions": [
+        {
+          "id": "act_troll_slam",
+          "name": "Crushing Forearm Smash",
+          "damage": "2d6+3",
+          "type": "melee",
+          "telegraph": "raises both massive fists overhead with a guttural roar"
+        },
+        {
+          "id": "act_troll_sweep",
+          "name": "Glacial Sweep",
+          "damage": "1d8+3",
+          "type": "melee",
+          "status": {
+            "id": "stunned",
+            "rounds": 1
+          },
+          "telegraph": "swings its trunk-like arm in a wide, sweeping arc"
+        }
+      ]
+    },
+    {
+      "id": "creature_nr_mire_bandit_bruiser",
+      "name": "Drowned Mire Marauder",
+      "tier": 2,
+      "vitals": {
+        "health": 26,
+        "maxHealth": 26,
+        "stamina": 14,
+        "maxStamina": 14
+      },
+      "combatStats": {
+        "armorClass": 14,
+        "attackBonus": 4,
+        "damage": "1d8+2"
+      },
+      "xp": 45,
+      "lootTableId": "lt_nr_mire_bandit",
+      "loot": [
+        {
+          "itemId": "item_nr_hunting_dagger",
+          "chance": 0.4
+        },
+        {
+          "itemId": "item_nr_hard_tack_bread",
+          "chance": 0.6
+        }
+      ],
+      "description": "A desperate cutthroat wearing waterlogged ringmail and wielding a jagged broadsword coated in marsh slime.",
+      "combatActions": [
+        {
+          "id": "act_bandit_slash",
+          "name": "Foul Water Cut",
+          "damage": "1d8+2",
+          "type": "melee",
+          "telegraph": "steps through the mire with a vicious diagonal slash"
+        },
+        {
+          "id": "act_bandit_mud_throw",
+          "name": "Blinding Peat",
+          "damage": "1d4",
+          "type": "ranged",
+          "status": {
+            "id": "confused",
+            "rounds": 2
+          },
+          "telegraph": "scoops up black mud to fling into your eyes"
+        }
+      ]
+    },
+    {
+      "id": "creature_nr_draugr_wight",
+      "name": "Ancient Barrow Draugr",
+      "tier": 2,
+      "vitals": {
+        "health": 30,
+        "maxHealth": 30,
+        "stamina": 16,
+        "maxStamina": 16
+      },
+      "combatStats": {
+        "armorClass": 15,
+        "attackBonus": 5,
+        "damage": "1d8+2"
+      },
+      "xp": 55,
+      "lootTableId": "lt_nr_draugr_warrior",
+      "loot": [
+        {
+          "itemId": "mat_nr_silver_ingot",
+          "chance": 0.3
+        },
+        {
+          "itemId": "item_nr_mountain_whetstone",
+          "chance": 0.4
+        }
+      ],
+      "description": "An animated ancestral warrior clad in blackened iron mail, its hollow eyes burning with ghostly blue frost fire.",
+      "combatActions": [
+        {
+          "id": "act_draugr_axe",
+          "name": "Barrow Cleave",
+          "damage": "1d8+2",
+          "type": "melee",
+          "telegraph": "raises its rusted bearded axe with dry joint clicks"
+        },
+        {
+          "id": "act_draugr_chill",
+          "name": "Grave Chill",
+          "damage": "1d6",
+          "type": "spell",
+          "status": {
+            "id": "weakened",
+            "rounds": 2
+          },
+          "telegraph": "exhales a cloud of arctic tomb vapor"
+        }
+      ]
+    },
+    {
+      "id": "creature_nr_boss_skallagrim",
+      "name": "Chieftain Skallagrim the Undying",
+      "tier": 4,
+      "boss": true,
+      "vitals": {
+        "health": 80,
+        "maxHealth": 80,
+        "stamina": 30,
+        "maxStamina": 30
+      },
+      "combatStats": {
+        "armorClass": 17,
+        "attackBonus": 8,
+        "damage": "1d10+4"
+      },
+      "xp": 150,
+      "lootTableId": "lt_nr_boss_skallagrim",
+      "loot": [
+        {
+          "itemId": "item_nr_star_key_gamma",
+          "chance": 1
+        },
+        {
+          "itemId": "item_nr_silver_waraxe",
+          "chance": 1
+        }
+      ],
+      "description": "The ancient First-Age warlord, risen from his slate sarcophagus with a massive silver greataxe and crowned with frost.",
+      "combatActions": [
+        {
+          "id": "act_skallagrim_frenzy",
+          "name": "Ancestral Rage",
+          "damage": "2d8+4",
+          "type": "melee",
+          "telegraph": "bellows an ancient war-chant as rime crackles across his axe"
+        },
+        {
+          "id": "act_skallagrim_howl",
+          "name": "Tomb Howl",
+          "damage": "1d8",
+          "type": "spell",
+          "status": {
+            "id": "frightened",
+            "rounds": 2
+          },
+          "telegraph": "screams with the voice of a hundred entombed dead"
+        }
+      ]
+    },
+    {
+      "id": "creature_nr_boss_vyr",
+      "name": "Vyr the Ancient Frost Wyrm",
+      "tier": 5,
+      "boss": true,
+      "vitals": {
+        "health": 140,
+        "maxHealth": 140,
+        "stamina": 40,
+        "maxStamina": 40
+      },
+      "combatStats": {
+        "armorClass": 18,
+        "attackBonus": 10,
+        "damage": "2d10+5"
+      },
+      "xp": 350,
+      "lootTableId": "lt_nr_boss_vyr",
+      "loot": [
+        {
+          "itemId": "item_nr_relic_dragonbane",
+          "chance": 1
+        },
+        {
+          "itemId": "mat_nr_wyrm_blood_vial",
+          "chance": 1
+        }
+      ],
+      "description": "The legendary calamity of the North: a colossal dragon with iridescent rime-scales, razor talons, and a heart of glacier ice.",
+      "combatActions": [
+        {
+          "id": "act_vyr_breath",
+          "name": "Glacial Frost Breath",
+          "damage": "3d8+4",
+          "type": "breath",
+          "status": {
+            "id": "weakened",
+            "rounds": 3
+          },
+          "telegraph": "its gullet glows with brilliant blinding azure light"
+        },
+        {
+          "id": "act_vyr_tail",
+          "name": "Cataclysmic Tail Sweep",
+          "damage": "2d8+5",
+          "type": "melee",
+          "status": {
+            "id": "stunned",
+            "rounds": 1
+          },
+          "telegraph": "whips its colossal spiked tail across the volcanic basalt"
+        }
+      ]
+    }
+  ]
+}

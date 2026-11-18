@@ -1,0 +1,155 @@
+{
+  "materials": [
+    {
+      "id": "mat_nr_bog_iron",
+      "": {
+        "damage": 1,
+        "defense": 1
+      },
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 1.5,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 6,
+        "durability": 6,
+        "flexibility": 3,
+        "heatResistance": 6,
+        "magicalAffinity": 1,
+        "purity": 65
+      },
+      "description": "Smelted from rich iron sediment dredged from the riverbeds of Valenfrost."
+    },
+    {
+      "id": "mat_nr_silver_ingot",
+      "": {
+        "damage": 2,
+        "defense": 2
+      },
+      "category": "metal",
+      "rarity": "uncommon",
+      "weightKg": 1.2,
+      "valueDrachmae": 25,
+      "properties": {
+        "hardness": 7,
+        "durability": 7,
+        "flexibility": 5,
+        "heatResistance": 7,
+        "magicalAffinity": 6,
+        "purity": 90
+      },
+      "description": "Lustrous argent mined by the Silver Kin dwarves beneath Grimstone Mountain."
+    },
+    {
+      "id": "mat_nr_sky_iron_ore",
+      "": {
+        "damage": 4,
+        "defense": 4
+      },
+      "category": "metal",
+      "rarity": "rare",
+      "weightKg": 2,
+      "valueDrachmae": 75,
+      "properties": {
+        "hardness": 10,
+        "durability": 10,
+        "flexibility": 4,
+        "heatResistance": 10,
+        "magicalAffinity": 9,
+        "purity": 98
+      },
+      "description": "Resonant, cold-forged sky-iron fallen from winter shooting stars."
+    },
+    {
+      "id": "mat_nr_hardened_pine",
+      "": {
+        "defense": 1
+      },
+      "category": "wood",
+      "rarity": "common",
+      "weightKg": 1,
+      "valueDrachmae": 4,
+      "properties": {
+        "hardness": 5,
+        "durability": 6,
+        "flexibility": 5,
+        "heatResistance": 3,
+        "magicalAffinity": 2,
+        "purity": 80
+      },
+      "description": "Dense, resinous heartwood from the pines of Whispering Woods."
+    },
+    {
+      "id": "mat_nr_wolf_pelt",
+      "": {
+        "defense": 1
+      },
+      "category": "leather",
+      "rarity": "common",
+      "weightKg": 0.8,
+      "valueDrachmae": 10,
+      "properties": {
+        "hardness": 3,
+        "durability": 6,
+        "flexibility": 8,
+        "heatResistance": 2,
+        "magicalAffinity": 3,
+        "purity": 85
+      },
+      "description": "Thick winter fur that repels sleet and freezing winds."
+    },
+    {
+      "id": "mat_nr_frost_troll_hide",
+      "": {
+        "defense": 3
+      },
+      "category": "leather",
+      "rarity": "uncommon",
+      "weightKg": 2.5,
+      "valueDrachmae": 35,
+      "properties": {
+        "hardness": 7,
+        "durability": 9,
+        "flexibility": 6,
+        "heatResistance": 4,
+        "magicalAffinity": 5,
+        "purity": 90
+      },
+      "description": "Tough, pebbled hide stripped from a mountain frost troll."
+    },
+    {
+      "id": "mat_nr_frost_lichen",
+      "": {},
+      "category": "herb",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 5,
+      "properties": {
+        "hardness": 1,
+        "durability": 2,
+        "flexibility": 9,
+        "heatResistance": 1,
+        "magicalAffinity": 5,
+        "purity": 75
+      },
+      "description": "Luminescent pale blue moss gathered from frozen rockfaces."
+    },
+    {
+      "id": "mat_nr_wyrm_blood_vial",
+      "": {},
+      "category": "relic_oil",
+      "rarity": "rare",
+      "weightKg": 0.3,
+      "valueDrachmae": 80,
+      "properties": {
+        "hardness": 1,
+        "durability": 5,
+        "flexibility": 10,
+        "heatResistance": 9,
+        "magicalAffinity": 10,
+        "purity": 95
+      },
+      "description": "Boiling, primordial dragon essence that seethes with draconic power."
+    }
+  ]
+}

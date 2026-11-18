@@ -1,0 +1,41 @@
+{
+  "professions": [
+    {
+      "id": "nr_weaponsmithing",
+      "name": "Runic Blacksmithing",
+      "icon": "🔨",
+      "": [
+        "weapon",
+        "shield",
+        "armor"
+      ],
+      "secondaryAttribute": "intelligence",
+      "requiredToolkitId": "item_nr_smithing_hammer",
+      "description": "Forging heavy blades, battleaxes, plate armor, and reinforced shields from bog-iron and sky-iron."
+    },
+    {
+      "id": "nr_alchemy",
+      "name": "Northern Alchemy",
+      "icon": "🧪",
+      "": [
+        "consumable"
+      ],
+      "secondaryAttribute": "intelligence",
+      "requiredToolkitId": "item_nr_alembic_kit",
+      "description": "Brewing stamina cordials, frost resistance draughts, and weapon venoms using mountain lichen and monster oils."
+    },
+    {
+      "id": "nr_leatherwork",
+      "name": "Furrier & Leatherwork",
+      "icon": "🧵",
+      "": [
+        "armor",
+        "boots",
+        "gloves"
+      ],
+      "secondaryAttribute": "endurance",
+      "requiredToolkitId": "item_nr_leather_tanner_kit",
+      "description": "Tailoring wolf-fur cloaks, supple boots, and reinforced lamellar from beast hides."
+    }
+  ]
+}

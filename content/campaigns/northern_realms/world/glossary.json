@@ -1,0 +1,64 @@
+{
+  "glossary": [
+    {
+      "key": "jarl",
+      "terms": [
+        "Jarl",
+        "Jarls"
+      ],
+      "name": "Jarl",
+      "category": "Title & Society",
+      "simpleEnglish": "A northern regional ruler or lord",
+      "explanation": "A high-ranking noble ruling over a province, fortress hold, and sworn huscarls in the Northern Realms.",
+      "significance": "Holds sovereign authority over regional laws, garrisons, and judicial trials."
+    },
+    {
+      "key": "huscarl",
+      "terms": [
+        "Huscarl",
+        "Huscarls"
+      ],
+      "name": "Huscarl",
+      "category": "Title & Society",
+      "simpleEnglish": "A sworn personal bodyguard or elite veteran warrior",
+      "explanation": "Veteran warriors bound by sacred blood-oath to defend their Jarl and hold unto death.",
+      "significance": "Renowned for their unbreakable shield-walls and heavy iron plate."
+    },
+    {
+      "key": "draugr",
+      "terms": [
+        "Draugr",
+        "Draugrs"
+      ],
+      "name": "Draugr",
+      "category": "Creatures",
+      "simpleEnglish": "Undead warrior haunting ancient barrows and ruins",
+      "explanation": "Animated ancestral corpses guarding burial crypts with ancient rusted blades and chthonic frost magic.",
+      "significance": "Deadly subterranean foes resistant to mundane cold."
+    },
+    {
+      "key": "runecraft",
+      "terms": [
+        "Runecraft",
+        "runecarving"
+      ],
+      "name": "Runecraft",
+      "category": "Magic & Lore",
+      "simpleEnglish": "The art of inscribing magical runes into metals and stone",
+      "explanation": "The northern art of channeling primordial storm and frost energy into weapons, armor, and gate-wards.",
+      "significance": "Essential for breaking ancient seal-doors and battling eldritch wyrms."
+    },
+    {
+      "key": "sky_iron",
+      "terms": [
+        "Sky-Iron",
+        "star-iron"
+      ],
+      "name": "Sky-Iron",
+      "category": "Materials",
+      "simpleEnglish": "Meteoric ore found in snowbound mountain crags",
+      "explanation": "Dense, resonant celestial metal prized by master smiths for forging legendary relic weapons.",
+      "significance": "The only material capable of piercing the hide of ancient dragons."
+    }
+  ]
+}

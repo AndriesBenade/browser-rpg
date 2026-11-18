@@ -1,0 +1,144 @@
+{
+  "templates": [
+    {
+      "id": "tmpl_nr_iron_broadsword",
+      "name": "Northern Iron Broadsword",
+      "profession": "nr_weaponsmithing",
+      "targetCategory": "weapon",
+      "minLevel": 1,
+      "requiredSkillCheck": {
+        "skill": "athletics",
+        "dc": 11
+      },
+      "materials": [
+        {
+          "category": "metal",
+          "quantity": 2,
+          "defaultMaterialId": "mat_nr_bog_iron"
+        },
+        {
+          "category": "wood",
+          "quantity": 1,
+          "defaultMaterialId": "mat_nr_hardened_pine"
+        }
+      ],
+      "outputItemId": "item_nr_iron_broadsword",
+      "description": "A wide, double-edged northern blade built for crushing mail and beast hide."
+    },
+    {
+      "id": "tmpl_nr_silver_waraxe",
+      "name": "Silver-Inlaid Waraxe",
+      "profession": "nr_weaponsmithing",
+      "targetCategory": "weapon",
+      "minLevel": 2,
+      "requiredSkillCheck": {
+        "skill": "athletics",
+        "dc": 13
+      },
+      "materials": [
+        {
+          "category": "metal",
+          "quantity": 2,
+          "defaultMaterialId": "mat_nr_silver_ingot"
+        },
+        {
+          "category": "wood",
+          "quantity": 1,
+          "defaultMaterialId": "mat_nr_hardened_pine"
+        }
+      ],
+      "outputItemId": "item_nr_silver_waraxe",
+      "description": "A heavy cleaving axe engraved with silver runes that sear through undead flesh."
+    },
+    {
+      "id": "tmpl_nr_iron_roundshield",
+      "name": "Huscarl's Reinforced Roundshield",
+      "profession": "nr_weaponsmithing",
+      "targetCategory": "shield",
+      "minLevel": 1,
+      "requiredSkillCheck": {
+        "skill": "athletics",
+        "dc": 10
+      },
+      "materials": [
+        {
+          "category": "wood",
+          "quantity": 2,
+          "defaultMaterialId": "mat_nr_hardened_pine"
+        },
+        {
+          "category": "metal",
+          "quantity": 1,
+          "defaultMaterialId": "mat_nr_bog_iron"
+        }
+      ],
+      "outputItemId": "item_nr_huscarl_roundshield",
+      "description": "Stout pine boards bound in forged iron rim with a heavy central boss."
+    },
+    {
+      "id": "tmpl_nr_wolf_pelt_cloak",
+      "name": "Winter Wolf Warm-Cloak",
+      "profession": "nr_leatherwork",
+      "targetCategory": "armor",
+      "minLevel": 1,
+      "requiredSkillCheck": {
+        "skill": "survival",
+        "dc": 11
+      },
+      "materials": [
+        {
+          "category": "leather",
+          "quantity": 2,
+          "defaultMaterialId": "mat_nr_wolf_pelt"
+        }
+      ],
+      "outputItemId": "item_nr_wolfskin_mantle",
+      "description": "A broad, snow-shedding fur mantle that keeps out arctic squalls."
+    },
+    {
+      "id": "tmpl_nr_stamina_cordial",
+      "name": "Juniper Stamina Cordial",
+      "profession": "nr_alchemy",
+      "targetCategory": "consumable",
+      "minLevel": 1,
+      "requiredSkillCheck": {
+        "skill": "medicine",
+        "dc": 10
+      },
+      "materials": [
+        {
+          "category": "herb",
+          "quantity": 2,
+          "defaultMaterialId": "mat_nr_frost_lichen"
+        }
+      ],
+      "outputItemId": "item_nr_stamina_draught",
+      "description": "A brisk, invigorating tonic of crushed pine berries and glacier moss."
+    },
+    {
+      "id": "tmpl_nr_frost_resist_elixir",
+      "name": "Elixir of the Hearthfire",
+      "profession": "nr_alchemy",
+      "targetCategory": "consumable",
+      "minLevel": 2,
+      "requiredSkillCheck": {
+        "skill": "medicine",
+        "dc": 13
+      },
+      "materials": [
+        {
+          "category": "herb",
+          "quantity": 1,
+          "defaultMaterialId": "mat_nr_frost_lichen"
+        },
+        {
+          "category": "metal",
+          "quantity": 1,
+          "defaultMaterialId": "mat_nr_silver_ingot"
+        }
+      ],
+      "outputItemId": "item_nr_frost_resist_potion",
+      "description": "A warming distilled elixir that wards the blood against lethal blizzard frost."
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "quests": [
+    {
+      "id": "quest_nr_main_shadow_of_wyrmfang",
+      "title": "Shadow of Mount Wyrmfang",
+      "category": "main",
+      "description": "Tremors shake the northern holds and blue fire flickers atop Mount Wyrmfang. Jarl Sigurd fears the ancient Frost Wyrm Vyr stirs in its volcanic tomb.",
+      "autoStart": true,
+      "currentStage": "stage_speak_jarl",
+      "stages": {
+        "stage_speak_jarl": {
+          "id": "stage_speak_jarl",
+          "description": "Audience with Jarl Sigurd in the High Mead-Hall of Valenfrost to discuss the mountain portents.",
+          "locationId": "loc_nr_valenfrost_hall",
+          "objective": "Speak with Jarl Sigurd Wolf-Mantle."
+        },
+        "stage_recover_keys": {
+          "id": "stage_recover_keys",
+          "description": "Recover the three ancient Star-Keys of High King Valen to secure or shatter the binding seal atop Mount Wyrmfang.",
+          "locationId": "loc_nr_glacier_pass",
+          "objective": "Gather the three Star-Keys (Alpha from Grimstone, Beta from Frostmere, Gamma from the Barrow)."
+        },
+        "stage_confront_vyr": {
+          "id": "stage_confront_vyr",
+          "description": "Ascend to the Caldera of Vyr atop Mount Wyrmfang and resolve the fate of the Frost Wyrm.",
+          "locationId": "loc_nr_wyrmfang_caldera",
+          "objective": "Confront Vyr the Ancient Frost Wyrm."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "The northern holds are delivered from the draconic menace. You are hailed as the High Champion of Valenfrost.",
+          "locationId": "loc_nr_valenfrost_hall",
+          "objective": "Return to Jarl Sigurd in triumph."
+        }
+      },
+      "rewards": {
+        "xp": 300,
+        "itemId": "item_nr_relic_dragonbane"
+      }
+    },
+    {
+      "id": "quest_nr_covenant_trial_of_steel",
+      "title": "Trial of the Frozen Shield",
+      "category": "faction",
+      "description": "Prove your martial worth to the Iron Covenant by putting an end to the frost troll terrorizing the deep shafts of Grimstone Mine.",
+      "autoStart": false,
+      "currentStage": "stage_slay_troll",
+      "stages": {
+        "stage_slay_troll": {
+          "id": "stage_slay_troll",
+          "description": "Slay the Mountain Frost Troll lurking in Infested Shaft Nine beneath Grimstone.",
+          "locationId": "loc_nr_abandoned_shaft_nine",
+          "objective": "Defeat the Mountain Frost Troll."
+        },
+        "stage_report_karl": {
+          "id": "stage_report_karl",
+          "description": "Present the troll thickhide to Veteran Karl in the Valenfrost Barracks.",
+          "locationId": "loc_nr_valenfrost_barracks",
+          "objective": "Report back to Karl the Iron-Ribbed."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "Inducted as a sworn Shield-Brother of the Iron Covenant.",
+          "locationId": "loc_nr_valenfrost_barracks",
+          "objective": "Trial complete."
+        }
+      },
+      "rewards": {
+        "xp": 120,
+        "itemId": "item_nr_huscarl_roundshield"
+      }
+    },
+    {
+      "id": "quest_nr_cabal_smugglers_ledger",
+      "title": "The Ledger in the Mist",
+      "category": "faction",
+      "description": "Valeria of the Whispering Cabal needs her stolen smuggling ledger recovered from Marauder Captain Malik in the Drowned Fort.",
+      "autoStart": false,
+      "currentStage": "stage_infiltrate_redoubt",
+      "stages": {
+        "stage_infiltrate_redoubt": {
+          "id": "stage_infiltrate_redoubt",
+          "description": "Infiltrate the Drowned Fort Redoubt in Mistglen and reclaim the cipher ledger.",
+          "locationId": "loc_nr_bandit_redoubt",
+          "objective": "Retrieve the Cabal's Smuggling Ledger."
+        },
+        "stage_return_valeria": {
+          "id": "stage_return_valeria",
+          "description": "Deliver the recovered ledger to Valeria in the Sunken Cistern Guildhall.",
+          "locationId": "loc_nr_cabal_cistern",
+          "objective": "Return to Valeria Shadow-Gilded."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "Welcomed into the inner circle of the Whispering Cabal with fencing privileges.",
+          "locationId": "loc_nr_cabal_cistern",
+          "objective": "Contract fulfilled."
+        }
+      },
+      "rewards": {
+        "xp": 100,
+        "itemId": "item_nr_cabal_stiletto"
+      }
+    },
+    {
+      "id": "quest_nr_circle_rime_relic",
+      "title": "Secrets of the Rime Spire",
+      "category": "faction",
+      "description": "Archmage Kallan charges you with solving the riddle of the ancient Rime Pillar and cataloguing the celestial Star-Key in the archives.",
+      "autoStart": false,
+      "currentStage": "stage_solve_pillar",
+      "stages": {
+        "stage_solve_pillar": {
+          "id": "stage_solve_pillar",
+          "description": "Decipher the Rime Pillar of Frostmere to obtain the Silver Key of the Winter Spire.",
+          "locationId": "loc_nr_spire_frostmere",
+          "objective": "Solve the Rime Pillar riddle."
+        },
+        "stage_consult_archives": {
+          "id": "stage_consult_archives",
+          "description": "Unlock the inner Arcanum Vault and study the ancient star manuscripts with Librarian Freya.",
+          "locationId": "loc_nr_frostmere_archives",
+          "objective": "Consult with Librarian Freya."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "Granted the title of Winter Arcanist and gifted the Star-Key of the Glacial Spire.",
+          "locationId": "loc_nr_spire_frostmere",
+          "objective": "Arcanum initiated."
+        }
+      },
+      "rewards": {
+        "xp": 140,
+        "itemId": "item_nr_frost_rune_focus"
+      }
+    },
+    {
+      "id": "quest_nr_side_barrow_curse",
+      "title": "The Slumber of Skallagrim",
+      "category": "dungeon",
+      "description": "Draugr have been raiding outlying farms from the Weeping Barrow Stones. Break into the crypt and put Chieftain Skallagrim to rest.",
+      "autoStart": false,
+      "currentStage": "stage_unlock_crypt",
+      "stages": {
+        "stage_unlock_crypt": {
+          "id": "stage_unlock_crypt",
+          "description": "Acquire the Ancient Runic Barrow Key and unseal the crypt of Chieftain Skallagrim.",
+          "locationId": "loc_nr_ancient_cairn",
+          "objective": "Unseal the barrow crypt portal."
+        },
+        "stage_defeat_skallagrim": {
+          "id": "stage_defeat_skallagrim",
+          "description": "Descend into the barrow depths and defeat Chieftain Skallagrim the Undying.",
+          "locationId": "loc_nr_barrow_depths",
+          "objective": "Destroy Chieftain Skallagrim."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "The ancestral curse is broken and the barrow dead return to peaceful slumber.",
+          "locationId": "loc_nr_ancient_cairn",
+          "objective": "Crypt cleansed."
+        }
+      },
+      "rewards": {
+        "xp": 150,
+        "itemId": "item_nr_silver_waraxe"
+      }
+    },
+    {
+      "id": "quest_nr_side_dwarven_vault",
+      "title": "The Silver Kin's Legacy",
+      "category": "side",
+      "description": "Overseer Thrain lost the iron key to the ancestral silver vault during the troll breach in Shaft Nine. Find it and unlock the clan vault.",
+      "autoStart": false,
+      "currentStage": "stage_find_vault_key",
+      "stages": {
+        "stage_find_vault_key": {
+          "id": "stage_find_vault_key",
+          "description": "Search Infested Shaft Nine for the Overseer's dropped iron key.",
+          "locationId": "loc_nr_abandoned_shaft_nine",
+          "objective": "Find the Iron Key of Grimstone Vault."
+        },
+        "stage_open_vault": {
+          "id": "stage_open_vault",
+          "description": "Use the key to unlock the Grimstone Deep Clan Vault.",
+          "locationId": "loc_nr_abandoned_shaft_nine",
+          "objective": "Unlock the clan vault."
+        },
+        "stage_completed": {
+          "id": "stage_completed",
+          "description": "The ancestral vault is restored to Clan Silver-Kin.",
+          "locationId": "loc_nr_grimstone_delve",
+          "objective": "Vault recovered."
+        }
+      },
+      "rewards": {
+        "xp": 110,
+        "itemId": "item_nr_silver_crest_shield"
+      }
+    }
+  ]
+}
