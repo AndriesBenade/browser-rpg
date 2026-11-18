@@ -18,7 +18,11 @@ const zlib = require('zlib');
 
 const ROOT = path.join(__dirname, '..');
 const HTML = path.join(ROOT, 'index.html');
-const MANIFESTS = ['content/campaigns/greek_mythology/campaign.json', 'content/campaigns/dev_test_campaign/campaign.json'];
+const MANIFESTS = [
+  'content/campaigns/greek_mythology/campaign.json',
+  'content/campaigns/dev_test_campaign/campaign.json',
+  'content/campaigns/northern_realms/campaign.json'
+];
 const MARK = '// @embedded-content';
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 
