@@ -2,34 +2,38 @@
   "materials": [
     {
       "id": "mat_nr_bog_iron",
-      "": {
-        "damage": 1,
-        "defense": 1
-      },
+      "name": "Highland Bog Iron Bar",
       "category": "metal",
       "rarity": "common",
-      "weightKg": 1.5,
-      "valueDrachmae": 8,
+      "weightKg": 2.2,
+      "elementalAffinity": "iron",
+      "compatibleProfessions": [
+        "nr_weaponsmithing"
+      ],
       "properties": {
         "hardness": 6,
-        "durability": 6,
+        "durability": 7,
         "flexibility": 3,
         "heatResistance": 6,
         "magicalAffinity": 1,
         "purity": 65
       },
-      "description": "Smelted from rich iron sediment dredged from the riverbeds of Valenfrost."
+      "statModifiers": {
+        "damage": 1,
+        "defense": 1
+      }
     },
     {
       "id": "mat_nr_silver_ingot",
-      "": {
-        "damage": 2,
-        "defense": 2
-      },
+      "name": "Silver Kin Ingot",
       "category": "metal",
       "rarity": "uncommon",
-      "weightKg": 1.2,
-      "valueDrachmae": 25,
+      "weightKg": 1.8,
+      "elementalAffinity": "silver",
+      "compatibleProfessions": [
+        "nr_weaponsmithing",
+        "nr_alchemy"
+      ],
       "properties": {
         "hardness": 7,
         "durability": 7,
@@ -38,18 +42,21 @@
         "magicalAffinity": 6,
         "purity": 90
       },
-      "description": "Lustrous argent mined by the Silver Kin dwarves beneath Grimstone Mountain."
+      "statModifiers": {
+        "damage": 2,
+        "defense": 2
+      }
     },
     {
       "id": "mat_nr_sky_iron_ore",
-      "": {
-        "damage": 4,
-        "defense": 4
-      },
+      "name": "Star-Iron Ore",
       "category": "metal",
       "rarity": "rare",
-      "weightKg": 2,
-      "valueDrachmae": 75,
+      "weightKg": 2.5,
+      "elementalAffinity": "celestial",
+      "compatibleProfessions": [
+        "nr_weaponsmithing"
+      ],
       "properties": {
         "hardness": 10,
         "durability": 10,
@@ -58,98 +65,176 @@
         "magicalAffinity": 9,
         "purity": 98
       },
-      "description": "Resonant, cold-forged sky-iron fallen from winter shooting stars."
+      "statModifiers": {
+        "damage": 4,
+        "defense": 3
+      }
     },
     {
       "id": "mat_nr_hardened_pine",
-      "": {
-        "defense": 1
-      },
+      "name": "Hardened Mountain Pine",
       "category": "wood",
       "rarity": "common",
-      "weightKg": 1,
-      "valueDrachmae": 4,
+      "weightKg": 1.1,
+      "elementalAffinity": "hearth",
+      "compatibleProfessions": [
+        "nr_weaponsmithing",
+        "nr_leatherwork"
+      ],
       "properties": {
         "hardness": 5,
         "durability": 6,
-        "flexibility": 5,
+        "flexibility": 8,
         "heatResistance": 3,
         "magicalAffinity": 2,
         "purity": 80
       },
-      "description": "Dense, resinous heartwood from the pines of Whispering Woods."
+      "statModifiers": {
+        "damage": 1,
+        "defense": 1
+      }
     },
     {
       "id": "mat_nr_wolf_pelt",
-      "": {
-        "defense": 1
-      },
+      "name": "White Wolf Pelt",
       "category": "leather",
       "rarity": "common",
-      "weightKg": 0.8,
-      "valueDrachmae": 10,
+      "weightKg": 0.9,
+      "elementalAffinity": "frost",
+      "compatibleProfessions": [
+        "nr_leatherwork"
+      ],
       "properties": {
         "hardness": 3,
         "durability": 6,
-        "flexibility": 8,
-        "heatResistance": 2,
+        "flexibility": 9,
+        "heatResistance": 5,
         "magicalAffinity": 3,
         "purity": 85
       },
-      "description": "Thick winter fur that repels sleet and freezing winds."
+      "statModifiers": {
+        "damage": 0,
+        "defense": 1
+      }
     },
     {
       "id": "mat_nr_frost_troll_hide",
-      "": {
-        "defense": 3
-      },
+      "name": "Mountain Frost Troll Hide",
       "category": "leather",
-      "rarity": "uncommon",
-      "weightKg": 2.5,
-      "valueDrachmae": 35,
+      "rarity": "rare",
+      "weightKg": 2.4,
+      "elementalAffinity": "frost",
+      "compatibleProfessions": [
+        "nr_leatherwork",
+        "nr_weaponsmithing"
+      ],
       "properties": {
-        "hardness": 7,
+        "hardness": 8,
         "durability": 9,
-        "flexibility": 6,
-        "heatResistance": 4,
+        "flexibility": 5,
+        "heatResistance": 6,
         "magicalAffinity": 5,
         "purity": 90
       },
-      "description": "Tough, pebbled hide stripped from a mountain frost troll."
+      "statModifiers": {
+        "damage": 1,
+        "defense": 3
+      }
     },
     {
       "id": "mat_nr_frost_lichen",
-      "": {},
+      "name": "Glacial Frost Lichen",
       "category": "herb",
       "rarity": "common",
-      "weightKg": 0.2,
-      "valueDrachmae": 5,
+      "weightKg": 0.3,
+      "elementalAffinity": "frost",
+      "compatibleProfessions": [
+        "nr_alchemy"
+      ],
       "properties": {
         "hardness": 1,
         "durability": 2,
         "flexibility": 9,
-        "heatResistance": 1,
+        "heatResistance": 2,
         "magicalAffinity": 5,
-        "purity": 75
+        "purity": 78
       },
-      "description": "Luminescent pale blue moss gathered from frozen rockfaces."
+      "statModifiers": {
+        "damage": 0,
+        "defense": 0
+      }
     },
     {
       "id": "mat_nr_wyrm_blood_vial",
-      "": {},
+      "name": "Vial of Frost Wyrm Blood",
       "category": "relic_oil",
-      "rarity": "rare",
-      "weightKg": 0.3,
-      "valueDrachmae": 80,
+      "rarity": "epic",
+      "weightKg": 0.4,
+      "elementalAffinity": "frost",
+      "compatibleProfessions": [
+        "nr_alchemy",
+        "nr_weaponsmithing"
+      ],
       "properties": {
-        "hardness": 1,
-        "durability": 5,
+        "hardness": 2,
+        "durability": 6,
         "flexibility": 10,
         "heatResistance": 9,
         "magicalAffinity": 10,
-        "purity": 95
+        "purity": 96
       },
-      "description": "Boiling, primordial dragon essence that seethes with draconic power."
+      "statModifiers": {
+        "damage": 3,
+        "defense": 1
+      }
+    },
+    {
+      "id": "mat_nr_hearth_amber",
+      "name": "Hearthstone Amber Resin",
+      "category": "herb",
+      "rarity": "uncommon",
+      "weightKg": 0.4,
+      "elementalAffinity": "fire",
+      "compatibleProfessions": [
+        "nr_alchemy",
+        "nr_leatherwork"
+      ],
+      "properties": {
+        "hardness": 3,
+        "durability": 5,
+        "flexibility": 7,
+        "heatResistance": 9,
+        "magicalAffinity": 7,
+        "purity": 88
+      },
+      "statModifiers": {
+        "damage": 1,
+        "defense": 1
+      }
+    },
+    {
+      "id": "mat_nr_frost_quartz",
+      "name": "Glacial Quartz Crystal",
+      "category": "stone",
+      "rarity": "rare",
+      "weightKg": 0.6,
+      "elementalAffinity": "frost",
+      "compatibleProfessions": [
+        "nr_weaponsmithing",
+        "nr_alchemy"
+      ],
+      "properties": {
+        "hardness": 8,
+        "durability": 8,
+        "flexibility": 2,
+        "heatResistance": 8,
+        "magicalAffinity": 9,
+        "purity": 94
+      },
+      "statModifiers": {
+        "damage": 2,
+        "defense": 2
+      }
     }
   ]
 }

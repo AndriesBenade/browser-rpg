@@ -23,13 +23,14 @@
       "equipment": {
         "main_hand": "item_nr_iron_broadsword",
         "off_hand": "item_nr_huscarl_roundshield",
-        "armor": "item_nr_iron_ringmail",
-        "helmet": "item_nr_iron_spangenhelm"
+        "body": "item_nr_iron_ringmail",
+        "head": "item_nr_iron_spangenhelm"
       },
       "inventory": [
         "item_nr_smoked_venison"
       ],
-      "lootTableId": "lt_nr_chest_common"
+      "lootTableId": "lt_nr_chest_common",
+      "drachmae": 20
     },
     {
       "id": "npc_nr_jarl_sigurd",
@@ -52,13 +53,14 @@
       },
       "equipment": {
         "main_hand": "item_nr_silver_waraxe",
-        "armor": "item_nr_dwarven_plate",
-        "cloak": "item_nr_wolfskin_mantle"
+        "body": "item_nr_dwarven_plate",
+        "back": "item_nr_wolfskin_mantle"
       },
       "inventory": [
         "item_nr_spiced_mead_flagon"
       ],
-      "lootTableId": "lt_nr_chest_common"
+      "lootTableId": "lt_nr_chest_common",
+      "drachmae": 50
     },
     {
       "id": "npc_nr_skald_einar",
@@ -81,12 +83,13 @@
       },
       "equipment": {
         "main_hand": "item_nr_hunting_dagger",
-        "armor": "item_nr_skald_ringmail"
+        "body": "item_nr_skald_ringmail"
       },
       "inventory": [
         "item_nr_spiced_mead_flagon"
       ],
-      "lootTableId": "lt_nr_chest_common"
+      "lootTableId": "lt_nr_chest_common",
+      "drachmae": 15
     },
     {
       "id": "npc_nr_merchant_astrid",
@@ -172,8 +175,19 @@
           "itemId": "item_nr_stamina_draught",
           "price": 14,
           "quantity": 4
+        },
+        {
+          "itemId": "mat_nr_frost_quartz",
+          "price": 38,
+          "stock": 3
+        },
+        {
+          "itemId": "item_nr_leather_tanner_kit",
+          "price": 24,
+          "stock": 2
         }
-      ]
+      ],
+      "drachmae": 85
     },
     {
       "id": "npc_nr_smith_bjorn",
@@ -197,7 +211,7 @@
       },
       "equipment": {
         "main_hand": "item_nr_smithing_hammer",
-        "armor": "item_nr_iron_ringmail"
+        "body": "item_nr_iron_ringmail"
       },
       "inventory": [],
       "merchantInventory": [
@@ -231,7 +245,8 @@
           "price": 15,
           "quantity": 2
         }
-      ]
+      ],
+      "drachmae": 40
     },
     {
       "id": "npc_nr_veteran_karl",
@@ -254,8 +269,8 @@
       },
       "equipment": {
         "main_hand": "item_nr_huscarl_battleaxe",
-        "armor": "item_nr_iron_ringmail",
-        "helmet": "item_nr_iron_spangenhelm"
+        "body": "item_nr_iron_ringmail",
+        "head": "item_nr_iron_spangenhelm"
       },
       "inventory": [
         "item_nr_smoked_venison"
@@ -268,7 +283,8 @@
         "perks": {
           "combatBonus": 1
         }
-      }
+      },
+      "drachmae": 25
     },
     {
       "id": "npc_nr_trapper_ulf",
@@ -292,8 +308,8 @@
       },
       "equipment": {
         "main_hand": "item_nr_ash_longbow",
-        "armor": "item_nr_scout_leather_coat",
-        "cloak": "item_nr_wolfskin_mantle"
+        "body": "item_nr_scout_leather_coat",
+        "back": "item_nr_wolfskin_mantle"
       },
       "merchantInventory": [
         {
@@ -316,7 +332,8 @@
           "price": 15,
           "quantity": 1
         }
-      ]
+      ],
+      "drachmae": 18
     },
     {
       "id": "npc_nr_boatman_hagan",
@@ -342,7 +359,8 @@
       },
       "inventory": [
         "item_nr_smoked_salmon"
-      ]
+      ],
+      "drachmae": 12
     },
     {
       "id": "npc_nr_innkeeper_mira",
@@ -388,7 +406,8 @@
           "price": 2,
           "quantity": 5
         }
-      ]
+      ],
+      "drachmae": 30
     },
     {
       "id": "npc_nr_cabal_leader_valeria",
@@ -411,13 +430,14 @@
       },
       "equipment": {
         "main_hand": "item_nr_cabal_stiletto",
-        "armor": "item_nr_scout_leather_coat",
-        "boots": "item_nr_leather_boots"
+        "body": "item_nr_scout_leather_coat",
+        "feet": "item_nr_leather_boots"
       },
       "inventory": [
         "item_nr_dwarven_lockpicks",
         "item_nr_mire_venom_gland"
-      ]
+      ],
+      "drachmae": 120
     },
     {
       "id": "npc_nr_bandit_captain_malik",
@@ -441,13 +461,15 @@
       "equipment": {
         "main_hand": "item_nr_iron_broadsword",
         "off_hand": "item_nr_huscarl_roundshield",
-        "armor": "item_nr_iron_ringmail"
+        "body": "item_nr_iron_ringmail"
       },
       "inventory": [
+        "item_nr_elena_stolen_ledger",
         "item_nr_key_barrow_sanctum",
         "item_nr_hard_tack_bread"
       ],
-      "lootTableId": "lt_nr_mire_bandit"
+      "lootTableId": "lt_nr_mire_bandit",
+      "drachmae": 45
     },
     {
       "id": "npc_nr_bog_witch_morrigan",
@@ -492,8 +514,14 @@
           "itemId": "item_nr_alembic_kit",
           "price": 20,
           "quantity": 1
+        },
+        {
+          "itemId": "mat_nr_hearth_amber",
+          "price": 24,
+          "stock": 4
         }
-      ]
+      ],
+      "drachmae": 22
     },
     {
       "id": "npc_nr_dwarf_warden_durn",
@@ -518,11 +546,12 @@
       "equipment": {
         "main_hand": "item_nr_silver_waraxe",
         "off_hand": "item_nr_silver_crest_shield",
-        "armor": "item_nr_dwarven_plate"
+        "body": "item_nr_dwarven_plate"
       },
       "inventory": [
         "item_nr_hard_tack_bread"
-      ]
+      ],
+      "drachmae": 35
     },
     {
       "id": "npc_nr_dwarf_overseer_thrain",
@@ -545,11 +574,12 @@
       },
       "equipment": {
         "main_hand": "item_nr_smithing_hammer",
-        "armor": "item_nr_iron_ringmail"
+        "body": "item_nr_iron_ringmail"
       },
       "inventory": [
         "mat_nr_silver_ingot"
-      ]
+      ],
+      "drachmae": 60
     },
     {
       "id": "npc_nr_blackforge_master_helga",
@@ -573,7 +603,7 @@
       },
       "equipment": {
         "main_hand": "item_nr_smithing_hammer",
-        "armor": "item_nr_dwarven_plate"
+        "body": "item_nr_dwarven_plate"
       },
       "merchantInventory": [
         {
@@ -600,8 +630,19 @@
           "itemId": "item_nr_dwarven_plate",
           "price": 120,
           "quantity": 1
+        },
+        {
+          "itemId": "mat_nr_hearth_amber",
+          "price": 22,
+          "stock": 3
+        },
+        {
+          "itemId": "item_nr_smithing_hammer",
+          "price": 26,
+          "stock": 2
         }
-      ]
+      ],
+      "drachmae": 55
     },
     {
       "id": "npc_nr_archmage_kallan",
@@ -625,12 +666,13 @@
       "equipment": {
         "main_hand": "item_nr_frost_runeblade",
         "off_hand": "item_nr_frost_rune_focus",
-        "cloak": "item_nr_wolfskin_mantle"
+        "back": "item_nr_wolfskin_mantle"
       },
       "inventory": [
         "item_nr_frost_resist_potion",
         "item_nr_star_key_beta"
-      ]
+      ],
+      "drachmae": 70
     },
     {
       "id": "npc_nr_librarian_freya",
@@ -675,8 +717,19 @@
           "itemId": "mat_nr_frost_lichen",
           "price": 5,
           "quantity": 10
+        },
+        {
+          "itemId": "item_nr_runic_focus_staff",
+          "price": 115,
+          "stock": 1
+        },
+        {
+          "itemId": "mat_nr_frost_quartz",
+          "price": 35,
+          "stock": 3
         }
-      ]
+      ],
+      "drachmae": 25
     }
   ]
 }

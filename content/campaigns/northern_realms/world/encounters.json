@@ -7,6 +7,14 @@
       "locationId": "loc_nr_pine_crossroads",
       "creatureId": "creature_nr_timber_wolf",
       "introProse": "Shadows dart across the snowdrifts! A pack of white wolves emerges with bared yellow fangs.",
+      "victoryOutcome": {
+        "text": "The timber wolves scatter into the snowy pines, leaving a prize pelt behind.",
+        "giveItem": "mat_nr_wolf_pelt",
+        "awardXP": 35,
+        "setFlags": {
+          "pine_wolves_cleared": true
+        }
+      },
       "rewards": {
         "xp": 35,
         "drachmae": 4
@@ -19,9 +27,48 @@
       "locationId": "loc_nr_glacier_pass",
       "creatureId": "creature_nr_frost_troll",
       "introProse": "Boulders smash across the icy trail! A towering mountain frost troll blocks the glacier pass.",
+      "victoryOutcome": {
+        "text": "The mountain frost troll collapses across the icy scree. You harvest its prized thickhide.",
+        "giveItem": "mat_nr_frost_troll_hide",
+        "awardXP": 80,
+        "setFlags": {
+          "troll_slain": true,
+          "shaft_nine_troll_slain": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_covenant_trial_of_steel",
+          "objectiveId": "obj_slay_troll",
+          "completed": true
+        }
+      },
       "rewards": {
         "xp": 80,
         "drachmae": 15
+      }
+    },
+    {
+      "id": "enc_nr_shaft_troll",
+      "name": "Infested Shaft Nine Frost Troll",
+      "type": "combat",
+      "locationId": "loc_nr_abandoned_shaft_nine",
+      "creatureId": "creature_nr_frost_troll",
+      "introProse": "A savage mountain frost troll charges from the collapsed timber gallery, swinging a club of petrified pine!",
+      "victoryOutcome": {
+        "text": "The mountain frost troll crashes into the rubble. You harvest its prized thickhide for the Iron Covenant.",
+        "giveItem": "mat_nr_frost_troll_hide",
+        "awardXP": 80,
+        "setFlags": {
+          "shaft_nine_troll_slain": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_covenant_trial_of_steel",
+          "objectiveId": "obj_slay_troll",
+          "completed": true
+        }
+      },
+      "rewards": {
+        "xp": 80,
+        "drachmae": 20
       }
     },
     {
@@ -31,6 +78,23 @@
       "locationId": "loc_nr_barrow_depths",
       "creatureId": "creature_nr_boss_skallagrim",
       "introProse": "The heavy granite sarcophagus shatters! Chieftain Skallagrim steps forth with burning blue eyes and a raised waraxe.",
+      "victoryOutcome": {
+        "text": "With a final hollow curse, Chieftain Skallagrim collapses into a heap of ancient bone and rusted iron. His ancestral torque slips loose onto the crypt flagstones.",
+        "awardXP": 160,
+        "giveItem": "mat_nr_silver_ingot",
+        "setFlags": {
+          "skallagrim_slain": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_side_barrow_curse",
+          "objectiveId": "obj_defeat_skallagrim",
+          "completed": true
+        },
+        "addJournalChronicle": {
+          "title": "Slumber of Skallagrim",
+          "text": "Put Chieftain Skallagrim the Undying to rest in the depths of the Weeping Barrow."
+        }
+      },
       "rewards": {
         "xp": 160,
         "drachmae": 80
@@ -43,9 +107,138 @@
       "locationId": "loc_nr_wyrmfang_caldera",
       "creatureId": "creature_nr_boss_vyr",
       "introProse": "The caldera basalt shudders and splits! Vyr the Frost Wyrm spreads its colossal wings and roars with the fury of a thousand winters.",
+      "victoryOutcome": {
+        "text": "The ancient Frost Wyrm collapses with a world-shaking roar. The celestial monoliths ignite, sealing Vyr within the frozen core of Mount Wyrmfang once more!",
+        "awardXP": 400,
+        "giveItem": "mat_nr_wyrm_blood_vial",
+        "setFlags": {
+          "vyr_defeated": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_main_shadow_of_wyrmfang",
+          "objectiveId": "obj_confront_vyr",
+          "completed": true
+        },
+        "addJournalChronicle": {
+          "title": "The Quelling of Mount Wyrmfang",
+          "text": "Defeated and resealed the ancient Frost Wyrm Vyr atop Mount Wyrmfang with the three Star-Keys of High King Valen."
+        }
+      },
       "rewards": {
         "xp": 400,
         "drachmae": 200
+      }
+    },
+    {
+      "id": "enc_nr_wolf_alpha",
+      "name": "Pack of the Howling Cavern",
+      "locationId": "loc_nr_wolf_den_cavern",
+      "creatureId": "creature_nr_timber_wolf",
+      "introProse": "A scarred silver-backed alpha wolf leaps from atop a pile of splintered wagon planks, snarling beside Astrid's torn trade sledge!",
+      "victoryOutcome": {
+        "transcript": {
+          "speaker": "Discovery",
+          "text": "With the alpha wolf slain, the remaining pack scatters into the pines. Beneath the overturned sledge sits Astrid's intact fur crate!",
+          "style": "entry-discovery"
+        },
+        "giveItem": "item_nr_caravan_crate",
+        "setFlags": {
+          "recovered_caravan_crate": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_side_lost_caravan",
+          "objectiveId": "obj_recover_caravan",
+          "completed": true
+        },
+        "awardXP": 45
+      }
+    },
+    {
+      "id": "enc_nr_bog_stalker",
+      "name": "Ambush in the Peat Reeds",
+      "locationId": "loc_nr_mire_causeway",
+      "creatureId": "creature_nr_bog_lurker",
+      "introProse": "Black bog water erupts beside the sunken flagstones as a venom-spined Bog Stalker lunges at your heels!",
+      "victoryOutcome": {
+        "transcript": {
+          "speaker": "Victory",
+          "text": "The Bog Stalker sinks beneath the dark reeds, leaving behind an intact venom sac.",
+          "style": "entry-discovery"
+        },
+        "giveItem": "item_nr_mire_venom_gland",
+        "awardXP": 45
+      }
+    },
+    {
+      "id": "enc_nr_cult_ambush",
+      "name": "The Canal Cult Courier",
+      "locationId": "loc_nr_mire_causeway",
+      "creatureId": "creature_nr_cult_zealot",
+      "introProse": "As you haul the wax-sealed buoy from the bog, a hooded Vyr-Sworn Zealot rises from the fog with an obsidian ritual blade drawn! 'The Wyrm's tribute is not for Watch lapdogs!'",
+      "victoryOutcome": {
+        "transcript": {
+          "speaker": "Secret Discovery",
+          "text": "From the fallen zealot's oiled satchel you seize the Obsidian Cult Manifest, naming the corrupt Watch liaison and the Wyrmfang supply chain!",
+          "style": "entry-discovery"
+        },
+        "giveItem": "item_nr_cult_manifest",
+        "setFlags": {
+          "seized_cult_manifest": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_hidden_broken_oath",
+          "objectiveId": "obj_intercept_courier",
+          "completed": true
+        },
+        "awardXP": 80
+      }
+    },
+    {
+      "id": "enc_nr_runebound_sentinel",
+      "name": "Awakened Silver-Kin Sentinel",
+      "locationId": "loc_nr_grimstone_delve",
+      "creatureId": "creature_nr_stone_golem",
+      "introProse": "Tremors from Mount Wyrmfang have cracked the containment runes on an ancient dwarven forge-automaton. Its furnace eyes flare crimson as it blocks the Star-Iron seam!",
+      "victoryOutcome": {
+        "transcript": {
+          "speaker": "Victory",
+          "text": "The Runebound Sentinel powers down in a hiss of steam, exposing a gleaming cluster of Star-Iron Ore and Glacial Quartz!",
+          "style": "entry-discovery"
+        },
+        "giveItem": "mat_nr_sky_iron_ore",
+        "setFlags": {
+          "sentinel_quelled": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_side_blackforge_embers",
+          "objectiveId": "obj_gather_forge_ore",
+          "completed": true
+        },
+        "awardXP": 90
+      }
+    },
+    {
+      "id": "enc_nr_ice_wraith_shrine",
+      "name": "Guardian of the Forgotten Lineage",
+      "locationId": "loc_nr_frostmere_archives",
+      "creatureId": "creature_nr_ice_wraith",
+      "introProse": "Prying open the false glacial wall releases a century of trapped frost. A shrieking Frostmere Ice Wraith materializes around a battered iron diadem!",
+      "victoryOutcome": {
+        "transcript": {
+          "speaker": "Secret Discovery",
+          "text": "The Ice Wraith dissolves into sparkling snow. Resting upon a velvet cushion behind the false wall lies the Crown of the Rime-King and Valen's suppressed treaty!",
+          "style": "entry-discovery"
+        },
+        "giveItem": "item_nr_rime_king_crown",
+        "setFlags": {
+          "recovered_rime_crown": true
+        },
+        "updateQuest": {
+          "questId": "quest_nr_hidden_blood_throne",
+          "objectiveId": "obj_claim_rime_crown",
+          "completed": true
+        },
+        "awardXP": 110
       }
     }
   ],

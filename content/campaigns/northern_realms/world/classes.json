@@ -6,7 +6,7 @@
       "subtitle": "The Unyielding Hearth-Wall",
       "archetype": "Combat",
       "description": "Armored vanguard sworn to the high holds. Master of the locked shield-wall, sweeping waraxes, and front-line resilience.",
-      "": [
+      "proficiencies": [
         "melee_combat",
         "athletics"
       ],
@@ -30,7 +30,8 @@
           "desc": "+2 Armour Class while carrying a shield in your off-hand.",
           "effect": {
             "acWithShield": 2
-          }
+          },
+          "id": "feat_nr_wall_of_iron"
         },
         {
           "level": 1,
@@ -45,7 +46,8 @@
             },
             "uses": 1,
             "staminaCost": 1
-          }
+          },
+          "id": "feat_nr_shield_slam"
         },
         {
           "level": 3,
@@ -56,7 +58,8 @@
             "heal": "2d6+2",
             "uses": 1,
             "staminaCost": 2
-          }
+          },
+          "id": "feat_nr_warrior_s_second_wind"
         }
       ]
     },
@@ -66,7 +69,7 @@
       "subtitle": "Silent Path of the Bow",
       "archetype": "Ranged",
       "description": "Stealthy stalker of the taiga and jagged crags. Expert archer who tracks wolf packs and snipes from snowdrifts.",
-      "": [
+      "proficiencies": [
         "ranged_combat",
         "tracking",
         "survival"
@@ -95,7 +98,8 @@
               "survival": 2
             },
             "attackRanged": 1
-          }
+          },
+          "id": "feat_nr_ghost_of_the_drift"
         },
         {
           "level": 1,
@@ -111,7 +115,8 @@
             },
             "uses": 1,
             "staminaCost": 1
-          }
+          },
+          "id": "feat_nr_crippling_arrow"
         },
         {
           "level": 3,
@@ -120,7 +125,8 @@
           "desc": "You read the glare of sun on snow without faltering; night and blizzard penalties are halved.",
           "effect": {
             "nightVision": true
-          }
+          },
+          "id": "feat_nr_snow_blindness_immunity"
         }
       ]
     },
@@ -130,7 +136,7 @@
       "subtitle": "Song, Steel and Rime",
       "archetype": "Battlemage",
       "description": "Warrior-poet trained in the ancestral chants of Frostmere. Weaves frosty evocations around tempered steel.",
-      "": [
+      "proficiencies": [
         "melee_combat",
         "mythology_lore",
         "persuasion"
@@ -154,7 +160,8 @@
           "desc": "Your weapon strikes hum with bitter chill: +1 frost damage on all melee hits.",
           "effect": {
             "damage": 1
-          }
+          },
+          "id": "feat_nr_rime_blade"
         },
         {
           "level": 1,
@@ -168,8 +175,10 @@
               "rounds": 2
             },
             "uses": 1,
-            "staminaCost": 1
-          }
+            "staminaCost": 1,
+            "addIntelligence": true
+          },
+          "id": "feat_nr_glacial_blast"
         },
         {
           "level": 3,
@@ -178,7 +187,8 @@
           "desc": "Inspiring verses steel your spirit: +2 Maximum Morale and +2 vs fear effects.",
           "effect": {
             "maxMorale": 2
-          }
+          },
+          "id": "feat_nr_hearth_chant"
         }
       ]
     },
@@ -188,7 +198,7 @@
       "subtitle": "Lockpick and Poisoned Stiletto",
       "archetype": "Rogue",
       "description": "Infiltrator from the Mistglen canals. Disables deadly crypt traps, bypasses bronze vault locks, and strikes from shadows.",
-      "": [
+      "proficiencies": [
         "stealth",
         "investigation"
       ],
@@ -215,7 +225,8 @@
               "pickpocket": 3
             },
             "toolsSafe": true
-          }
+          },
+          "id": "feat_nr_nimble_hands"
         },
         {
           "level": 1,
@@ -229,7 +240,8 @@
             },
             "uses": 1,
             "staminaCost": 1
-          }
+          },
+          "id": "feat_nr_blinding_powder"
         },
         {
           "level": 3,
@@ -238,7 +250,8 @@
           "desc": "Exploit unguarded vulnerabilities: +2 damage on attacks against stunned, confused, or entangled targets.",
           "effect": {
             "damage": 2
-          }
+          },
+          "id": "feat_nr_backstab_mastery"
         }
       ]
     }

@@ -43,6 +43,11 @@
         "setFlags": {
           "rime_pillar_solved": true
         },
+        "updateQuest": {
+          "questId": "quest_nr_circle_rime_relic",
+          "objectiveId": "obj_solve_pillar",
+          "completed": true
+        },
         "awardXP": 50,
         "addJournalChronicle": {
           "title": "The Frost Pillar Solved",

@@ -3,45 +3,151 @@
     {
       "id": "quest_nr_main_shadow_of_wyrmfang",
       "title": "Shadow of Mount Wyrmfang",
-      "category": "main",
-      "description": "Tremors shake the northern holds and blue fire flickers atop Mount Wyrmfang. Jarl Sigurd fears the ancient Frost Wyrm Vyr stirs in its volcanic tomb.",
+      "category": "Main Quest",
+      "description": "Tremors shake the northern holds and blue fire flickers atop Mount Wyrmfang. Uncover the three Star-Keys of High King Valen and decide the fate of the Frost Wyrm Vyr.",
       "autoStart": true,
       "currentStage": "stage_speak_jarl",
+      "alternatePathways": {
+        "onNpcDeath": [
+          {
+            "npcId": "npc_nr_jarl_sigurd",
+            "completeObjective": "obj_speak_jarl",
+            "setStage": "stage_recover_keys",
+            "setFlags": {
+              "jarl_failover_active": true
+            },
+            "narrative": "Jarl Sigurd lies dead upon his own hearthstones, yet Mount Wyrmfang still groans above the North. Skald Einar preserves the lay of the three Star-Keys; recover them and report to Einar when the summit falls silent."
+          }
+        ]
+      },
+      "moralPaths": {
+        "slayer": {
+          "label": "Wyrmslayer of Valenfrost",
+          "virtue": 15,
+          "reputation": {
+            "faction_nr_frostpeak_watch": 30,
+            "faction_nr_iron_covenant": 30,
+            "faction_nr_drakenseekers": 25
+          },
+          "rewards": {
+            "experience": 300,
+            "drachmae": 150,
+            "items": [
+              "item_nr_relic_dragonbane"
+            ]
+          }
+        },
+        "binder": {
+          "label": "Keeper of the Eternal Seal",
+          "virtue": 25,
+          "reputation": {
+            "faction_nr_circle_of_winter": 35,
+            "faction_nr_frostpeak_watch": 25,
+            "faction_nr_silver_kin": 20
+          },
+          "rewards": {
+            "experience": 320,
+            "drachmae": 140,
+            "items": [
+              "item_nr_relic_dragonbane"
+            ]
+          }
+        }
+      },
       "stages": {
         "stage_speak_jarl": {
           "id": "stage_speak_jarl",
           "description": "Audience with Jarl Sigurd in the High Mead-Hall of Valenfrost to discuss the mountain portents.",
-          "locationId": "loc_nr_valenfrost_hall",
-          "objective": "Speak with Jarl Sigurd Wolf-Mantle."
+          "next": "stage_recover_keys",
+          "objectives": [
+            {
+              "id": "obj_speak_jarl",
+              "text": "Speak with Jarl Sigurd Wolf-Mantle in Valenfrost.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_hall"
+            }
+          ]
         },
         "stage_recover_keys": {
           "id": "stage_recover_keys",
-          "description": "Recover the three ancient Star-Keys of High King Valen to secure or shatter the binding seal atop Mount Wyrmfang.",
-          "locationId": "loc_nr_glacier_pass",
-          "objective": "Gather the three Star-Keys (Alpha from Grimstone, Beta from Frostmere, Gamma from the Barrow)."
+          "description": "Recover the three ancient Star-Keys of High King Valen from Grimstone, Frostmere, and Skallagrim's Barrow.",
+          "next": "stage_confront_vyr",
+          "objectives": [
+            {
+              "id": "obj_key_alpha",
+              "text": "Recover the Star-Key of the Eastern Peak from the Grimstone Vault.",
+              "completed": false,
+              "locationId": "loc_nr_abandoned_shaft_nine"
+            },
+            {
+              "id": "obj_key_beta",
+              "text": "Obtain the Star-Key of the Glacial Spire from Archmage Kallan.",
+              "completed": false,
+              "locationId": "loc_nr_spire_frostmere"
+            },
+            {
+              "id": "obj_key_gamma",
+              "text": "Retrieve the Star-Key of the Sunken Barrow from Chieftain Skallagrim.",
+              "completed": false,
+              "locationId": "loc_nr_barrow_depths"
+            }
+          ]
         },
         "stage_confront_vyr": {
           "id": "stage_confront_vyr",
-          "description": "Ascend to the Caldera of Vyr atop Mount Wyrmfang and resolve the fate of the Frost Wyrm.",
-          "locationId": "loc_nr_wyrmfang_caldera",
-          "objective": "Confront Vyr the Ancient Frost Wyrm."
+          "description": "Ascend to the Caldera of Vyr atop Mount Wyrmfang. Either slay the Frost Wyrm in mortal battle or, with Freya's archive lore, perform the Ancient Re-Binding Ritual.",
+          "next": "stage_report_victory",
+          "objectives": [
+            {
+              "id": "obj_confront_vyr",
+              "text": "Resolve the fate of Vyr atop Mount Wyrmfang (Slay or Re-Seal).",
+              "completed": false,
+              "locationId": "loc_nr_wyrmfang_caldera"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
+        "stage_report_victory": {
+          "id": "stage_report_victory",
+          "description": "Return to Jarl Sigurd (or Skald Einar if the Jarl has fallen) in the High Mead-Hall to announce the quelling of Mount Wyrmfang.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_report_jarl",
+              "text": "Report the fate of Mount Wyrmfang in Valenfrost High Hall.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_hall"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
           "description": "The northern holds are delivered from the draconic menace. You are hailed as the High Champion of Valenfrost.",
-          "locationId": "loc_nr_valenfrost_hall",
-          "objective": "Return to Jarl Sigurd in triumph."
+          "objectives": [
+            {
+              "id": "obj_main_done",
+              "text": "The northern holds are saved and you are named High Champion.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 300,
-        "itemId": "item_nr_relic_dragonbane"
+        "experience": 300,
+        "drachmae": 150,
+        "items": [
+          "item_nr_relic_dragonbane"
+        ],
+        "reputation": {
+          "faction_nr_frostpeak_watch": 30,
+          "faction_nr_iron_covenant": 30
+        },
+        "renown": 15
       }
     },
     {
       "id": "quest_nr_covenant_trial_of_steel",
       "title": "Trial of the Frozen Shield",
-      "category": "faction",
+      "category": "Faction Quest",
       "description": "Prove your martial worth to the Iron Covenant by putting an end to the frost troll terrorizing the deep shafts of Grimstone Mine.",
       "autoStart": false,
       "currentStage": "stage_slay_troll",
@@ -49,95 +155,214 @@
         "stage_slay_troll": {
           "id": "stage_slay_troll",
           "description": "Slay the Mountain Frost Troll lurking in Infested Shaft Nine beneath Grimstone.",
-          "locationId": "loc_nr_abandoned_shaft_nine",
-          "objective": "Defeat the Mountain Frost Troll."
+          "next": "stage_report_karl",
+          "objectives": [
+            {
+              "id": "obj_slay_troll",
+              "text": "Slay the Mountain Frost Troll in Shaft Nine or Glacier Pass.",
+              "completed": false,
+              "locationId": "loc_nr_abandoned_shaft_nine"
+            }
+          ]
         },
         "stage_report_karl": {
           "id": "stage_report_karl",
           "description": "Present the troll thickhide to Veteran Karl in the Valenfrost Barracks.",
-          "locationId": "loc_nr_valenfrost_barracks",
-          "objective": "Report back to Karl the Iron-Ribbed."
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_report_karl",
+              "text": "Deliver the frost troll hide to Veteran Karl in the barracks.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_barracks"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
+        "completed": {
+          "id": "completed",
           "description": "Inducted as a sworn Shield-Brother of the Iron Covenant.",
-          "locationId": "loc_nr_valenfrost_barracks",
-          "objective": "Trial complete."
+          "objectives": [
+            {
+              "id": "obj_covenant_done",
+              "text": "Inducted as a sworn Shield-Brother of the Iron Covenant.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 120,
-        "itemId": "item_nr_huscarl_roundshield"
+        "experience": 120,
+        "drachmae": 50,
+        "items": [
+          "item_nr_huscarl_roundshield"
+        ],
+        "reputation": {
+          "faction_nr_iron_covenant": 25
+        },
+        "renown": 5
       }
     },
     {
       "id": "quest_nr_cabal_smugglers_ledger",
       "title": "The Ledger in the Mist",
-      "category": "faction",
-      "description": "Valeria of the Whispering Cabal needs her stolen smuggling ledger recovered from Marauder Captain Malik in the Drowned Fort.",
+      "category": "Faction Quest",
+      "description": "Valeria of the Whispering Cabal wants her stolen smuggling ledger reclaimed from Captain Malik at the Drowned Fort. You may fight, parley, or steal it, then decide who deserves the truth inside.",
       "autoStart": false,
       "currentStage": "stage_infiltrate_redoubt",
+      "moralPaths": {
+        "cabal_loyal": {
+          "label": "Returned to the Whispering Cabal",
+          "hubris": 5,
+          "reputation": {
+            "faction_nr_whispering_cabal": 25,
+            "faction_nr_frostpeak_watch": -5
+          },
+          "rewards": {
+            "experience": 110,
+            "drachmae": 60,
+            "items": [
+              "item_nr_cabal_stiletto"
+            ]
+          }
+        },
+        "watch_informant": {
+          "label": "Exposed to Frostpeak Watch",
+          "virtue": 15,
+          "reputation": {
+            "faction_nr_frostpeak_watch": 25,
+            "faction_nr_whispering_cabal": -30
+          },
+          "rewards": {
+            "experience": 120,
+            "drachmae": 80
+          }
+        }
+      },
       "stages": {
         "stage_infiltrate_redoubt": {
           "id": "stage_infiltrate_redoubt",
-          "description": "Infiltrate the Drowned Fort Redoubt in Mistglen and reclaim the cipher ledger.",
-          "locationId": "loc_nr_bandit_redoubt",
-          "objective": "Retrieve the Cabal's Smuggling Ledger."
+          "description": "Infiltrate the Drowned Fort Redoubt in Mistglen and reclaim the cipher ledger by force, stealth, or negotiation with Malik.",
+          "next": "stage_return_valeria",
+          "objectives": [
+            {
+              "id": "obj_recover_ledger",
+              "text": "Retrieve the Smuggling Ledger from the Drowned Fort Redoubt.",
+              "completed": false,
+              "locationId": "loc_nr_bandit_redoubt"
+            }
+          ]
         },
         "stage_return_valeria": {
           "id": "stage_return_valeria",
-          "description": "Deliver the recovered ledger to Valeria in the Sunken Cistern Guildhall.",
-          "locationId": "loc_nr_cabal_cistern",
-          "objective": "Return to Valeria Shadow-Gilded."
+          "description": "Deliver the recovered ledger to Valeria in the Sunken Cistern, or turn it over to Captain Tor at Valenfrost Gates to break the smuggling ring.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_return_valeria",
+              "text": "Deliver the ledger to Valeria or expose the Cabal to Captain Tor.",
+              "completed": false,
+              "locationId": "loc_nr_cabal_cistern"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
-          "description": "Welcomed into the inner circle of the Whispering Cabal with fencing privileges.",
-          "locationId": "loc_nr_cabal_cistern",
-          "objective": "Contract fulfilled."
+        "completed": {
+          "id": "completed",
+          "description": "The fate of Mistglen's smuggling ledger has been decided.",
+          "objectives": [
+            {
+              "id": "obj_cabal_done",
+              "text": "Resolved the affair of the Smuggling Ledger.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 100,
-        "itemId": "item_nr_cabal_stiletto"
+        "experience": 100,
+        "drachmae": 60,
+        "items": [
+          "item_nr_cabal_stiletto"
+        ],
+        "reputation": {
+          "faction_nr_whispering_cabal": 25
+        }
       }
     },
     {
       "id": "quest_nr_circle_rime_relic",
       "title": "Secrets of the Rime Spire",
-      "category": "faction",
-      "description": "Archmage Kallan charges you with solving the riddle of the ancient Rime Pillar and cataloguing the celestial Star-Key in the archives.",
+      "category": "Faction Quest",
+      "description": "Archmage Kallan charges you with solving the riddle of the ancient Rime Pillar and cataloguing the celestial dragon manuscripts in the archives.",
       "autoStart": false,
       "currentStage": "stage_solve_pillar",
       "stages": {
         "stage_solve_pillar": {
           "id": "stage_solve_pillar",
           "description": "Decipher the Rime Pillar of Frostmere to obtain the Silver Key of the Winter Spire.",
-          "locationId": "loc_nr_spire_frostmere",
-          "objective": "Solve the Rime Pillar riddle."
+          "next": "stage_consult_archives",
+          "objectives": [
+            {
+              "id": "obj_solve_pillar",
+              "text": "Solve the Rime Pillar riddle to obtain the Silver Key.",
+              "completed": false,
+              "locationId": "loc_nr_spire_frostmere"
+            }
+          ]
         },
         "stage_consult_archives": {
           "id": "stage_consult_archives",
           "description": "Unlock the inner Arcanum Vault and study the ancient star manuscripts with Librarian Freya.",
-          "locationId": "loc_nr_frostmere_archives",
-          "objective": "Consult with Librarian Freya."
+          "next": "stage_report_kallan",
+          "objectives": [
+            {
+              "id": "obj_consult_freya",
+              "text": "Consult ancient dragon manuscripts with Librarian Freya.",
+              "completed": false,
+              "locationId": "loc_nr_frostmere_archives"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
+        "stage_report_kallan": {
+          "id": "stage_report_kallan",
+          "description": "Report your findings from the Arcanum archives to Archmage Kallan.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_report_kallan",
+              "text": "Return to Archmage Kallan in the Spire of Frostmere.",
+              "completed": false,
+              "locationId": "loc_nr_spire_frostmere"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
           "description": "Granted the title of Winter Arcanist and gifted the Star-Key of the Glacial Spire.",
-          "locationId": "loc_nr_spire_frostmere",
-          "objective": "Arcanum initiated."
+          "objectives": [
+            {
+              "id": "obj_circle_done",
+              "text": "Initiated as Winter Arcanist and granted the Star-Key of the Glacial Spire.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 140,
-        "itemId": "item_nr_frost_rune_focus"
+        "experience": 140,
+        "drachmae": 40,
+        "items": [
+          "item_nr_frost_rune_focus"
+        ],
+        "reputation": {
+          "faction_nr_circle_of_winter": 25
+        },
+        "renown": 5
       }
     },
     {
       "id": "quest_nr_side_barrow_curse",
       "title": "The Slumber of Skallagrim",
-      "category": "dungeon",
+      "category": "Dungeon Quest",
       "description": "Draugr have been raiding outlying farms from the Weeping Barrow Stones. Break into the crypt and put Chieftain Skallagrim to rest.",
       "autoStart": false,
       "currentStage": "stage_unlock_crypt",
@@ -145,57 +370,548 @@
         "stage_unlock_crypt": {
           "id": "stage_unlock_crypt",
           "description": "Acquire the Ancient Runic Barrow Key and unseal the crypt of Chieftain Skallagrim.",
-          "locationId": "loc_nr_ancient_cairn",
-          "objective": "Unseal the barrow crypt portal."
+          "next": "stage_defeat_skallagrim",
+          "objectives": [
+            {
+              "id": "obj_unlock_crypt",
+              "text": "Unseal the entrance to the Barrow Depths.",
+              "completed": false,
+              "locationId": "loc_nr_ancient_cairn"
+            }
+          ]
         },
         "stage_defeat_skallagrim": {
           "id": "stage_defeat_skallagrim",
           "description": "Descend into the barrow depths and defeat Chieftain Skallagrim the Undying.",
-          "locationId": "loc_nr_barrow_depths",
-          "objective": "Destroy Chieftain Skallagrim."
+          "next": "stage_report_jarl_barrow",
+          "objectives": [
+            {
+              "id": "obj_defeat_skallagrim",
+              "text": "Destroy Chieftain Skallagrim the Undying.",
+              "completed": false,
+              "locationId": "loc_nr_barrow_depths"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
+        "stage_report_jarl_barrow": {
+          "id": "stage_report_jarl_barrow",
+          "description": "Report the cleansing of the Weeping Barrows to Jarl Sigurd (or Skald Einar) in Valenfrost.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_report_jarl_barrow",
+              "text": "Report the cleansing of the barrows in Valenfrost High Hall.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_hall"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
           "description": "The ancestral curse is broken and the barrow dead return to peaceful slumber.",
-          "locationId": "loc_nr_ancient_cairn",
-          "objective": "Crypt cleansed."
+          "objectives": [
+            {
+              "id": "obj_barrow_done",
+              "text": "The ancestral curse is broken and the barrow dead rest in peace.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 150,
-        "itemId": "item_nr_silver_waraxe"
+        "experience": 150,
+        "drachmae": 75,
+        "items": [
+          "item_nr_silver_waraxe"
+        ],
+        "reputation": {
+          "faction_nr_frostpeak_watch": 20
+        },
+        "renown": 5
       }
     },
     {
       "id": "quest_nr_side_dwarven_vault",
       "title": "The Silver Kin's Legacy",
-      "category": "side",
-      "description": "Overseer Thrain lost the iron key to the ancestral silver vault during the troll breach in Shaft Nine. Find it and unlock the clan vault.",
+      "category": "Side Quest",
+      "description": "Overseer Thrain lost the iron key to the ancestral silver vault during the troll breach in Shaft Nine. Recover it and decide how to handle the clan's charter.",
       "autoStart": false,
       "currentStage": "stage_find_vault_key",
+      "moralPaths": {
+        "honorable_return": {
+          "label": "Restored Clan Charter Intact",
+          "virtue": 15,
+          "reputation": {
+            "faction_nr_silver_kin": 30
+          },
+          "rewards": {
+            "experience": 120,
+            "drachmae": 60,
+            "items": [
+              "item_nr_silver_crest_shield"
+            ]
+          }
+        },
+        "skimmed_silver": {
+          "label": "Claimed Salvage Tribute",
+          "hubris": 10,
+          "reputation": {
+            "faction_nr_silver_kin": -10,
+            "faction_nr_whispering_cabal": 10
+          },
+          "rewards": {
+            "experience": 100,
+            "drachmae": 130
+          }
+        }
+      },
       "stages": {
         "stage_find_vault_key": {
           "id": "stage_find_vault_key",
           "description": "Search Infested Shaft Nine for the Overseer's dropped iron key.",
-          "locationId": "loc_nr_abandoned_shaft_nine",
-          "objective": "Find the Iron Key of Grimstone Vault."
+          "next": "stage_open_vault",
+          "objectives": [
+            {
+              "id": "obj_find_vault_key",
+              "text": "Find the dropped vault key in Infested Shaft Nine.",
+              "completed": false,
+              "locationId": "loc_nr_abandoned_shaft_nine"
+            }
+          ]
         },
         "stage_open_vault": {
           "id": "stage_open_vault",
           "description": "Use the key to unlock the Grimstone Deep Clan Vault.",
-          "locationId": "loc_nr_abandoned_shaft_nine",
-          "objective": "Unlock the clan vault."
+          "next": "stage_return_thrain",
+          "objectives": [
+            {
+              "id": "obj_open_vault",
+              "text": "Unlock the Grimstone Deep Clan Vault.",
+              "completed": false,
+              "locationId": "loc_nr_abandoned_shaft_nine"
+            }
+          ]
         },
-        "stage_completed": {
-          "id": "stage_completed",
-          "description": "The ancestral vault is restored to Clan Silver-Kin.",
-          "locationId": "loc_nr_grimstone_delve",
-          "objective": "Vault recovered."
+        "stage_return_thrain": {
+          "id": "stage_return_thrain",
+          "description": "Return to Overseer Thrain in the Grimstone Deep Mines with news of the vault.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_return_thrain",
+              "text": "Report the vault recovery to Overseer Thrain in the mines.",
+              "completed": false,
+              "locationId": "loc_nr_grimstone_delve"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The ancestral vault of Clan Silver-Kin has been opened.",
+          "objectives": [
+            {
+              "id": "obj_vault_done",
+              "text": "The ancestral silver vault affair is concluded.",
+              "completed": true
+            }
+          ]
         }
       },
       "rewards": {
-        "xp": 110,
-        "itemId": "item_nr_silver_crest_shield"
+        "experience": 110,
+        "drachmae": 60,
+        "items": [
+          "item_nr_silver_crest_shield"
+        ],
+        "reputation": {
+          "faction_nr_silver_kin": 25
+        },
+        "renown": 5
+      }
+    },
+    {
+      "id": "quest_nr_side_lost_caravan",
+      "title": "Caravan of the Howling Pass",
+      "category": "Side Quest",
+      "description": "Merchant Astrid's fur sledge vanished between Whispering Pines and the Howling Timber Cavern. Track the wreckage, consult Trapper Ulf, and decide whether to return the sealed crate or fence it in Mistglen.",
+      "autoStart": false,
+      "currentStage": "stage_track_caravan",
+      "moralPaths": {
+        "returned_honestly": {
+          "label": "Returned Caravan Crate Intact",
+          "virtue": 12,
+          "reputation": {
+            "faction_nr_frostpeak_watch": 15
+          },
+          "rewards": {
+            "experience": 100,
+            "drachmae": 65,
+            "items": [
+              "item_nr_wolfskin_mantle"
+            ]
+          }
+        },
+        "fenced_contraband": {
+          "label": "Fenced Cargo in Mistglen",
+          "hubris": 12,
+          "reputation": {
+            "faction_nr_whispering_cabal": 20,
+            "faction_nr_frostpeak_watch": -15
+          },
+          "rewards": {
+            "experience": 90,
+            "drachmae": 120
+          }
+        }
+      },
+      "stages": {
+        "stage_track_caravan": {
+          "id": "stage_track_caravan",
+          "description": "Track Astrid's missing sledge through the Whispering Woods to the Howling Timber Cavern and reclaim the sealed fur crate.",
+          "next": "stage_deliver_caravan",
+          "objectives": [
+            {
+              "id": "obj_recover_caravan",
+              "text": "Recover Astrid's Sealed Fur Crate from Howling Timber Cavern.",
+              "completed": false,
+              "locationId": "loc_nr_wolf_den_cavern"
+            }
+          ]
+        },
+        "stage_deliver_caravan": {
+          "id": "stage_deliver_caravan",
+          "description": "Return the sealed crate to Astrid in Valenfrost Market, or sell the undeclared cargo to Mira at the Drowned Lantern Tavern.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_deliver_caravan",
+              "text": "Deliver the fur crate to Astrid or fence it with Mira.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_market"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The mystery of Astrid's vanished sledge has been settled.",
+          "objectives": [
+            {
+              "id": "obj_caravan_done",
+              "text": "Settled the fate of Astrid's lost caravan cargo.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 100,
+        "drachmae": 65,
+        "items": [
+          "item_nr_wolfskin_mantle"
+        ],
+        "reputation": {
+          "faction_nr_frostpeak_watch": 15
+        },
+        "renown": 4
+      }
+    },
+    {
+      "id": "quest_nr_side_blackforge_embers",
+      "title": "Embers of the Deep Forge",
+      "category": "Side Quest",
+      "description": "Helga Anvil-Mother cannot temper sky-iron while the volcanic crucible cools and an awakened Runebound Sentinel blocks the deep ore vein in Grimstone Delve.",
+      "autoStart": false,
+      "currentStage": "stage_reclaim_ore",
+      "stages": {
+        "stage_reclaim_ore": {
+          "id": "stage_reclaim_ore",
+          "description": "Quell the awakened Runebound Sentinel in Grimstone Deep Mines and recover Star-Iron Ore for the Blackforge crucible.",
+          "next": "stage_return_helga",
+          "objectives": [
+            {
+              "id": "obj_gather_forge_ore",
+              "text": "Defeat the Runebound Sentinel in Grimstone Deep Mines to secure Star-Iron Ore.",
+              "completed": false,
+              "locationId": "loc_nr_grimstone_delve"
+            }
+          ]
+        },
+        "stage_return_helga": {
+          "id": "stage_return_helga",
+          "description": "Deliver the Star-Iron Ore to Helga Anvil-Mother at The Great Blackforge.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_return_helga",
+              "text": "Bring the Star-Iron Ore to Helga Anvil-Mother.",
+              "completed": false,
+              "locationId": "loc_nr_blackforge"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The Great Blackforge roars once more with volcanic star-fire.",
+          "objectives": [
+            {
+              "id": "obj_blackforge_done",
+              "text": "Rekindled the Great Blackforge crucible.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 160,
+        "drachmae": 80,
+        "items": [
+          "item_nr_blackforge_hearthblade"
+        ],
+        "reputation": {
+          "faction_nr_silver_kin": 30
+        },
+        "renown": 8
+      }
+    },
+    {
+      "id": "quest_nr_hidden_broken_oath",
+      "title": "Ashes of the Broken Oath",
+      "category": "Secret Mission",
+      "hidden": true,
+      "autoStart": false,
+      "description": "Having broken faith with the Whispering Cabal, you earned Mira Cold-Spring's quiet trust. She revealed that a rogue Watch liaison is funneling Vyr-cult obsidian idols along the Sunken Mire Causeway.",
+      "currentStage": "stage_intercept_courier",
+      "moralPaths": {
+        "protect_mistglen": {
+          "label": "Burned Manifest with Mira",
+          "virtue": 20,
+          "reputation": {
+            "faction_nr_drakenseekers": 20
+          },
+          "rewards": {
+            "experience": 180,
+            "drachmae": 90,
+            "items": [
+              "item_nr_oathbreaker_signet"
+            ]
+          }
+        },
+        "purge_watch": {
+          "label": "Delivered Manifest to Captain Tor",
+          "virtue": 15,
+          "reputation": {
+            "faction_nr_frostpeak_watch": 30,
+            "faction_nr_drakenseekers": 15
+          },
+          "rewards": {
+            "experience": 190,
+            "drachmae": 100,
+            "items": [
+              "item_nr_oathbreaker_signet"
+            ]
+          }
+        }
+      },
+      "stages": {
+        "stage_intercept_courier": {
+          "id": "stage_intercept_courier",
+          "description": "Inspect the submerged smuggler buoy along the Sunken Mire Causeway and intercept the Vyr-cult courier.",
+          "next": "stage_resolve_manifest",
+          "objectives": [
+            {
+              "id": "obj_intercept_courier",
+              "text": "Haul the smuggler buoy at the Sunken Mire Causeway and seize the Obsidian Cult Manifest.",
+              "completed": false,
+              "locationId": "loc_nr_mire_causeway"
+            }
+          ]
+        },
+        "stage_resolve_manifest": {
+          "id": "stage_resolve_manifest",
+          "description": "Bring the Obsidian Cult Manifest to Mira Cold-Spring to shield Mistglen quietly, or to Captain Tor to purge the Watch traitor.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_deliver_manifest",
+              "text": "Deliver the Obsidian Cult Manifest to Mira or Captain Tor.",
+              "completed": false,
+              "locationId": "loc_nr_drowned_lantern_tavern"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The Vyr cult's canal smuggling network has been severed at the root.",
+          "objectives": [
+            {
+              "id": "obj_broken_oath_done",
+              "text": "Shattered the Vyr cult's Mistglen supply chain.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 180,
+        "drachmae": 90,
+        "items": [
+          "item_nr_oathbreaker_signet"
+        ],
+        "reputation": {
+          "faction_nr_drakenseekers": 20
+        },
+        "renown": 10
+      }
+    },
+    {
+      "id": "quest_nr_hidden_mercy_drowned",
+      "title": "The Mercy of the Drowned",
+      "category": "Secret Mission",
+      "hidden": true,
+      "autoStart": false,
+      "description": "Because you spared Marauder Captain Malik when others would have taken his head, his aunt Morrigan the Peat-Mother entrusted you with a buried Drakenseeker secret predating High King Valen.",
+      "currentStage": "stage_find_cairn",
+      "stages": {
+        "stage_find_cairn": {
+          "id": "stage_find_cairn",
+          "description": "Uncover the hidden Drakenseeker cairn deep inside the Howling Timber Cavern and retrieve the Ancient Frost-Truce Tablet.",
+          "next": "stage_return_tablet",
+          "objectives": [
+            {
+              "id": "obj_find_truce_tablet",
+              "text": "Recover the Ancient Frost-Truce Tablet in Howling Timber Cavern.",
+              "completed": false,
+              "locationId": "loc_nr_wolf_den_cavern"
+            }
+          ]
+        },
+        "stage_return_tablet": {
+          "id": "stage_return_tablet",
+          "description": "Bring the Ancient Frost-Truce Tablet to Morrigan the Peat-Mother at her bog hovel (or share it with Skald Einar).",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_return_truce_tablet",
+              "text": "Present the Frost-Truce Tablet to Morrigan or Skald Einar.",
+              "completed": false,
+              "locationId": "loc_nr_witch_hut"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The ancient pact of the First Truce is remembered once more, earning the Drakenseekers' ancestral talisman.",
+          "objectives": [
+            {
+              "id": "obj_mercy_drowned_done",
+              "text": "Restored the forgotten memory of the First Truce.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 200,
+        "drachmae": 80,
+        "items": [
+          "item_nr_drakenseeker_talisman"
+        ],
+        "reputation": {
+          "faction_nr_drakenseekers": 30
+        },
+        "virtue": 15,
+        "renown": 12
+      }
+    },
+    {
+      "id": "quest_nr_hidden_blood_throne",
+      "title": "Blood Upon the Frost-Throne",
+      "category": "Secret Mission",
+      "hidden": true,
+      "autoStart": false,
+      "description": "Your bloodied defiance of Valenfrost's throne and the order of your delve into Skallagrim's barrow forced Skald Einar to confess a suppressed saga: Valen betrayed Skallagrim to seize the third Star-Key and hid the true Rime-King's Crown in Frostmere Archives.",
+      "currentStage": "stage_claim_crown",
+      "moralPaths": {
+        "proclaim_lineage": {
+          "label": "Proclaimed the Forgotten Lineage",
+          "hubris": 5,
+          "reputation": {
+            "faction_nr_drakenseekers": 25,
+            "faction_nr_frostpeak_watch": -15
+          },
+          "rewards": {
+            "experience": 250,
+            "drachmae": 120,
+            "items": [
+              "item_nr_rime_king_crown"
+            ]
+          }
+        },
+        "preserve_unity": {
+          "label": "Sealed the Forbidden Chronicle",
+          "virtue": 15,
+          "reputation": {
+            "faction_nr_circle_of_winter": 30,
+            "faction_nr_frostpeak_watch": 15
+          },
+          "rewards": {
+            "experience": 250,
+            "drachmae": 110,
+            "items": [
+              "item_nr_rime_king_crown"
+            ]
+          }
+        }
+      },
+      "stages": {
+        "stage_claim_crown": {
+          "id": "stage_claim_crown",
+          "description": "Investigate the sealed false wall inside the Arcanum Vault of Frostmere and claim the Crown of the Rime-King.",
+          "next": "stage_decide_crown",
+          "objectives": [
+            {
+              "id": "obj_claim_rime_crown",
+              "text": "Breach the false wall in Frostmere Archives and claim the Crown of the Rime-King.",
+              "completed": false,
+              "locationId": "loc_nr_frostmere_archives"
+            }
+          ]
+        },
+        "stage_decide_crown": {
+          "id": "stage_decide_crown",
+          "description": "Decide the fate of Valen's secret: proclaim Skallagrim's true lineage with Skald Einar, or entrust the suppressed chronicle to Archmage Kallan to preserve northern unity.",
+          "next": "completed",
+          "objectives": [
+            {
+              "id": "obj_decide_crown",
+              "text": "Resolve the secret of the Rime-King's Crown with Skald Einar or Archmage Kallan.",
+              "completed": false,
+              "locationId": "loc_nr_valenfrost_hall"
+            }
+          ]
+        },
+        "completed": {
+          "id": "completed",
+          "description": "The centuries-old secret of High King Valen and Chieftain Skallagrim has been laid bare.",
+          "objectives": [
+            {
+              "id": "obj_blood_throne_done",
+              "text": "Settled the hidden legacy of the Rime-King's Crown.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 250,
+        "drachmae": 120,
+        "items": [
+          "item_nr_rime_king_crown"
+        ],
+        "reputation": {
+          "faction_nr_drakenseekers": 25
+        },
+        "renown": 20
       }
     }
   ]

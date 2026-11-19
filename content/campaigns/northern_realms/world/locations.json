@@ -78,6 +78,19 @@
       ],
       "presentItems": [
         "item_nr_mountain_torch"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_gate_masonry",
+          "name": "Loose Rampart Masonry",
+          "dc": 11,
+          "skill": "perception",
+          "description": "Behind a frost-cracked rampart stone sits a forgotten watchman's oilcloth pouch.",
+          "loot": [
+            "item_nr_mountain_whetstone",
+            "item_nr_smoked_venison"
+          ]
+        }
       ]
     },
     {
@@ -193,7 +206,7 @@
         }
       ],
       "presentNPCs": [
-        "npc_nr_merchant_ Astrid"
+        "npc_nr_merchant_astrid"
       ],
       "presentItems": []
     },
@@ -332,6 +345,14 @@
           "travelHours": 2,
           "staminaCost": 6,
           "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_nr_grimstone_gates",
+          "name": "Crag Ascent to Grimstone",
+          "distanceKm": 14,
+          "travelHours": 3.5,
+          "staminaCost": 8,
+          "dangerRating": 2
         }
       ],
       "actions": [
@@ -370,6 +391,19 @@
       "presentNPCs": [],
       "presentItems": [
         "mat_nr_hardened_pine"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_shrine_hollow",
+          "name": "Skadi's Root Hollow",
+          "dc": 12,
+          "skill": "perception",
+          "description": "Tucked between ancient spruce roots beside Skadi's shrine glints warm amber resin.",
+          "loot": [
+            "mat_nr_hearth_amber",
+            "mat_nr_hardened_pine"
+          ]
+        }
       ]
     },
     {
@@ -424,6 +458,19 @@
       ],
       "presentItems": [
         "item_nr_hard_tack_bread"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_trapper_cache",
+          "name": "Snow-Buried Trapper Cache",
+          "dc": 12,
+          "skill": "tracking",
+          "description": "A blazed pine trunk marks an abandoned winter stash wrapped in waxed deer hide.",
+          "loot": [
+            "mat_nr_wolf_pelt",
+            "item_nr_stamina_draught"
+          ]
+        }
       ]
     },
     {
@@ -473,6 +520,73 @@
             "text": "Only sharp splintered bones and frozen mud.",
             "setFlags": {
               "searched_wolf_bones": true
+            }
+          }
+        },
+        {
+          "id": "act_nr_track_caravan_wolves",
+          "title": "Confront the Alpha Pack at the Sledge",
+          "category": "Combat",
+          "description": "Fight the scarred alpha wolf guarding Astrid's overturned trade sledge.",
+          "handlerType": "encounter",
+          "encounterId": "enc_nr_wolf_alpha",
+          "conditions": [
+            {
+              "type": "quest_active",
+              "questId": "quest_nr_side_lost_caravan"
+            },
+            {
+              "type": "flag",
+              "key": "recovered_caravan_crate",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "id": "act_nr_hidden_drakenseeker_cairn",
+          "title": "Unearth the Drakenseeker Cairn",
+          "category": "Explore",
+          "description": "Follow Morrigan's secret marks behind the cavern bone-pile to uncover the ancient stone cairn.",
+          "handlerType": "skill_check",
+          "conditions": [
+            {
+              "type": "quest_active",
+              "questId": "quest_nr_hidden_mercy_drowned"
+            },
+            {
+              "type": "flag",
+              "key": "found_frost_truce_tablet",
+              "expected": false
+            }
+          ],
+          "skillCheck": {
+            "name": "Unearth the Ancient Cairn",
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "dc": 11,
+            "success": {
+              "transcript": {
+                "speaker": "Secret Discovery",
+                "text": "Prying away three frost-locked slabs reveals an intact slate etched with Drakenseeker runes: the Ancient Frost-Truce Tablet!",
+                "style": "entry-discovery"
+              },
+              "giveItem": "item_nr_frost_truce_tablet",
+              "setFlags": {
+                "found_frost_truce_tablet": true
+              },
+              "updateQuest": {
+                "questId": "quest_nr_hidden_mercy_drowned",
+                "objectiveId": "obj_find_truce_tablet",
+                "completed": true
+              },
+              "awardXP": 60
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Exploration",
+                "text": "Packed ice holds the cairn stones fast, though you clear away the loose scree for another try.",
+                "style": "entry-prose"
+              }
             }
           }
         }
@@ -540,7 +654,20 @@
         }
       ],
       "presentNPCs": [],
-      "presentItems": []
+      "presentItems": [],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_cairn_offering",
+          "name": "First-Age Offering Niche",
+          "dc": 13,
+          "skill": "investigation",
+          "description": "Beneath the moss of the northern standing stone rests a buried burial token and barrow key-charm.",
+          "loot": [
+            "item_nr_key_barrow_sanctum",
+            "mat_nr_silver_ingot"
+          ]
+        }
+      ]
     },
     {
       "id": "loc_nr_barrow_depths",
@@ -590,6 +717,38 @@
             "setFlags": {
               "searched_crypt_urns": true
             }
+          }
+        },
+        {
+          "id": "act_nr_barrow_final_rites",
+          "title": "Speak Torvald's Burial Rites Over Skallagrim",
+          "category": "Ritual",
+          "description": "Offer respectful northern burial rites to honor the betrayed chieftain after his fall.",
+          "handlerType": "narrative",
+          "conditions": [
+            {
+              "type": "flag",
+              "key": "skallagrim_slain",
+              "expected": true
+            },
+            {
+              "type": "flag",
+              "key": "skallagrim_honored",
+              "expected": false
+            }
+          ],
+          "outcome": {
+            "transcript": {
+              "speaker": "Barrow Sanctum",
+              "text": "As you lay Skallagrim's waraxe across his breast and speak the rites of Torvald, the cold blue grave-light softens and fades. Beside his helm rests his ancient war-horn.",
+              "style": "entry-discovery"
+            },
+            "setFlags": {
+              "skallagrim_honored": true
+            },
+            "giveItem": "item_nr_skallagrim_warhorn",
+            "virtue": 10,
+            "awardXP": 35
           }
         }
       ],
@@ -670,6 +829,19 @@
       ],
       "presentItems": [
         "item_nr_smoked_salmon"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_piling_stash",
+          "name": "Waterlogged Piling Box",
+          "dc": 12,
+          "skill": "perception",
+          "description": "A chained cedar strongbox hangs beneath the third dock piling, left behind by panicked smugglers.",
+          "loot": [
+            "item_nr_dwarven_lockpicks",
+            "item_nr_smoked_salmon"
+          ]
+        }
       ]
     },
     {
@@ -838,10 +1010,50 @@
               "harvested_mire_lichen": false
             }
           }
+        },
+        {
+          "id": "act_nr_hunt_bog_stalker",
+          "title": "Flush Out the Bog Stalker",
+          "category": "Combat",
+          "description": "Draw out the venomous mire predator lurking beneath the sunken flagstones.",
+          "handlerType": "encounter",
+          "encounterId": "enc_nr_bog_stalker"
+        },
+        {
+          "id": "act_nr_hidden_mire_buoy",
+          "title": "Haul the Submerged Smuggler Buoy",
+          "category": "Combat",
+          "description": "Pull up the weighted cult drop-buoy Mira described and confront whoever watches the line.",
+          "handlerType": "encounter",
+          "encounterId": "enc_nr_cult_ambush",
+          "conditions": [
+            {
+              "type": "quest_active",
+              "questId": "quest_nr_hidden_broken_oath"
+            },
+            {
+              "type": "flag",
+              "key": "seized_cult_manifest",
+              "expected": false
+            }
+          ]
         }
       ],
       "presentNPCs": [],
-      "presentItems": []
+      "presentItems": [],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_bog_resin",
+          "name": "Geothermal Peat Vent",
+          "dc": 12,
+          "skill": "survival",
+          "description": "Steam curls from a pocket of black peat where golden amber resin and glacial moss thrive.",
+          "loot": [
+            "mat_nr_hearth_amber",
+            "mat_nr_frost_lichen"
+          ]
+        }
+      ]
     },
     {
       "id": "loc_nr_bandit_redoubt",
@@ -888,6 +1100,87 @@
             "text": "A bandit lookout barks an alarm and looses a warning bolt into the mud!",
             "setFlags": {
               "scouted_redoubt_weakness": false
+            }
+          }
+        },
+        {
+          "id": "act_nr_search_malik_desk",
+          "label": "Search Malik's Field Desk",
+          "actionType": "examine",
+          "skillCheck": {
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "difficulty": 11
+          },
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "found_stolen_ledger",
+              "expected": false
+            }
+          ],
+          "successOutcome": {
+            "text": "Beneath spilled tallow and stolen coin ledgers, you discover the Cabal's encrypted cipher ledger!",
+            "giveItem": "item_nr_elena_stolen_ledger",
+            "awardXP": 30,
+            "updateQuest": {
+              "questId": "quest_nr_cabal_smugglers_ledger",
+              "objectiveId": "obj_recover_ledger",
+              "completed": true
+            },
+            "setFlags": {
+              "found_stolen_ledger": true
+            }
+          },
+          "failureOutcome": {
+            "text": "Stained maps and useless raid tallies.",
+            "setFlags": {
+              "found_stolen_ledger": false
+            }
+          }
+        },
+        {
+          "id": "act_nr_sneak_malik_ledger",
+          "title": "Slip Past the Palisade for the Ledger (Stealth)",
+          "category": "Stealth",
+          "description": "Creep through the flooded drainage grate to lift Valeria's ledger from Malik's command tent without bloodshed.",
+          "handlerType": "skill_check",
+          "conditions": [
+            {
+              "type": "flag",
+              "key": "recovered_malik_ledger",
+              "expected": false
+            }
+          ],
+          "skillCheck": {
+            "name": "Infiltrate Malik's Tent",
+            "skill": "stealth",
+            "attribute": "agility",
+            "dc": 12,
+            "success": {
+              "transcript": {
+                "speaker": "Stealth Infiltration",
+                "text": "Moving like bog-mist between torchlit patrols, you lift the cipher smuggling ledger cleanly from Malik's war-table and slip back into the reeds!",
+                "style": "entry-discovery"
+              },
+              "giveItem": "item_nr_elena_stolen_ledger",
+              "setFlags": {
+                "recovered_malik_ledger": true,
+                "ledger_stolen_stealth": true
+              },
+              "updateQuest": {
+                "questId": "quest_nr_cabal_smugglers_ledger",
+                "objectiveId": "obj_recover_ledger",
+                "completed": true
+              },
+              "awardXP": 50
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Alert",
+                "text": "A loose duckboard creaks under your boot! You duck back into the fog before the sentries spot you.",
+                "style": "entry-consequence"
+              }
             }
           }
         }
@@ -1069,6 +1362,25 @@
               "found_silver_nugget": false
             }
           }
+        },
+        {
+          "id": "act_nr_engage_sentinel",
+          "title": "Confront the Runebound Sentinel",
+          "category": "Combat",
+          "description": "Challenge the awakened dwarven automaton blocking the deep Star-Iron seam.",
+          "handlerType": "encounter",
+          "encounterId": "enc_nr_runebound_sentinel",
+          "conditions": [
+            {
+              "type": "quest_active",
+              "questId": "quest_nr_side_blackforge_embers"
+            },
+            {
+              "type": "flag",
+              "key": "sentinel_quelled",
+              "expected": false
+            }
+          ]
         }
       ],
       "presentNPCs": [
@@ -1076,6 +1388,19 @@
       ],
       "presentItems": [
         "mat_nr_bog_iron"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_silver_seam",
+          "name": "Unmarked Silver Seam",
+          "dc": 13,
+          "skill": "investigation",
+          "description": "Behind a collapsed timber prop glints a raw vein of pure Silver Kin ore.",
+          "loot": [
+            "mat_nr_silver_ingot",
+            "mat_nr_bog_iron"
+          ]
+        }
       ]
     },
     {
@@ -1117,6 +1442,11 @@
             "text": "Tucked inside an abandoned toolkit beneath the cart, you find the Overseer's lost vault key!",
             "giveItem": "item_nr_key_grimstone_vault",
             "awardXP": 25,
+            "updateQuest": {
+              "questId": "quest_nr_side_dwarven_vault",
+              "objectiveId": "obj_find_vault_key",
+              "completed": true
+            },
             "setFlags": {
               "found_vault_key": true
             }
@@ -1125,6 +1455,34 @@
             "text": "Shattered rock and rusted mining picks.",
             "setFlags": {
               "found_vault_key": false
+            }
+          }
+        },
+        {
+          "id": "act_nr_hunt_shaft_troll",
+          "label": "Confront the Feral Frost Troll",
+          "actionType": "combat",
+          "encounterId": "enc_nr_shaft_troll",
+          "targetEntityId": "creature_nr_frost_troll",
+          "narrative": "A towering mountain frost troll lumbers out from the collapsed timber supports, roaring with fury!",
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "shaft_nine_troll_slain",
+              "expected": false
+            }
+          ],
+          "outcome": {
+            "text": "The mountain frost troll crashes down into the rubble. You carve a thick section of hide from the beast.",
+            "giveItem": "mat_nr_frost_troll_hide",
+            "awardXP": 60,
+            "setFlags": {
+              "shaft_nine_troll_slain": true
+            },
+            "updateQuest": {
+              "questId": "quest_nr_covenant_trial_of_steel",
+              "objectiveId": "obj_slay_troll",
+              "completed": true
             }
           }
         }
@@ -1177,6 +1535,19 @@
       ],
       "presentItems": [
         "item_nr_smithing_hammer"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_quench_alcove",
+          "name": "Slag Alcove Crucible",
+          "dc": 13,
+          "skill": "investigation",
+          "description": "A cooling crucible tucked beside the volcanic chimney still holds unrefined star-iron fragments.",
+          "loot": [
+            "mat_nr_sky_iron_ore",
+            "mat_nr_hearth_amber"
+          ]
+        }
       ]
     },
     {
@@ -1252,6 +1623,19 @@
       "presentNPCs": [],
       "presentItems": [
         "mat_nr_frost_lichen"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_quartz_crevasse",
+          "name": "Glacial Quartz Crevasse",
+          "dc": 14,
+          "skill": "perception",
+          "description": "A shimmering prism of pure glacial quartz protrudes from a wind-scoured ice ledge.",
+          "loot": [
+            "mat_nr_frost_quartz",
+            "item_nr_frost_resist_potion"
+          ]
+        }
       ]
     },
     {
@@ -1357,6 +1741,25 @@
               "learned_star_key_lore": true
             }
           }
+        },
+        {
+          "id": "act_nr_hidden_rime_crown_vault",
+          "title": "Pry Open the False Glacial Wall",
+          "category": "Combat",
+          "description": "Follow Skald Einar's forbidden verse to the sealed masonry niche behind the First-Age stacks.",
+          "handlerType": "encounter",
+          "encounterId": "enc_nr_ice_wraith_shrine",
+          "conditions": [
+            {
+              "type": "quest_active",
+              "questId": "quest_nr_hidden_blood_throne"
+            },
+            {
+              "type": "flag",
+              "key": "recovered_rime_crown",
+              "expected": false
+            }
+          ]
         }
       ],
       "presentNPCs": [
@@ -1426,6 +1829,19 @@
       "presentNPCs": [],
       "presentItems": [
         "mat_nr_sky_iron_ore"
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_nr_drakenseeker_pack",
+          "name": "Fallen Drakenseeker's Pack",
+          "dc": 14,
+          "skill": "perception",
+          "description": "Wedged between basalt spires lies the frozen pack of a long-dead wyrm-hunter.",
+          "loot": [
+            "item_nr_potent_restorative",
+            "mat_nr_frost_quartz"
+          ]
+        }
       ]
     },
     {
@@ -1462,6 +1878,114 @@
             "text": "The massive links of star-iron hum with celestial resonance. Three runic pedestals surround the central altar, awaiting the Star-Keys.",
             "setFlags": {
               "inspected_wyrm_pedestals": true
+            }
+          }
+        },
+        {
+          "id": "act_nr_confront_vyr",
+          "label": "Channel Star-Keys into the Binding Monolith",
+          "actionType": "combat",
+          "encounterId": "enc_nr_vyr_boss",
+          "targetEntityId": "creature_nr_boss_vyr",
+          "narrative": "You slot the three Star-Keys into the celestial monoliths. Azure runes blaze along the volcanic caldera as Vyr the Frost Wyrm rears back in fury!",
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "vyr_defeated",
+              "expected": false
+            }
+          ],
+          "outcome": {
+            "text": "The caldera basalt quakes as the Frost Wyrm is bound once more beneath celestial star-iron!",
+            "awardXP": 400,
+            "setFlags": {
+              "vyr_defeated": true
+            },
+            "updateQuest": {
+              "questId": "quest_nr_main_shadow_of_wyrmfang",
+              "objectiveId": "obj_confront_vyr",
+              "completed": true
+            }
+          }
+        },
+        {
+          "id": "act_nr_activate_wyrm_pedestals",
+          "title": "Inspect & Activate the Triad of Star-Keys",
+          "category": "Puzzle",
+          "description": "Approach the three granite pedestals binding Vyr beneath Mount Wyrmfang.",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_nr_wyrm_pedestals",
+          "conditions": [
+            {
+              "type": "flag",
+              "key": "wyrm_pedestals_activated",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "id": "act_nr_reseal_vyr",
+          "title": "Perform the Eternal Re-Binding Ritual (Scholarly Path)",
+          "category": "Ritual",
+          "description": "Using all three Star-Keys and Freya's First-Age binding liturgy, seal Vyr peacefully in timeless glacial slumber without shedding blood.",
+          "handlerType": "skill_check",
+          "conditions": [
+            {
+              "type": "has_item",
+              "itemId": "item_nr_star_key_alpha"
+            },
+            {
+              "type": "has_item",
+              "itemId": "item_nr_star_key_beta"
+            },
+            {
+              "type": "has_item",
+              "itemId": "item_nr_star_key_gamma"
+            },
+            {
+              "type": "flag",
+              "key": "studied_dragon_binding",
+              "expected": true
+            },
+            {
+              "type": "flag",
+              "key": "vyr_defeated",
+              "expected": false
+            }
+          ],
+          "skillCheck": {
+            "name": "Invoke the Eternal Triad Seal",
+            "skill": "mythology_lore",
+            "attribute": "intelligence",
+            "dc": 12,
+            "success": {
+              "transcript": {
+                "speaker": "Mount Wyrmfang",
+                "text": "You speak the true First-Age canticle learned in Frostmere Archives. All three Star-Keys blaze with tranquil azure fire, knitting the fractured monoliths shut and lulling Vyr back into millennium-deep slumber!",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "vyr_defeated": true,
+                "vyr_resealed_peacefully": true
+              },
+              "updateQuest": {
+                "questId": "quest_nr_main_shadow_of_wyrmfang",
+                "objectiveId": "obj_confront_vyr",
+                "completed": true
+              },
+              "virtue": 20,
+              "awardXP": 240,
+              "addJournalChronicle": {
+                "title": "The Eternal Binding Restored",
+                "text": "Rather than slaughtering the ancient wyrm, you restored High King Valen's celestial seal using Frostmere's forgotten liturgy."
+              }
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Mount Wyrmfang",
+                "text": "The howling caldera wind swallows the final syllable! The monoliths hum restlessly; gather your focus and try again, or draw steel against the wyrm.",
+                "style": "entry-consequence"
+              }
             }
           }
         }

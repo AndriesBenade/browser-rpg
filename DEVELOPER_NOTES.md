@@ -8,6 +8,52 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 25 - 2026-11-19 (Northern Realms v2.0 overhaul, 3 hidden missions, concealed material-driven crafting, progression-based combat magic)
+* **Collaborator / Model**: User & Antigravity
+* **Engine Upgrades (`index.html`, campaign-neutral)**:
+  * **Ordered Event History & Rich World Conditions**: Added `worldState.eventSeq`, `eventHistory`, `eventFirstSeq`, `eventLastSeq`, and `sparedEntities` (migrated safely for old saves). Added `recordHistoryEvent()`, `didEventOccurBefore()`, `didEventOccurAfter()`, and unified `evaluateWorldCondition()` supporting `questCompletedBefore`, `eventAfter`, `npcDead`, `npcAlive`, `npcSpared`, `minFactionReputation`, `maxFactionReputation`, `moralChoice`, `anyOf`, and `allOf`. Wired into `processWorldEvents()` (supports `triggers` array + `worldConditions`), `evaluateActionCondition()`, `checkDialogueCondition()`, `openDialogue()` (`NPC_TALKED` + `spareNpc`), `completeQuest()` (`QUEST_COMPLETED`), `resolveYield(true)` (`ENTITY_SPARED`), `modifyFactionReputation()` (`REPUTATION_CHANGED`), and `resolveMoralChoice()` (`MORAL_CHOICE` + item rewards).
+  * **Hidden Missions (`hidden: true`) & Deep Validator**: Undiscovered hidden quests never appear in Quest Log or sidebar; discovery shows a dedicated banner and `Hidden Mission` badge. Strengthened `validateCampaign()` to verify quest prerequisites (as errors), stage `next` reachability, hidden quest `autoStart: false` & triggers, reward factions/deities, dialogue outcome refs, and `events.json` trigger/outcome refs.
+  * **Interactive Object Vault Loot Fix**: Fixed `unlockWithKey()`, `attemptLockpick()`, and `lootContainer()` so doors/vaults with `loot`/`items`/`lootTableId` reliably grant guaranteed contents (such as Star-Key Alpha in Grimstone Vault) alongside loot tables.
+  * **Concealed Material-Driven Crafting & Skill-Gated Supplementary Slots**:
+    * Craft view (`renderCraftingView`, `updateCraftingPreview`) and Inventory Workbench (`renderWorkbench`, `craftAtWorkbench`) now display ONLY general categories (`Weapon`, `Armour & Protection`, `Accessory & Talisman`, `Consumable & Draught`, `Tool & Utility`) prior to crafting. Exact item form is revealed only after completion.
+    * Added normalized material-property scoring (`scoreTemplateForMaterials`, `resolveCraftingTemplate`) so primary materials' hardness, durability, flexibility, weight, magic affinity, heat resistance, and category meaningfully determine the forged form.
+    * Supplementary catalyst capacity scales 1 -> 2 -> 3 -> 4 slots via each discipline's governing skill (`athletics` for blacksmithing/tinkering, `survival` for leatherwork, `medicine` for alchemy/herbalism, `mythology_lore` for scribing/runecraft) at Ranks 0/2/4/6, enforced by engine and shown transparently in UI.
+    * Applied `weapon.stats.attackBonus` and `weapon.stats.elementalDamage` in `playerStrike()`.
+  * **Progression-Based Combat Magic & Tactical Spell Options**:
+    * Replaced single-use `divineFavorUsed` with `getCombatSpellCapacityInfo()` governed by `Mythology & Lore` + `Wisdom` (1 -> 2 -> 3 -> 4 -> 5 casts per battle at Mastery Scores 0/2/4/7/10, plus equipped `spellCapacityBonus`), resetting cleanly between encounters and persisting mid-combat across saves.
+    * Added 4 campaign-flavored combat spells (`aegis`, `bolt`, `mend`, `bind`) and 5 `Intelligence`-governed Spell Shaping options (`standard`, `elemental_shift` [INT 12: Frost/Fire/Storm], `lingering_weave` [INT 14: +1 round & Arcane Ward], `siphoning_cast` [INT 16: +2 HP/+2 STM], `overchannel` [INT 18: +1d4 surge, -3 morale, contested stun, once/combat]).
+    * Rendered interactive `#combat-magic-bar` in Combat Modal and `#sheet-magic-block` in Character Sheet.
+* **The Northern Realms Campaign Overhaul (`content/campaigns/northern_realms/`, v2.0.0)**:
+  * **Critical Repairs**: Added real engine `stats` (`damageMin`/`damageMax`, `defenseBonus`, `restoreHealth`/`restoreStamina`, `spellBonus`) and valid paper-doll slots (`body`, `head`, `back`, `feet`, `ring_1`, `neck`) across all 57 items and 17 NPCs; repaired all 10 creatures with top-level `armorClass`, bespoke `actions`, `xpReward`, `level`, and `isBoss: true` on Skallagrim & Vyr; replaced 6 broken crafting templates with 17 properly stat'd material-affinity templates across all 5 categories; added explicit IDs to all 12 class features; wired orphaned `puzzle_nr_wyrm_pedestals` and added `tutorials.json`.
+  * **Expanded Content**: Expanded from 6 to 11 quests (6 deepened with branching moral paths + Jarl Sigurd death failover + Scholarly Re-Seal Vyr ending; 2 new side quests: *Caravan of the Howling Pass* and *Embers of the Deep Forge*; 3 genuinely hidden missions: *Ashes of the Broken Oath*, *The Mercy of the Drowned*, and *Blood Upon the Frost-Throne*). Upgraded all 17 NPC dialogues into multi-node reactive trees. Added 10 discoverable `hiddenSpots`, 4 new creatures, 5 new encounters, 2 new crafting materials (`mat_nr_hearth_amber`, `mat_nr_frost_quartz`), and 12 new items/relics.
+* **Tests**: Validator passes with 0 errors and 0 warnings; full `npm test` passes **217 / 217** (75/75 engine, 109/109 behaviour, 21/21 Dev/Lanternfall, 12/12 Northern Realms & new systems tests) + `sync-embedded-content.js --check` clean (69 files). Zero Unicode em dashes.
+
+### Session 24 - 2026-11-19 (The Northern Realms campaign overhaul, graph reachability, quest lifecycle loops, and validation)
+* **Collaborator / Model**: User & Antigravity (Gemini)
+* **The Northern Realms Campaign (`campaign_northern_realms`)**:
+  * **Schema repairs and data hygiene**:
+    * Resolved corrupted empty string keys `""` across `materials.json` (mapped to `statModifiers: { damage, defense }`, restored human-readable names and `compatibleProfessions`), `professions.json` (mapped to `itemCategories`, restored `governingAttribute` and `workstation`), `classes.json` (mapped to `proficiencies`), and `backgrounds.json` (mapped to `dialoguePerk`, added explicit `proficiencies`).
+    * Fixed location typo in `locations.json`: `"npc_nr_merchant_ Astrid"` -> `"npc_nr_merchant_astrid"`.
+    * Standardized action `conditions` in `locations.json` from object shape `{ flags: ... }` to engine-standard array syntax `conditions: [ { type: "flag", ... } ]`.
+  * **Geographic reachability**:
+    * Added missing connection in `loc_nr_pine_crossroads.connections` to `loc_nr_grimstone_gates` (14 km, 3.5h, 8 stamina), establishing 100% bidirectional traversability across all 25 world locations.
+  * **Interactive Objects, Encounters & Quests Lifecycle**:
+    * Added missing encounter `enc_nr_shaft_troll` and action `act_nr_hunt_shaft_troll` at `loc_nr_abandoned_shaft_nine`.
+    * Added missing action `act_nr_search_malik_desk` at `loc_nr_bandit_redoubt` and placed `item_nr_elena_stolen_ledger` on Captain Malik.
+    * Added `act_nr_confront_vyr` at `loc_nr_wyrmfang_caldera`.
+    * Added `victoryOutcome` triggers to `enc_nr_wolf_ambush`, `enc_nr_troll_rockslide`, `enc_nr_shaft_troll`, `enc_nr_skallagrim_boss`, and `enc_nr_vyr_boss` for drops (`mat_nr_frost_troll_hide`, `item_nr_star_key_gamma`, `mat_nr_wyrm_blood_vial`) and stage updates.
+    * Added `updateQuest` outcomes to interactive objects (`obj_nr_grimstone_vault_door`, `obj_nr_barrow_crypt_portal`, `obj_nr_skallagrim_sarcophagus`) and puzzle `puzzle_nr_rime_stone`.
+    * Normalized all 6 quests (`quest_nr_main_shadow_of_wyrmfang`, `quest_nr_covenant_trial_of_steel`, `quest_nr_cabal_smugglers_ledger`, `quest_nr_circle_rime_relic`, `quest_nr_side_barrow_curse`, `quest_nr_side_dwarven_vault`) to engine stages with `next` stage pointers and `objectives: [ { id, text, completed, locationId } ]`.
+    * Expanded dialogues for Jarl Sigurd, Veteran Karl, Librarian Freya, and Archmage Kallan with turn-in nodes and quest reward loops.
+  * **Possessions & Rest Safety**:
+    * Equipped all 17 NPCs with silver drachmae coin purses (12-120 drachmae) adhering to Session 21/22 inspection and pickpocket standards.
+    * Configured location-based `restSafety` across all 25 locations (`sanctuary`, `settlement`, `wild`, `restricted`, `forbidden`).
+  * **Validation & Test Coverage**:
+    * In-game campaign validator: 274 / 274 checks passed, 0 errors, 0 warnings.
+    * Authored `tests/northern_realms_tests.js` (17 comprehensive integration tests covering registration, isolation, character creation, 25/25 reachability, rest tiers, NPC inspection, puzzles, combinations, all 6 quests end-to-end, entity consequences, and serialization round-trip).
+    * Embedded content synchronized via `scripts/sync-embedded-content.js`.
+    * Full suite passes: 222 / 222 tests (75 engine, 109 behaviour, 21 Dev, 17 Northern Realms). Zero Unicode em dashes.
+
 ### Session 23 - 2026-11-12 (optimisation pass, drag-to-craft workbench, item combinations)
 * **Collaborator / Model**: User & Claude (Anthropic)
 * **Optimisation and size** (`index.html` 1,263 KB before this session; about 1,149 KB now, with the new features included):

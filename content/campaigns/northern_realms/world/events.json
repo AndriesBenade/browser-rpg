@@ -2,132 +2,292 @@
   "events": [
     {
       "id": "event_nr_social_success",
-      "name": "Hold Influence",
       "trigger": "SOCIAL_SUCCESS",
       "conditions": {},
       "outcomes": {
-        "modifyReputation": {
-          "faction_nr_frostpeak_watch": 2
-        },
         "transcript": {
-          "speaker": "Reputation",
-          "text": "Your persuasive words spread among the hold guards and citizens.",
-          "style": "entry-discovery"
+          "speaker": "Northern Rumor",
+          "text": "Word of your silver tongue spreads swiftly across the frozen reaches.",
+          "style": "entry-prose"
         }
       }
     },
     {
       "id": "event_nr_hidden_spot_found",
-      "name": "Wilderness Discovery",
       "trigger": "HIDDEN_SPOT_FOUND",
       "conditions": {},
       "outcomes": {
-        "awardXP": 10,
         "transcript": {
           "speaker": "Discovery",
-          "text": "Sharp eyes uncover a hidden cache in the northern snows.",
+          "text": "Keen eyes uncover relics buried beneath centuries of mountain frost.",
           "style": "entry-discovery"
         }
       }
     },
     {
       "id": "event_nr_item_crafted",
-      "name": "Runic Crafting",
       "trigger": "ITEM_CRAFTED",
       "conditions": {},
       "outcomes": {
-        "awardXP": 15,
         "transcript": {
-          "speaker": "Crafting",
-          "text": "You forge gear with your own hands at the northern workbench.",
+          "speaker": "Artisan Chronicle",
+          "text": "Runes hum warmly along your newly forged work.",
           "style": "entry-discovery"
         }
       }
     },
     {
       "id": "event_nr_item_combined",
-      "name": "Kit Improvement",
       "trigger": "ITEM_COMBINED",
       "conditions": {},
       "outcomes": {
-        "awardXP": 10,
         "transcript": {
-          "speaker": "Crafting",
-          "text": "You enhance your weapon in the field.",
+          "speaker": "Fieldcraft",
+          "text": "Careful northern preparation pays off in deadly efficiency.",
           "style": "entry-discovery"
         }
       }
     },
     {
       "id": "event_nr_troll_slain",
-      "name": "Troll Threat Cleared",
       "trigger": "ENTITY_DEATH",
       "conditions": {
         "targetEntityId": "creature_nr_frost_troll"
       },
       "outcomes": {
+        "setFlags": {
+          "frost_troll_slain": true
+        },
         "updateQuest": {
           "questId": "quest_nr_covenant_trial_of_steel",
-          "objectiveId": "stage_slay_troll",
+          "objectiveId": "obj_slay_troll",
           "completed": true
         },
         "transcript": {
-          "speaker": "Victory",
-          "text": "The mountain frost troll crashes down with a final dying shudder. The shafts are safe!",
+          "speaker": "World Update",
+          "text": "With the mountain frost troll defeated, the Grimstone silver shafts breathe easier.",
           "style": "entry-discovery"
         }
       }
     },
     {
       "id": "event_nr_skallagrim_slain",
-      "name": "Barrow Lord Banished",
       "trigger": "ENTITY_DEATH",
       "conditions": {
         "targetEntityId": "creature_nr_boss_skallagrim"
       },
       "outcomes": {
-        "updateQuest": {
-          "questId": "quest_nr_side_barrow_curse",
-          "objectiveId": "stage_defeat_skallagrim",
-          "completed": true
+        "setFlags": {
+          "skallagrim_slain": true
         },
-        "completeQuest": "quest_nr_side_barrow_curse",
+        "updateQuest": [
+          {
+            "questId": "quest_nr_side_barrow_curse",
+            "objectiveId": "obj_defeat_skallagrim",
+            "completed": true
+          },
+          {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "objectiveId": "obj_key_gamma",
+            "completed": true
+          }
+        ],
         "transcript": {
-          "speaker": "Ancestral Silence",
-          "text": "Chieftain Skallagrim crumbles to harmless ash, releasing the ancestral Star-Key Gamma into your grasp.",
+          "speaker": "World Update",
+          "text": "The ancient draugr curse lifts from the Weeping Barrow Stones as Chieftain Skallagrim crumbles to dust.",
           "style": "entry-discovery"
         }
       }
     },
     {
       "id": "event_nr_vyr_slain",
-      "name": "The Dragon Falls",
       "trigger": "ENTITY_DEATH",
       "conditions": {
         "targetEntityId": "creature_nr_boss_vyr"
       },
       "outcomes": {
         "setFlags": {
-          "dragon_slain": true
+          "vyr_defeated": true,
+          "vyr_slain_combat": true
         },
         "updateQuest": {
           "questId": "quest_nr_main_shadow_of_wyrmfang",
-          "objectiveId": "stage_confront_vyr",
+          "objectiveId": "obj_confront_vyr",
           "completed": true
         },
-        "completeQuest": "quest_nr_main_shadow_of_wyrmfang",
-        "modifyReputation": {
-          "faction_nr_frostpeak_watch": 50,
-          "faction_nr_iron_covenant": 50
-        },
-        "addJournalChronicle": {
-          "title": "The Slumber of Vyr",
-          "text": "Vyr the Ancient Frost Wyrm has fallen in the crater of Mount Wyrmfang! The northern realms are saved!"
-        },
         "transcript": {
-          "speaker": "Legendary Victory",
-          "text": "Vyr roars as its frozen heart shatters, collapsing upon the volcanic basalt. The Northern Realms celebrate eternal victory!",
+          "speaker": "Historic Victory",
+          "text": "The sky-shattering roar of Vyr fades forever across the glacier peaks! Mount Wyrmfang grows silent.",
           "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_nr_unlock_hidden_broken_oath",
+      "triggers": [
+        "NPC_TALKED",
+        "QUEST_COMPLETED",
+        "REPUTATION_CHANGED"
+      ],
+      "conditions": {},
+      "worldConditions": {
+        "questNotStarted": "quest_nr_hidden_broken_oath",
+        "questCompleted": "quest_nr_cabal_smugglers_ledger",
+        "maxFactionReputation": {
+          "faction_nr_whispering_cabal": -15
+        },
+        "eventAfter": {
+          "event": "NPC_TALKED",
+          "key": "npc_nr_innkeeper_mira",
+          "afterEvent": "QUEST_COMPLETED",
+          "afterKey": "quest_nr_cabal_smugglers_ledger"
+        }
+      },
+      "outcomes": {
+        "setFlags": {
+          "hidden_broken_oath_discovered": true
+        },
+        "startQuest": "quest_nr_hidden_broken_oath",
+        "transcript": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Seeing you defied the Whispering Cabal, Mira slides a salt-stained wax seal across the bar in silence: 'They are moving Vyr-cult obsidian idols up the Sunken Mire Causeway under a Watch traitor's seal. Haul the submerged buoy at dusk.'",
+          "style": "entry-discovery"
+        },
+        "addJournalMysteries": {
+          "title": "Ashes of the Broken Oath",
+          "text": "Mira Cold-Spring revealed that Vyr cultists are smuggling obsidian relics through Mistglen's sunken causeway."
+        }
+      }
+    },
+    {
+      "id": "event_nr_unlock_hidden_mercy_drowned",
+      "triggers": [
+        "NPC_TALKED",
+        "ENTITY_SPARED",
+        "QUEST_COMPLETED"
+      ],
+      "conditions": {},
+      "worldConditions": {
+        "questNotStarted": "quest_nr_hidden_mercy_drowned",
+        "npcSpared": "npc_nr_bandit_captain_malik",
+        "anyOf": [
+          {
+            "questCompleted": "quest_nr_cabal_smugglers_ledger"
+          },
+          {
+            "questCompleted": "quest_nr_side_lost_caravan"
+          }
+        ],
+        "eventAfter": {
+          "event": "NPC_TALKED",
+          "key": "npc_nr_bog_witch_morrigan",
+          "afterEvent": "ENTITY_SPARED",
+          "afterKey": "npc_nr_bandit_captain_malik"
+        }
+      },
+      "outcomes": {
+        "setFlags": {
+          "hidden_mercy_drowned_discovered": true
+        },
+        "startQuest": "quest_nr_hidden_mercy_drowned",
+        "transcript": {
+          "speaker": "Morrigan the Peat-Mother",
+          "text": "Morrigan studies your eyes over her simmering cauldron. 'You stayed your hand against my sister's boy Malik when any sell-sword would have claimed his head. Hear a secret older than King Valen: beneath the Howling Timber Cavern lies a Drakenseeker cairn holding the Frost-Truce Tablet.'",
+          "style": "entry-discovery"
+        },
+        "addJournalMysteries": {
+          "title": "The Mercy of the Drowned",
+          "text": "Morrigan revealed that Malik was framed by Valenfrost nobles and entrusted you with the location of a hidden Drakenseeker cairn in Howling Timber Cavern."
+        }
+      }
+    },
+    {
+      "id": "event_nr_unlock_hidden_blood_throne",
+      "triggers": [
+        "NPC_TALKED",
+        "ENTITY_DEATH",
+        "QUEST_COMPLETED",
+        "REPUTATION_CHANGED"
+      ],
+      "conditions": {},
+      "worldConditions": {
+        "questNotStarted": "quest_nr_hidden_blood_throne",
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "questCompleted": "quest_nr_side_barrow_curse"
+              },
+              {
+                "anyOf": [
+                  {
+                    "npcDead": "npc_nr_gate_captain_tor"
+                  },
+                  {
+                    "npcDead": "npc_nr_jarl_sigurd"
+                  }
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "eventAfter": {
+                      "event": "NPC_TALKED",
+                      "key": "npc_nr_skald_einar",
+                      "afterEvent": "ENTITY_DEATH",
+                      "afterKey": "npc_nr_gate_captain_tor"
+                    }
+                  },
+                  {
+                    "eventAfter": {
+                      "event": "NPC_TALKED",
+                      "key": "npc_nr_skald_einar",
+                      "afterEvent": "ENTITY_DEATH",
+                      "afterKey": "npc_nr_jarl_sigurd"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "questCompletedBefore": {
+                  "first": "quest_nr_side_barrow_curse",
+                  "second": "quest_nr_side_dwarven_vault"
+                }
+              },
+              {
+                "maxFactionReputation": {
+                  "faction_nr_frostpeak_watch": -10
+                }
+              },
+              {
+                "eventAfter": {
+                  "event": "NPC_TALKED",
+                  "key": "npc_nr_skald_einar",
+                  "afterEvent": "QUEST_COMPLETED",
+                  "afterKey": "quest_nr_side_dwarven_vault"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "outcomes": {
+        "setFlags": {
+          "hidden_blood_throne_discovered": true
+        },
+        "startQuest": "quest_nr_hidden_blood_throne",
+        "transcript": {
+          "speaker": "Skald Einar",
+          "text": "Skald Einar lowers his harp and draws you behind a timber pillar. 'Valenfrost's own blood stains the snow, and you have walked Skallagrim's barrow. Hear the verse no Jarl allows sung: High King Valen betrayed Chieftain Skallagrim for the third Star-Key and walled the true Rime-King's Crown inside Frostmere Archives!'",
+          "style": "entry-discovery"
+        },
+        "addJournalMysteries": {
+          "title": "Blood Upon the Frost-Throne",
+          "text": "Skald Einar confessed that High King Valen betrayed Skallagrim and hid the Crown of the Rime-King behind a false wall in Frostmere Archives."
         }
       }
     }

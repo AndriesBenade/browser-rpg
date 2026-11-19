@@ -6,7 +6,7 @@
       "nodes": {
         "root": {
           "speaker": "Captain Tor",
-          "text": "Halt there, traveler. Valenfrost opens its gates only to those with an honest purpose. State your business in the hold.",
+          "text": "Halt there, traveler. Valenfrost keeps sharp watch while Mount Wyrmfang rumbles overhead. State your business at the gates.",
           "choices": [
             {
               "label": "I seek an audience with Jarl Sigurd regarding the mountain portents.",
@@ -17,7 +17,11 @@
               "target": "node_trade_entry"
             },
             {
-              "label": "[Persuasion] You look like a man who knows good steel when he sees it. I have come to offer my sword.",
+              "label": "[Persuasion] You look like a man who knows good steel. I have come to offer my sword.",
+              "condition": {
+                "flag": "tor_persuaded",
+                "expected": false
+              },
               "check": {
                 "skill": "persuasion",
                 "attribute": "charisma",
@@ -27,6 +31,29 @@
               }
             },
             {
+              "label": "Captain, I recovered the Whispering Cabal's smuggling ledger. Take it and break their ring.",
+              "condition": {
+                "hasItem": "item_nr_elena_stolen_ledger",
+                "questActive": "quest_nr_cabal_smugglers_ledger"
+              },
+              "target": "node_expose_cabal"
+            },
+            {
+              "label": "I seized a Vyr-cult manifest in Mistglen naming a traitor within the Watch.",
+              "condition": {
+                "hasItem": "item_nr_cult_manifest",
+                "questActive": "quest_nr_hidden_broken_oath"
+              },
+              "target": "node_turn_in_manifest_tor"
+            },
+            {
+              "label": "How does the hold fare now that Mount Wyrmfang has fallen quiet?",
+              "condition": {
+                "questCompleted": "quest_nr_main_shadow_of_wyrmfang"
+              },
+              "target": "node_post_victory"
+            },
+            {
               "label": "Farewell, Captain.",
               "target": "exit"
             }
@@ -34,28 +61,34 @@
         },
         "node_jarl_audience": {
           "speaker": "Captain Tor",
-          "text": "You and half the North, friend. Earth-tremors have shaken the chimneys for a week. The Jarl holds court in the High Mead-Hall. Mind your tongue before his huscarls.",
+          "text": "You and half the North, friend. Chimneys have cracked all week from those deep tremors. The Jarl holds court in the High Mead-Hall. Speak plain before his huscarls.",
           "choices": [
             {
-              "label": "Thank you, Captain. I shall tread respectfully.",
+              "label": "Thank you, Captain.",
               "target": "exit"
             }
           ]
         },
         "node_trade_entry": {
           "speaker": "Captain Tor",
-          "text": "Head down to the Trade Plaza then. Merchant Astrid keeps fair scales, and Bjorn's forge is always hot. Obey the hold peace and you will find no trouble here.",
+          "text": "Down to the Trade Plaza then. Astrid keeps fair scales, though she has been frantic about a missing fur sledge on the southern road. Bjorn's forge stays hot day and night.",
           "choices": [
             {
-              "label": "Understood.",
+              "label": "I will pay Astrid and Bjorn a visit.",
               "target": "exit"
             }
           ]
         },
         "node_persuade_success": {
           "speaker": "Captain Tor",
-          "text": "Ha! A confident stride and a sharp eye. We always have room on the ramparts for warriors of mettle. Take this smoked venison for your trouble.",
+          "text": "Ha! Confident stride and steady eyes. We always need capable blades on the mountain roads. Take this smoked venison from the guard larder.",
+          "setFlags": {
+            "tor_persuaded": true
+          },
           "giveItem": "item_nr_smoked_venison",
+          "modifyReputation": {
+            "faction_nr_frostpeak_watch": 5
+          },
           "choices": [
             {
               "label": "Much obliged, Captain.",
@@ -65,10 +98,57 @@
         },
         "node_persuade_failure": {
           "speaker": "Captain Tor",
-          "text": "Big words are cheap in the taverns. Show your worth on the road before you boast to the hold watch.",
+          "text": "Big boasts are cheap in the alehouse. Show your worth on the trails first.",
           "choices": [
             {
               "label": "I will prove myself soon enough.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_expose_cabal": {
+          "speaker": "Captain Tor",
+          "text": "By Torvald's anvil, Valeria's entire canal cipher! With these names we can shutter half the illicit docks before sundown. Take this Watch bounty; expect the Cabal to hold a bitter grudge.",
+          "consumeItem": "item_nr_elena_stolen_ledger",
+          "setFlags": {
+            "exposed_cabal_to_watch": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_cabal_smugglers_ledger",
+            "path": "watch_informant"
+          },
+          "choices": [
+            {
+              "label": "Valenfrost comes before smugglers' coin.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_turn_in_manifest_tor": {
+          "speaker": "Captain Tor",
+          "text": "A Watch quartermaster taking cultist obsidian in Mistglen?! My blood runs cold. You have saved this hold from a knife in its own back. Take this captured signet and our deepest gratitude!",
+          "consumeItem": "item_nr_cult_manifest",
+          "setFlags": {
+            "cult_smuggling_broken": true,
+            "watch_traitor_purged": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_hidden_broken_oath",
+            "path": "purge_watch"
+          },
+          "choices": [
+            {
+              "label": "Keep the ramparts clean, Captain.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_post_victory": {
+          "speaker": "Captain Tor",
+          "text": "My watchmen salute whenever you pass, High Champion! The tremors have stopped and the caravans are rolling south again.",
+          "choices": [
+            {
+              "label": "Stay vigilant, Captain.",
               "target": "exit"
             }
           ]
@@ -81,10 +161,16 @@
       "nodes": {
         "root": {
           "speaker": "Jarl Sigurd",
-          "text": "Step forward to the hearthfire, traveler. What news do you bring to Valenfrost while Mount Wyrmfang trembles above us?",
+          "text": "Step forward to the hearthfire, traveler. What tidings do you bring to Valenfrost while Mount Wyrmfang trembles above us?",
           "choices": [
             {
               "label": "I have come to offer my blade to quell the threat of the Frost Wyrm.",
+              "condition": {
+                "questStage": {
+                  "questId": "quest_nr_main_shadow_of_wyrmfang",
+                  "stage": "stage_speak_jarl"
+                }
+              },
               "target": "node_offer_aid"
             },
             {
@@ -93,7 +179,44 @@
             },
             {
               "label": "I brought word from the Whispering Woods. The dead walk the barrows.",
+              "condition": {
+                "questNotStarted": "quest_nr_side_barrow_curse"
+              },
               "target": "node_barrow_report"
+            },
+            {
+              "label": "Chieftain Skallagrim has been returned to his eternal rest. The barrows are quiet.",
+              "condition": {
+                "flag": "skallagrim_slain",
+                "questNotDone": true,
+                "questId": "quest_nr_side_barrow_curse"
+              },
+              "target": "node_turn_in_barrow"
+            },
+            {
+              "label": "I restored the Eternal Triad Seal atop Mount Wyrmfang and lulled Vyr back to slumber!",
+              "condition": {
+                "flag": "vyr_resealed_peacefully",
+                "questNotDone": true,
+                "questId": "quest_nr_main_shadow_of_wyrmfang"
+              },
+              "target": "node_turn_in_main_binder"
+            },
+            {
+              "label": "I have slain Vyr the Frost Wyrm atop Mount Wyrmfang!",
+              "condition": {
+                "flag": "vyr_defeated",
+                "questNotDone": true,
+                "questId": "quest_nr_main_shadow_of_wyrmfang"
+              },
+              "target": "node_turn_in_main"
+            },
+            {
+              "label": "What do the holds say since Mount Wyrmfang was calmed?",
+              "condition": {
+                "questCompleted": "quest_nr_main_shadow_of_wyrmfang"
+              },
+              "target": "node_champion_praise"
             },
             {
               "label": "I take my leave, my Lord.",
@@ -103,8 +226,13 @@
         },
         "node_offer_aid": {
           "speaker": "Jarl Sigurd",
-          "text": "Then hear the oath of Valenfrost! In the First Age, High King Valen forged three celestial Star-Keys to bind the wyrm Vyr beneath Mount Wyrmfang. One rests in the Grimstone Vault, one at the Spire of Frostmere, and one was buried with Chieftain Skallagrim. Recover them, and you shall decide the fate of the North!",
+          "text": "Then hear the oath of Valenfrost! In the First Age, High King Valen forged three celestial Star-Keys to bind Vyr beneath Mount Wyrmfang. One rests in the Grimstone Vault, one at the Spire of Frostmere, and one was buried with Chieftain Skallagrim. Recover them, and decide the fate of the North!",
           "startQuest": "quest_nr_main_shadow_of_wyrmfang",
+          "updateQuest": {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "objectiveId": "obj_speak_jarl",
+            "completed": true
+          },
           "choices": [
             {
               "label": "I swear by Torvald to recover the Star-Keys.",
@@ -114,21 +242,76 @@
         },
         "node_calamity_lore": {
           "speaker": "Jarl Sigurd",
-          "text": "Four hundred winters past, the Frost Wyrm Vyr blackened the skies with blizzard breath, shattering the ancient High Kingdom into our separate holds. If the beast awakens unchained, the age of mortals is finished.",
+          "text": "Four hundred winters past, Vyr blackened the sky with glacial breath and shattered the old High Kingdom. Some scholars at Frostmere claim the beast can be re-bound without blood if the old liturgy survives. Others say only star-iron steel can end it.",
           "choices": [
             {
-              "label": "We must prevent that awakening at all costs.",
+              "label": "I will weigh both steel and wisdom.",
               "target": "root"
             }
           ]
         },
         "node_barrow_report": {
           "speaker": "Jarl Sigurd",
-          "text": "Aye, Chieftain Skallagrim's tomb stirs with restless dead. If you dare enter the Weeping Barrow Stones, put the ancient chieftain to rest and claim his Star-Key.",
+          "text": "Aye, Skallagrim's cairn stirs with restless dead. Search the standing stones for the barrow key, descend into the crypt, and put the old chieftain to rest.",
           "startQuest": "quest_nr_side_barrow_curse",
           "choices": [
             {
               "label": "I will enter the barrows and silence the dead.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_barrow": {
+          "speaker": "Jarl Sigurd",
+          "text": "By Torvald's hammer, the homesteaders can sleep without fear of draugr raids! Take this silver waraxe and coin from the hold's coffer.",
+          "completeQuest": "quest_nr_side_barrow_curse",
+          "choices": [
+            {
+              "label": "Honor to Valenfrost, my Jarl.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_turn_in_main_binder": {
+          "speaker": "Jarl Sigurd",
+          "text": "By the Old Gods, you restored Valen's celestial Triad Seal without spilling a drop of mortal blood! Archmage Kallan has already sent ravens praising your wisdom. Take Fang of the Star-Father as Keeper of the Eternal Seal!",
+          "setFlags": {
+            "northern_realms_saved": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "path": "binder"
+          },
+          "choices": [
+            {
+              "label": "Wisdom and unity preserve the North.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_main": {
+          "speaker": "Jarl Sigurd",
+          "text": "The skalds shall sing of this day for a thousand winters! Whether by blade or ancient seal, you have delivered the North from Mount Wyrmfang's shadow. Take Fang of the Star-Father and bear the title of High Champion!",
+          "setFlags": {
+            "northern_realms_saved": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "path": "slayer"
+          },
+          "choices": [
+            {
+              "label": "For Valenfrost and the Old Gods!",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_champion_praise": {
+          "speaker": "Jarl Sigurd",
+          "text": "The mead-hall hearth burns brighter for your deeds, High Champion. The clans of Grimstone and Frostmere both send envoys in your honor.",
+          "choices": [
+            {
+              "label": "May peace endure across the reaches.",
               "target": "exit"
             }
           ]
@@ -141,7 +324,7 @@
       "nodes": {
         "root": {
           "speaker": "Skald Einar",
-          "text": "Greetings, wayfarer! The mead is sweet and the harp strings are tuned. Would you hear the Lay of High King Valen or perhaps the Riddle of the Frost Spire?",
+          "text": "Greetings, wayfarer! The mead is spiced and the harp strings are tuned. What verse or hidden history do you seek?",
           "choices": [
             {
               "label": "Sing for me the Lay of High King Valen.",
@@ -152,6 +335,42 @@
               "target": "node_spire_hint"
             },
             {
+              "label": "I have quelled Mount Wyrmfang, though Jarl Sigurd no longer sits the throne.",
+              "condition": {
+                "flag": "vyr_defeated",
+                "npcDead": "npc_nr_jarl_sigurd",
+                "questNotDone": true,
+                "questId": "quest_nr_main_shadow_of_wyrmfang"
+              },
+              "target": "node_failover_main"
+            },
+            {
+              "label": "Chieftain Skallagrim is laid to rest, though Jarl Sigurd has fallen.",
+              "condition": {
+                "flag": "skallagrim_slain",
+                "npcDead": "npc_nr_jarl_sigurd",
+                "questNotDone": true,
+                "questId": "quest_nr_side_barrow_curse"
+              },
+              "target": "node_failover_barrow"
+            },
+            {
+              "label": "I brought the Ancient Frost-Truce Tablet from the hidden Drakenseeker cairn.",
+              "condition": {
+                "hasItem": "item_nr_frost_truce_tablet",
+                "questActive": "quest_nr_hidden_mercy_drowned"
+              },
+              "target": "node_turn_in_truce_einar"
+            },
+            {
+              "label": "I retrieved Skallagrim's Crown from Frostmere. Let us proclaim the true lineage to the North!",
+              "condition": {
+                "hasItem": "item_nr_rime_king_crown",
+                "questActive": "quest_nr_hidden_blood_throne"
+              },
+              "target": "node_proclaim_crown"
+            },
+            {
               "label": "Keep your songs, Skald. Farewell.",
               "target": "exit"
             }
@@ -159,25 +378,86 @@
         },
         "node_valen_lay": {
           "speaker": "Skald Einar",
-          "text": "'On Wyrmfang's crest the star-iron shone, three celestial keys of stone, to bind the beast in frozen sleep, until the bells of winter weep...' A stirring verse, no?",
+          "text": "'On Wyrmfang's crest the star-iron shone, three celestial keys of stone, to bind the beast in frozen sleep, until the bells of winter weep...' Yet every skald knows the official sagas leave shadows in the margins.",
           "awardXP": 10,
           "choices": [
             {
-              "label": "A true song of heroes.",
+              "label": "Every song hides an older truth.",
               "target": "root"
             }
           ]
         },
         "node_spire_hint": {
           "speaker": "Skald Einar",
-          "text": "The ice mages inscribed their outer pillar with an ancient enigma of the blizzard. 'It bites without teeth, it builds up the glacier, yet withers to water when sun shows its lights.' Remember that when you face the pillar!",
+          "text": "The winter mages carved an enigma upon their outer pillar: 'It bites without teeth, it builds up the glacier, yet withers to water when sun shows its lights.' Speak of the blizzard when you face it!",
           "setFlags": {
             "heard_spire_riddle_hint": true
           },
+          "addJournalKnowledge": {
+            "title": "The Rime Riddle of the Spire",
+            "text": "Skald Einar hinted that the answer to Frostmere's Rime Pillar is the blizzard itself."
+          },
           "choices": [
             {
-              "label": "I will keep that in mind.",
+              "label": "I will remember your hint.",
               "target": "root"
+            }
+          ]
+        },
+        "node_failover_main": {
+          "speaker": "Skald Einar",
+          "text": "Dark deeds hang over this hall, yet you still stood against the ancient wyrm and spared the North from ruin. The elders have unlocked the reliquary: take Fang of the Star-Father, Champion of a shadowed age.",
+          "setFlags": {
+            "northern_realms_saved": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "path": "slayer"
+          },
+          "choices": [
+            {
+              "label": "The North endures.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_failover_barrow": {
+          "speaker": "Skald Einar",
+          "text": "With the Jarl gone, it falls to the hall-keepers to honor your deed in the Weeping Barrows. Take this silver axe with the hold's solemn thanks.",
+          "completeQuest": "quest_nr_side_barrow_curse",
+          "choices": [
+            {
+              "label": "May Skallagrim rest at last.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_turn_in_truce_einar": {
+          "speaker": "Skald Einar",
+          "text": "A genuine Drakenseeker tablet predating Valen! So there truly was an older peace with the frost spirits. Take this ancestral talisman kept in my chest; the skalds will sing a truer lay from this night on.",
+          "consumeItem": "item_nr_frost_truce_tablet",
+          "completeQuest": "quest_nr_hidden_mercy_drowned",
+          "choices": [
+            {
+              "label": "Let history be remembered whole.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_proclaim_crown": {
+          "speaker": "Skald Einar",
+          "text": "By the roots of the world-ash, it is real! Tonight I shall sing the Forgotten Lineage across every hearth in Valenfrost. Wear Skallagrim's Crown with pride; the old lies will never bind the North again!",
+          "setFlags": {
+            "forgotten_lineage_proclaimed": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_hidden_blood_throne",
+            "path": "proclaim_lineage"
+          },
+          "choices": [
+            {
+              "label": "Let the truth ring out.",
+              "target": "exit"
             }
           ]
         }
@@ -189,18 +469,34 @@
       "nodes": {
         "root": {
           "speaker": "Karl the Iron-Ribbed",
-          "text": "Stand upright! If you want to join the Iron Covenant, you must prove you can take a blow and crack troll skull with equal relish.",
+          "text": "Stand upright! If you want to stand beside the Iron Covenant, prove you can hold a shield-wall and crack troll skull with equal relish.",
           "choices": [
             {
               "label": "What must I do to prove myself to the Iron Covenant?",
+              "condition": {
+                "questNotStarted": "quest_nr_covenant_trial_of_steel"
+              },
               "target": "node_covenant_task"
             },
             {
-              "label": "[Hire Companion] I could use your greataxe on my travels (35 drachmae).",
+              "label": "I have slain the mountain frost troll and brought its thickhide as proof.",
+              "condition": {
+                "hasItem": "mat_nr_frost_troll_hide",
+                "questNotDone": true,
+                "questId": "quest_nr_covenant_trial_of_steel"
+              },
+              "target": "node_turn_in_trial"
+            },
+            {
+              "label": "[Recruit Companion] Stand at my flank, Karl. Share my provisions on the road.",
               "condition": {
                 "hasItem": "item_nr_smoked_venison"
               },
               "target": "node_hire_karl"
+            },
+            {
+              "label": "Any combat advice for fighting trolls and draugr?",
+              "target": "node_combat_advice"
             },
             {
               "label": "I will return when my shield is ready.",
@@ -210,12 +506,24 @@
         },
         "node_covenant_task": {
           "speaker": "Karl the Iron-Ribbed",
-          "text": "Down in Grimstone Mine, Shaft Nine was overrun by a feral mountain frost troll. Slay the brute and bring back its thickhide, and you will be one of us.",
+          "text": "Down in Grimstone Mine, Shaft Nine was overrun by a feral mountain frost troll. Slay the brute and bring back its thickhide, and you will earn the Covenant's shield.",
           "startQuest": "quest_nr_covenant_trial_of_steel",
           "choices": [
             {
               "label": "Consider the beast slain.",
               "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_trial": {
+          "speaker": "Karl the Iron-Ribbed",
+          "text": "By the frozen peaks, that is a true troll hide! You have the grip and grit of a huscarl. Take this shield from our armory. Welcome to the Iron Covenant, Shield-Brother!",
+          "consumeItem": "mat_nr_frost_troll_hide",
+          "completeQuest": "quest_nr_covenant_trial_of_steel",
+          "choices": [
+            {
+              "label": "Proud to stand with the Covenant, Karl.",
+              "target": "root"
             }
           ]
         },
@@ -227,6 +535,370 @@
             {
               "label": "Welcome to the vanguard, Karl.",
               "target": "exit"
+            }
+          ]
+        },
+        "node_combat_advice": {
+          "speaker": "Karl the Iron-Ribbed",
+          "text": "Watch how a beast telegraphs its heavy blows: brace your shield or side-step, then punish the opening. And do not neglect your runes; scholars with keen Mythology & Lore can weave multiple invocations in a single fight.",
+          "choices": [
+            {
+              "label": "Sound counsel, Veteran.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_merchant_astrid": {
+      "id": "dlg_nr_merchant_astrid",
+      "npcId": "npc_nr_merchant_astrid",
+      "nodes": {
+        "root": {
+          "speaker": "Astrid the Far-Trader",
+          "text": "Fine furs, honest silver, and sturdy travel gear! Though Torvald knows my margins are thin with half the southern trail haunted by wolves.",
+          "choices": [
+            {
+              "label": "Show me your trade wares.",
+              "target": "node_trade"
+            },
+            {
+              "label": "Captain Tor mentioned you lost a fur sledge on the southern road.",
+              "condition": {
+                "questNotStarted": "quest_nr_side_lost_caravan"
+              },
+              "target": "node_caravan_offer"
+            },
+            {
+              "label": "I recovered your sealed fur crate from the wolf cavern.",
+              "condition": {
+                "hasItem": "item_nr_caravan_crate",
+                "questActive": "quest_nr_side_lost_caravan"
+              },
+              "target": "node_turn_in_caravan"
+            },
+            {
+              "label": "Farewell, Astrid.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Astrid the Far-Trader",
+          "text": "Take your pick. Every clasp and pelt is inspected by my own hand.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_caravan_offer": {
+          "speaker": "Astrid the Far-Trader",
+          "text": "True enough! Mountain wolves stampeded my runners near Whispering Pines and dragged my lead sledge toward the Howling Timber Cavern. Trapper Ulf knows those woods well. Bring back my sealed fur crate intact and I will reward you handsomely!",
+          "startQuest": "quest_nr_side_lost_caravan",
+          "choices": [
+            {
+              "label": "I will track down your lost sledge.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_caravan": {
+          "speaker": "Astrid the Far-Trader",
+          "text": "Still wax-sealed and untouched! You are a rarer breed than most northern sellswords. Take sixty-five silver and my finest winter wolfskin mantle!",
+          "consumeItem": "item_nr_caravan_crate",
+          "moralChoice": {
+            "questId": "quest_nr_side_lost_caravan",
+            "path": "returned_honestly"
+          },
+          "choices": [
+            {
+              "label": "Fair roads to your caravans, Astrid.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_smith_bjorn": {
+      "id": "dlg_nr_smith_bjorn",
+      "npcId": "npc_nr_smith_bjorn",
+      "nodes": {
+        "root": {
+          "speaker": "Bjorn Hearth-Hammer",
+          "text": "Watch the sparks, traveler! Good river-iron and honest coal keep Valenfrost standing. Need steel, tools, or a word on the craft?",
+          "choices": [
+            {
+              "label": "Let me inspect your forged goods and materials.",
+              "target": "node_trade"
+            },
+            {
+              "label": "Teach me the northern way of shaping unknown steel.",
+              "target": "node_crafting_lore"
+            },
+            {
+              "label": "How do your wares compare to Helga's Great Blackforge?",
+              "target": "node_helga_talk"
+            },
+            {
+              "label": "Keep the coals hot, Bjorn.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Bjorn Hearth-Hammer",
+          "text": "Every ingot tested on my own anvil. Have a look.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_crafting_lore": {
+          "speaker": "Bjorn Hearth-Hammer",
+          "text": "A true smith does not follow stale blueprints! You choose the kind of gear you need, feed the forge two primary materials, and let their hardness, weight, and resonance dictate the exact blade or shield that emerges. Train your Athletics, Survival, or Medicine to open extra catalyst slots for amber, quartz, or wyrm blood!",
+          "choices": [
+            {
+              "label": "Wise craft, Master Bjorn.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_helga_talk": {
+          "speaker": "Bjorn Hearth-Hammer",
+          "text": "Ha! Helga Anvil-Mother has volcanic magma beneath Grimstone, so she can melt meteoric Star-Iron I cannot even soften. If you travel southwest to the Crags, pay her my respects.",
+          "choices": [
+            {
+              "label": "I will seek out the Blackforge.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_trapper_ulf": {
+      "id": "dlg_nr_trapper_ulf",
+      "npcId": "npc_nr_trapper_ulf",
+      "nodes": {
+        "root": {
+          "speaker": "Ulf White-Wolf",
+          "text": "Keep your voice low and your boots out of my snare-lines. The pines are uneasy since Mount Wyrmfang started groaning.",
+          "choices": [
+            {
+              "label": "Let me see what pelts and supplies you have to trade.",
+              "target": "node_trade"
+            },
+            {
+              "label": "Astrid sent me to track her missing fur caravan. Have you seen sledge marks?",
+              "condition": {
+                "questActive": "quest_nr_side_lost_caravan"
+              },
+              "target": "node_caravan_clue"
+            },
+            {
+              "label": "What have you seen around the Weeping Barrow Stones?",
+              "target": "node_barrow_warning"
+            },
+            {
+              "label": "Safe hunting, Ulf.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Ulf White-Wolf",
+          "text": "Smoked meat, furs, and sturdy pine. Take what you need.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_caravan_clue": {
+          "speaker": "Ulf White-Wolf",
+          "text": "Aye, saw splintered ash runners dragged straight into the Howling Timber Cavern two mornings back. A huge silver-backed alpha leads that pack; tremors drove them down from the high crags. Watch your flank when you go in.",
+          "setFlags": {
+            "ulf_caravan_tip": true
+          },
+          "awardXP": 15,
+          "choices": [
+            {
+              "label": "Thanks for the trail-sign, Ulf.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_barrow_warning": {
+          "speaker": "Ulf White-Wolf",
+          "text": "Blue frost-light leaks from under the standing stones every midnight now. Look closely among the mossy offering niches outside the cairn before you try forcing the sealed crypt door.",
+          "choices": [
+            {
+              "label": "I will search the standing stones carefully.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_boatman_hagan": {
+      "id": "dlg_nr_boatman_hagan",
+      "npcId": "npc_nr_boatman_hagan",
+      "nodes": {
+        "root": {
+          "speaker": "Hagan the Punt-Piler",
+          "text": "Mind the slick planks, stranger. Fog hangs thick on Mistglen's canals, and folks who ask loud questions end up feeding the bog stalkers.",
+          "choices": [
+            {
+              "label": "Where does a cautious traveler find the Whispering Cabal?",
+              "target": "node_cabal_direction"
+            },
+            {
+              "label": "What rumors drift along the docks these nights?",
+              "condition": {
+                "minFactionReputation": {
+                  "faction_nr_whispering_cabal": 10
+                }
+              },
+              "target": "node_cabal_rumor"
+            },
+            {
+              "label": "What lies out beyond the Sunken Mire Causeway?",
+              "target": "node_mire_warning"
+            },
+            {
+              "label": "Fair tides, Boatman.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_cabal_direction": {
+          "speaker": "Hagan the Punt-Piler",
+          "text": "Drink a pint at the Drowned Lantern first. Behind the old imperial sluice-grate down-canal sits the Sunken Cistern. Valeria runs things there, if she chooses to see you.",
+          "choices": [
+            {
+              "label": "Noted.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_cabal_rumor": {
+          "speaker": "Hagan the Punt-Piler",
+          "text": "Since you are friend to the Cistern: hooded outsiders have been paying double silver for night barges heading north toward Glacier Pass. Smells like dragon-cult trouble to me.",
+          "choices": [
+            {
+              "label": "Useful word. Thank you, Hagan.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_mire_warning": {
+          "speaker": "Hagan the Punt-Piler",
+          "text": "Malik's marauders hold the ruined fort out in the reeds, and beyond them sits old Morrigan's bone-hut. Keep clear of both unless you carry steel or sharp wits.",
+          "choices": [
+            {
+              "label": "I will watch my footing.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_innkeeper_mira": {
+      "id": "dlg_nr_innkeeper_mira",
+      "npcId": "npc_nr_innkeeper_mira",
+      "nodes": {
+        "root": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Warm your hands by the peat fire, traveler. Fen-ale is cheap and secrets are dear in the Drowned Lantern.",
+          "choices": [
+            {
+              "label": "Pour me a mug and show what supplies you sell.",
+              "target": "node_trade"
+            },
+            {
+              "label": "I have an unclaimed crate of Valenfrost furs. Interested in quiet silver?",
+              "condition": {
+                "hasItem": "item_nr_caravan_crate",
+                "questActive": "quest_nr_side_lost_caravan"
+              },
+              "target": "node_fence_caravan"
+            },
+            {
+              "label": "I intercepted the cult courier and seized this Obsidian Cult Manifest.",
+              "condition": {
+                "hasItem": "item_nr_cult_manifest",
+                "questActive": "quest_nr_hidden_broken_oath"
+              },
+              "target": "node_turn_in_manifest_mira"
+            },
+            {
+              "label": "Tell me about Mistglen and the people who pass through here.",
+              "target": "node_local_word"
+            },
+            {
+              "label": "Farewell, Mira.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Ale, smoked salmon, and hearth-bread. Keeps the marsh damp out of your lungs.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_fence_caravan": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Heh. Astrid's wax seal, is it? Keep your voice down. I will pay one hundred twenty silver right now, no questions asked, though Valenfrost's Watch would frown if they heard.",
+          "consumeItem": "item_nr_caravan_crate",
+          "moralChoice": {
+            "questId": "quest_nr_side_lost_caravan",
+            "path": "fenced_contraband"
+          },
+          "choices": [
+            {
+              "label": "Silver spends the same everywhere.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_turn_in_manifest_mira": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Bless the quiet waters... Look at those shipments. With this ledger burned and the courier gone, Mistglen will not be dragged into the Frost Wyrm's war. Take this signet I pulled off an earlier smuggler; you earned it.",
+          "consumeItem": "item_nr_cult_manifest",
+          "setFlags": {
+            "cult_smuggling_broken": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_hidden_broken_oath",
+            "path": "protect_mistglen"
+          },
+          "choices": [
+            {
+              "label": "Keep Mistglen safe, Mira.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_local_word": {
+          "speaker": "Mira Cold-Spring",
+          "text": "Valeria runs the Cabal with velvet gloves, but lately darker barges have slipped past the cisterns at midnight. Most folk look away; someone has to stand up to them before the bog swallows us all.",
+          "choices": [
+            {
+              "label": "I will keep my eyes open.",
+              "target": "root"
             }
           ]
         }
@@ -242,14 +914,23 @@
           "choices": [
             {
               "label": "I hear the Whispering Cabal has work for a nimble hand.",
+              "condition": {
+                "questNotStarted": "quest_nr_cabal_smugglers_ledger"
+              },
               "target": "node_cabal_work"
             },
             {
               "label": "I have recovered your stolen smuggling ledger from Captain Malik.",
               "condition": {
-                "hasItem": "item_nr_elena_stolen_ledger"
+                "hasItem": "item_nr_elena_stolen_ledger",
+                "questNotDone": true,
+                "questId": "quest_nr_cabal_smugglers_ledger"
               },
               "target": "node_turn_in_ledger"
+            },
+            {
+              "label": "What happened between you and Captain Malik?",
+              "target": "node_malik_history"
             },
             {
               "label": "I am merely looking around. Farewell.",
@@ -259,7 +940,7 @@
         },
         "node_cabal_work": {
           "speaker": "Valeria Shadow-Gilded",
-          "text": "Marauder Malik raided our canal courier and took our cipher ledger to the Drowned Fort. Get it back, and the Cabal will reward you with cold silver and our finest stiletto.",
+          "text": "Marauder Malik raided our canal courier and carried our cipher ledger to the Drowned Fort. Reclaim it by blade, stealth, or silver tongue, and the Cabal will reward you with coin and our finest stiletto.",
           "startQuest": "quest_nr_cabal_smugglers_ledger",
           "choices": [
             {
@@ -270,198 +951,26 @@
         },
         "node_turn_in_ledger": {
           "speaker": "Valeria Shadow-Gilded",
-          "text": "Splendid work! Not a drop of bog water on the parchment. Take this stiletto and forty drachmae with our gratitude.",
+          "text": "Splendid work! Not a drop of bog water on the parchment. Take this stiletto and sixty drachmae with the Cabal's gratitude.",
           "consumeItem": "item_nr_elena_stolen_ledger",
-          "giveItem": "item_nr_cabal_stiletto",
-          "awardXP": 100,
-          "modifyReputation": {
-            "faction_nr_whispering_cabal": 25
+          "moralChoice": {
+            "questId": "quest_nr_cabal_smugglers_ledger",
+            "path": "cabal_loyal"
           },
-          "completeQuest": "quest_nr_cabal_smugglers_ledger",
           "choices": [
             {
-              "label": "A pleasure doing business with the Cabal.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_archmage_kallan": {
-      "id": "dlg_nr_archmage_kallan",
-      "npcId": "npc_nr_archmage_kallan",
-      "nodes": {
-        "root": {
-          "speaker": "Archmage Kallan",
-          "text": "You stand within the Spire of Frostmere. The crystals resonate with high celestial magic. What brings you to the court of the Winter Circle?",
-          "choices": [
-            {
-              "label": "I seek the Star-Key of the Glacial Spire to reinforce the wyrm's seals.",
-              "target": "node_ask_star_key"
-            },
-            {
-              "label": "Teach me of the runecraft used to bind elemental frost.",
-              "target": "node_runecraft_lore"
-            },
-            {
-              "label": "Farewell, Grand Magister.",
-              "target": "exit"
-            }
-          ]
-        },
-        "node_ask_star_key": {
-          "speaker": "Archmage Kallan",
-          "text": "The Star-Key is preserved within our locked Arcanum. Only one who comprehends the enigma of the outer Rime Pillar may obtain the silver key to enter.",
-          "startQuest": "quest_nr_circle_rime_relic",
-          "choices": [
-            {
-              "label": "I shall decipher the pillar and prove my wisdom.",
-              "target": "exit"
-            }
-          ]
-        },
-        "node_runecraft_lore": {
-          "speaker": "Archmage Kallan",
-          "text": "True runecraft requires harmonizing meteoric sky-iron with the cold resonance of glacier water. Those who master it can carve wards that turn dragon fire into harmless snow.",
-          "awardXP": 15,
-          "choices": [
-            {
-              "label": "Fascinating knowledge.",
+              "label": "Pleasure doing business, Valeria.",
               "target": "root"
             }
           ]
-        }
-      }
-    },
-    "dlg_nr_dwarf_overseer_thrain": {
-      "id": "dlg_nr_dwarf_overseer_thrain",
-      "npcId": "npc_nr_dwarf_overseer_thrain",
-      "nodes": {
-        "root": {
-          "speaker": "Overseer Thrain",
-          "text": "Curse those blue-hided trolls! Smashing up timber beams and making off with my iron vault key in Shaft Nine!",
-          "choices": [
-            {
-              "label": "What vault key are you shouting about, Overseer?",
-              "target": "node_vault_story"
-            },
-            {
-              "label": "I found your lost iron key in Shaft Nine!",
-              "condition": {
-                "hasItem": "item_nr_key_grimstone_vault"
-              },
-              "target": "node_return_key"
-            },
-            {
-              "label": "I will leave you to your mining.",
-              "target": "exit"
-            }
-          ]
         },
-        "node_vault_story": {
-          "speaker": "Overseer Thrain",
-          "text": "The ancestral vault holding Clan Silver-Kin's Star-Key and pure silver ingots! If you venture into Shaft Nine and recover my key, half the clan treasures are yours!",
-          "startQuest": "quest_nr_side_dwarven_vault",
+        "node_malik_history": {
+          "speaker": "Valeria Shadow-Gilded",
+          "text": "Malik used to wear Valenfrost watch iron before some noble's scandal drove him into the bog. Now he thinks stealing our accounts will buy his name back. Whether you end him or outwit him is your affair.",
           "choices": [
             {
-              "label": "I will find your key and clear the shaft.",
-              "target": "exit"
-            }
-          ]
-        },
-        "node_return_key": {
-          "speaker": "Overseer Thrain",
-          "text": "By Torvald's beard, you found it! The vault door in Shaft Nine is yours to unlock. Take this silver ingot with my deepest thanks!",
-          "giveItem": "mat_nr_silver_ingot",
-          "awardXP": 80,
-          "modifyReputation": {
-            "faction_nr_silver_kin": 20
-          },
-          "completeQuest": "quest_nr_side_dwarven_vault",
-          "choices": [
-            {
-              "label": "Glad to assist the Silver Kin.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_merchant_astrid": {
-      "id": "dlg_nr_merchant_astrid",
-      "npcId": "npc_nr_merchant_astrid",
-      "nodes": {
-        "root": {
-          "speaker": "Astrid",
-          "text": "Warm greetings! The cold biting out there? Inspect my wares: broadswords, rations, and reliable lockpicks.",
-          "choices": [
-            {
-              "label": "Show me your goods.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_smith_bjorn": {
-      "id": "dlg_nr_smith_bjorn",
-      "npcId": "npc_nr_smith_bjorn",
-      "nodes": {
-        "root": {
-          "speaker": "Bjorn",
-          "text": "Need river-iron or a good mountain broadsword? You have come to the right anvil.",
-          "choices": [
-            {
-              "label": "Let me see your metalwork.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_trapper_ulf": {
-      "id": "dlg_nr_trapper_ulf",
-      "npcId": "npc_nr_trapper_ulf",
-      "nodes": {
-        "root": {
-          "speaker": "Ulf White-Wolf",
-          "text": "The woods are full of hungry wolves this season. Need a warm wolf-pelt or an ash longbow?",
-          "choices": [
-            {
-              "label": "Let me trade for wilderness gear.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_boatman_hagan": {
-      "id": "dlg_nr_boatman_hagan",
-      "npcId": "npc_nr_boatman_hagan",
-      "nodes": {
-        "root": {
-          "speaker": "Hagan",
-          "text": "Mind your footing on the wet pilings, friend. The bog waters run deep under Mistglen.",
-          "choices": [
-            {
-              "label": "Farewell, boatman.",
-              "target": "exit"
-            }
-          ]
-        }
-      }
-    },
-    "dlg_nr_innkeeper_mira": {
-      "id": "dlg_nr_innkeeper_mira",
-      "npcId": "npc_nr_innkeeper_mira",
-      "nodes": {
-        "root": {
-          "speaker": "Mira",
-          "text": "A stool by the stove and a mug of bitter ale will wash the fen chill out of your bones.",
-          "choices": [
-            {
-              "label": "Pour me an ale.",
-              "target": "exit"
+              "label": "Interesting.",
+              "target": "root"
             }
           ]
         }
@@ -473,10 +982,97 @@
       "nodes": {
         "root": {
           "speaker": "Malik the Drowned",
-          "text": "You walked into the wrong fort, soft-skin. Hand over your coin purse or feed the marsh eels!",
+          "text": "Hold right there, city-walker! Step one pace closer to my fire and my lads will pin you to the palisade. Valeria sent you for her little ledger, didn't she?",
           "choices": [
             {
-              "label": "[Combat] Draw your blade, brigand!",
+              "label": "Hand over Valeria's smuggling ledger before blood is spilled.",
+              "condition": {
+                "flag": "recovered_malik_ledger",
+                "expected": false
+              },
+              "target": "node_demand_ledger"
+            },
+            {
+              "label": "[Persuasion] I heard you were once a Valenfrost watchman. Tell me the truth, and walk away alive.",
+              "condition": {
+                "flag": "recovered_malik_ledger",
+                "expected": false
+              },
+              "check": {
+                "skill": "persuasion",
+                "attribute": "charisma",
+                "dc": 12,
+                "success": "node_parley_success",
+                "failure": "node_parley_fail"
+              }
+            },
+            {
+              "label": "[Deception] The Frostpeak Watch is marching on this fort at dawn. Give me the ledger and flee while you can.",
+              "condition": {
+                "flag": "recovered_malik_ledger",
+                "expected": false
+              },
+              "check": {
+                "skill": "deception",
+                "attribute": "charisma",
+                "dc": 13,
+                "success": "node_parley_success",
+                "failure": "node_parley_fail"
+              }
+            },
+            {
+              "label": "I am leaving you in peace, Malik.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_demand_ledger": {
+          "speaker": "Malik the Drowned",
+          "text": "That ledger proves Valenfrost's own tax-collectors framed me and took Cabal coin! You want it by force? Then draw steel or try sneaking past my sentries!",
+          "choices": [
+            {
+              "label": "Wait, let us talk before blades are drawn.",
+              "target": "root"
+            },
+            {
+              "label": "Enough talk. I leave you to your bog.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_parley_success": {
+          "speaker": "Malik the Drowned",
+          "text": "Hmph... You actually listen instead of swinging first. Take the damned ledger then. Expose the rotten watchmen to Captain Tor if you have a spine, or sell it back to Valeria. Either way, I owe you my neck, stranger. Tell my aunt Morrigan in the bog I still breathe.",
+          "giveItem": "item_nr_elena_stolen_ledger",
+          "spareNpc": "npc_nr_bandit_captain_malik",
+          "setFlags": {
+            "recovered_malik_ledger": true,
+            "spared_malik_peacefully": true
+          },
+          "updateQuest": {
+            "questId": "quest_nr_cabal_smugglers_ledger",
+            "objectiveId": "obj_recover_ledger",
+            "completed": true
+          },
+          "morality": {
+            "virtue": 8,
+            "hubris": 0,
+            "reason": "Spared Malik through parley"
+          },
+          "awardXP": 55,
+          "choices": [
+            {
+              "label": "Live smarter from here on, Malik.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_parley_fail": {
+          "speaker": "Malik the Drowned",
+          "text": "Empty northern honey-words! I trusted fine speeches once and lost my cloak for it. Clear out of my redoubt before I feed you to the reeds!",
+          "choices": [
+            {
+              "label": "We are not finished, Malik.",
               "target": "exit"
             }
           ]
@@ -488,11 +1084,60 @@
       "npcId": "npc_nr_bog_witch_morrigan",
       "nodes": {
         "root": {
-          "speaker": "Morrigan",
-          "text": "I smelled your blood coming through the fog... Need frost lichen or viper venom, child?",
+          "speaker": "Morrigan the Peat-Mother",
+          "text": "The bog steam whispered your footsteps an hour ago, traveler. Smells of iron, snow, and turning fate. What brings you to a witch's mound?",
           "choices": [
             {
-              "label": "Show me your remedies and extracts.",
+              "label": "Let me trade for your herbs, amber resin, and draughts.",
+              "target": "node_trade"
+            },
+            {
+              "label": "What do the peat-visions say of Mount Wyrmfang and the Star-Keys?",
+              "target": "node_wyrm_prophecy"
+            },
+            {
+              "label": "I unearthed the Ancient Frost-Truce Tablet from the cavern cairn.",
+              "condition": {
+                "hasItem": "item_nr_frost_truce_tablet",
+                "questActive": "quest_nr_hidden_mercy_drowned"
+              },
+              "target": "node_turn_in_truce"
+            },
+            {
+              "label": "Leave me to the mists. Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Morrigan the Peat-Mother",
+          "text": "Glacial moss, warm hearth-amber, and honest alchemical glass. Choose with care.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_wyrm_prophecy": {
+          "speaker": "Morrigan the Peat-Mother",
+          "text": "Valen forged three Star-Keys to chain Vyr, yet blood and pride cracked his work. Seek Freya's hidden archives in Frostmere if you would seal the beast cleanly, or bring star-iron if you seek a slayer's song. And mind how you judge outcasts in this mire; mercy echoes farther than steel.",
+          "choices": [
+            {
+              "label": "I will remember your counsel, Morrigan.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_turn_in_truce": {
+          "speaker": "Morrigan the Peat-Mother",
+          "text": "Aye... Look upon those Drakenseeker glyphs! Long before Valen's crown, men and winter spirits kept an oath of balance. Take this Talisman of the First Truce; it expands the arcane power you can channel in battle. May mercy guide your climb to Wyrmfang!",
+          "consumeItem": "item_nr_frost_truce_tablet",
+          "completeQuest": "quest_nr_hidden_mercy_drowned",
+          "choices": [
+            {
+              "label": "Thank you, Peat-Mother.",
               "target": "exit"
             }
           ]
@@ -505,10 +1150,122 @@
       "nodes": {
         "root": {
           "speaker": "Durn Silver-Shield",
-          "text": "Grimstone stands eternal. Keep your weapons sheathed within clan halls and we will have peace.",
+          "text": "Hold fast by the granite pillars! Grimstone Gate stands firm, though mountain tremors and deep-shaft trolls have tried our patience sorely.",
           "choices": [
             {
-              "label": "Understood, warden.",
+              "label": "What is happening inside the Grimstone mines?",
+              "target": "node_mine_report"
+            },
+            {
+              "label": "Overseer Thrain's vault is open and the Silver Kin are secure.",
+              "condition": {
+                "questCompleted": "quest_nr_side_dwarven_vault"
+              },
+              "target": "node_vault_honored"
+            },
+            {
+              "label": "I will head into the delve.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_mine_report": {
+          "speaker": "Durn Silver-Shield",
+          "text": "A frost troll broke into Shaft Nine and drove Overseer Thrain out before he could lock the ancestral vault. Worse, a stone automaton awoke near the deep silver seam and cut off Helga's Star-Iron supply for the Blackforge!",
+          "choices": [
+            {
+              "label": "I will speak with Thrain and Helga inside.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_vault_honored": {
+          "speaker": "Durn Silver-Shield",
+          "text": "Every hammer in Grimstone rings your name, friend of Clan Silver-Kin! Pass freely through our gates whenever winter bites.",
+          "choices": [
+            {
+              "label": "Honor to the Silver Kin, Durn.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_dwarf_overseer_thrain": {
+      "id": "dlg_nr_dwarf_overseer_thrain",
+      "npcId": "npc_nr_dwarf_overseer_thrain",
+      "nodes": {
+        "root": {
+          "speaker": "Overseer Thrain Iron-Brow",
+          "text": "By my beard, those cursed trolls smashed the timber shoring in Shaft Nine! My clan's ancestral vault sits cut off in the dark.",
+          "choices": [
+            {
+              "label": "Tell me about the lost vault key in Shaft Nine.",
+              "condition": {
+                "questNotStarted": "quest_nr_side_dwarven_vault"
+              },
+              "target": "node_vault_story"
+            },
+            {
+              "label": "I unlocked the vault and brought your Silver Kin Charter back intact.",
+              "condition": {
+                "flag": "unlocked_grimstone_vault",
+                "questNotDone": true,
+                "questId": "quest_nr_side_dwarven_vault"
+              },
+              "target": "node_return_key"
+            },
+            {
+              "label": "The vault is open, Thrain, and I kept a steep salvage fee from its silver.",
+              "condition": {
+                "flag": "unlocked_grimstone_vault",
+                "questNotDone": true,
+                "questId": "quest_nr_side_dwarven_vault"
+              },
+              "target": "node_skim_vault"
+            },
+            {
+              "label": "Hold steady, Overseer.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_vault_story": {
+          "speaker": "Overseer Thrain Iron-Brow",
+          "text": "When the troll charged, my apprentice dropped the heavy iron vault key beside the collapsed chute in Shaft Nine. Retrieve that key, unlock the vault door, and keep whatever ancient Star-Key rests inside; only return our Clan Charter intact!",
+          "startQuest": "quest_nr_side_dwarven_vault",
+          "choices": [
+            {
+              "label": "I will recover your key and open the vault.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_return_key": {
+          "speaker": "Overseer Thrain Iron-Brow",
+          "text": "Our ancestral charter untouched and the Star-Key in worthy hands! Clan Silver-Kin never forgets an honest debt. Take this Silver-Crested Tower Shield and sixty drachmae!",
+          "consumeItem": "item_nr_silver_kin_ledger",
+          "moralChoice": {
+            "questId": "quest_nr_side_dwarven_vault",
+            "path": "honorable_return"
+          },
+          "choices": [
+            {
+              "label": "May Grimstone's silver shine bright, Thrain.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_skim_vault": {
+          "speaker": "Overseer Thrain Iron-Brow",
+          "text": "Hmph! So you opened our vault and pocketed the clan's loose bullion before telling me? Take your silver then, mercenary, and pray the ancestors judge you lightly.",
+          "moralChoice": {
+            "questId": "quest_nr_side_dwarven_vault",
+            "path": "skimmed_silver"
+          },
+          "choices": [
+            {
+              "label": "A dangerous job earns its price.",
               "target": "exit"
             }
           ]
@@ -521,11 +1278,164 @@
       "nodes": {
         "root": {
           "speaker": "Helga Anvil-Mother",
-          "text": "You stand before the magma fires of the Blackforge. Here we forge armor that withstands dragon talons.",
+          "text": "Feel that volcanic draft, traveler? This is the Great Blackforge, where sky-iron bends to dwarven hammers! What brings you down to the magma hearth?",
           "choices": [
             {
-              "label": "Show me your masterwork craft.",
+              "label": "Show me your masterwork wares and forge materials.",
+              "target": "node_trade"
+            },
+            {
+              "label": "Durn said the crucible is running low on Star-Iron Ore.",
+              "condition": {
+                "questNotStarted": "quest_nr_side_blackforge_embers"
+              },
+              "target": "node_embers_offer"
+            },
+            {
+              "label": "I quelled the Runebound Sentinel and brought fresh Star-Iron Ore!",
+              "condition": {
+                "flag": "sentinel_quelled",
+                "hasItem": "mat_nr_sky_iron_ore",
+                "questActive": "quest_nr_side_blackforge_embers"
+              },
+              "target": "node_turn_in_embers"
+            },
+            {
+              "label": "Farewell, Anvil-Mother.",
               "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Helga Anvil-Mother",
+          "text": "Forged in magma-heat and quenched in mountain snow. Look them over.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_embers_offer": {
+          "speaker": "Helga Anvil-Mother",
+          "text": "True! The Wyrmfang tremors woke an old Runebound Silver Automaton right over our deepest Star-Iron seam in Grimstone Delve. Quell the sentinel, bring me a chunk of Star-Iron Ore, and I will temper you a Blackforge Runic Claymore worthy of kings!",
+          "startQuest": "quest_nr_side_blackforge_embers",
+          "choices": [
+            {
+              "label": "I will clear the seam and return with Star-Iron.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_embers": {
+          "speaker": "Helga Anvil-Mother",
+          "text": "Hah! Hear that crucible roar! Star-Iron pure as winter starlight! Stand back while I quench this blade... Take the Blackforge Runic Claymore, friend of the deep forge!",
+          "consumeItem": "mat_nr_sky_iron_ore",
+          "completeQuest": "quest_nr_side_blackforge_embers",
+          "choices": [
+            {
+              "label": "A masterpiece, Anvil-Mother!",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_nr_archmage_kallan": {
+      "id": "dlg_nr_archmage_kallan",
+      "npcId": "npc_nr_archmage_kallan",
+      "nodes": {
+        "root": {
+          "speaker": "Archmage Kallan Frost-Weaver",
+          "text": "The glacial winds carry strange ripples across the Spire of Frostmere. Step lightly upon the crystal floor, seeker.",
+          "choices": [
+            {
+              "label": "I seek the Star-Key of the Glacial Spire to stop Vyr.",
+              "condition": {
+                "questNotStarted": "quest_nr_circle_rime_relic"
+              },
+              "target": "node_ask_star_key"
+            },
+            {
+              "label": "I have solved the Rime Pillar and studied the dragon manuscripts with Freya.",
+              "condition": {
+                "flag": "consulted_freya",
+                "questNotDone": true,
+                "questId": "quest_nr_circle_rime_relic"
+              },
+              "target": "node_turn_in_circle"
+            },
+            {
+              "label": "I found Skallagrim's Crown behind your archive wall. Let us seal this secret to keep the North united.",
+              "condition": {
+                "hasItem": "item_nr_rime_king_crown",
+                "questActive": "quest_nr_hidden_blood_throne"
+              },
+              "target": "node_seal_crown"
+            },
+            {
+              "label": "Instruct me in the ways of northern spellcasting and arcane shaping.",
+              "target": "node_runecraft_lore"
+            },
+            {
+              "label": "Farewell, Archmage.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_ask_star_key": {
+          "speaker": "Archmage Kallan Frost-Weaver",
+          "text": "The Star-Key Beta is no mere bauble for impatient warriors. Prove your intellect: answer the ancient Rime Pillar outside, unlock the inner Arcanum, and consult Librarian Freya on the celestial dragon manuscripts. Return with her findings, and the Star-Key is yours.",
+          "startQuest": "quest_nr_circle_rime_relic",
+          "choices": [
+            {
+              "label": "I accept the Circle's trial.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_turn_in_circle": {
+          "speaker": "Archmage Kallan Frost-Weaver",
+          "text": "You deciphered the Pillar and mastered Freya's First-Age binding charts! By decree of the Circle of Winter, I name you Winter Arcanist. Receive the Star-Key of the Glacial Spire and this Frost Rune Focus!",
+          "completeQuest": "quest_nr_circle_rime_relic",
+          "giveItem": "item_nr_star_key_beta",
+          "updateQuest": {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "objectiveId": "obj_key_beta",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "I will wield the Circle's wisdom well.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_seal_crown": {
+          "speaker": "Archmage Kallan Frost-Weaver",
+          "text": "A heavy secret indeed... If Valen's betrayal sparked civil war while Mount Wyrmfang still threatens the holds, thousands would freeze. Keep the Crown as a silent guardian of that truth, and accept the Circle's highest honor.",
+          "setFlags": {
+            "forbidden_chronicle_sealed": true
+          },
+          "moralChoice": {
+            "questId": "quest_nr_hidden_blood_throne",
+            "path": "preserve_unity"
+          },
+          "choices": [
+            {
+              "label": "Unity before old vengeance.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_runecraft_lore": {
+          "speaker": "Archmage Kallan Frost-Weaver",
+          "text": "A novice channels but one invocation in battle. Cultivate your Mythology & Lore and Wisdom to expand your combat casting capacity up to five spells per clash. Hone your Intelligence to unlock Elemental Shift, Lingering Weave, Siphoning Cast, and Overchannel Surge!",
+          "choices": [
+            {
+              "label": "Illuminating counsel, Archmage.",
+              "target": "root"
             }
           ]
         }
@@ -536,12 +1446,73 @@
       "npcId": "npc_nr_librarian_freya",
       "nodes": {
         "root": {
-          "speaker": "Freya",
-          "text": "Quiet in the Arcanum, please. The ink on these First-Age dragon manuscripts is delicate.",
+          "speaker": "Freya of the Silver Quill",
+          "text": "Quiet among the crystal shelves, please. The First-Age parchments grow brittle when warm breath touches them.",
           "choices": [
             {
-              "label": "I shall tread softly.",
+              "label": "Let me browse your arcane reagents and foci.",
+              "target": "node_trade"
+            },
+            {
+              "label": "Archmage Kallan sent me to study the ancient dragon-binding manuscripts.",
+              "condition": {
+                "flag": "consulted_freya",
+                "expected": false
+              },
+              "target": "node_consult_archives"
+            },
+            {
+              "label": "Have you noticed anything unusual in the archive masonry?",
+              "target": "node_archive_secret"
+            },
+            {
+              "label": "I will leave you to your scrolls.",
               "target": "exit"
+            }
+          ]
+        },
+        "node_trade": {
+          "speaker": "Freya of the Silver Quill",
+          "text": "Glacial quartz, focus staves, and rare inks for true scholars.",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Farewell.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_consult_archives": {
+          "speaker": "Freya of the Silver Quill",
+          "text": "Ah, the Triad Folio! Look closely: High King Valen's Star-Keys do not only unlock Vyr's chains for slaughter. If you carry all three Star-Keys and recite this First-Age liturgy at Mount Wyrmfang's pedestals, you can re-seal Vyr peacefully for another millennium! Report this discovery to Archmage Kallan.",
+          "setFlags": {
+            "consulted_freya": true,
+            "studied_dragon_binding": true
+          },
+          "updateQuest": {
+            "questId": "quest_nr_circle_rime_relic",
+            "objectiveId": "obj_consult_freya",
+            "completed": true
+          },
+          "addJournalKnowledge": {
+            "title": "The Dragon Binding Ritual",
+            "text": "Freya taught you the First-Age liturgy of Torvald and Valen: with all three Star-Keys, you may peacefully re-seal Vyr atop Mount Wyrmfang instead of fighting to the death."
+          },
+          "awardXP": 40,
+          "choices": [
+            {
+              "label": "Knowledge may save more lives than steel. Thank you, Freya.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_archive_secret": {
+          "speaker": "Freya of the Silver Quill",
+          "text": "Strange you ask... Behind the oldest Valen chronicle shelf, the ice wall hums hollow whenever the blizzard blows from the north. None of the Archmage's catalogues mention what was walled inside.",
+          "choices": [
+            {
+              "label": "Curious indeed.",
+              "target": "root"
             }
           ]
         }

@@ -5,7 +5,11 @@
       "name": "Hold Veteran",
       "category": "Military",
       "description": "Years standing watch on the freezing battlements of Valenfrost Keep against raiders and wolves.",
-      "": "Hold guards and huscarls treat you as an honorable comrade.",
+      "dialoguePerk": "Hold guards and huscarls treat you as an honorable comrade.",
+      "proficiencies": [
+        "athletics",
+        "melee_combat"
+      ],
       "startingEquipment": [
         "item_nr_iron_broadsword",
         "item_nr_smoked_venison"
@@ -17,7 +21,11 @@
       "name": "Barrow Delver",
       "category": "Exploration",
       "description": "You have plundered the sealed burial cairns of forgotten chieftains and survived the walking dead.",
-      "": "Scholars and antiquarians eagerly buy rare curiosities from your pack.",
+      "dialoguePerk": "Scholars and antiquarians eagerly buy rare curiosities from your pack.",
+      "proficiencies": [
+        "investigation",
+        "stealth"
+      ],
       "startingEquipment": [
         "item_nr_mountain_torch",
         "item_nr_dwarven_lockpicks"
@@ -29,7 +37,11 @@
       "name": "Apprentice Runecarver",
       "category": "Scholarship",
       "description": "Trained under the master enchanters of Frostmere Spire in the geometry of storm and frost runes.",
-      "": "Mages of the Winter Circle welcome you into their sanctums without suspicion.",
+      "dialoguePerk": "Mages of the Winter Circle welcome you into their sanctums without suspicion.",
+      "proficiencies": [
+        "lore",
+        "arcana"
+      ],
       "startingEquipment": [
         "item_nr_frost_rune_focus",
         "item_nr_alembic_kit"
@@ -41,7 +53,11 @@
       "name": "Mistglen Smuggler",
       "category": "Underworld",
       "description": "Piloted flat-bottomed punts through the swamp mist of Mistglen, transporting contraband under the watch of the fog.",
-      "": "Fences, thieves, and informants whisper passwords to you freely.",
+      "dialoguePerk": "Fences, thieves, and informants whisper passwords to you freely.",
+      "proficiencies": [
+        "stealth",
+        "deception"
+      ],
       "startingEquipment": [
         "item_nr_hunting_dagger",
         "item_nr_hard_tack_bread"

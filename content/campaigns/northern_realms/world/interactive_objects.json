@@ -37,6 +37,18 @@
       "unlockOutcome": {
         "awardXP": 30,
         "transcript": "The heavy stone portal grinds inward on greased bronze bearings.",
+        "updateQuest": [
+          {
+            "questId": "quest_nr_side_dwarven_vault",
+            "objectiveId": "obj_open_vault",
+            "completed": true
+          },
+          {
+            "questId": "quest_nr_main_shadow_of_wyrmfang",
+            "objectiveId": "obj_key_alpha",
+            "completed": true
+          }
+        ],
         "setFlags": {
           "unlocked_grimstone_vault": true
         }
@@ -44,7 +56,8 @@
       "loot": [
         "mat_nr_silver_ingot",
         "item_nr_silver_crest_shield",
-        "item_nr_star_key_alpha"
+        "item_nr_star_key_alpha",
+        "item_nr_silver_kin_ledger"
       ],
       "lootTableId": "lt_nr_chest_dwarven_vault"
     },
@@ -61,6 +74,11 @@
       "unlockOutcome": {
         "awardXP": 25,
         "transcript": "The ancient bog-oak slab tilts inward with a shudder of dust.",
+        "updateQuest": {
+          "questId": "quest_nr_side_barrow_curse",
+          "objectiveId": "obj_unlock_crypt",
+          "completed": true
+        },
         "setFlags": {
           "unlocked_skallagrim_barrow": true
         }
@@ -99,6 +117,11 @@
       "unlockOutcome": {
         "awardXP": 35,
         "transcript": "The stone lid shifts aside with a hollow scrape, revealing ancestral treasures.",
+        "updateQuest": {
+          "questId": "quest_nr_main_shadow_of_wyrmfang",
+          "objectiveId": "obj_key_gamma",
+          "completed": true
+        },
         "setFlags": {
           "looted_skallagrim_sarcophagus": true
         }

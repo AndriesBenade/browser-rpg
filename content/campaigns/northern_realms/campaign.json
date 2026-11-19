@@ -1,13 +1,13 @@
 {
   "id": "campaign_northern_realms",
   "name": "The Northern Realms",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "engineVersion": ">=1.0.0",
   "author": "Antigravity & Ancient Systems Designer",
-  "description": "An expansive, Nordic-inspired open-world fantasy campaign. Journey through five vast regions: the fortified highland seat of Valenfrost, the ancient taiga of Whispering Woods, the foggy smuggler canals of Mistglen, the subterranean dwarven delve of Grimstone, and the towering glacial peaks of Mount Wyrmfang. Battle draugr wights, mountain trolls, and ancient dragons while uncovering the three lost Star-Keys of High King Valen.",
+  "description": "A rich, Nordic-inspired open-world fantasy RPG campaign spanning five regions, 25 interconnected locations, 17 reactive NPCs, 10 northern creatures, 16 material-driven crafting forms, 8 multi-path quests, and 3 secret hidden missions. Uncover the three Star-Keys of High King Valen, master runic spellcasting, and shape the destiny of the North.",
   "genre": "nordic_fantasy",
   "isDefault": false,
-  "isTestCampaign": true,
+  "isTestCampaign": false,
   "startingLocationId": "loc_nr_valenfrost_gates",
   "startingTime": {
     "hour": 8,
@@ -85,6 +85,7 @@
     "materials": "content/campaigns/northern_realms/world/materials.json",
     "craftingTemplates": "content/campaigns/northern_realms/world/crafting_templates.json",
     "combinations": "content/campaigns/northern_realms/world/combinations.json",
+    "tutorials": "content/campaigns/northern_realms/world/tutorials.json",
     "classes": "content/campaigns/northern_realms/world/classes.json",
     "backgrounds": "content/campaigns/northern_realms/world/backgrounds.json",
     "origins": [
@@ -309,5 +310,12 @@
     "lockpickingEnabled": true,
     "randomEncountersEnabled": true,
     "livingWorldSimulation": true
-  }
+  },
+  "tutorials": [
+    {
+      "id": "tut_nr_valenfrost_arrival",
+      "title": "Arrival at Valenfrost",
+      "summary": "Speak with Captain Tor at the Gates, seek Jarl Sigurd in the High Mead-Hall, experiment with concealed material crafting at Bjorn's forge, and grow your Mythology & Lore and Intelligence to expand your combat spellcasting."
+    }
+  ]
 }

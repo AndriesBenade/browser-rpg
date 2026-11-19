@@ -11,7 +11,12 @@
       "valueDrachmae": 18,
       "weightKg": 2.2,
       "category": "weapon",
-      "description": "A wide, heavy double-edged broadsword forged from Valenfrost river-iron. Reliable and deadly in the hands of a hold warrior."
+      "description": "A wide, heavy double-edged broadsword forged from Valenfrost river-iron. Reliable and deadly in the hands of a hold warrior.",
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "damageType": "slashing"
+      }
     },
     {
       "id": "item_nr_honed_iron_broadsword",
@@ -24,7 +29,13 @@
       "valueDrachmae": 30,
       "weightKg": 2.2,
       "category": "weapon",
-      "description": "Carefully whetted with coarse mountain stone. Its mirror edge cleaves through wolf fur and quilted gambesons."
+      "description": "Carefully whetted with coarse mountain stone. Its mirror edge cleaves through wolf fur and quilted gambesons.",
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 9,
+        "damageType": "slashing",
+        "attackBonus": 1
+      }
     },
     {
       "id": "item_nr_silver_waraxe",
@@ -37,7 +48,13 @@
       "valueDrachmae": 45,
       "weightKg": 2.8,
       "category": "weapon",
-      "description": "Forged with dwarven silver inlay along the bearded beard-edge. Undead wights and draugr shriek when struck by its silver bite."
+      "description": "Forged with dwarven silver inlay along the bearded beard-edge. Undead wights and draugr shriek when struck by its silver bite.",
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 10,
+        "damageType": "slashing",
+        "elementalDamage": 1
+      }
     },
     {
       "id": "item_nr_ash_longbow",
@@ -50,7 +67,13 @@
       "valueDrachmae": 22,
       "weightKg": 1.5,
       "category": "weapon",
-      "description": "A tall yew-backed ash recurve crafted by scout bowyers. Penetrates heavy hides at long distances."
+      "description": "A tall yew-backed ash recurve crafted by scout bowyers. Penetrates heavy hides at long distances.",
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "damageType": "piercing",
+        "range": "ranged"
+      }
     },
     {
       "id": "item_nr_hunting_dagger",
@@ -63,7 +86,13 @@
       "valueDrachmae": 10,
       "weightKg": 0.6,
       "category": "weapon",
-      "description": "A sharp bone-hilted utility blade used for field dressing game, cutting ropes, and silent throat-strikes."
+      "description": "A sharp bone-hilted utility blade used for field dressing game, cutting ropes, and silent throat-strikes.",
+      "stats": {
+        "damageMin": 2,
+        "damageMax": 5,
+        "damageType": "piercing",
+        "attackBonus": 1
+      }
     },
     {
       "id": "item_nr_huscarl_battleaxe",
@@ -76,7 +105,12 @@
       "valueDrachmae": 65,
       "weightKg": 4,
       "category": "weapon",
-      "description": "A massive two-handed executioner's greataxe carried by the Jarl's personal huscarl guard. Devastating on charging foes."
+      "description": "A massive two-handed executioner's greataxe carried by the Jarl's personal huscarl guard. Devastating on charging foes.",
+      "stats": {
+        "damageMin": 6,
+        "damageMax": 12,
+        "damageType": "slashing"
+      }
     },
     {
       "id": "item_nr_frost_runeblade",
@@ -89,7 +123,14 @@
       "valueDrachmae": 95,
       "weightKg": 2.3,
       "category": "weapon",
-      "description": "Etched with archaic winter runes that glow pale blue. Wreathed in frost vapors that numb enemy parrying arms."
+      "description": "Etched with archaic winter runes that glow pale blue. Wreathed in frost vapors that numb enemy parrying arms.",
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 10,
+        "damageType": "slashing",
+        "elementalDamage": 2,
+        "spellBonus": 1
+      }
     },
     {
       "id": "item_nr_wyrmtooth_spear",
@@ -102,7 +143,13 @@
       "valueDrachmae": 85,
       "weightKg": 2.7,
       "category": "weapon",
-      "description": "Tipped with the fossilized tooth of a young ice drake. Can pierce through troll hide and scale with frightening ease."
+      "description": "Tipped with the fossilized tooth of a young ice drake. Can pierce through troll hide and scale with frightening ease.",
+      "stats": {
+        "damageMin": 5,
+        "damageMax": 10,
+        "damageType": "piercing",
+        "attackBonus": 1
+      }
     },
     {
       "id": "item_nr_relic_dragonbane",
@@ -115,7 +162,14 @@
       "valueDrachmae": 250,
       "weightKg": 3,
       "category": "weapon",
-      "description": "The ancient ancestral blade of High King Valen, forged from pure meteoric sky-iron. Glows like falling lightning in the presence of wyrms."
+      "description": "The ancient ancestral blade of High King Valen, forged from pure meteoric sky-iron. Glows like falling lightning in the presence of wyrms.",
+      "stats": {
+        "damageMin": 8,
+        "damageMax": 16,
+        "damageType": "slashing",
+        "elementalDamage": 3,
+        "attackBonus": 2
+      }
     },
     {
       "id": "item_nr_cabal_stiletto",
@@ -128,7 +182,13 @@
       "valueDrachmae": 35,
       "weightKg": 0.5,
       "category": "weapon",
-      "description": "A needle-thin black steel stiletto favoured by the cutpurses of Mistglen for slipping past armor seams."
+      "description": "A needle-thin black steel stiletto favoured by the cutpurses of Mistglen for slipping past armor seams.",
+      "stats": {
+        "damageMin": 3,
+        "damageMax": 7,
+        "damageType": "piercing",
+        "attackBonus": 2
+      }
     },
     {
       "id": "item_nr_huscarl_roundshield",
@@ -140,7 +200,10 @@
       "valueDrachmae": 15,
       "weightKg": 3.5,
       "category": "shield",
-      "description": "Hardened pine planks bound in iron rim with a heavy central boss. Blunts heavy axe strikes and arrows."
+      "description": "Hardened pine planks bound in iron rim with a heavy central boss. Blunts heavy axe strikes and arrows.",
+      "stats": {
+        "defenseBonus": 2
+      }
     },
     {
       "id": "item_nr_silver_crest_shield",
@@ -152,181 +215,233 @@
       "valueDrachmae": 60,
       "weightKg": 5.5,
       "category": "shield",
-      "description": "A towering dwarven heater shield bearing the silver pickaxe sigil of the Silver Kin. Repels physical blows and magical frost."
+      "description": "A towering dwarven heater shield bearing the silver pickaxe sigil of the Silver Kin. Repels physical blows and magical frost.",
+      "stats": {
+        "defenseBonus": 3,
+        "frostResist": 2
+      }
     },
     {
       "id": "item_nr_iron_ringmail",
       "name": "Northern Ringmail Hauberk",
       "type": "armor",
-      "slot": "armor",
+      "slot": "body",
       "rarity": "common",
       "acBonus": 4,
       "valueDrachmae": 40,
       "weightKg": 10,
       "category": "armor",
-      "description": "Interlinked iron rings riveted over thick quilted wool. Standard field panoply of the hold garrison."
+      "description": "Interlinked iron rings riveted over thick quilted wool. Standard field panoply of the hold garrison.",
+      "stats": {
+        "defenseBonus": 3
+      }
     },
     {
       "id": "item_nr_scout_leather_coat",
       "name": "Ranger's Waxed Leather Coat",
       "type": "armor",
-      "slot": "armor",
+      "slot": "body",
       "rarity": "common",
       "acBonus": 2,
       "valueDrachmae": 25,
       "weightKg": 4.5,
       "category": "armor",
-      "description": "Treated elk-skin leather reinforced with horn plates. Silent, flexible, and weather-resistant."
+      "description": "Treated elk-skin leather reinforced with horn plates. Silent, flexible, and weather-resistant.",
+      "stats": {
+        "defenseBonus": 2
+      }
     },
     {
       "id": "item_nr_skald_ringmail",
       "name": "Skald's Silver-Threaded Ringmail",
       "type": "armor",
-      "slot": "armor",
+      "slot": "body",
       "rarity": "uncommon",
       "acBonus": 3,
       "valueDrachmae": 55,
       "weightKg": 7.5,
       "category": "armor",
-      "description": "Supple chain hauberk interwoven with silver wire, tailored for swift chanting and blade-dancing."
+      "description": "Supple chain hauberk interwoven with silver wire, tailored for swift chanting and blade-dancing.",
+      "stats": {
+        "defenseBonus": 2,
+        "spellBonus": 1
+      }
     },
     {
       "id": "item_nr_wolfskin_mantle",
       "name": "Winter Wolf Warm-Cloak",
       "type": "armor",
-      "slot": "cloak",
+      "slot": "back",
       "rarity": "common",
       "acBonus": 1,
       "valueDrachmae": 20,
       "weightKg": 1.8,
       "category": "armor",
-      "description": "A thick pelt of snowy white mountain wolf lined with wool. Keeps bitter winds from chilling muscle and bone."
+      "description": "A thick pelt of snowy white mountain wolf lined with wool. Keeps bitter winds from chilling muscle and bone.",
+      "stats": {
+        "defenseBonus": 1,
+        "frostResist": 3
+      }
     },
     {
       "id": "item_nr_dwarven_plate",
       "name": "Silver Kin Forged Cuirass",
       "type": "armor",
-      "slot": "armor",
+      "slot": "body",
       "rarity": "rare",
       "acBonus": 6,
       "valueDrachmae": 120,
       "weightKg": 14,
       "category": "armor",
-      "description": "Flawlessly articulated heavy breastplate forged from tempered coal-steel by clan smiths in the Blackforge."
+      "description": "Flawlessly articulated heavy breastplate forged from tempered coal-steel by clan smiths in the Blackforge.",
+      "stats": {
+        "defenseBonus": 5
+      }
     },
     {
       "id": "item_nr_iron_spangenhelm",
       "name": "Northern Spangenhelm",
       "type": "armor",
-      "slot": "helmet",
+      "slot": "head",
       "rarity": "common",
       "acBonus": 1,
       "valueDrachmae": 22,
       "weightKg": 2,
       "category": "armor",
-      "description": "Conical iron helm fitted with an ocular spectacle mask and protective cheek plates."
+      "description": "Conical iron helm fitted with an ocular spectacle mask and protective cheek plates.",
+      "stats": {
+        "defenseBonus": 1
+      }
     },
     {
       "id": "item_nr_leather_boots",
       "name": "Fur-Lined Mountain Boots",
       "type": "armor",
-      "slot": "boots",
+      "slot": "feet",
       "rarity": "common",
       "acBonus": 0,
       "valueDrachmae": 12,
       "weightKg": 1.5,
       "category": "boots",
-      "description": "Heavy treaded leather boots fitted with iron cleats for traversing frozen mountain scree."
+      "description": "Heavy treaded leather boots fitted with iron cleats for traversing frozen mountain scree.",
+      "stats": {
+        "defenseBonus": 1
+      }
     },
     {
       "id": "item_nr_smoked_venison",
       "name": "Salt-Cured Mountain Venison",
       "type": "consumable",
-      "category": "food",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 3,
       "weightKg": 0.5,
       "ration": true,
       "restoreStamina": 6,
       "restoreHealth": 4,
-      "description": "Hearty strips of venison smoked over pine embers. Sustains hunters on grueling climbs."
+      "description": "Hearty strips of venison smoked over pine embers. Sustains hunters on grueling climbs.",
+      "stats": {
+        "restoreHealth": 4,
+        "restoreStamina": 6
+      }
     },
     {
       "id": "item_nr_smoked_salmon",
       "name": "Cold-Smoked Fjord Salmon",
       "type": "consumable",
-      "category": "food",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 4,
       "weightKg": 0.4,
       "ration": true,
       "restoreStamina": 7,
       "restoreHealth": 5,
-      "description": "Rich, oily pink salmon cured in juniper salt. A favorite of Mistglen boatmen."
+      "description": "Rich, oily pink salmon cured in juniper salt. A favorite of Mistglen boatmen.",
+      "stats": {
+        "restoreHealth": 5,
+        "restoreStamina": 7
+      }
     },
     {
       "id": "item_nr_hard_tack_bread",
       "name": "Caravan Hardtack Biscuit",
       "type": "consumable",
-      "category": "food",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 2,
       "weightKg": 0.3,
       "ration": true,
       "restoreStamina": 4,
-      "description": "Dense, dry barley biscuits baked to endure months in pack sacks without spoiling."
+      "description": "Dense, dry barley biscuits baked to endure months in pack sacks without spoiling.",
+      "stats": {
+        "restoreStamina": 4
+      }
     },
     {
       "id": "item_nr_spiced_mead_flagon",
       "name": "Valenfrost Spiced Juniper Mead",
       "type": "consumable",
-      "category": "drink",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 6,
       "weightKg": 1,
       "restoreHealth": 8,
       "restoreMorale": 2,
-      "description": "Sweet, intoxicating golden mead fermented with wild clover honey and crushed mountain juniper."
+      "description": "Sweet, intoxicating golden mead fermented with wild clover honey and crushed mountain juniper.",
+      "stats": {
+        "restoreHealth": 8
+      }
     },
     {
       "id": "item_nr_stamina_draught",
       "name": "Juniper Stamina Cordial",
       "type": "consumable",
-      "category": "potion",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 14,
       "weightKg": 0.4,
       "restoreStamina": 12,
-      "description": "A brisk herbal draught distilled from blue glacier lichen. Clears mental fatigue and restores vigour."
+      "description": "A brisk herbal draught distilled from blue glacier lichen. Clears mental fatigue and restores vigour.",
+      "stats": {
+        "restoreStamina": 12
+      }
     },
     {
       "id": "item_nr_frost_resist_potion",
       "name": "Elixir of the Hearthfire",
       "type": "consumable",
-      "category": "potion",
+      "category": "consumable",
       "rarity": "uncommon",
       "valueDrachmae": 28,
       "weightKg": 0.4,
       "restoreHealth": 15,
-      "description": "A glowing amber brew that fills the veins with gentle warmth, nullifying freezing chill."
+      "description": "A glowing amber brew that fills the veins with gentle warmth, nullifying freezing chill.",
+      "stats": {
+        "restoreHealth": 15,
+        "frostResist": 4
+      }
     },
     {
       "id": "item_nr_potent_restorative",
       "name": "Master Alchemist's Restorative",
       "type": "consumable",
-      "category": "potion",
+      "category": "consumable",
       "rarity": "rare",
       "valueDrachmae": 50,
       "weightKg": 0.4,
       "restoreHealth": 25,
       "restoreStamina": 15,
-      "description": "A concentrated dual draught of distilled herbs that knits torn sinew and mends cracked bone."
+      "description": "A concentrated dual draught of distilled herbs that knits torn sinew and mends cracked bone.",
+      "stats": {
+        "restoreHealth": 25,
+        "restoreStamina": 15
+      }
     },
     {
       "id": "item_nr_mire_venom_gland",
       "name": "Mire Viper Venom Gland",
       "type": "consumable",
-      "category": "poison",
+      "category": "consumable",
       "rarity": "common",
       "valueDrachmae": 12,
       "weightKg": 0.3,
@@ -340,7 +455,8 @@
       "rarity": "common",
       "valueDrachmae": 25,
       "weightKg": 0.4,
-      "description": "A roll of finely tempered steel picks and torsion wrenches crafted for bypassing heavy iron tumblers."
+      "description": "A roll of finely tempered steel picks and torsion wrenches crafted for bypassing heavy iron tumblers.",
+      "toolType": "lockpick"
     },
     {
       "id": "item_nr_mountain_torch",
@@ -396,11 +512,16 @@
       "id": "item_nr_frost_rune_focus",
       "name": "Carved Obsidian Rune Focus",
       "type": "relic",
-      "slot": "ring",
+      "slot": "ring_1",
       "rarity": "uncommon",
       "valueDrachmae": 45,
       "weightKg": 0.2,
-      "description": "A polished volcanic glass token inscribed with the storm glyph of Torvald. Enhances spellcasting resonance."
+      "description": "A polished volcanic glass token inscribed with the storm glyph of Torvald. Enhances spellcasting resonance.",
+      "category": "accessory",
+      "stats": {
+        "spellBonus": 2,
+        "defenseBonus": 1
+      }
     },
     {
       "id": "item_nr_key_grimstone_vault",
@@ -466,11 +587,15 @@
       "id": "item_nr_jarl_heirloom_ring",
       "name": "Signet of the Wolf Crest",
       "type": "jewelry",
-      "slot": "ring",
+      "slot": "ring_2",
       "rarity": "rare",
       "valueDrachmae": 70,
       "weightKg": 0.1,
-      "description": "Stolen from Jarl Sigurd's chambers. Bearing the roaring wolf head of Valenfrost in hammered gold."
+      "description": "Stolen from Jarl Sigurd's chambers. Bearing the roaring wolf head of Valenfrost in hammered gold.",
+      "category": "accessory",
+      "stats": {
+        "defenseBonus": 1
+      }
     },
     {
       "id": "item_nr_elena_stolen_ledger",
@@ -496,21 +621,187 @@
       "id": "item_nr_amber_necklace",
       "name": "Baltic Amber Bead Necklace",
       "type": "jewelry",
-      "slot": "ring",
+      "slot": "neck",
       "rarity": "uncommon",
       "valueDrachmae": 40,
       "weightKg": 0.3,
-      "description": "Golden translucent fossil resin beads washed ashore along the northern sea coast."
+      "description": "Golden translucent fossil resin beads washed ashore along the northern sea coast.",
+      "category": "accessory",
+      "stats": {
+        "frostResist": 2
+      }
     },
     {
       "id": "item_nr_garnet_brooch",
       "name": "Garnet-Studded Cloak Clasp",
       "type": "jewelry",
-      "slot": "ring",
+      "slot": "neck",
       "rarity": "rare",
       "valueDrachmae": 65,
       "weightKg": 0.2,
-      "description": "A bronze disk brooch set with deep red cabochon garnets in geometric clan patterns."
+      "description": "A bronze disk brooch set with deep red cabochon garnets in geometric clan patterns.",
+      "category": "accessory",
+      "stats": {
+        "defenseBonus": 1
+      }
+    },
+    {
+      "id": "mat_nr_hearth_amber",
+      "name": "Hearthstone Amber Resin",
+      "type": "material",
+      "category": "material",
+      "rarity": "uncommon",
+      "valueDrachmae": 22,
+      "weightKg": 0.4,
+      "description": "Warm golden resin tapped from geothermal pines near volcanic vents. Radiates faint hearth-heat when crushed or inlaid."
+    },
+    {
+      "id": "mat_nr_frost_quartz",
+      "name": "Glacial Quartz Crystal",
+      "type": "material",
+      "category": "material",
+      "rarity": "rare",
+      "valueDrachmae": 35,
+      "weightKg": 0.6,
+      "description": "A hexagonal prism of clear northern quartz resonant with glacial magic. Prized by Frostmere runecrafters and dwarven smiths."
+    },
+    {
+      "id": "item_nr_caravan_crate",
+      "name": "Astrid's Sealed Fur Crate",
+      "type": "quest_item",
+      "category": "quest",
+      "rarity": "uncommon",
+      "valueDrachmae": 0,
+      "weightKg": 3.5,
+      "description": "A wax-sealed cedar chest stamped with Astrid's caravan mark, packed with white fox pelts and undeclared northern silver."
+    },
+    {
+      "id": "item_nr_cult_manifest",
+      "name": "Obsidian Cult Manifest",
+      "type": "lore_item",
+      "category": "quest",
+      "rarity": "rare",
+      "valueDrachmae": 0,
+      "weightKg": 0.3,
+      "description": "A ciphered ledger wrapped in oiled seal-skin, detailing covert shipments of Vyr-cult obsidian idols sent up the Mistglen canals."
+    },
+    {
+      "id": "item_nr_oathbreaker_signet",
+      "name": "Signet of the Broken Oath",
+      "type": "accessory",
+      "category": "accessory",
+      "slot": "ring_1",
+      "rarity": "rare",
+      "valueDrachmae": 95,
+      "weightKg": 0.1,
+      "stats": {
+        "defenseBonus": 2,
+        "spellBonus": 1
+      },
+      "description": "A blackened silver signet seized from a traitorous watch courier. Grants keen vigilance and arcane ward to its bearer."
+    },
+    {
+      "id": "item_nr_frost_truce_tablet",
+      "name": "Ancient Frost-Truce Tablet",
+      "type": "lore_item",
+      "category": "quest",
+      "rarity": "rare",
+      "valueDrachmae": 0,
+      "weightKg": 1.4,
+      "description": "A pre-Valen slate etched with Drakenseeker runes recording an older pact between the northern clans and the glacial spirits."
+    },
+    {
+      "id": "item_nr_drakenseeker_talisman",
+      "name": "Talisman of the First Truce",
+      "type": "accessory",
+      "category": "accessory",
+      "slot": "neck",
+      "rarity": "epic",
+      "valueDrachmae": 140,
+      "weightKg": 0.2,
+      "stats": {
+        "defenseBonus": 2,
+        "spellBonus": 1,
+        "spellCapacityBonus": 1
+      },
+      "description": "An ancestral Drakenseeker pendant carved from sky-iron and mammoth ivory. Expands the wearer's combat spellcasting capacity by +1."
+    },
+    {
+      "id": "item_nr_rime_king_crown",
+      "name": "Crown of the Rime-King",
+      "type": "armor",
+      "category": "armor",
+      "slot": "head",
+      "rarity": "epic",
+      "valueDrachmae": 220,
+      "weightKg": 1.2,
+      "stats": {
+        "defenseBonus": 3,
+        "spellBonus": 2,
+        "frostResist": 4
+      },
+      "description": "The long-buried iron and frost-quartz diadem of Chieftain Skallagrim's line. Hums with commanding winter resonance."
+    },
+    {
+      "id": "item_nr_blackforge_hearthblade",
+      "name": "Blackforge Runic Claymore",
+      "type": "weapon",
+      "category": "weapon",
+      "slot": "two_hand",
+      "rarity": "rare",
+      "valueDrachmae": 150,
+      "weightKg": 3.6,
+      "stats": {
+        "damageMin": 8,
+        "damageMax": 14,
+        "damageType": "slashing",
+        "elementalDamage": 2,
+        "attackBonus": 1
+      },
+      "description": "Tempered in the volcanic crucible of the Great Blackforge by Helga Anvil-Mother. Its fuller glows like banked embers."
+    },
+    {
+      "id": "item_nr_silver_kin_ledger",
+      "name": "Ancestral Silver Kin Charter",
+      "type": "quest_item",
+      "category": "quest",
+      "rarity": "uncommon",
+      "valueDrachmae": 0,
+      "weightKg": 0.5,
+      "description": "Hammered bronze plates recording Clan Silver-Kin's ancient mining deeds and an unrecorded royal treasury claim."
+    },
+    {
+      "id": "item_nr_skallagrim_warhorn",
+      "name": "Cursed War-Horn of Skallagrim",
+      "type": "accessory",
+      "category": "accessory",
+      "slot": "waist",
+      "rarity": "rare",
+      "valueDrachmae": 80,
+      "weightKg": 0.8,
+      "stats": {
+        "spellBonus": 1,
+        "defenseBonus": 1
+      },
+      "description": "A frost-rimed aurochs horn bound in draugr silver. Its hollow note chills the marrow of living foes."
+    },
+    {
+      "id": "item_nr_runic_focus_staff",
+      "name": "Spire-Carved Rime Staff",
+      "type": "weapon",
+      "category": "weapon",
+      "slot": "two_hand",
+      "rarity": "rare",
+      "valueDrachmae": 110,
+      "weightKg": 1.8,
+      "stats": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "damageType": "bludgeoning",
+        "elementalDamage": 3,
+        "spellBonus": 2
+      },
+      "description": "An ashwood staff crowned with a cage of glacial quartz, channeling northern invocations with sharp precision."
     }
   ]
 }

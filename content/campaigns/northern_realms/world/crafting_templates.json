@@ -2,143 +2,371 @@
   "templates": [
     {
       "id": "tmpl_nr_iron_broadsword",
-      "name": "Northern Iron Broadsword",
-      "profession": "nr_weaponsmithing",
-      "targetCategory": "weapon",
-      "minLevel": 1,
-      "requiredSkillCheck": {
-        "skill": "athletics",
-        "dc": 11
+      "name": "Northern Broadsword",
+      "professionId": "nr_weaponsmithing",
+      "category": "weapon",
+      "slot": "main_hand",
+      "baseDamageMin": 4,
+      "baseDamageMax": 8,
+      "damageType": "slashing",
+      "baseWeightKg": 2.1,
+      "baseValueDrachmae": 28,
+      "baseDC": 11,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal"
+        ],
+        "targetHardness": 6,
+        "targetDurability": 7,
+        "targetFlexibility": 4,
+        "targetMagic": 2,
+        "targetWeight": 2
       },
-      "materials": [
-        {
-          "category": "metal",
-          "quantity": 2,
-          "defaultMaterialId": "mat_nr_bog_iron"
-        },
-        {
-          "category": "wood",
-          "quantity": 1,
-          "defaultMaterialId": "mat_nr_hardened_pine"
-        }
-      ],
-      "outputItemId": "item_nr_iron_broadsword",
-      "description": "A wide, double-edged northern blade built for crushing mail and beast hide."
+      "description": "A balanced double-edged northern blade forged for reliable cutting power."
     },
     {
       "id": "tmpl_nr_silver_waraxe",
-      "name": "Silver-Inlaid Waraxe",
-      "profession": "nr_weaponsmithing",
-      "targetCategory": "weapon",
-      "minLevel": 2,
-      "requiredSkillCheck": {
-        "skill": "athletics",
-        "dc": 13
+      "name": "Bearded Waraxe",
+      "professionId": "nr_weaponsmithing",
+      "category": "weapon",
+      "slot": "main_hand",
+      "baseDamageMin": 5,
+      "baseDamageMax": 10,
+      "damageType": "slashing",
+      "baseWeightKg": 2.7,
+      "baseValueDrachmae": 44,
+      "baseDC": 13,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal",
+          "wood"
+        ],
+        "targetHardness": 7,
+        "targetDurability": 8,
+        "targetFlexibility": 5,
+        "targetMagic": 4,
+        "targetWeight": 1.9
       },
-      "materials": [
-        {
-          "category": "metal",
-          "quantity": 2,
-          "defaultMaterialId": "mat_nr_silver_ingot"
-        },
-        {
-          "category": "wood",
-          "quantity": 1,
-          "defaultMaterialId": "mat_nr_hardened_pine"
-        }
-      ],
-      "outputItemId": "item_nr_silver_waraxe",
-      "description": "A heavy cleaving axe engraved with silver runes that sear through undead flesh."
+      "description": "A heavy bearded waraxe built to hook shields and cleave thick hides."
+    },
+    {
+      "id": "tmpl_nr_greataxe",
+      "name": "Huscarl Greataxe",
+      "professionId": "nr_weaponsmithing",
+      "category": "weapon",
+      "slot": "two_hand",
+      "baseDamageMin": 7,
+      "baseDamageMax": 13,
+      "damageType": "slashing",
+      "baseWeightKg": 3.8,
+      "baseValueDrachmae": 68,
+      "baseDC": 14,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal"
+        ],
+        "targetHardness": 9,
+        "targetDurability": 9,
+        "targetFlexibility": 3,
+        "targetWeight": 2.4
+      },
+      "description": "A towering two-handed executioner's axe born of dense, heavy ore."
+    },
+    {
+      "id": "tmpl_nr_runic_staff",
+      "name": "Glacial Runestaff",
+      "professionId": "nr_weaponsmithing",
+      "category": "weapon",
+      "slot": "two_hand",
+      "baseDamageMin": 4,
+      "baseDamageMax": 8,
+      "damageType": "bludgeoning",
+      "baseSpellBonus": 2,
+      "baseWeightKg": 1.6,
+      "baseValueDrachmae": 65,
+      "baseDC": 13,
+      "materialAffinity": {
+        "preferredCategories": [
+          "stone",
+          "wood",
+          "metal"
+        ],
+        "targetMagic": 8,
+        "targetHardness": 7,
+        "targetWeight": 1.1
+      },
+      "description": "A crystalline focus staff humming with northern arcane currents."
+    },
+    {
+      "id": "tmpl_nr_recurve_bow",
+      "name": "Taiga Recurve Bow",
+      "professionId": "nr_leatherwork",
+      "category": "weapon",
+      "slot": "two_hand",
+      "baseDamageMin": 4,
+      "baseDamageMax": 9,
+      "damageType": "piercing",
+      "baseWeightKg": 1.3,
+      "baseValueDrachmae": 32,
+      "baseDC": 12,
+      "materialAffinity": {
+        "preferredCategories": [
+          "wood",
+          "leather"
+        ],
+        "targetFlexibility": 8,
+        "targetWeight": 1
+      },
+      "description": "A laminated hunting recurve backed with supple sinew and mountain pine."
+    },
+    {
+      "id": "tmpl_nr_hunting_dirk",
+      "name": "Frost-Fang Dirk",
+      "professionId": "nr_weaponsmithing",
+      "category": "weapon",
+      "slot": "main_hand",
+      "baseDamageMin": 3,
+      "baseDamageMax": 6,
+      "damageType": "piercing",
+      "baseWeightKg": 0.7,
+      "baseValueDrachmae": 22,
+      "baseDC": 10,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal",
+          "wood"
+        ],
+        "targetFlexibility": 7,
+        "targetWeight": 1,
+        "targetMagic": 3
+      },
+      "description": "A swift, needle-pointed dirk shaped for quick parries and lethal thrusts."
     },
     {
       "id": "tmpl_nr_iron_roundshield",
-      "name": "Huscarl's Reinforced Roundshield",
-      "profession": "nr_weaponsmithing",
-      "targetCategory": "shield",
-      "minLevel": 1,
-      "requiredSkillCheck": {
-        "skill": "athletics",
-        "dc": 10
+      "name": "Huscarl Roundshield",
+      "professionId": "nr_weaponsmithing",
+      "category": "shield",
+      "slot": "off_hand",
+      "baseDefense": 2,
+      "baseWeightKg": 3.2,
+      "baseValueDrachmae": 30,
+      "baseDC": 11,
+      "materialAffinity": {
+        "preferredCategories": [
+          "wood",
+          "metal"
+        ],
+        "targetDurability": 7,
+        "targetFlexibility": 6,
+        "targetWeight": 1.6
       },
-      "materials": [
-        {
-          "category": "wood",
-          "quantity": 2,
-          "defaultMaterialId": "mat_nr_hardened_pine"
-        },
-        {
-          "category": "metal",
-          "quantity": 1,
-          "defaultMaterialId": "mat_nr_bog_iron"
-        }
-      ],
-      "outputItemId": "item_nr_huscarl_roundshield",
-      "description": "Stout pine boards bound in forged iron rim with a heavy central boss."
+      "description": "Stout pine planks bound in a forged metal rim with a heavy iron boss."
+    },
+    {
+      "id": "tmpl_nr_forged_cuirass",
+      "name": "Runed Scale Hauberk",
+      "professionId": "nr_weaponsmithing",
+      "category": "armor",
+      "slot": "body",
+      "baseDefense": 4,
+      "baseWeightKg": 6.5,
+      "baseValueDrachmae": 72,
+      "baseDC": 14,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal"
+        ],
+        "targetHardness": 8,
+        "targetDurability": 9,
+        "targetWeight": 2.2
+      },
+      "description": "Overlapping metallic scales riveted over boiled felt for formidable protection."
+    },
+    {
+      "id": "tmpl_nr_spangenhelm",
+      "name": "Northern Spangenhelm",
+      "professionId": "nr_weaponsmithing",
+      "category": "armor",
+      "slot": "head",
+      "baseDefense": 2,
+      "baseWeightKg": 1.9,
+      "baseValueDrachmae": 36,
+      "baseDC": 12,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal",
+          "stone"
+        ],
+        "targetHardness": 7,
+        "targetMagic": 5,
+        "targetWeight": 1.5
+      },
+      "description": "A banded conical war-helm inlaid with protective northern filigree."
     },
     {
       "id": "tmpl_nr_wolf_pelt_cloak",
-      "name": "Winter Wolf Warm-Cloak",
-      "profession": "nr_leatherwork",
-      "targetCategory": "armor",
-      "minLevel": 1,
-      "requiredSkillCheck": {
-        "skill": "survival",
-        "dc": 11
+      "name": "Winter Pelt Mantle",
+      "professionId": "nr_leatherwork",
+      "category": "armor",
+      "slot": "back",
+      "baseDefense": 1,
+      "baseWeightKg": 1.5,
+      "baseValueDrachmae": 26,
+      "baseDC": 10,
+      "materialAffinity": {
+        "preferredCategories": [
+          "leather"
+        ],
+        "targetFlexibility": 8,
+        "targetWeight": 1
       },
-      "materials": [
-        {
-          "category": "leather",
-          "quantity": 2,
-          "defaultMaterialId": "mat_nr_wolf_pelt"
-        }
-      ],
-      "outputItemId": "item_nr_wolfskin_mantle",
-      "description": "A broad, snow-shedding fur mantle that keeps out arctic squalls."
+      "description": "A broad snow-shedding fur mantle stitched for fierce arctic squalls."
+    },
+    {
+      "id": "tmpl_nr_trollhide_jerkin",
+      "name": "Heavy Hide Brigandine",
+      "professionId": "nr_leatherwork",
+      "category": "armor",
+      "slot": "body",
+      "baseDefense": 3,
+      "baseWeightKg": 4.2,
+      "baseValueDrachmae": 54,
+      "baseDC": 13,
+      "materialAffinity": {
+        "preferredCategories": [
+          "leather",
+          "metal"
+        ],
+        "targetDurability": 8,
+        "targetHardness": 7,
+        "targetWeight": 2
+      },
+      "description": "Thick cured beast-hide quilted with reinforced shoulder plates."
+    },
+    {
+      "id": "tmpl_nr_runic_ring",
+      "name": "Inlaid Runic Band",
+      "professionId": "nr_weaponsmithing",
+      "category": "accessory",
+      "slot": "ring_1",
+      "baseDefense": 1,
+      "baseSpellBonus": 1,
+      "baseWeightKg": 0.1,
+      "baseValueDrachmae": 48,
+      "baseDC": 13,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal",
+          "stone"
+        ],
+        "targetMagic": 7,
+        "targetHardness": 7
+      },
+      "description": "A finely chased metallic band engraved with warding runes."
+    },
+    {
+      "id": "tmpl_nr_fur_talisman",
+      "name": "Warden's Bone Amulet",
+      "professionId": "nr_leatherwork",
+      "category": "accessory",
+      "slot": "neck",
+      "baseDefense": 1,
+      "baseSpellBonus": 1,
+      "baseWeightKg": 0.2,
+      "baseValueDrachmae": 38,
+      "baseDC": 12,
+      "materialAffinity": {
+        "preferredCategories": [
+          "leather",
+          "herb",
+          "wood"
+        ],
+        "targetMagic": 5,
+        "targetFlexibility": 7
+      },
+      "description": "A braided leather cord bearing a resin-sealed charm against frost and fear."
     },
     {
       "id": "tmpl_nr_stamina_cordial",
       "name": "Juniper Stamina Cordial",
-      "profession": "nr_alchemy",
-      "targetCategory": "consumable",
-      "minLevel": 1,
-      "requiredSkillCheck": {
-        "skill": "medicine",
-        "dc": 10
+      "professionId": "nr_alchemy",
+      "category": "consumable",
+      "slot": "inventory",
+      "restoreStamina": 12,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 18,
+      "baseDC": 10,
+      "materialAffinity": {
+        "preferredCategories": [
+          "herb"
+        ],
+        "targetFlexibility": 8,
+        "targetMagic": 4
       },
-      "materials": [
-        {
-          "category": "herb",
-          "quantity": 2,
-          "defaultMaterialId": "mat_nr_frost_lichen"
-        }
-      ],
-      "outputItemId": "item_nr_stamina_draught",
-      "description": "A brisk, invigorating tonic of crushed pine berries and glacier moss."
+      "description": "A brisk invigorating cordial that restores wind and vigor on frozen trails."
     },
     {
       "id": "tmpl_nr_frost_resist_elixir",
       "name": "Elixir of the Hearthfire",
-      "profession": "nr_alchemy",
-      "targetCategory": "consumable",
-      "minLevel": 2,
-      "requiredSkillCheck": {
-        "skill": "medicine",
-        "dc": 13
+      "professionId": "nr_alchemy",
+      "category": "consumable",
+      "slot": "inventory",
+      "restoreHealth": 16,
+      "restoreStamina": 6,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 32,
+      "baseDC": 12,
+      "materialAffinity": {
+        "preferredCategories": [
+          "herb",
+          "relic_oil"
+        ],
+        "targetHeat": 8,
+        "targetMagic": 7
       },
-      "materials": [
-        {
-          "category": "herb",
-          "quantity": 1,
-          "defaultMaterialId": "mat_nr_frost_lichen"
-        },
-        {
-          "category": "metal",
-          "quantity": 1,
-          "defaultMaterialId": "mat_nr_silver_ingot"
-        }
-      ],
-      "outputItemId": "item_nr_frost_resist_potion",
-      "description": "A warming distilled elixir that wards the blood against lethal blizzard frost."
+      "description": "A glowing amber draught that mends wounds and drives mountain chill from the bones."
+    },
+    {
+      "id": "tmpl_nr_wyrm_draught",
+      "name": "Draconic Vitality Tonic",
+      "professionId": "nr_alchemy",
+      "category": "consumable",
+      "slot": "inventory",
+      "restoreHealth": 24,
+      "restoreStamina": 12,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 55,
+      "baseDC": 14,
+      "materialAffinity": {
+        "preferredCategories": [
+          "relic_oil",
+          "stone",
+          "metal"
+        ],
+        "targetMagic": 9,
+        "targetHeat": 8
+      },
+      "description": "A potent swirling tonic steeped with rare catalysts, knitting grievous battle wounds."
+    },
+    {
+      "id": "tmpl_nr_tempered_picks",
+      "name": "Tempered Artisan Kit",
+      "professionId": "nr_weaponsmithing",
+      "category": "tool",
+      "slot": "inventory",
+      "baseWeightKg": 0.5,
+      "baseValueDrachmae": 25,
+      "baseDC": 11,
+      "materialAffinity": {
+        "preferredCategories": [
+          "metal",
+          "wood"
+        ],
+        "targetFlexibility": 6,
+        "targetHardness": 6
+      },
+      "description": "Precision-forged northern tension picks and calipers valued by scouts and delvers."
     }
   ]
 }

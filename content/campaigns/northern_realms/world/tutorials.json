@@ -1,0 +1,10 @@
+{
+  "tutorials": [
+    {
+      "id": "tut_nr_valenfrost_arrival",
+      "title": "Arrival at Valenfrost",
+      "locationId": "loc_nr_valenfrost_gates",
+      "summary": "Speak with Captain Tor at the Gates of Valenfrost, seek Jarl Sigurd in the High Mead-Hall, explore the northern reaches, experiment with concealed material crafting at Bjorn's smithy, and raise Mythology & Lore, Wisdom, and Intelligence to expand your combat spellcasting."
+    }
+  ]
+}

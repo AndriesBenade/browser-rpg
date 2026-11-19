@@ -73,36 +73,37 @@ The world map encompasses **25 interconnected waypoints** across five distinct g
 ## 4. Quests & Activities
 
 ### Main Storyline
-- **`quest_nr_main_shadow_of_wyrmfang` (Shadow of Mount Wyrmfang)**: Multi-stage epic quest requiring the recovery of the three ancient Star-Keys (Alpha, Beta, Gamma) from the depths of Grimstone, Frostmere, and Skallagrim's barrow, leading to the summit of Mount Wyrmfang to confront Vyr.
+- **`quest_nr_main_shadow_of_wyrmfang` (Shadow of Mount Wyrmfang)**: Multi-stage epic quest requiring the recovery of the three ancient Star-Keys (Alpha, Beta, Gamma) from the depths of Grimstone, Frostmere, and Skallagrim's barrow. Features dual climactic resolutions at Mount Wyrmfang (Slay Vyr in combat OR perform the scholarly Eternal Re-Binding Ritual using Freya's archive lore) and a full Jarl Sigurd death failover via Skald Einar.
 
 ### Faction Questlines
 - **`quest_nr_covenant_trial_of_steel` (Trial of the Frozen Shield)**: Slay the Mountain Frost Troll in Grimstone's Shaft Nine to gain membership in the Iron Covenant.
-- **`quest_nr_cabal_smugglers_ledger` (The Ledger in the Mist)**: Infiltrate the Drowned Fort Redoubt, recover the cipher smuggling ledger from Captain Malik, and unlock Cabal fencing benefits.
-- **`quest_nr_circle_rime_relic` (Secrets of the Rime Spire)**: Decipher the ancient riddle of the Rime Pillar to unlock the Arcanum Vault and study celestial dragon manuscripts.
+- **`quest_nr_cabal_smugglers_ledger` (The Ledger in the Mist)**: Reclaim Valeria's stolen smuggling ledger from Captain Malik via combat, stealth infiltration, or diplomatic parley, then choose whether to return it to the Whispering Cabal or expose the ring to Captain Tor.
+- **`quest_nr_circle_rime_relic` (Secrets of the Rime Spire)**: Decipher the ancient riddle of the Rime Pillar to unlock the Arcanum Vault and study celestial dragon-binding manuscripts with Librarian Freya.
 
 ### Dungeons & Side Quests
 - **`quest_nr_side_barrow_curse` (The Slumber of Skallagrim)**: Unseal the Weeping Barrow Stones with the ancient runic key and banish Chieftain Skallagrim the Undying.
-- **`quest_nr_side_dwarven_vault` (The Silver Kin's Legacy)**: Recover Overseer Thrain's dropped iron key in the troll tunnels and open the ancestral Clan Silver-Kin vault.
+- **`quest_nr_side_dwarven_vault` (The Silver Kin's Legacy)**: Recover Overseer Thrain's dropped iron key in the troll tunnels, open the ancestral Clan Silver-Kin vault, and decide whether to return the clan charter intact or skim salvage silver.
+- **`quest_nr_side_lost_caravan` (Caravan of the Howling Pass)**: Track Merchant Astrid's missing fur sledge with Trapper Ulf's trail sign, confront the alpha pack in Howling Timber Cavern, and choose whether to return the sealed crate honestly or fence it in Mistglen.
+- **`quest_nr_side_blackforge_embers` (Embers of the Deep Forge)**: Help Master Smith Helga Anvil-Mother quell an awakened Runebound Sentinel in Grimstone Deep Mines and recover Star-Iron Ore to rekindle the volcanic crucible.
+
+### Secret Missions
+- Three genuinely hidden missions are woven into the Northern Realms, unlocked only through unusual combinations of player choices, faction standing, mercy or bloodshed, and ordered discoveries.
 
 ---
 
 ## 5. System Architecture & Capabilities
 
-1. **Character Classes**:
-   - `class_nr_shield_thane`: Combat tank specialized in the shield-wall, *Wall of Iron* (+2 AC), *Shield Slam* (stun), and *Warrior's Second Wind* (dice heal).
-   - `class_nr_rime_scout`: Ranged sniper with *Ghost of the Drift* (+2 tracking/survival, +1 ranged hit), *Crippling Arrow* (entangles), and snowstorm vision.
-   - `class_nr_skald_spellblade`: Battlemage channeling frost through *Rime Blade* (+1 frost damage), *Glacial Blast* (weakens), and *Hearth Chant* (+2 max morale).
-   - `class_nr_shadow_prowler`: Infiltrator with *Nimble Hands* (+3 lockpick/pickpocket, unbreakable picks), *Blinding Powder* (confuses), and *Backstab Mastery*.
+1. **Character Classes & Runic Spellcasting**:
+   - `class_nr_shield_thane`, `class_nr_rime_scout`, `class_nr_skald_spellblade`, `class_nr_shadow_prowler` (all 12 features with explicit IDs and combat integration).
+   - **Progression-Based Combat Magic**: Combat spell capacity scales from 1 to 5 casts per battle via `Mythology & Lore` + `Wisdom` (plus relic bonuses), while `Intelligence` unlocks tactical Spell Shaping options (*Elemental Shift*, *Lingering Weave*, *Siphoning Cast*, and *Overchannel Surge*).
 
-2. **Crafting & Workshop Systems**:
-   - 3 Disciplines: **Runic Blacksmithing**, **Northern Alchemy**, **Furrier & Leatherwork**.
-   - 8 Materials: *Refined Bog Iron*, *Deep-Silver Ingot*, *Meteoric Sky-Iron Chunk*, *Ironwood Pine Timber*, *White Wolf Pelt*, *Frost Troll Thickhide*, *Glacier Moss & Blue Lichen*, *Vial of Dormant Wyrm Blood*.
-   - 6 Templates & Workbench drag-to-craft support.
+2. **Concealed Material-Driven Crafting & Workshops**:
+   - 3 Disciplines: **Runic Blacksmithing** (`Athletics`), **Furrier & Leatherwork** (`Survival`), **Northern Alchemy** (`Medicine`).
+   - 10 Materials (including *Hearthstone Amber Resin* and *Glacial Quartz Crystal*) and 17 material-affinity forms spanning Weapons, Armour, Accessories, Consumables, and Tools.
+   - Concealed crafting outcomes: players choose only the general category while primary materials shape the exact item form, revealed upon completion. Skill progression unlocks 1 to 4 supplementary catalyst slots.
    - In-field item combining: Whetstone sharpening, mire venom weapon coating, and herbal distillation.
 
-3. **Living World & Consequences**:
-   - Guard & Law systems with crime bounties, fines, and jail terms in Valenfrost.
-   - NPC inspection & pickpocketing with unified carried/equipped loot.
-   - Permanent NPC death failovers: Slaying Captain Tor triggers portcullis lockdowns; killing Jarl Sigurd sends Valenfrost into martial alarm.
-   - Dynamic weather: *Howling Blizzard* and *Chilling Mountain Fog* impacting visibility, stamina, and ranged combat.
-   - Mercenary companions: Veteran Karl can be recruited for frontline vanguard protection.
+3. **Living World & Exploration**:
+   - 17 reactive NPCs with multi-node dialogue trees, unified carried/equipped possessions, and coin purses.
+   - 10 northern creatures (including 2 multi-action enraging bosses) and 10 discoverable hidden spots across all 5 regions.
+   - Guard & Law systems, location-enforced rest safety tiers, dynamic blizzards/fog, mercenary companion Veteran Karl, and permanent NPC death consequences.
