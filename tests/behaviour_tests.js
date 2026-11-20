@@ -3013,6 +3013,65 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.strictEqual(env.el('rest-modal').style.display, 'flex', 'rest modal opens cleanly');
   });
 
+  await test('Inventory Layout & Card Structure Guard: non-collapsing grid rows, long names, rarity badges, all 6 filters & paper doll empty/equipped states', async () => {
+    const htmlSource = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const styleBlock = htmlSource.slice(htmlSource.indexOf('<style>'), htmlSource.indexOf('</style>'));
+
+    // Structural CSS regression guards (prevents the flex-basis:0% + min-height:0 row collapse bug from returning)
+    assert.ok(/\.inventory-grid\s*\{[^}]*grid-auto-rows:\s*max-content/s.test(styleBlock), '.inventory-grid uses grid-auto-rows: max-content');
+    assert.ok(!/\.item-card\s*\{[^}]*min-height:\s*0\b/s.test(styleBlock), '.item-card never sets min-height: 0');
+    assert.ok(/\.item-card-body\s*\{[^}]*flex:\s*1\s+0\s+auto/s.test(styleBlock), '.item-card-body uses flex: 1 0 auto (never flex-basis: 0%)');
+    assert.ok(/\.equip-slot\s*\{[^}]*flex:\s*0\s+0\s+auto/s.test(styleBlock), '.equip-slot uses flex: 0 0 auto so slots never squash vertically');
+    assert.ok(!/\.equipment-paper-doll\s*\{\s*display:\s*none\s*!important/s.test(styleBlock), 'obsolete display:none paper doll rule is removed');
+
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_northern_realms');
+
+    // Populate a realistic large inventory with long names across all categories & rarities
+    const longItems = [
+      { id: 'it_long_cloak', name: 'Superior White Wolf Winter Pelt Mantle of the Frostmarch', category: 'armor', slot: 'back', rarity: 'uncommon', weightKg: 2.4, stats: { armorBonus: 2 } },
+      { id: 'it_long_blade', name: 'Dwarven Tension-Reinforced Star-Iron Frostblade', category: 'weapon', slot: 'main_hand', rarity: 'rare', weightKg: 3.1, stats: { damageMin: 5, damageMax: 11 } },
+      { id: 'it_long_elixir', name: 'Valenfrost Spiced Hearthfire Restorative Elixir', category: 'consumable', slot: 'inventory', rarity: 'epic', weightKg: 0.4, stats: { restoreHealth: 14, restoreStamina: 6 } },
+      { id: 'it_long_relic', name: 'Consecrated Star-Key Signet of High King Valen', category: 'relic', slot: 'inventory', rarity: 'legendary', weightKg: 0.2 },
+      { id: 'it_long_tool', name: 'Master Alchemist Portable Copper Distillation Kit', category: 'tool', slot: 'inventory', rarity: 'common', weightKg: 2.0 }
+    ];
+    longItems.forEach(it => engine.world.items.push(it));
+    engine.buildContentMaps();
+    longItems.forEach(it => engine.addItem(it.id, 1));
+    engine.equipItem('it_long_cloak', { targetSlot: 'back' });
+    engine.equipItem('it_long_blade', { targetSlot: 'main_hand' });
+
+    // Verify rendered semantic card structure and absence of old flex:1 collapse trap
+    engine.setInventoryFilter('all');
+    const allHtml = String(env.el('inventory-items-container').innerHTML);
+    assert.ok(allHtml.includes('item-card-body') && allHtml.includes('item-card-head') && allHtml.includes('item-card-footer'), 'renders semantic 3-zone item cards');
+    assert.ok(!allHtml.includes('flex: 1;'), 'rendered cards do not reintroduce flex: 1 (flex-basis: 0%) collapse');
+    assert.ok(allHtml.includes('Superior White Wolf Winter Pelt Mantle of the Frostmarch'), 'renders long item names cleanly');
+    assert.ok(allHtml.includes('rarity-frame-uncommon') && allHtml.includes('rarity-frame-rare') && allHtml.includes('rarity-frame-epic') && allHtml.includes('rarity-frame-legendary'), 'preserves all rarity frames');
+
+    // Verify all 6 category filters work accurately
+    for (const [cat, expectedName] of [
+      ['weapon', 'Dwarven Tension-Reinforced Star-Iron Frostblade'],
+      ['armor', 'Superior White Wolf Winter Pelt Mantle of the Frostmarch'],
+      ['consumable', 'Valenfrost Spiced Hearthfire Restorative Elixir'],
+      ['relic', 'Consecrated Star-Key Signet of High King Valen'],
+      ['crafting', 'Master Alchemist Portable Copper Distillation Kit'],
+    ]) {
+      engine.setInventoryFilter(cat);
+      const filtered = String(env.el('inventory-items-container').innerHTML);
+      assert.ok(filtered.includes(expectedName), `category filter '${cat}' displays matching item`);
+    }
+    engine.setInventoryFilter('all');
+
+    // Verify equipped vs empty paper doll slot state & data integrity
+    assert.ok(env.el('slot-back').classList.contains('rarity-frame-uncommon'), 'equipped back slot displays uncommon frame');
+    assert.ok(!env.el('eq-back').classList.contains('slot-empty'), 'equipped slot removes slot-empty class');
+    assert.ok(env.el('eq-head').classList.contains('slot-empty') || env.el('slot-head').dataset.equippedItemId, 'unequipped slot carries slot-empty styling');
+    assert.strictEqual(engine.getItemData('it_long_cloak').rarity, 'uncommon', 'item rarity data untouched');
+    assert.strictEqual(engine.getItemQuantity('it_long_elixir'), 1, 'item stack quantity untouched');
+  });
+
   // ---------------------------------------------------------------------------
   const failed = results.filter(r => !r.ok);
   console.log('\n=================================================================');

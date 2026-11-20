@@ -8,6 +8,19 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 28 - 2026-11-20 (Inventory layout repair, non-collapsing CSS Grid rows, item card restructuring, and equipment panel optimisation)
+* **Collaborator / Model**: User & Antigravity
+* **Root Cause Diagnosed & Repaired (`index.html`)**:
+  * **Inventory Card Vertical Collapse & Row Overlap**: Fixed a CSS Grid + Column-Flexbox intrinsic-sizing bug in Chromium/Edge where `.item-card` (`display: flex; flex-direction: column; min-height: 0;`) combined with an inline `<div style="min-width: 0; flex: 1;">` (`flex-basis: 0%`) inside a definite-height scrollable `.inventory-grid` (`grid-auto-rows: auto`) caused every grid row to compress to `~24px` (or clamp 2-line cards at `min-height` with clipped footers) while item names, rarity pills, and buttons spilled over neighboring rows.
+  * **Structural Fix**:
+    * Updated `.inventory-grid` to `grid-template-columns: repeat(auto-fill, minmax(252px, 1fr))`, `grid-auto-rows: max-content`, `align-items: stretch`, `scrollbar-gutter: stable`, and generous right/bottom padding (`0.35rem 0.6rem 1.5rem 0.25rem`).
+    * Rebuilt `.item-card` (`min-height: 116px; height: auto;`, no `min-height: 0` and no `overflow: hidden` clipping) and `renderInventory()` into a clean 3-zone semantic layout: `.item-card-body` (`flex: 1 0 auto`, never `flex-basis: 0%`) containing `.item-card-head` (`.item-name` with natural `overflow-wrap: break-word` + `.rarity-pill` aligned cleanly inside card bounds), `.item-card-type` (category & equipped status + coatings), and `.item-card-footer` (subtle divider, quantity/weight, wrapped `.item-card-actions`).
+    * Upgraded `.equipment-paper-doll` (`minmax(275px, 325px)`, `scrollbar-gutter: stable`) and `.equip-slot` (`flex: 0 0 auto; min-height: 54px;`), removed the obsolete `@media (max-width: 850px) { .equipment-paper-doll { display: none !important; } }` rule, added `.slot-empty` styling in `updatePaperDoll()` to clearly distinguish empty slots from equipped items, fixed the narrow-screen `.inventory-items-grid` -> `.inventory-grid` selector typo, and gave narrow-screen `.equipment-paper-doll` comfortable bounds (`min-height: 185px; max-height: 235px; grid-auto-rows: max-content`).
+* **Verification**:
+  * Added automated structural & functional regression test in `tests/behaviour_tests.js` guarding `.inventory-grid` `grid-auto-rows: max-content`, `.item-card` non-collapsing flex structure, long names, all 6 category filters, rarity frames, and empty/equipped paper doll states.
+  * Live browser visual inspection at `1366x768` and `820x800` confirmed **0 overlaps**, **0 console errors**, `14.93px` clean bottom breathing room on every 1-line and 2-line card, rarity pills cleanly inside borders, all 6 category filters working, tooltips opening cleanly, and full scrolling to the final row and `Total Panoply Weight`.
+  * Full `npm test` passes **227 / 227** + `sync-embedded-content.js --check` (69 files in sync). Zero added Unicode em dashes.
+
 ### Session 27 - 2026-11-20 (Multi-enemy combat, frontline/backline positioning, target selection, attack/spell targeting types, individual vs overall difficulty, two-layer loot)
 * **Collaborator / Model**: User & Antigravity
 * **Multi-Enemy Combat Engine (`index.html`, backward-compatible with all single-enemy encounters)**:
