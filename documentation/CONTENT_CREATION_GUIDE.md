@@ -776,3 +776,115 @@ Add `combinations.json` and list it in `campaign.json` → `modules.combinations
 * Use `ITEM_COMBINED` in `events.json` to react (the Dev Trial Ledger counts it as crafting).
 * Ready-made template: `documentation/templates/combination_template.json`. Field details: CONTENT_SCHEMA §34.
 
+---
+
+## 20. Campaign UI Themes, Soundtrack Embed & Progression Configuration (Phase Two)
+
+Campaigns can customize their visual identity, optional ambient YouTube soundtrack, and feat progression schedule directly inside `campaign.json`. All new properties are optional and use strict per-property fallbacks so older or partial campaigns never break.
+
+### 20.1 Campaign-Specific UI Theme (`theme` or `ui.theme`)
+
+Add a `theme` object (or `ui.theme`) in `campaign.json` to override any subset of interface colours. Every unspecified token falls back cleanly to the engine's default theme.
+
+**Important Semantic Preservation Rule:** Item rarity frames (Common, Uncommon, Rare, Epic, Legendary, Mythic) and dynamic relative difficulty frames/badges (Trivial through Extreme) keep their own high-contrast semantic palettes and are never overwritten by campaign themes.
+
+#### Supported Theme Properties
+| Property (Aliases) | Visual Role | Default |
+| --- | --- | --- |
+| `bgVoid` (`background`, `pageBg`) | Main outer application background | `#0d0d0f` |
+| `bgSurface` (`surface`, `panelBg`) | Primary panel & container surface | `#171619` |
+| `bgCard` (`card`, `cardBg`) | Individual cards, tiles & modals | `#201e24` |
+| `bgCardHover` (`cardHover`) | Hover surface for interactive cards | `#29272e` |
+| `accent` (`primaryAccent`, `primary`) | Primary borders, highlights & accents | `#b38b3c` |
+| `accentBright` (`primaryAccentBright`) | Bright emphasis text, active highlights | `#d9ad52` |
+| `accentDark` | Deep accent borders & dividers | `#664d1f` |
+| `secondaryAccent` (`secondary`) | Secondary badges & accents | `#204e78` |
+| `secondaryAccentBright` (`secondaryBright`) | Bright secondary highlights | `#3275b3` |
+| `border` (`borderColor`, `panelBorder`) | Standard container borders | `#453a29` |
+| `heading` (`headingColor`) | Section headings & banners | `#d9ad52` |
+| `textPrimary` (`text`, `foreground`) | Main readable body copy | `#e6e3dd` |
+| `textParchment` (`parchment`) | High-contrast narrative & labels | `#f2ebd9` |
+| `textMuted` (`mutedText`, `secondaryText`) | Secondary metadata & hints | `#99958d` |
+| `buttonBg` / `buttonHover` | Button fill & hover colour | Bronze gradient |
+| `navActive` (`activeNav`) | Active navigation tab highlight | `rgba(217, 173, 82, 0.16)` |
+| `success` / `warning` / `error` / `notification` | Status & toast accent hues | `#3f8554` / `#e0be36` / `#d9532e` |
+| `sliderFill` / `sliderTrack` (`track`) / `sliderBorder` / `sliderGlow` (`glow`) | Themed range sliders | Derived from accent/border |
+
+#### Complete Theme Example (Nordic Frost & Slate)
+```json
+"theme": {
+  "bgVoid": "#0a0e14",
+  "bgSurface": "#121821",
+  "bgCard": "#1a222f",
+  "bgCardHover": "#222d3e",
+  "accent": "#5a9ec9",
+  "accentBright": "#8cc8f0",
+  "accentDark": "#2f4b66",
+  "secondaryAccent": "#3a5c78",
+  "secondaryAccentBright": "#6cb4e4",
+  "border": "#2f4b66",
+  "heading": "#8cc8f0",
+  "textPrimary": "#e3ebf2",
+  "textParchment": "#edf4fa",
+  "textMuted": "#8ea2b5",
+  "navActive": "rgba(108, 180, 228, 0.18)",
+  "track": "#121820",
+  "glow": "rgba(108, 180, 228, 0.4)"
+}
+```
+
+#### Partial Theme Example (Only Overriding Accent & Border)
+```json
+"theme": {
+  "accent": "#5c9e6e",
+  "accentBright": "#88d49c",
+  "border": "#2c5438"
+}
+```
+All other properties (`bgVoid`, `bgSurface`, `textPrimary`, etc.) automatically inherit from the default palette.
+
+#### Testing Your Campaign Theme
+1. Edit `theme` in your campaign's `campaign.json` (and run `npm run sync:embedded` if testing from `file://`).
+2. Open the **Campaigns** screen, click **Validate Campaign** to confirm zero warnings/errors, and launch your campaign.
+3. Inspect Story, World Map, Character Sheet, Inventory (verify rarity borders stay distinct), Craft & Forge, and Settings sliders, then switch to another campaign and verify the previous theme resets cleanly.
+
+### 20.2 Campaign Soundtrack YouTube Embed (`soundtrack`)
+
+Campaigns may optionally configure a YouTube soundtrack in `campaign.json`. When valid, a compact **Campaign Soundtrack** panel appears at the bottom of the Story screen's right-hand sidebar (directly below Travel Pathways).
+
+* **Click-to-load (No Autoplay):** The YouTube player never autoplays on page load; players click **Load Soundtrack** to embed `https://www.youtube-nocookie.com/embed/<videoId>` on demand.
+* **Strict Security Validation:** Only 11-character YouTube video IDs or valid `youtube.com` / `youtu.be` / `music.youtube.com` / `youtube-nocookie.com` URLs are accepted. Raw HTML, scripts, or arbitrary URLs are rejected and the panel is omitted cleanly.
+* **Omission / Fallback:** If `soundtrack` is omitted, disabled (`"enabled": false`), or invalid, the soundtrack panel stays hidden and leaves no empty gap.
+
+```json
+"soundtrack": {
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "title": "Winds of the Northern Reaches",
+  "subtitle": "Optional Ambient Soundtrack",
+  "enabled": true
+}
+```
+You may also pass `"videoId": "<11-char-id>"` instead of `"url"`, or a plain string URL/ID.
+
+### 20.3 Feat Milestone Schedule & Custom Feats (`progression`)
+
+By default, heroes select a new Feat every **3 character levels** (`Level 3, 6, 9, 12, 15...`) from the modular catalog spanning Combat, Magic, Crafting, Social, Exploration, and Loot. Campaigns can customize this in `campaign.json`:
+
+```json
+"progression": {
+  "featInterval": 3,
+  "feats": {
+    "hearth_warden": {
+      "name": "Hearth Warden",
+      "category": "exploration",
+      "minLevel": 3,
+      "minAttributes": { "endurance": 12 },
+      "effects": { "travelStaminaReduction": 1, "skillBonuses": { "survival": 2 } },
+      "desc": "Endure bitter passes: -1 travel stamina cost and +2 Survival."
+    }
+  }
+}
+```
+Field details: CONTENT_SCHEMA §35.
+
+

@@ -1178,3 +1178,20 @@ in their `campaign.json` (`GreekMythologyEngine.EMBEDDED_CONTENT`), used only wh
 `npm run sync:embedded` after editing content; `npm test` fails while it is stale. A new module file is picked up
 automatically once it is listed in `campaign.json`.
 
+## 35. Campaign UI Themes, Soundtrack Embed, Modular Feats & Verification (Phase Two)
+
+* **Campaign UI Theme (`campaign.json` -> `theme` or `ui.theme`)**:
+  * Optional object overriding any subset of UI CSS tokens with per-property fallback to `getDefaultUiTheme()` and CSS-injection sanitization (values containing `;`, `{`, `}`, `<`, `>`, `url(`, `expression(`, or `javascript:` are rejected).
+  * Supported keys: `bgVoid` (`background`, `pageBg`), `bgSurface` (`surface`, `panelBg`), `bgCard` (`card`, `cardBg`), `bgCardHover` (`cardHover`), `accent` (`primaryAccent`, `primary`), `accentBright` (`primaryAccentBright`), `accentDark`, `secondaryAccent` (`secondary`), `secondaryAccentBright` (`secondaryBright`), `border` (`borderColor`, `panelBorder`), `heading` (`headingColor`), `textPrimary` (`text`, `foreground`), `textParchment` (`parchment`), `textMuted` (`mutedText`, `secondaryText`), `buttonBg` (`button`), `buttonHover` (`buttonHoverBg`), `navActive` (`activeNav`, `navHighlight`), `success`, `warning`, `error` (`danger`), `notification` (`toastAccent`), `sliderFill`, `sliderTrack` (`track`), `sliderBorder`, `sliderGlow` (`glow`).
+  * Semantic item rarity frames and difficulty indicator frames remain independent of campaign themes for contrast consistency.
+* **Campaign Soundtrack (`campaign.json` -> `soundtrack` or `ui.soundtrack`)**:
+  * String (YouTube URL or 11-character video ID) OR `{ "url"?: string, "youtubeUrl"?: string, "videoId"?: string, "title"?: string, "subtitle"?: string, "credit"?: string, "enabled"?: boolean }`.
+  * Parsed strictly via `parseYouTubeVideoId()`; rendered lazily on user click using `https://www.youtube-nocookie.com/embed/<videoId>?rel=0&modestbranding=1` (never autoplays).
+* **Modular Progression & Feats (`campaign.json` -> `progression`)**:
+  * `"featInterval"?: number` (default `3`, unlocking feats at Levels 3, 6, 9, 12...) or `"featLevels"?: number[]`.
+  * `"feats"?: { [featId: string]: { "name": string, "desc": string, "category"?: "combat"|"magic"|"crafting"|"social"|"exploration"|"loot", "minLevel"?: number, "minAttributes"?: Record<string, number>, "minSkills"?: Record<string, number>, "prerequisites"?: string[], "mutuallyExclusive"?: string[], "unlockCondition"?: string, "systems"?: string[], "effects"?: Record<string, any> } }`.
+* **Enhanced Verification (`validateCampaign` & `runIsolatedCraftingVerification`)**:
+  * Every finding exposes `{ id, campaignId, campaignName, severity, checkType, module, filePath, field, message, expected, actual, suggestion, relatedRefs }`.
+  * Automatic pre-start verification runs on `confirmCampaignSelection()`; warnings never block play and users can copy a structured Markdown report for AI-assisted debugging via `formatValidationReportForAI()`.
+
+

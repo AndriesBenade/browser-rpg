@@ -60,9 +60,22 @@
     "pantheon": "The Old Gods of the Hearth"
   },
   "theme": {
-    "accent": "#6cb4e4",
-    "track": "#121820",
+    "bgVoid": "#0a0e14",
+    "bgSurface": "#121821",
+    "bgCard": "#1a222f",
+    "bgCardHover": "#222d3e",
+    "accent": "#5a9ec9",
+    "accentBright": "#8cc8f0",
+    "accentDark": "#2f4b66",
+    "secondaryAccent": "#3a5c78",
+    "secondaryAccentBright": "#6cb4e4",
     "border": "#2f4b66",
+    "heading": "#8cc8f0",
+    "textPrimary": "#e3ebf2",
+    "textParchment": "#edf4fa",
+    "textMuted": "#8ea2b5",
+    "navActive": "rgba(108, 180, 228, 0.18)",
+    "track": "#121820",
     "glow": "rgba(108, 180, 228, 0.4)"
   },
   "modules": {
