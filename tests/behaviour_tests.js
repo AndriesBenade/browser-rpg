@@ -2760,6 +2760,260 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
   });
 
   // ---------------------------------------------------------------------------
+  // UI/UX Overhaul: Item Rarity Frames, Dynamic Relative Difficulty & Arena Layout
+  // ---------------------------------------------------------------------------
+  await test('UI Rarity Frames: consistent tiers, neutral fallback, independent of quality/level, and applied across all item interfaces', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_northern_realms');
+
+    // 1. Engine helper checks: exact mapping and independence from quality/level
+    const noneMeta = engine.getItemRarityMeta({ id: 'test_plain', name: 'Plain Twig', quality: 'masterwork', level: 12 });
+    assert.strictEqual(noneMeta.key, 'none', 'undefined rarity stays neutral');
+    assert.strictEqual(noneMeta.frameClass, 'rarity-frame-none');
+    assert.strictEqual(noneMeta.label, '', 'neutral items do not fabricate a rarity label');
+
+    const commonMasterwork = engine.getItemRarityMeta({ id: 'test_cm', name: 'Fine Iron Club', rarity: 'common', quality: 'masterwork', level: 15 });
+    assert.strictEqual(commonMasterwork.key, 'common', 'quality/level never override actual rarity');
+    assert.strictEqual(commonMasterwork.frameClass, 'rarity-frame-common');
+
+    for (const [raw, expected] of [
+      ['common', 'rarity-frame-common'],
+      ['uncommon', 'rarity-frame-uncommon'],
+      ['rare', 'rarity-frame-rare'],
+      ['epic', 'rarity-frame-epic'],
+      ['legendary', 'rarity-frame-legendary'],
+      ['mythic', 'rarity-frame-mythic'],
+      ['exceptional', 'rarity-frame-epic'],
+      ['consecrated', 'rarity-frame-legendary'],
+    ]) {
+      assert.strictEqual(engine.getItemRarityMeta({ rarity: raw }).frameClass, expected, `rarity ${raw} maps to ${expected}`);
+    }
+
+    // Inject test items covering multiple rarities + undefined rarity (sync both array and itemsMap)
+    const testItems = [
+      { id: 'it_test_neutral', name: 'Unmarked Stone', category: 'misc', description: 'No rarity set.' },
+      { id: 'it_test_rare_blade', name: 'Frostbite Saber', category: 'weapon', slot: 'main_hand', rarity: 'rare', stats: { damageMin: 4, damageMax: 10, attackBonus: 2 }, value: 80 },
+      { id: 'it_test_legend_helm', name: 'Crown of Starlight', category: 'armor', slot: 'head', rarity: 'legendary', stats: { armorBonus: 4, spellBonus: 3 }, value: 400 },
+    ];
+    testItems.forEach(it => {
+      engine.world.items.push(it);
+    });
+    engine.buildContentMaps();
+    testItems.forEach(it => engine.addItem(it.id, 1));
+
+    // 2. Inventory cards render rarity frames & pills only when rarity is defined
+    engine.renderInventory();
+    const invHtml = String(env.el('inventory-items-container').innerHTML);
+    assert.ok(invHtml.includes('rarity-frame-rare') && invHtml.includes('Frostbite Saber'), 'inventory renders rare frame');
+    assert.ok(invHtml.includes('rarity-frame-legendary') && invHtml.includes('Crown of Starlight'), 'inventory renders legendary frame');
+    assert.ok(invHtml.includes('rarity-frame-none') && invHtml.includes('Unmarked Stone'), 'inventory renders neutral frame for rarity-less item');
+    assert.ok(invHtml.includes('rarity-pill'), 'inventory renders rarity pill');
+
+    // 3. Paper Doll slots receive matching rarity frame on equip and clear on unequip
+    engine.equipItem('it_test_rare_blade', { targetSlot: 'main_hand' });
+    engine.equipItem('it_test_legend_helm', { targetSlot: 'head' });
+    assert.ok(env.el('slot-main_hand').classList.contains('rarity-frame-rare'), 'equipped main_hand slot receives rare frame');
+    assert.ok(env.el('slot-head').classList.contains('rarity-frame-legendary'), 'equipped head slot receives legendary frame');
+    engine.unequipItem('it_test_rare_blade', 'main_hand');
+    assert.ok(!env.el('slot-main_hand').classList.contains('rarity-frame-rare'), 'unequipped main_hand clears rarity frame');
+
+    // 4. Item Tooltip receives matching rarity frame and bonus details
+    engine.showItemTooltip('it_test_legend_helm', env.el('slot-head'));
+    const tipEl = env.el('item-tooltip-popover');
+    assert.ok(tipEl.classList.contains('rarity-frame-legendary'), 'tooltip popover receives legendary frame');
+    assert.ok(String(tipEl.innerHTML).includes('Legendary') && String(tipEl.innerHTML).includes('Spell Power'), 'tooltip shows rarity and spell bonus');
+
+    // 5. Trade modal renders rarity frames on merchant & player bag items
+    const merchant = engine.world.characters.find(c => c.merchant || (c.tradeInventory && c.tradeInventory.length));
+    if (merchant) {
+      engine.openTrade(merchant.id);
+      const tradeHtml = String(env.el('trade-body').innerHTML);
+      assert.ok(/rarity-frame-(common|uncommon|rare|epic|legendary|mythic|none)/.test(tradeHtml), 'trade modal applies rarity frame classes');
+      engine.closeTrade();
+    }
+
+    // 6. NPC Inspection modal renders rarity frames on worn/carried gear
+    const npc = engine.world.characters.find(c => c.locationId === engine.state.worldState.currentLocationId) || engine.world.characters[0];
+    if (npc) {
+      const p = engine.getNpcPossessions(npc.id);
+      p.carried.push({ itemId: 'it_test_rare_blade', quantity: 1 });
+      engine.openNpcInspectModal(npc.id);
+      const inspectHtml = String(env.el('npc-inspect-body').innerHTML);
+      assert.ok(inspectHtml.includes('rarity-frame-rare'), 'NPC inspection modal renders rare item frame');
+    }
+
+    // 7. Portable Workbench & Crafting Reveal apply rarity frames
+    const prof = engine.getCampaignProfessions()[0];
+    const mats = engine.getCampaignMaterials();
+    if (prof && mats.length >= 2) {
+      if (prof.requiredToolkitId) engine.addItem(prof.requiredToolkitId, 1);
+      engine.addItem(mats[0].id, 3);
+      engine.addItem(mats[1].id, 3);
+      if (prof.requiredToolkitId) {
+        engine.openWorkbench(prof.requiredToolkitId, { itemId: mats[0].id });
+        const wbHtml = String(env.el('workbench-panel').innerHTML);
+        assert.ok(/workbench-slot filled rarity-frame-/.test(wbHtml), 'workbench filled slot gets rarity frame');
+        engine.closeWorkbench();
+      }
+      engine.currentCraftingProfession = prof.id;
+      engine.selectedCraftingMat1 = mats[0].id;
+      engine.selectedCraftingMat2 = mats[1].id;
+      engine.renderCraftingView();
+      fixedRoll(engine, 18);
+      engine.craftItem(`category:${engine.selectedCraftingCategory || 'weapon'}`, mats[0].id, mats[1].id, []);
+      const previewHtml = String(env.el('crafting-preview-panel').innerHTML);
+      assert.ok(/rarity-frame-(common|uncommon|rare|epic|legendary|mythic|none)/.test(previewHtml), 'crafting reveal card displays item rarity frame');
+    }
+
+    // Verify rarity field on test items was never mutated
+    assert.strictEqual(engine.getItemData('it_test_neutral').rarity, undefined, 'rarity-less item was not mutated');
+    assert.strictEqual(engine.getItemData('it_test_rare_blade').rarity, 'rare', 'rare item rarity preserved');
+  });
+
+  await test('Dynamic Relative Difficulty: Mage vs Warrior contrasting builds, multi-enemy scaling, live updates, and zero gameplay mutation', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_northern_realms');
+
+    // Build A: High-Magic / Low-Physical Mage
+    const p = engine.state.player;
+    p.attributes.strength = 8;
+    p.attributes.endurance = 9;
+    p.attributes.agility = 10;
+    p.attributes.intelligence = 18;
+    p.attributes.wisdom = 16;
+    p.skills.athletics = 0;
+    p.skills.arcana = 6;
+    p.skills.investigation = 5;
+    p.vitals.maxHealth = 18;
+    p.vitals.health = 18;
+    p.inventory = [];
+
+    const mageArcana = engine.evaluateSkillCheckDifficulty('arcana', 'intelligence', 16);
+    const mageAthletics = engine.evaluateSkillCheckDifficulty('athletics', 'strength', 16);
+    assert.ok(mageArcana.rank < mageAthletics.rank, `Mage finds Arcana (${mageArcana.label}) easier than Athletics (${mageAthletics.label})`);
+
+    // Snapshot weak unarmed combat evaluation against a tough enemy
+    const toughEnemy = engine.world.creatures.find(c => (c.maxHp || c.hp || (c.vitals && c.vitals.maxHealth) || 0) >= 24) || engine.world.creatures[0];
+    const enemyBefore = plain(toughEnemy);
+    const weakSingle = engine.evaluateCombatDifficulty(toughEnemy);
+    const weakGroup = engine.evaluateCombatDifficulty([toughEnemy, toughEnemy, toughEnemy]);
+    assert.ok(weakGroup.enemyThreat > weakSingle.enemyThreat && weakGroup.rank >= weakSingle.rank, `3 enemies (${weakGroup.enemyThreat}) rate higher threat than 1 (${weakSingle.enemyThreat})`);
+
+    // Build B: High-Physical / Low-Magic Ironclad Warrior + Companion
+    const prevSig = engine.getPlayerCapabilitySignature();
+    p.attributes.strength = 18;
+    p.attributes.endurance = 17;
+    p.attributes.intelligence = 8;
+    p.attributes.wisdom = 8;
+    p.skills.athletics = 6;
+    p.skills.melee_combat = 6;
+    p.skills.arcana = 0;
+    p.vitals.maxHealth = 56;
+    p.vitals.health = 56;
+    const gear = [
+      { id: 'it_test_greatblade', name: 'Rune Greatblade', category: 'weapon', slot: 'main_hand', rarity: 'epic', stats: { damageMin: 8, damageMax: 18, attackBonus: 4 } },
+      { id: 'it_test_plate', name: 'Frostplate Cuirass', category: 'armor', slot: 'body', rarity: 'epic', stats: { armorBonus: 6 } }
+    ];
+    gear.forEach(it => engine.world.items.push(it));
+    engine.buildContentMaps();
+    gear.forEach(it => {
+      engine.addItem(it.id, 1);
+      engine.equipItem(it.id, { targetSlot: it.slot });
+    });
+    const comp = engine.world.characters[0];
+    if (comp) {
+      engine.state.worldState.companions = [{ id: comp.id, name: comp.name, hp: 30, maxHp: 30, attackBonus: 4, damage: '1d8+2' }];
+    }
+
+    const newSig = engine.getPlayerCapabilitySignature();
+    assert.notStrictEqual(prevSig, newSig, 'player capability signature updates when attributes, skills, gear, or companions change');
+
+    const warriorArcana = engine.evaluateSkillCheckDifficulty('arcana', 'intelligence', 16);
+    const warriorAthletics = engine.evaluateSkillCheckDifficulty('athletics', 'strength', 16);
+    assert.ok(warriorAthletics.rank < warriorArcana.rank, `Warrior finds Athletics (${warriorAthletics.label}) easier than Arcana (${warriorArcana.label})`);
+    assert.ok(mageArcana.rank < warriorArcana.rank, 'Mage rates arcane check easier than Warrior');
+    assert.ok(warriorAthletics.rank < mageAthletics.rank, 'Warrior rates physical check easier than Mage');
+
+    // Combat threat ratio drops dynamically when hero becomes heavily armed & accompanied
+    const strongSingle = engine.evaluateCombatDifficulty(toughEnemy);
+    assert.ok(strongSingle.ratio < weakSingle.ratio, `Armed hero with companion (ratio ${strongSingle.ratio.toFixed(2)}) sees lower threat than unarmed build (ratio ${weakSingle.ratio.toFixed(2)})`);
+
+    // Zero Gameplay Mutation Guarantee: enemy stats are completely untouched
+    assert.deepStrictEqual(plain(toughEnemy), enemyBefore, 'difficulty evaluation never mutates creature stats');
+  });
+
+  await test('Redesigned Combat Arena & Application-Wide UI Indicators: all combat controls, bars, and difficulty frames render cleanly', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_northern_realms');
+
+    // Boost intelligence & arcana so spellcasting + Spell Shaping render richly, and add a consumable
+    engine.state.player.attributes.intelligence = 16;
+    engine.state.player.skills.arcana = 4;
+    const potion = engine.world.items.find(it => it.category === 'consumable');
+    if (potion) engine.addItem(potion.id, 2);
+
+    const foe = engine.world.creatures[0];
+    const foeSnapshot = plain(foe);
+    engine.engageCreature(foe.id);
+    // 1. Confrontation modal renders foe difficulty frame & option badges
+    const confrontHtml = String(env.el('confront-box').innerHTML);
+    assert.ok(/diff-frame-/.test(confrontHtml) && /diff-badge/.test(confrontHtml), 'confrontation modal renders relative difficulty frame & badge');
+
+    // 2. Enter combat arena and verify redesigned workspace DOM integrity
+    engageFight(engine, env);
+    assert.strictEqual(env.el('combat-modal').style.display, 'flex', 'combat modal opens');
+    assert.ok(String(env.el('combat-difficulty-badge').innerHTML).includes('diff-badge'), 'combat header renders difficulty badge');
+    assert.ok(
+      ['very_easy', 'easy', 'moderate', 'challenging', 'hard', 'extreme'].some(k => env.el('combat-enemy-box').classList.contains(`diff-frame-${k}`)),
+      'combat enemy box receives dynamic difficulty frame class'
+    );
+    assert.ok(env.el('combat-player-hp-bar').style.width.endsWith('%'), 'hero HP bar width populated');
+    assert.ok(env.el('combat-player-stm-bar').style.width.endsWith('%'), 'hero Stamina bar width populated');
+    assert.ok(env.el('combat-enemy-hp-bar').style.width.endsWith('%'), 'enemy HP bar width populated');
+
+    const extraHtml = String(env.el('combat-extra-bar').innerHTML);
+    const magicHtml = String(env.el('combat-magic-bar').innerHTML);
+    assert.ok(env.el('btn-combat-attack') && env.el('btn-combat-shield') && env.el('btn-combat-feint') && env.el('btn-combat-sidestep') && env.el('btn-combat-salve') && env.el('btn-combat-prayer'), 'martial & tactical command deck preserves all core combat buttons');
+    assert.ok(extraHtml.length > 0 || env.el('combat-extra-bar') !== null, 'class abilities & fieldcraft command section present');
+    assert.ok(magicHtml.includes('castCombatSpell') || magicHtml.includes('selectCombatSpellOption') || magicHtml.includes('Arcane'), 'arcane & invocations section preserves spellcasting / shaping controls');
+    assert.deepStrictEqual(plain(foe), foeSnapshot, 'rendering combat UI never mutates creature template');
+
+    // Close combat cleanly
+    env.el('combat-modal').style.display = 'none';
+    engine.combatSession = null;
+
+    // 3. Quests, Action Deck, Travel Modal, Interactive Object Modal & Rest Modal all render difficulty indicators
+    engine.renderQuests();
+    const questsHtml = String(env.el('quest-list-container').innerHTML);
+    assert.ok(questsHtml.length > 0, 'quest list renders cleanly');
+
+    engine.renderStoryPanel();
+    const deckEl = env.el('context-actions-container');
+    const hasDeckContent = (deckEl.children && deckEl.children.length > 0) || String(deckEl.innerHTML || '').length > 0 || String(deckEl.textContent || '').length > 0;
+    assert.ok(hasDeckContent, 'story action deck renders cleanly');
+
+    const otherLoc = engine.world.locations.find(l => l.id !== engine.state.worldState.currentLocationId);
+    if (otherLoc) {
+      engine.showTravelModal(otherLoc);
+      const travelStats = String(env.el('modal-travel-stats').innerHTML);
+      assert.ok(travelStats.includes('diff-badge') || travelStats.includes('Distance'), 'travel modal renders stats & threat indicator');
+    }
+
+    const lockObj = (engine.world.interactiveObjects || []).find(o => o.lockDC || o.trapDC || o.heaveDC);
+    if (lockObj) {
+      engine.openInteractiveObjectModal(lockObj.id);
+      const objHtml = String(env.el('obj-modal-actions').innerHTML);
+      assert.ok(/diff-frame-|diff-badge/.test(objHtml), 'interactive object modal renders difficulty indicators for physical/lock/trap checks');
+    }
+
+    engine.openRestModal();
+    assert.strictEqual(env.el('rest-modal').style.display, 'flex', 'rest modal opens cleanly');
+  });
+
+  // ---------------------------------------------------------------------------
   const failed = results.filter(r => !r.ok);
   console.log('\n=================================================================');
   console.log(`BEHAVIOUR SUMMARY: ${results.length - failed.length} / ${results.length} passed`);

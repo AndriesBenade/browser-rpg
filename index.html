@@ -2790,6 +2790,608 @@
       cursor: not-allowed;
       filter: grayscale(0.35);
     }
+
+    /* =========================================================================
+       UI/UX OVERHAUL: ITEM RARITY FRAMES, PLAYER-RELATIVE DIFFICULTY FRAMES,
+       SPACIOUS COMBAT ARENA & RESPONSIVE WINDOW OPTIMISATION
+       ========================================================================= */
+
+    /* --- 1. Consistent Item Rarity Frame System (never conflated with difficulty) --- */
+    :root {
+      --rarity-none: #484239;
+      --rarity-common: #8e949f;
+      --rarity-uncommon: #4ec97b;
+      --rarity-rare: #4ea8ff;
+      --rarity-epic: #c084fc;
+      --rarity-legendary: #ffb347;
+      --rarity-mythic: #ff6b9d;
+
+      --diff-very-easy: #4ade80;
+      --diff-easy: #2dd4bf;
+      --diff-moderate: #facc15;
+      --diff-challenging: #fb923c;
+      --diff-hard: #f87171;
+      --diff-extreme: #ef4444;
+    }
+
+    .rarity-frame-none { border-color: var(--rarity-none) !important; }
+    .rarity-frame-common { border: 1.5px solid var(--rarity-common) !important; box-shadow: inset 3px 0 0 var(--rarity-common); }
+    .rarity-frame-uncommon { border: 1.5px solid var(--rarity-uncommon) !important; box-shadow: inset 3px 0 0 var(--rarity-uncommon), 0 0 10px rgba(78, 201, 123, 0.16); }
+    .rarity-frame-rare { border: 1.5px solid var(--rarity-rare) !important; box-shadow: inset 3px 0 0 var(--rarity-rare), 0 0 12px rgba(78, 168, 255, 0.2); }
+    .rarity-frame-epic { border: 1.5px solid var(--rarity-epic) !important; box-shadow: inset 3px 0 0 var(--rarity-epic), 0 0 14px rgba(192, 132, 252, 0.24); }
+    .rarity-frame-legendary { border: 1.5px solid var(--rarity-legendary) !important; box-shadow: inset 3px 0 0 var(--rarity-legendary), 0 0 16px rgba(255, 179, 71, 0.28); }
+    .rarity-frame-mythic { border: 1.5px solid var(--rarity-mythic) !important; box-shadow: inset 3px 0 0 var(--rarity-mythic), 0 0 18px rgba(255, 107, 157, 0.34); }
+
+    .rarity-text-none { color: var(--parchment); }
+    .rarity-text-common { color: #d6d9e0; }
+    .rarity-text-uncommon { color: #6ee79c; }
+    .rarity-text-rare { color: #7cc0ff; }
+    .rarity-text-epic { color: #d5a6ff; }
+    .rarity-text-legendary { color: #ffc66d; }
+    .rarity-text-mythic { color: #ff8fb8; }
+
+    .rarity-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.08rem 0.42rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      background: rgba(16, 15, 22, 0.72);
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+
+    /* --- 2. Dynamic Player-Relative Difficulty Frame & Badge System --- */
+    .diff-frame-very_easy { border-color: rgba(74, 222, 128, 0.78) !important; box-shadow: inset 3px 0 0 var(--diff-very-easy); }
+    .diff-frame-easy { border-color: rgba(45, 212, 191, 0.78) !important; box-shadow: inset 3px 0 0 var(--diff-easy); }
+    .diff-frame-moderate { border-color: rgba(250, 204, 21, 0.8) !important; box-shadow: inset 3px 0 0 var(--diff-moderate); }
+    .diff-frame-challenging { border-color: rgba(251, 146, 60, 0.85) !important; box-shadow: inset 3px 0 0 var(--diff-challenging); }
+    .diff-frame-hard { border-color: rgba(248, 113, 113, 0.88) !important; box-shadow: inset 3px 0 0 var(--diff-hard), 0 0 10px rgba(248, 113, 113, 0.16); }
+    .diff-frame-extreme { border-color: rgba(239, 68, 68, 0.96) !important; box-shadow: inset 4px 0 0 var(--diff-extreme), 0 0 14px rgba(239, 68, 68, 0.28); background-image: linear-gradient(90deg, rgba(239, 68, 68, 0.11), transparent 42%); }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border: 1px solid currentColor;
+      background: rgba(12, 12, 18, 0.84);
+      line-height: 1.25;
+      vertical-align: middle;
+    }
+    .diff-badge-very_easy { color: #6ee7a0; }
+    .diff-badge-easy { color: #5eead4; }
+    .diff-badge-moderate { color: #fde047; }
+    .diff-badge-challenging { color: #fdba74; }
+    .diff-badge-hard { color: #fca5a5; }
+    .diff-badge-extreme { color: #ff7b7b; background: rgba(127, 29, 29, 0.55); }
+
+    /* --- 3. Spacious Two-Column Combat Arena Overhaul --- */
+    .combat-modal-overlay {
+      padding: clamp(0.5rem, 1.5vw, 1.25rem);
+    }
+    .combat-arena {
+      max-width: min(1180px, 96vw) !important;
+      width: 100%;
+      max-height: 94vh !important;
+      border-width: 2px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .combat-header {
+      padding: 0.75rem 1.2rem;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .combat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+    .combat-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .combat-status-strip {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.4rem 1.2rem;
+      background: rgba(15, 14, 21, 0.92);
+      border-bottom: 1px solid #2b2735;
+    }
+    .combat-status-strip:empty { display: none; }
+    .combat-effects-line {
+      padding: 0 !important;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: #85e39d;
+      min-height: 0 !important;
+    }
+    .combat-effects-line:empty { display: none; }
+    .combat-intent-line {
+      padding: 0 !important;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #ffb8a8;
+      min-height: 0 !important;
+      font-style: italic;
+    }
+    .combat-intent-line:empty { display: none; }
+
+    .combat-workspace {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(350px, 0.95fr);
+      gap: 0;
+      overflow: hidden;
+    }
+    .combat-battlefield-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding: 1rem 1.15rem;
+      min-height: 0;
+      overflow-y: auto;
+      border-right: 1px solid #2b2735;
+    }
+    .combat-body {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      flex-shrink: 0;
+    }
+    .combatant-box {
+      background: #14131a;
+      border: 1.5px solid #353142;
+      border-radius: 6px;
+      padding: 0.85rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .combatant-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .vital-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      font-size: 0.82rem;
+    }
+    .vital-row-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .vital-bar-track {
+      height: 7px;
+      width: 100%;
+      background: #23212c;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .vital-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .vital-bar-hp { background: linear-gradient(90deg, #b93824, #ef6c57); }
+    .vital-bar-stm { background: linear-gradient(90deg, #2e7d4a, #6ee79c); }
+    .vital-bar-enemy { background: linear-gradient(90deg, #991b1b, #f87171); }
+
+    .combat-log-wrap {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 210px;
+      gap: 0.35rem;
+    }
+    .combat-log-pane {
+      grid-column: auto !important;
+      height: auto !important;
+      min-height: 190px;
+      flex: 1 1 0;
+      background: #0e0d13;
+      border: 1px solid #2e2a3b;
+      border-radius: 6px;
+      padding: 0.85rem 0.95rem;
+      overflow-y: auto;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .combat-command-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 0.95rem 1.1rem;
+      background: #121118;
+      overflow-y: auto;
+      min-height: 0;
+    }
+    .combat-deck-section {
+      background: rgba(24, 23, 33, 0.86);
+      border: 1px solid #2f2b3c;
+      border-radius: 6px;
+      padding: 0.7rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .combat-deck-label {
+      font-family: var(--font-heading);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bronze-bright);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+      padding-bottom: 0.28rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .combat-command-deck .combat-actions-bar {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.45rem;
+    }
+    .combat-command-deck .combat-magic-bar {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.55rem !important;
+      border-top: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .combat-command-deck .btn-combat {
+      padding: 0.52rem 0.72rem;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      text-align: center;
+      white-space: normal;
+      word-break: break-word;
+    }
+    .combat-command-deck .btn-combat:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 960px) {
+      .combat-workspace {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+      .combat-battlefield-pane {
+        border-right: none;
+        border-bottom: 1px solid #2b2735;
+        overflow-y: visible;
+      }
+      .combat-command-deck {
+        overflow-y: visible;
+      }
+      .combat-log-pane {
+        max-height: 240px;
+      }
+    }
+    @media (max-width: 620px) {
+      .combat-body {
+        grid-template-columns: 1fr !important;
+      }
+      .combat-command-deck .combat-actions-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* --- 4. Responsive Window, Grid, Readability & Overflow Optimisation --- */
+    .view-card-wrapper {
+      max-width: min(1260px, 100%) !important;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .view-scrollable-body {
+      line-height: 1.6;
+    }
+
+    /* Character Sheet Responsive Layout */
+    .character-sheet-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .sheet-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.5rem;
+    }
+    @media (max-width: 920px) {
+      .character-sheet-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Crafting View Responsive 3-Column Layout (Zero Clipping) */
+    .crafting-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--border-meander);
+      padding-bottom: 0.75rem;
+    }
+    .crafting-grid {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) 340px;
+      gap: 1rem;
+      align-items: start;
+    }
+    .crafting-col-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-meander);
+      border-radius: 6px;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+    @media (max-width: 1120px) {
+      .crafting-grid {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+      #crafting-preview-panel {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 760px) {
+      .crafting-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Inventory & Equipment Accessibility on All Viewports */
+    .inventory-filter-bar {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    #inv-category-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .item-card {
+      padding: 0.75rem 0.85rem;
+      gap: 0.5rem;
+      min-height: 0;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+    .item-card:hover {
+      transform: translateY(-1px);
+    }
+    .item-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      justify-content: flex-end;
+    }
+    .equip-slot {
+      border-width: 1.5px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    #top-status-bar,
+    #top-status-bar .status-group {
+      flex-wrap: wrap;
+      row-gap: 0.35rem;
+    }
+    @media (max-width: 900px) {
+      #view-inventory.active-view {
+        overflow-y: auto !important;
+      }
+      .inventory-layout {
+        grid-template-columns: 1fr !important;
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+      }
+      .equipment-paper-doll {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+        gap: 0.45rem;
+        max-height: 175px;
+        padding: 0.65rem;
+        overflow-y: auto;
+      }
+      .equipment-paper-doll > div:first-child,
+      .equipment-paper-doll > div:last-child {
+        grid-column: 1 / -1;
+      }
+      .inventory-knapsack-panel {
+        overflow: visible !important;
+        min-height: 280px;
+      }
+      .inventory-items-grid {
+        overflow-y: visible !important;
+        max-height: none !important;
+      }
+    }
+
+    /* Story Transcript, Action Cards & Sidebar Readability */
+    .narrative-transcript {
+      line-height: 1.68;
+      font-size: 0.98rem;
+    }
+    .action-card-btn {
+      line-height: 1.4;
+      white-space: normal;
+      word-break: break-word;
+    }
+    .action-card-btn .action-card-title {
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .mini-quest-item {
+      border-radius: 5px;
+      padding: 0.5rem 0.6rem;
+      background: rgba(20, 19, 27, 0.72);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      margin-bottom: 0.45rem;
+    }
+    .quest-obj-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.38rem;
+      padding: 0.28rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(18, 17, 24, 0.55);
+    }
+
+    /* Modals: Comfortable Dimensions, Single Clean Scroll & Zero Clipping */
+    .inpage-modal-overlay {
+      padding: clamp(0.5rem, 1.5vw, 1.25rem);
+    }
+    .inpage-dialogue-box {
+      max-width: min(820px, 95vw);
+      max-height: 92vh;
+      overflow: hidden;
+    }
+    .inpage-dialogue-header {
+      flex-shrink: 0;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .inpage-dialogue-body {
+      overflow-y: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 1.15rem 1.3rem;
+      line-height: 1.62;
+    }
+    .inpage-dialogue-text {
+      line-height: 1.68;
+      font-size: 0.98rem;
+    }
+    .dialogue-choice-btn {
+      line-height: 1.45;
+      white-space: normal;
+      word-break: break-word;
+      padding: 0.68rem 0.9rem;
+    }
+    .trade-box {
+      max-width: min(1060px, 96vw) !important;
+      max-height: 92vh;
+    }
+    .trade-row {
+      padding: 0.42rem 0.5rem !important;
+      border-radius: 4px;
+      margin-bottom: 0.3rem;
+      background: rgba(20, 19, 27, 0.72);
+      border: 1px solid #2e2920;
+    }
+    .confront-box {
+      max-width: min(940px, 96vw) !important;
+    }
+    .victory-modal-card {
+      max-width: min(740px, 95vw);
+      max-height: 92vh;
+    }
+    #levelup-modal .victory-modal-card {
+      max-width: min(980px, 96vw) !important;
+    }
+    .levelup-attr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 0.5rem;
+    }
+    #npc-inspect-modal .victory-modal-card {
+      max-width: min(740px, 95vw) !important;
+    }
+    #interactive-object-modal .victory-modal-card {
+      max-width: min(680px, 95vw) !important;
+    }
+    #validation-modal .victory-modal-card {
+      max-width: min(820px, 95vw) !important;
+    }
+    #combine-modal .victory-modal-card {
+      max-width: min(680px, 95vw) !important;
+    }
+    #rest-modal .inpage-dialogue-box {
+      max-width: min(680px, 95vw) !important;
+    }
+    #devnotes-modal .inpage-dialogue-box {
+      max-width: min(900px, 95vw) !important;
+    }
+    .minigame-card {
+      max-width: min(680px, 95vw);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .campaign-select-container {
+      max-width: min(1160px, 100%);
+    }
+    .travel-modal {
+      width: min(430px, calc(100vw - 2rem));
+    }
+    .item-floating-tooltip, .glossary-popover {
+      max-height: 78vh;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+    .workbench-slots {
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)) !important;
+    }
+    .workbench-panel {
+      max-height: 58% !important;
+    }
+    @media (max-width: 720px) {
+      #top-status-bar {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .journal-layout {
+        grid-template-columns: 1fr !important;
+      }
+      .journal-nav {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2907,7 +3509,7 @@
           <h2 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.15rem;">Step 1: Your Name & Homeland</h2>
           <p style="color: var(--marble-dim); font-size: 0.9rem;">Every legend begins with a name sung by the bards and a sacred soil of origin.</p>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
             <div>
               <label class="form-label">Hero's Name</label>
               <input type="text" id="wiz-name-input" class="form-input" value="Alkaios" placeholder="Enter hero name..." oninput="window.engine.syncCreationIdentityInputs && window.engine.syncCreationIdentityInputs()">
@@ -3022,7 +3624,7 @@
             <!-- Grouped Clickable Action Cards -->
             <div class="actions-grid-grouped" id="context-actions-container"></div>
             <div style="font-size: 0.72rem; color: var(--marble-dim); font-style: italic; margin-top: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
-              <span>💡</span> <span>Select a suggested action above, or enter any custom heroic deed in the console bar below.</span>
+              <span>💡</span> <span>Select any action card above to act. Coloured borders reflect challenge difficulty relative to your hero's current skills and gear.</span>
             </div>
           </div>
         </div>
@@ -3115,7 +3717,7 @@
           </div>
         </div>
 
-        <div class="view-scrollable-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="view-scrollable-body character-sheet-grid">
           <div>
             <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Core Attributes</h3>
             <div class="attr-grid" id="sheet-attributes-grid"></div>
@@ -3130,7 +3732,7 @@
 
           <div>
             <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Trained Skills</h3>
-            <div id="sheet-skills-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;"></div>
+            <div id="sheet-skills-list" class="sheet-skills-grid"></div>
 
             <h3 style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.25rem;">Divine Standing (Piety)</h3>
             <div id="sheet-piety-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem;"></div>
@@ -3268,7 +3870,7 @@
         <div class="inventory-knapsack-panel">
           <div class="inventory-filter-bar">
             <div style="font-family: var(--font-heading); color: var(--parchment); font-size: 0.95rem;">Carried Possessions</div>
-            <div style="display: flex; gap: 0.4rem;" id="inv-category-filters">
+            <div id="inv-category-filters">
               <button class="nav-btn active" data-filter="all">All</button>
               <button class="nav-btn" data-filter="weapon">Weapons</button>
               <button class="nav-btn" data-filter="armor">Armor & Shields</button>
@@ -3290,41 +3892,42 @@
 
     <!-- 4.5 CRAFTING & FORGE VIEWPORT -->
     <div class="viewport" id="view-crafting">
-      <div class="view-card-wrapper" style="max-width: 1240px; margin: 0 auto;">
-        <div class="view-card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-meander); padding-bottom: 0.75rem;">
+      <div class="view-card-wrapper">
+        <div class="view-card-header crafting-header-row">
           <div>
             <div class="view-card-title" style="display: flex; align-items: center; gap: 0.5rem;">
-              <span>🔨</span> <span id="crafting-view-title">Hephaestus' Forge & Crafting Workshops</span>
+              <span>🔨</span> <span id="crafting-view-title">Hephaestus' Forge &amp; Crafting Workshops</span>
             </div>
-            <div style="font-size: 0.85rem; color: var(--marble-dim); margin-top: 0.2rem;">
-              Recipe-free artisan crafting: Select an Item Template, 2 Primary Materials, and 1 Supplementary Material.
-              Or, in your Inventory, drop materials on a toolkit to open its workbench, and drop one item on another to combine them (a whetstone on a blade).
+            <div style="font-size: 0.84rem; color: var(--marble-dim); margin-top: 0.25rem; max-width: 760px;">
+              Concealed material-driven crafting: choose a general category and two primary materials to shape an unknown creation. Train each discipline's governing skill to unlock additional supplementary catalyst slots.
             </div>
           </div>
-          <div style="display: flex; gap: 1rem; align-items: center;">
+          <div style="display: flex; gap: 0.85rem; align-items: center; flex-wrap: wrap;">
             <div style="font-size: 0.82rem; color: var(--marble-dim);">
               Crafting roll: <strong id="crafting-fieldcraft-badge" style="color: var(--laurel-bright);">d20 + attribute</strong>
             </div>
-            <button class="btn-classical" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="window.engine.openMinigame('forge')">
+            <button class="btn-classical" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;" onclick="window.engine.openMinigame('forge')">
               ⚡ Forge Strike Minigame (+Bonus)
             </button>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 220px 1fr 340px; gap: 1rem; margin-top: 1rem;">
-          <!-- Col 1: Consolidated Professions (7) -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;" class="user-resizable" id="crafting-professions-list">
-            <!-- Rendered by renderCraftingView() -->
-          </div>
+        <div class="view-scrollable-body">
+          <div class="crafting-grid">
+            <!-- Col 1: Artisan Disciplines -->
+            <div class="crafting-col-card user-resizable" id="crafting-professions-list">
+              <!-- Rendered by renderCraftingView() -->
+            </div>
 
-          <!-- Col 2: Templates & Materials Selection -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; gap: 1rem;" id="crafting-config-panel">
-            <!-- Rendered by renderCraftingView() -->
-          </div>
+            <!-- Col 2: Category, Primary Materials & Skill-Gated Catalysts -->
+            <div class="crafting-col-card" id="crafting-config-panel">
+              <!-- Rendered by renderCraftingView() -->
+            </div>
 
-          <!-- Col 3: Forge Output Preview & Craft Trigger -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-meander); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;" id="crafting-preview-panel">
-            <!-- Rendered by renderCraftingView() -->
+            <!-- Col 3: Concealed Attempt Overview, Difficulty Frame & Reveal -->
+            <div class="crafting-col-card" id="crafting-preview-panel">
+              <!-- Rendered by renderCraftingView() -->
+            </div>
           </div>
         </div>
       </div>
@@ -3600,49 +4203,95 @@
   </div>
 
   <!-- =========================================================================
-       COMBAT MODAL OVERLAY
+       COMBAT MODAL OVERLAY (SPACIOUS TWO-COLUMN TACTICAL ARENA)
        ========================================================================= -->
   <div class="combat-modal-overlay" id="combat-modal">
-    <div class="combat-arena">
+    <div class="combat-arena" id="combat-arena">
       <div class="combat-header">
-        <div class="combat-title" id="combat-enemy-title">Combat Encounter</div>
-        <div style="font-size: 0.85rem; color: var(--bronze-bright);" id="combat-round-indicator">Round 1</div>
+        <div class="combat-header-left">
+          <div class="combat-title" id="combat-enemy-title">Combat Encounter</div>
+          <span id="combat-difficulty-badge"></span>
+        </div>
+        <div class="combat-header-right">
+          <div style="font-size: 0.85rem; color: var(--bronze-bright); font-weight: 600;" id="combat-round-indicator">Round 1</div>
+        </div>
       </div>
-      <div id="combat-effects-line" class="combat-effects-line"></div>
-      <div id="combat-intent-line" class="combat-intent-line"></div>
-      <div class="combat-body">
-        <div class="combatant-box">
-          <div style="font-family: var(--font-heading); color: var(--parchment); font-size: 1.05rem;" id="combat-player-name">Hero</div>
-          <div style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.65rem;" id="combat-player-archetype">Heroic Champion</div>
-          <div style="display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem;">
-            <div>Health: <strong id="combat-player-hp" style="color: var(--terracotta-bright);">24 / 24</strong></div>
-            <div>Stamina: <strong id="combat-player-stm" style="color: var(--laurel-bright);">18 / 18</strong></div>
+      <div class="combat-status-strip">
+        <div id="combat-effects-line" class="combat-effects-line"></div>
+        <div id="combat-intent-line" class="combat-intent-line"></div>
+      </div>
+      <div class="combat-workspace">
+        <!-- Left Pane: Combatant Vitals & Generous Scrollable Combat Log -->
+        <div class="combat-battlefield-pane">
+          <div class="combat-body">
+            <div class="combatant-box" id="combat-player-box">
+              <div class="combatant-head">
+                <div>
+                  <div style="font-family: var(--font-heading); color: var(--parchment); font-size: 1.05rem;" id="combat-player-name">Hero</div>
+                  <div style="font-size: 0.78rem; color: var(--marble-dim);" id="combat-player-archetype">Heroic Champion</div>
+                </div>
+              </div>
+              <div class="vital-row">
+                <div class="vital-row-head"><span>Health</span><strong id="combat-player-hp" style="color: var(--terracotta-bright);">24 / 24</strong></div>
+                <div class="vital-bar-track"><div class="vital-bar-fill vital-bar-hp" id="combat-player-hp-bar" style="width: 100%;"></div></div>
+              </div>
+              <div class="vital-row">
+                <div class="vital-row-head"><span>Stamina</span><strong id="combat-player-stm" style="color: var(--laurel-bright);">18 / 18</strong></div>
+                <div class="vital-bar-track"><div class="vital-bar-fill vital-bar-stm" id="combat-player-stm-bar" style="width: 100%;"></div></div>
+              </div>
+            </div>
+
+            <div class="combatant-box" id="combat-enemy-box">
+              <div class="combatant-head">
+                <div>
+                  <div style="font-family: var(--font-heading); color: var(--terracotta-bright); font-size: 1.05rem;" id="combat-enemy-name">Cithaeronian Timber Wolf</div>
+                  <div style="font-size: 0.78rem; color: var(--marble-dim);" id="combat-enemy-desc">Ferocious predator guarding the unsealed grotto</div>
+                </div>
+                <span id="combat-enemy-diff-badge"></span>
+              </div>
+              <div class="vital-row">
+                <div class="vital-row-head"><span>Enemy Health</span><strong id="combat-enemy-hp" style="color: var(--terracotta-bright);">18 / 18</strong></div>
+                <div class="vital-bar-track"><div class="vital-bar-fill vital-bar-enemy" id="combat-enemy-hp-bar" style="width: 100%;"></div></div>
+              </div>
+              <div class="vital-row">
+                <div class="vital-row-head"><span>Morale</span><strong id="combat-enemy-morale" style="color: var(--lapis-bright);">10</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="combat-log-wrap">
+            <div class="combat-deck-label"><span>⚔️ Battle Chronicle</span><span style="font-family: inherit; font-size: 0.7rem; color: var(--marble-dim); text-transform: none; letter-spacing: 0;">Scroll to review rounds</span></div>
+            <div class="combat-log-pane" id="combat-log-feed"></div>
           </div>
         </div>
 
-        <div class="combatant-box">
-          <div style="font-family: var(--font-heading); color: var(--terracotta-bright); font-size: 1.05rem;" id="combat-enemy-name">Cithaeronian Timber Wolf</div>
-          <div style="font-size: 0.8rem; color: var(--marble-dim); margin-bottom: 0.65rem;" id="combat-enemy-desc">Ferocious predator guarding the unsealed grotto</div>
-          <div style="display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem;">
-            <div>Health: <strong id="combat-enemy-hp" style="color: var(--terracotta-bright);">18 / 18</strong></div>
-            <div>Morale: <strong id="combat-enemy-morale" style="color: var(--lapis-bright);">10</strong></div>
+        <!-- Right Pane: Organized Tactical Command Deck (Never Clipped) -->
+        <div class="combat-command-deck">
+          <div class="combat-deck-section">
+            <div class="combat-deck-label"><span>🛡️ Martial &amp; Tactical Actions</span></div>
+            <div class="combat-actions-bar" id="combat-actions-bar">
+              <button class="btn-combat attack-btn" id="btn-combat-attack" onclick="window.engine.combatAction('thrust')">Thrust Weapon</button>
+              <button class="btn-combat" id="btn-combat-shield" onclick="window.engine.combatAction('shield_block')">Raise Shield (Aspis)</button>
+              <button class="btn-combat" style="border-color: #ffe680; color: #ffe680;" onclick="window.engine.openMinigame('shield_clash')">⚡ Shield Clash</button>
+              <button class="btn-combat" id="btn-combat-feint" onclick="window.engine.combatAction('feint')">Tactical Feint</button>
+              <button class="btn-combat" id="btn-combat-sidestep" onclick="window.engine.combatAction('sidestep')" data-tooltip="Agility check: dodge the telegraphed attack and counter (+2 next strike). 1 Stamina.">↪ Side-step (1 STM)</button>
+              <button class="btn-combat" id="btn-combat-salve" onclick="window.engine.combatAction('salve')">Apply Salve / Consumable</button>
+              <button class="btn-combat" id="btn-combat-prayer" onclick="window.engine.combatAction('prayer')">Invoke Divine Favor</button>
+              <button class="btn-combat" onclick="window.engine.combatAction('flee')">Retreat</button>
+            </div>
+          </div>
+
+          <div class="combat-deck-section" id="combat-extra-section">
+            <div class="combat-deck-label"><span>✦ Class Abilities &amp; Fieldcraft</span></div>
+            <div class="combat-actions-bar combat-extra-bar" id="combat-extra-bar"></div>
+          </div>
+
+          <div class="combat-deck-section" id="combat-magic-section">
+            <div class="combat-deck-label"><span>✨ Arcane &amp; Invocations</span></div>
+            <div class="combat-actions-bar combat-magic-bar" id="combat-magic-bar"></div>
           </div>
         </div>
-
-        <div class="combat-log-pane" id="combat-log-feed"></div>
       </div>
-      <div class="combat-actions-bar" id="combat-actions-bar">
-        <button class="btn-combat attack-btn" id="btn-combat-attack" onclick="window.engine.combatAction('thrust')">Thrust Weapon</button>
-        <button class="btn-combat" id="btn-combat-shield" onclick="window.engine.combatAction('shield_block')">Raise Shield (Aspis)</button>
-        <button class="btn-combat" style="border-color: #ffe680; color: #ffe680;" onclick="window.engine.openMinigame('shield_clash')">⚡ Shield Clash (Othismos Challenge)</button>
-        <button class="btn-combat" id="btn-combat-feint" onclick="window.engine.combatAction('feint')">Tactical Feint</button>
-        <button class="btn-combat" id="btn-combat-sidestep" onclick="window.engine.combatAction('sidestep')" data-tooltip="Agility check: dodge the telegraphed attack and counter (+2 next strike). 1 Stamina.">↪ Side-step (1 STM)</button>
-        <button class="btn-combat" id="btn-combat-salve" onclick="window.engine.combatAction('salve')">Apply Salve / Consumable</button>
-        <button class="btn-combat" id="btn-combat-prayer" onclick="window.engine.combatAction('prayer')">Invoke Divine Favor</button>
-        <button class="btn-combat" onclick="window.engine.combatAction('flee')">Retreat</button>
-      </div>
-      <div class="combat-actions-bar combat-extra-bar" id="combat-extra-bar"></div>
-      <div class="combat-actions-bar combat-magic-bar" id="combat-magic-bar" style="flex-direction: column; align-items: stretch; gap: 0.45rem; border-top: 1px dashed var(--border-meander); padding-top: 0.55rem; margin-top: 0.25rem;"></div>
     </div>
   </div>
 
@@ -3772,7 +4421,7 @@
         <label style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">
           1. Allocate Attribute Point (+1):
         </label>
-        <div id="levelup-attr-options" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem;">
+        <div id="levelup-attr-options" class="levelup-attr-grid">
           <!-- Populated by engine -->
         </div>
       </div>
@@ -9178,17 +9827,20 @@
           }
         } else {
           if (obj.isPickable !== false) {
-            actionsHtml += `<button class="btn-classical" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.attemptLockpick('${obj.id}')">🔓 Attempt Lockpick (DC ${this.getObjectLockDc(obj)})</button>`;
+            const lpDiff = this.evaluateSkillCheckDifficulty("stealth", "agility", this.getObjectLockDc(obj), { activity: "lockpick" });
+            actionsHtml += `<button class="dialogue-choice-btn ${lpDiff.frameClass}" data-difficulty="${lpDiff.key}" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.attemptLockpick('${obj.id}')">🔓 Attempt Lockpick (DC ${this.getObjectLockDc(obj)}) ${this.renderDifficultyBadge(lpDiff, { compact: true })}</button>`;
             if ((obj.trap || obj.isTrapped) && !(this.state.worldState.objectTrapDisarmed && this.state.worldState.objectTrapDisarmed[obj.id])) {
               const disarmDc = (obj.trap && obj.trap.disarmDC) || 12;
-              actionsHtml += `<button class="nav-btn" style="border-color: var(--bronze); color: var(--bronze-bright);" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.inspectObjectTrap('${obj.id}')">🔎 Inspect & Disarm Trap (Investigation DC ${disarmDc})</button>`;
+              const tdDiff = this.evaluateSkillCheckDifficulty("investigation", "intelligence", disarmDc, { activity: "investigation" });
+              actionsHtml += `<button class="dialogue-choice-btn ${tdDiff.frameClass}" data-difficulty="${tdDiff.key}" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.inspectObjectTrap('${obj.id}')">🔎 Inspect &amp; Disarm Trap (Investigation DC ${disarmDc}) ${this.renderDifficultyBadge(tdDiff, { compact: true })}</button>`;
             }
             if (this.getObjectKeyId(obj) && this.hasItem(this.getObjectKeyId(obj))) {
-              actionsHtml += `<button class="nav-btn" style="border-color: var(--laurel-bright); color: var(--laurel-bright);" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.unlockWithKey('${obj.id}')">🔑 Turn Key in Lock</button>`;
+              actionsHtml += `<button class="dialogue-choice-btn diff-frame-very_easy" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.unlockWithKey('${obj.id}')">🔑 Turn Key in Lock ${this.renderDifficultyBadge(this.getDifficultyMeta("very_easy", "Matching key carried"), { compact: true })}</button>`;
             }
           }
           if (obj.type === "obstacle") {
-            actionsHtml += `<button class="nav-btn" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.heaveObstacle('${obj.id}')">💪 Heave / Shift Obstacle (Athletics DC ${obj.heaveDc || 13})</button>`;
+            const hvDiff = this.evaluateSkillCheckDifficulty("athletics", "strength", obj.heaveDc || 13, { activity: "heave" });
+            actionsHtml += `<button class="dialogue-choice-btn ${hvDiff.frameClass}" data-difficulty="${hvDiff.key}" onclick="document.getElementById('interactive-object-modal').style.display='none'; window.engine.heaveObstacle('${obj.id}')">💪 Heave / Shift Obstacle (Athletics DC ${obj.heaveDc || 13}) ${this.renderDifficultyBadge(hvDiff, { compact: true })}</button>`;
           }
         }
 
@@ -9382,7 +10034,8 @@
             if (!this.isKnownItem(itemId)) return;
             const item = this.getItemData(itemId);
             this.addItem(itemId, 1);
-            this.logTranscript("Container Loot", `Recovered from ${obj.name}: ${item.name}.`, "entry-discovery");
+            const rm = this.getItemRarityMeta(item);
+            this.logTranscript("Container Loot", `Recovered from ${obj.name}: <span class="${rm.textClass}" style="font-weight:600;">${item.name}</span>${rm.key !== "none" && rm.key !== "common" ? ` [${rm.label}]` : ""}.`, "entry-discovery");
           });
           if (contentCoins) {
             this.addDrachmae(contentCoins);
@@ -9634,25 +10287,27 @@
         const renderEntryRow = (entry, isEquipped) => {
           const item = this.getItemData(entry.itemId);
           if (!item) return "";
-          const color = rarityColors[(item.rarity || "common").toLowerCase()] || "#e8e3d5";
+          const rm = this.getItemRarityMeta(item);
           const qtyTag = entry.quantity > 1 ? ` x${entry.quantity}` : "";
           const slotLabel = isEquipped ? String(entry.slot || item.slot || "gear").replace(/_/g, " ").toUpperCase() : "CARRIED";
           const targetDc = isEquipped ? pickDc + 4 : pickDc;
+          const stealDiff = this.evaluateSkillCheckDifficulty("stealth", "agility", targetDc, { activity: "pickpocket" });
           const stealTip = !pickCd.ready
             ? `Wait ${pickCd.remainingText || "before next attempt"}`
-            : (isEquipped ? `Sneakily unfasten & steal equipped gear (Harder DC ${targetDc} Stealth)` : `Pickpocket this item (DC ${targetDc} Stealth)`);
+            : `${isEquipped ? "Steal equipped gear" : "Pickpocket item"} - ${stealDiff.reason}`;
           const stealBtn = !this.isCompanion(npcId)
-            ? `<button class="nav-btn" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;" ${!pickCd.ready ? "disabled" : ""} data-tooltip="${esc(stealTip)}" onclick="window.engine.attemptPickpocket('${npcId}', { targetItemId: '${entry.itemId}', refreshInspect: true })">🖐️ Steal (DC ${targetDc})</button>`
+            ? `<button class="nav-btn ${stealDiff.frameClass}" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; flex-shrink: 0;" ${!pickCd.ready ? "disabled" : ""} data-tooltip="${esc(stealTip)}" onclick="window.engine.attemptPickpocket('${npcId}', { targetItemId: '${entry.itemId}', refreshInspect: true })">🖐️ Steal (DC ${targetDc}) ${this.renderDifficultyBadge(stealDiff, { compact: true })}</button>`
             : `<span style="font-size: 0.72rem; color: var(--laurel-bright);">Companion</span>`;
 
           return `
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; background: rgba(20, 19, 28, 0.8); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 5px; padding: 0.5rem 0.7rem;">
+            <div class="${rm.frameClass}" data-rarity="${rm.key}" style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; background: rgba(20, 19, 28, 0.85); border-radius: 5px; padding: 0.55rem 0.75rem;">
               <div style="min-width: 0;">
                 <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
                   <span style="font-size: 0.66rem; letter-spacing: 0.05em; padding: 0.1rem 0.35rem; border-radius: 3px; background: rgba(212, 175, 55, 0.15); color: var(--bronze-bright);">${slotLabel}</span>
-                  <strong style="color: ${color}; font-size: 0.9rem;">${item.name}${qtyTag}</strong>
+                  <strong class="${rm.textClass}" style="font-size: 0.9rem;">${item.name}${qtyTag}</strong>
+                  ${rm.badgeHtml}
                 </div>
-                <div style="font-size: 0.75rem; color: var(--marble-dim); margin-top: 0.18rem;">${this.formatItemBriefStats(item)}${item.description ? ` - ${item.description}` : ""}</div>
+                <div style="font-size: 0.76rem; color: var(--marble-dim); margin-top: 0.2rem;">${this.formatItemBriefStats(item)}${item.description ? ` - ${item.description}` : ""}</div>
               </div>
               ${stealBtn}
             </div>
@@ -9852,7 +10507,8 @@
               }
               const qty = Math.max(1, Number(entry.quantity) || 1);
               this.addItem(entry.itemId, qty);
-              droppedItems.push(qty > 1 ? `${item.name} (x${qty})` : item.name);
+              const rm = this.getItemRarityMeta(item);
+              droppedItems.push(`<span class="${rm.textClass}" style="font-weight:600;">${item.name}${qty > 1 ? ` (x${qty})` : ""}</span>${rm.key !== "none" && rm.key !== "common" ? ` [${rm.label}]` : ""}`);
             });
             drachmaeWon = Math.max(0, Number(poss.drachmae) || 0);
             poss.equipment = [];
@@ -9901,13 +10557,13 @@
                 if (!this.state.worldState.grantedUniqueItems[itemId]) {
                   this.state.worldState.grantedUniqueItems[itemId] = true;
                   this.addItem(itemId, 1);
-                  droppedItems.push(item.name);
+                  droppedItems.push(this.formatRarityItemInline(item));
                 } else if (isRepeatKill) {
                   drachmaeWon += 20;
                 }
               } else {
                 this.addItem(itemId, 1);
-                droppedItems.push(item.name);
+                droppedItems.push(this.formatRarityItemInline(item));
               }
             });
           }
@@ -9945,7 +10601,7 @@
                   if (!this.state.worldState.grantedUniqueItems[ent.itemId]) {
                     this.state.worldState.grantedUniqueItems[ent.itemId] = true;
                     this.addItem(ent.itemId, 1);
-                    droppedItems.push(item.name);
+                    droppedItems.push(this.formatRarityItemInline(item));
                   } else if (isRepeatKill) {
                     drachmaeWon += (lootTable.repeatCurrency ? (lootTable.repeatCurrency.min || 25) : 25);
                   }
@@ -9954,7 +10610,7 @@
                   const qMax = ent.quantityMax !== undefined ? ent.quantityMax : (ent.maxQuantity !== undefined ? ent.maxQuantity : qMin);
                   const qty = ent.quantity || (Math.floor(Math.random() * (Math.max(qMax, qMin) - qMin + 1)) + qMin);
                   this.addItem(ent.itemId, qty);
-                  droppedItems.push(`${item.name} (x${qty})`);
+                  droppedItems.push(this.formatRarityItemInline(item, qty));
                 }
               }
             });
@@ -9987,7 +10643,7 @@
                 this.state.worldState.grantedUniqueItems[l.itemId] = true;
               }
               this.addItem(l.itemId, 1);
-              droppedItems.push(item.name);
+              droppedItems.push(this.formatRarityItemInline(item));
             }
           });
         }
@@ -10527,8 +11183,9 @@
         const priceNote = mult === 1 ? "standard prices" : (mult < 1 ? `${Math.round((1 - mult) * 100)}% discount for a ${st.label.toLowerCase()} customer` : `${Math.round((mult - 1) * 100)}% markup: ${npc.name} does not trust you`);
         const row = (itemId, qty, price, action, disabledReason) => {
           const it = this.getItemData(itemId) || { name: itemId };
-          return `<div class="trade-row" data-tooltip="${String(it.description || "").replace(/"/g, "&quot;")}">
-            <span class="trade-name rarity-${String(it.rarity || "common").toLowerCase()}">${it.name}${qty > 1 ? ` <em>×${qty}</em>` : ""}</span>
+          const rm = this.getItemRarityMeta(it);
+          return `<div class="trade-row ${rm.frameClass}" data-rarity="${rm.key}" data-tooltip="${String(it.description || "").replace(/"/g, "&quot;")}">
+            <span class="trade-name ${rm.textClass}">${it.name}${qty > 1 ? ` <em>×${qty}</em>` : ""} ${rm.badgeHtml}</span>
             <span class="trade-price">${price} 🪙</span>
             ${disabledReason ? `<button class="nav-btn" disabled>${disabledReason}</button>` : action}
           </div>`;
@@ -10555,8 +11212,13 @@
           <div class="trade-summary" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.5rem;">
             <div>Your purse: <strong>${purse} drachmae</strong> • ${priceNote}${hoursLeft ? ` • restocks in ~${hoursLeft}h` : ""}</div>
             <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
-              <button class="nav-btn" style="padding:0.2rem 0.55rem; font-size:0.74rem;" ${negCd.ready ? "" : "disabled"} data-tooltip="Honest haggling: grants -10% buy price and +5 standing (DC ${pDc} Persuasion)" onclick="window.engine.negotiateTradePrice('${ts.npcId}', 'persuade')">🤝 Bargain (DC ${pDc})${negCd.ready ? "" : " ⏳ " + negCd.remainingText}</button>
-              <button class="nav-btn" style="padding:0.2rem 0.55rem; font-size:0.74rem;" ${bluffCd.ready ? "" : "disabled"} data-tooltip="Exaggerate scarcity: +15% sell price & -15% buy price if believed, standing penalty if caught (DC ${dDc} Deception)" onclick="window.engine.negotiateTradePrice('${ts.npcId}', 'deceive')">🎭 Bluff Terms (DC ${dDc})${bluffCd.ready ? "" : " ⏳ " + bluffCd.remainingText}</button>
+              ${(() => {
+                const negDiff = this.evaluateSkillCheckDifficulty("persuasion", "charisma", pDc, { activity: "persuasion" });
+                const bluffDiff = this.evaluateSkillCheckDifficulty("deception", "charisma", dDc, { activity: "deception" });
+                return `
+                  <button class="nav-btn ${negDiff.frameClass}" style="padding:0.25rem 0.6rem; font-size:0.74rem;" ${negCd.ready ? "" : "disabled"} data-tooltip="Honest haggling: -10% buy price and +5 standing (${negDiff.reason})" onclick="window.engine.negotiateTradePrice('${ts.npcId}', 'persuade')">🤝 Bargain (DC ${pDc}) ${this.renderDifficultyBadge(negDiff, { compact: true })}${negCd.ready ? "" : " ⏳ " + negCd.remainingText}</button>
+                  <button class="nav-btn ${bluffDiff.frameClass}" style="padding:0.25rem 0.6rem; font-size:0.74rem;" ${bluffCd.ready ? "" : "disabled"} data-tooltip="Exaggerate scarcity: +15% sell / -15% buy if believed (${bluffDiff.reason})" onclick="window.engine.negotiateTradePrice('${ts.npcId}', 'deceive')">🎭 Bluff Terms (DC ${dDc}) ${this.renderDifficultyBadge(bluffDiff, { compact: true })}${bluffCd.ready ? "" : " ⏳ " + bluffCd.remainingText}</button>`;
+              })()}
             </div>
           </div>
           <div class="trade-columns">
@@ -11893,7 +12555,7 @@
         const r = qDef.rewards || {};
         if (r.experience) this.awardXP(r.experience, `Quest: ${qDef.title}`);
         if (r.drachmae) { this.addDrachmae(r.drachmae); this.logTranscript("Reward", `Received ${r.drachmae} silver drachmae for '${qDef.title}'.`, "entry-consequence"); }
-        (Array.isArray(r.items) ? r.items : []).forEach(id => { if (this.isKnownItem(id) && !this.hasItem(id)) this.addItem(id, 1); });
+        (Array.isArray(r.items) ? r.items : []).forEach(id => { if (this.isKnownItem(id) && !this.hasItem(id)) { this.addItem(id, 1); this.logTranscript("Reward", `Received ${this.formatRarityItemInline(id)} for '${qDef.title}'.`, "entry-discovery"); } });
         if (r.renown) this.state.player.renown = (this.state.player.renown || 0) + r.renown;
         if (r.virtue || r.hubris) this.modifyMorality(r.virtue || 0, r.hubris || 0, qDef.title);
         Object.entries(r.reputation || {}).forEach(([key, delta]) => {
@@ -12725,9 +13387,10 @@
           `;
         }
 
+        const pzDiff = this.evaluateSkillCheckDifficulty(puzzle.deductionSkill || "mythology_lore", puzzle.deductionAttribute || "intelligence", deductionDc, { activity: "puzzle" });
         choicesHtml += `
-          <button class="dialogue-choice-btn" onclick="window.engine.resolveRiddleChoice('skill_check')">
-            <strong>Deduce from Knowledge (DC ${deductionDc} ${String(puzzle.deductionSkill || "mythology_lore").replace(/_/g, " ").replace(/\b\w/g, ch => ch.toUpperCase())})</strong>
+          <button class="dialogue-choice-btn ${pzDiff.frameClass}" data-difficulty="${pzDiff.key}" onclick="window.engine.resolveRiddleChoice('skill_check')">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap;"><strong>Deduce from Knowledge (DC ${deductionDc} ${String(puzzle.deductionSkill || "mythology_lore").replace(/_/g, " ").replace(/\b\w/g, ch => ch.toUpperCase())})</strong>${this.renderDifficultyBadge(pzDiff, { compact: true })}</div>
             <div style="font-size: 0.8rem; color: var(--marble-dim);">${puzzle.deductionHint || (isCadmean ? "Attempt to recall the ancient Boeotian founding hymn of Thebes." : "Attempt to work out the answer.")}</div>
           </button>
         `;
@@ -13036,9 +13699,10 @@
               if (!cd.ready) {
                 return `<button class="dialogue-choice-btn locked" disabled data-tooltip="You tried this and failed. Try again in ${cd.remainingText}.">⏳ "${c.label}" <em>(${skillLabel} DC ${dc}, ready in ${cd.remainingText})</em></button>`;
               }
+              const ckDiff = this.evaluateSkillCheckDifficulty(c.check.skill, c.check.attribute, dc, { activity: c.check.activity });
               return `
-                <button class="dialogue-choice-btn" onclick="window.engine.selectDialogueCheck('${treeId}', '${resolvedNodeId}', ${idx})">
-                  "${c.label}" <em>(${skillLabel} DC ${dc})</em>${pill}
+                <button class="dialogue-choice-btn ${ckDiff.frameClass}" data-difficulty="${ckDiff.key}" onclick="window.engine.selectDialogueCheck('${treeId}', '${resolvedNodeId}', ${idx})">
+                  "${c.label}" <em>(${skillLabel} DC ${dc})</em> ${this.renderDifficultyBadge(ckDiff, { compact: true })}${pill}
                 </button>
               `;
             }
@@ -14121,14 +14785,31 @@
           : `🎯 You have the initiative: ${name} has not noticed you`;
         const standing = cf.npcId ? ` ${this.renderStandingBadge(cf.npcId)}` : "";
         const reveal = cf.revealed ? ` • AC ${cf.foe.armorClass || "?"} • Health ${(cf.foe.vitals && cf.foe.vitals.health) || "?"}` : "";
+        const foeDiff = this.evaluateCombatDifficulty(cf.foe);
         const options = this.getConfrontationOptions();
-        const btn = (o) => `<button class="dialogue-choice-btn confront-option ${o.group || ""}" ${o.disabled ? "disabled" : ""} onclick="window.engine.chooseConfrontation('${o.id}'${o.arg ? `, '${o.arg}'` : ""})">
-            <div class="confront-option-title">${o.icon} ${o.label}</div><div class="confront-option-desc">${o.desc}</div></button>`;
+        const evalOptDiff = (o) => {
+          if (o.id === "fight" || o.id === "attack" || o.id === "head_on" || o.id === "brace") return foeDiff;
+          if (o.id === "strike_first") return this.evaluateSkillCheckDifficulty(null, "agility", cf.alertness);
+          if (o.id === "hide") return this.evaluateSkillCheckDifficulty("stealth", "agility", cf.alertness + (cf.surprised ? 2 : 0), { activity: "stealth" });
+          if (o.id === "sneak") return this.evaluateSkillCheckDifficulty("stealth", "agility", cf.alertness + 2 + (cf.surprised ? 2 : 0), { activity: "stealth" });
+          if (o.id === "ambush") return this.evaluateSkillCheckDifficulty("stealth", "agility", cf.alertness, { activity: "stealth" });
+          if (o.id === "parley") return this.evaluateSkillCheckDifficulty(cf.parleySkill || "persuasion", "charisma", this.getParleyDc());
+          if (o.id === "tactic" && o.arg) {
+            const t = this.getCombatTactics(cf).find(x => x.id === o.arg);
+            if (t) return this.evaluateSkillCheckDifficulty(t.skill, t.attribute, t.dc);
+          }
+          return null;
+        };
+        const btn = (o) => {
+          const od = evalOptDiff(o);
+          return `<button class="dialogue-choice-btn confront-option ${o.group || ""} ${od ? od.frameClass : ""}" ${o.disabled ? "disabled" : ""} onclick="window.engine.chooseConfrontation('${o.id}'${o.arg ? `, '${o.arg}'` : ""})">
+            <div class="confront-option-title" style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap;"><span>${o.icon} ${o.label}</span>${od ? this.renderDifficultyBadge(od, { compact: true }) : ""}</div><div class="confront-option-desc">${o.desc}</div></button>`;
+        };
         const preps = options.filter(o => o.group === "prep");
         const rest = options.filter(o => o.group !== "prep");
         box.innerHTML = `
           <div class="confront-header">
-            <div class="confront-title">${header}</div>
+            <div class="confront-title" style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;"><span>${header}</span>${this.renderDifficultyBadge(foeDiff)}</div>
             <div class="confront-sub">${name}${level ? ` • Level ${level}` : ""} • Alertness ${cf.alertness}${reveal}${standing}</div>
           </div>
           ${cf.intro ? `<div class="confront-intro">${cf.intro}</div>` : ""}
@@ -14680,6 +15361,25 @@
         document.getElementById("combat-player-hp").innerText = `${p.vitals.health} / ${p.vitals.maxHealth}`;
         document.getElementById("combat-player-stm").innerText = `${p.vitals.stamina} / ${p.vitals.maxStamina}`;
         document.getElementById("combat-round-indicator").innerText = `Round ${c.round}`;
+        const pHpBar = document.getElementById("combat-player-hp-bar");
+        if (pHpBar) pHpBar.style.width = `${Math.max(0, Math.min(100, Math.round((p.vitals.health / Math.max(1, p.vitals.maxHealth)) * 100)))}%`;
+        const pStmBar = document.getElementById("combat-player-stm-bar");
+        if (pStmBar) pStmBar.style.width = `${Math.max(0, Math.min(100, Math.round((p.vitals.stamina / Math.max(1, p.vitals.maxStamina)) * 100)))}%`;
+        const eHpBar = document.getElementById("combat-enemy-hp-bar");
+        if (eHpBar) eHpBar.style.width = `${Math.max(0, Math.min(100, Math.round((Math.max(0, c.enemy.hp) / Math.max(1, c.enemy.maxHp)) * 100)))}%`;
+        const combatDiff = this.evaluateCombatDifficulty(c.enemy);
+        const diffEl = document.getElementById("combat-difficulty-badge");
+        if (diffEl) diffEl.innerHTML = this.renderDifficultyBadge(combatDiff);
+        const eDiffEl = document.getElementById("combat-enemy-diff-badge");
+        if (eDiffEl) eDiffEl.innerHTML = this.renderDifficultyBadge(combatDiff, { compact: true });
+        const eBox = document.getElementById("combat-enemy-box");
+        const arena = document.getElementById("combat-arena");
+        ["very_easy", "easy", "moderate", "challenging", "hard", "extreme"].forEach(k => {
+          if (eBox && eBox.classList) eBox.classList.remove(`diff-frame-${k}`);
+          if (arena && arena.classList) arena.classList.remove(`diff-frame-${k}`);
+        });
+        if (eBox && eBox.classList && combatDiff) { eBox.classList.add(combatDiff.frameClass); eBox.dataset.difficulty = combatDiff.key; }
+        if (arena && arena.classList && combatDiff) { arena.dataset.difficulty = combatDiff.key; }
         const fxLine = document.getElementById("combat-effects-line");
         if (fxLine) fxLine.innerText = this.describeCombatEffects();
         const intentLine = document.getElementById("combat-intent-line");
@@ -15901,8 +16601,12 @@
             <span style="color: var(--lapis-bright);">🛡️ Inhabited: people are close by. Safe from nocturnal predators.</span>
           `;
         } else {
+          const wildDiff = loc ? this.evaluateLocationDifficulty(loc) : null;
           descEl.innerHTML = `
-            <strong>Current Location:</strong> ${locLabel}${avail.facilityName ? ` (${avail.facilityName})` : ""}<br>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.25rem;">
+              <strong>Current Location: ${locLabel}${avail.facilityName ? ` (${avail.facilityName})` : ""}</strong>
+              ${wildDiff ? this.renderDifficultyBadge(wildDiff, { compact: true }) : ""}
+            </div>
             <span style="color: #ff9d82;">⚠️ Wilderness: predators may discover your camp while you sleep!</span>
           `;
         }
@@ -16477,7 +17181,13 @@
         const playerLevel = player.level || 1;
         const isDangerous = recLevel > playerLevel;
 
-        document.getElementById("modal-dest-name").innerText = targetLoc.name;
+        const locDiff = this.evaluateLocationDifficulty(targetLoc, conn);
+        if (modal && modal.classList) {
+          ["very_easy", "easy", "moderate", "challenging", "hard", "extreme"].forEach(k => modal.classList.remove(`diff-frame-${k}`));
+          modal.classList.add(locDiff.frameClass);
+          modal.dataset.difficulty = locDiff.key;
+        }
+        document.getElementById("modal-dest-name").innerHTML = `<span>${targetLoc.name}</span> ${this.renderDifficultyBadge(locDiff, { compact: true })}`;
         document.getElementById("modal-dest-desc").innerText = targetLoc.narrative.shortDescription || targetLoc.narrative.overview;
         
         let statsHtml = `
@@ -16805,6 +17515,437 @@
        * Rank of a rarity tier. Campaigns use different vocabularies (e.g. Greek "exceptional" /
        * "consecrated"), so every known tier name is listed here. Returns null for unknown names.
        */
+      /* =========================================================================
+         VISUAL INFORMATION SYSTEMS:
+         1. Consistent Item Rarity Frames (strictly from item.rarity)
+         2. Dynamic Player-Relative Difficulty Frames (activity- & skill-aware,
+            purely informational, recalculated dynamically on hero progression)
+         ========================================================================= */
+      getItemRarityMeta(itemOrId) {
+        const item = typeof itemOrId === "string" ? this.getItemData(itemOrId) : itemOrId;
+        const raw = item && item.rarity ? String(item.rarity).trim() : "";
+        if (!raw) {
+          return {
+            key: "none",
+            raw: "",
+            label: "",
+            color: "#8a857b",
+            frameClass: "rarity-frame-none",
+            textClass: "rarity-text-none",
+            badgeHtml: ""
+          };
+        }
+        const low = raw.toLowerCase();
+        let key = "common";
+        if (low === "uncommon") key = "uncommon";
+        else if (low === "rare") key = "rare";
+        else if (low === "epic" || low === "exceptional") key = "epic";
+        else if (low === "legendary" || low === "consecrated") key = "legendary";
+        else if (low === "mythic" || low === "unique" || low === "relic") key = "mythic";
+        else if (low === "common" || low === "crafted") key = "common";
+
+        const palette = {
+          common: { label: "Common", color: "#8e949f" },
+          uncommon: { label: "Uncommon", color: "#4ec97b" },
+          rare: { label: "Rare", color: "#4ea8ff" },
+          epic: { label: "Epic", color: "#c084fc" },
+          legendary: { label: "Legendary", color: "#ffb347" },
+          mythic: { label: raw.charAt(0).toUpperCase() + raw.slice(1), color: "#ff6b9d" }
+        };
+        const info = palette[key] || palette.common;
+        const displayLabel = low === "crafted" ? "Common" : (raw.charAt(0).toUpperCase() + raw.slice(1));
+        return {
+          key,
+          raw,
+          label: displayLabel || info.label,
+          color: info.color,
+          frameClass: `rarity-frame-${key}`,
+          textClass: `rarity-text-${key}`,
+          badgeHtml: `<span class="rarity-pill rarity-text-${key}">${displayLabel || info.label}</span>`
+        };
+      }
+
+      formatRarityItemInline(itemOrId, qty = 1) {
+        const item = typeof itemOrId === "string" ? this.getItemData(itemOrId) : itemOrId;
+        if (!item) return String(itemOrId || "");
+        const rm = this.getItemRarityMeta(item);
+        const qTxt = qty > 1 ? ` (x${qty})` : "";
+        return `<span class="rarity-pill ${rm.textClass}" style="border-color:${rm.color};text-transform:none;font-size:0.82rem;padding:0.06rem 0.45rem;">${item.name}${qTxt}${rm.key !== "none" && rm.key !== "common" ? ` [${rm.label}]` : ""}</span>`;
+      }
+
+      getDifficultyMeta(tierKey, reason = "") {
+        const defs = {
+          very_easy: { key: "very_easy", rank: 0, label: "Very Easy", icon: "●", color: "#4ade80", frameClass: "diff-frame-very_easy", badgeClass: "diff-badge-very_easy" },
+          easy: { key: "easy", rank: 1, label: "Easy", icon: "◆", color: "#2dd4bf", frameClass: "diff-frame-easy", badgeClass: "diff-badge-easy" },
+          moderate: { key: "moderate", rank: 2, label: "Moderate", icon: "▲", color: "#facc15", frameClass: "diff-frame-moderate", badgeClass: "diff-badge-moderate" },
+          challenging: { key: "challenging", rank: 3, label: "Challenging", icon: "▲", color: "#fb923c", frameClass: "diff-frame-challenging", badgeClass: "diff-badge-challenging" },
+          hard: { key: "hard", rank: 4, label: "Hard", icon: "⚠", color: "#f87171", frameClass: "diff-frame-hard", badgeClass: "diff-badge-hard" },
+          extreme: { key: "extreme", rank: 5, label: "Extreme", icon: "☠", color: "#ef4444", frameClass: "diff-frame-extreme", badgeClass: "diff-badge-extreme" }
+        };
+        const meta = Object.assign({}, defs[tierKey] || defs.moderate);
+        meta.reason = reason || "";
+        return meta;
+      }
+
+      renderDifficultyBadge(diff, opts = {}) {
+        if (!diff) return "";
+        const tip = diff.reason ? ` data-tooltip="${String(diff.reason).replace(/"/g, "&quot;")}"` : "";
+        const compact = opts.compact ? " style=\"font-size:0.62rem;padding:0.06rem 0.36rem;\"" : "";
+        return `<span class="diff-badge ${diff.badgeClass}"${compact}${tip}>${diff.icon} ${diff.label}</span>`;
+      }
+
+      getPlayerCapabilitySignature() {
+        const p = this.state && this.state.player;
+        if (!p) return "init";
+        const attrs = Object.entries(p.attributes || {}).map(([k, v]) => `${k}:${v}`).join(",");
+        const skills = Object.entries(p.skills || {}).map(([k, v]) => `${k}:${v}`).join(",");
+        const eq = (p.inventory || []).filter(i => i.equipped).map(i => `${i.slot}=${i.itemId}`).sort().join(",");
+        const comps = ((this.state.worldState && this.state.worldState.companions) || []).map(c => `${c.id}:${c.hp || 0}`).join(",");
+        const mcap = this.getCombatSpellCapacityInfo ? this.getCombatSpellCapacityInfo() : { capacity: 1, spellPower: 0 };
+        return `L${p.level || 1}|HP${p.vitals?.health || 0}/${p.vitals?.maxHealth || 20}|AC${this.getPlayerArmorClass ? this.getPlayerArmorClass() : 10}|M${mcap.capacity}:${mcap.spellPower}|A(${attrs})|S(${skills})|E(${eq})|C(${comps})|F${(p.feats || []).join(",")}`;
+      }
+
+      /** Evaluate a d20 skill/attribute check relative to the hero's real effective modifier & Reliable Talent. */
+      evaluateSkillCheckDifficulty(skillName, attributeName, dc, opts = {}) {
+        const targetDc = Math.max(5, Number(dc) || 12);
+        const bk = this.getEffectiveSkillBreakdown
+          ? this.getEffectiveSkillBreakdown(skillName || null, attributeName || null, { activity: opts.activity })
+          : { totalWithoutInspiration: 0 };
+        const mod = Number(bk.totalWithoutInspiration) || 0;
+        const reliable = !!(skillName && this.hasReliableTalent && this.hasReliableTalent(skillName));
+        // Exact probability of rolling d20 + mod >= targetDc (with Reliable Talent floor of 6)
+        let wins = 0;
+        for (let d = 1; d <= 20; d++) {
+          const effDie = reliable && d < 6 ? 6 : d;
+          if (effDie === 20 || (effDie !== 1 && effDie + mod >= targetDc)) wins++;
+        }
+        const prob = wins / 20;
+        let tier = "extreme";
+        if (prob >= 0.85) tier = "very_easy";
+        else if (prob >= 0.70) tier = "easy";
+        else if (prob >= 0.50) tier = "moderate";
+        else if (prob >= 0.35) tier = "challenging";
+        else if (prob >= 0.20) tier = "hard";
+        const label = skillName ? String(skillName).replace(/_/g, " ") : String(attributeName || "Check");
+        const pct = Math.round(prob * 100);
+        return Object.assign(this.getDifficultyMeta(tier, `${label} (mod ${mod >= 0 ? "+" : ""}${mod} vs DC ${targetDc}, ~${pct}% success)`), {
+          probability: prob,
+          modifier: mod,
+          dc: targetDc
+        });
+      }
+
+      /** Parse average damage of a dice expression like "2d6+3". */
+      estimateDiceAverage(expr) {
+        if (typeof expr === "number") return expr;
+        const m = String(expr || "1d6").match(/(\d+)d(\d+)(?:\s*([+-])\s*(\d+))?/i);
+        if (!m) return 4;
+        const count = Number(m[1]) || 1;
+        const sides = Number(m[2]) || 6;
+        const sign = m[3] === "-" ? -1 : 1;
+        const flat = Number(m[4]) || 0;
+        return count * ((sides + 1) / 2) + sign * flat;
+      }
+
+      /** Compute hero's real combat rating from vitals, AC, weapon, combat skills, magic progression & companions. */
+      getHeroCombatPower() {
+        const p = this.state && this.state.player;
+        if (!p) return 25;
+        const maxHp = (p.vitals && p.vitals.maxHealth) || 20;
+        const ac = this.getPlayerArmorClass ? this.getPlayerArmorClass() : 11;
+        const weapon = this.getEquippedWeapon ? this.getEquippedWeapon() : null;
+        const ranged = weapon && this.isRangedWeapon ? this.isRangedWeapon(weapon) : false;
+        const attrKey = ranged ? "agility" : "strength";
+        const attrMod = this.getModifier(this.getEffectiveAttribute(attrKey));
+        const combatSkill = ((p.skills && (ranged ? p.skills.ranged_combat : p.skills.melee_combat)) || 0);
+        const ws = (weapon && weapon.stats) || {};
+        const avgWeapon = weapon && Number.isFinite(ws.damageMin)
+          ? ((ws.damageMin + (ws.damageMax || ws.damageMin)) / 2) + (ws.elementalDamage || 0)
+          : (weapon && weapon.damage ? this.estimateDiceAverage(weapon.damage) + (ws.elementalDamage || 0) : 2.5);
+        const hitBonus = attrMod + combatSkill + (ws.attackBonus || 0) + (this.getFeatureNumber ? this.getFeatureNumber("attack") : 0);
+        const weaponDpr = Math.max(2, avgWeapon + Math.max(0, attrMod) + (this.getFeatureNumber ? this.getFeatureNumber("damage") : 0)) * (1 + Math.max(-0.25, hitBonus * 0.06));
+
+        // Magic progression genuinely increases combat capability
+        const spellCap = this.getCombatSpellCapacityInfo ? this.getCombatSpellCapacityInfo() : { capacity: 1, spellPower: 0 };
+        const intMod = Math.max(0, this.getModifier(this.getEffectiveAttribute("intelligence")));
+        const unlockedOpts = this.getCombatSpellOptions ? this.getCombatSpellOptions().filter(o => o.unlocked && o.id !== "standard").length : 0;
+        const magicPower = (spellCap.capacity || 1) * (3.2 + intMod * 1.1 + (spellCap.spellPower || 0) * 1.2 + unlockedOpts * 1.1);
+
+        // Active companions strengthen the party
+        const allies = this.getCompanionCombatants ? this.getCompanionCombatants() : [];
+        const allyPower = allies.reduce((sum, a) => {
+          const d = this.estimateDiceAverage(a.damage || "1d6+1");
+          return sum + ((a.hp || 14) * 0.65) + d * 2.2;
+        }, 0);
+
+        const survivability = maxHp * (1 + Math.max(-0.2, (ac - 10) * 0.075));
+        return Math.max(15, survivability * 0.85 + weaponDpr * 4.2 + magicPower + allyPower);
+      }
+
+      /** Compute total threat of one enemy or an array of enemies (creature, boss, or NPC). */
+      getEnemyThreatRating(enemyList) {
+        const list = (Array.isArray(enemyList) ? enemyList : [enemyList]).filter(Boolean);
+        if (list.length === 0) return 20;
+        let total = 0;
+        list.forEach(e => {
+          const hp = Number(e.maxHp || e.hp || (e.vitals && (e.vitals.maxHealth || e.vitals.health)) || 20);
+          const ac = Number(e.armorClass || (e.combatStats && e.combatStats.armorClass) || 12);
+          const acts = Array.isArray(e.actions) && e.actions.length ? e.actions : (Array.isArray(e.combatActions) && e.combatActions.length ? e.combatActions : [{ damage: (e.combatStats && e.combatStats.damage) || "1d6+1", attackBonus: (e.combatStats && e.combatStats.attackBonus) || 3 }]);
+          const bestDpr = Math.max(...acts.map(a => this.estimateDiceAverage(a.damage || "1d6+1") * (1 + (Number(a.attackBonus) || 3) * 0.05)));
+          const bossMult = e.isBoss ? 1.32 : 1.0;
+          total += (hp * (1 + Math.max(-0.15, (ac - 10) * 0.07)) * 0.9 + bestDpr * 4.4) * bossMult;
+        });
+        // Multi-enemy encounters compound threat via action economy
+        const groupMult = 1 + Math.max(0, list.length - 1) * 0.25;
+        return total * groupMult;
+      }
+
+      /** Evaluate combat encounter difficulty relative to hero's actual combat + magic + companion power. */
+      evaluateCombatDifficulty(enemyOrList) {
+        const list = (Array.isArray(enemyOrList) ? enemyOrList : [enemyOrList]).filter(Boolean);
+        const resolved = list.map(item => {
+          if (typeof item === "string") {
+            const enc = this.findEncounter ? this.findEncounter(item) : null;
+            if (enc) {
+              if (Array.isArray(enc.enemies) && enc.enemies.length) {
+                return enc.enemies.map(id => this.getCreature(id) || this.getCharacter(id)).filter(Boolean);
+              }
+              const cr = this.getCreature(enc.creatureId);
+              if (cr) return Array.from({ length: Math.max(1, Number(enc.count) || 1) }, () => cr);
+            }
+            const cr = this.getCreature(item);
+            if (cr) return [cr];
+            const npc = this.getCharacter(item);
+            if (npc && this.buildNpcCombatant) return [this.buildNpcCombatant(npc.id)];
+            return [];
+          }
+          return [item];
+        }).flat();
+        if (resolved.length === 0) return this.getDifficultyMeta("moderate", "Standard combat encounter");
+
+        const heroPower = this.getHeroCombatPower();
+        const enemyThreat = this.getEnemyThreatRating(resolved);
+        const ratio = enemyThreat / Math.max(1, heroPower);
+        let tier = "extreme";
+        if (ratio < 0.42) tier = "very_easy";
+        else if (ratio < 0.72) tier = "easy";
+        else if (ratio < 1.15) tier = "moderate";
+        else if (ratio < 1.65) tier = "challenging";
+        else if (ratio < 2.35) tier = "hard";
+
+        const foeLabel = resolved.length > 1 ? `${resolved.length} foes` : (resolved[0].name || "Foe");
+        return Object.assign(this.getDifficultyMeta(tier, `Combat threat (${foeLabel}) vs your gear, skills, magic & allies`), {
+          ratio,
+          heroPower: Math.round(heroPower),
+          enemyThreat: Math.round(enemyThreat)
+        });
+      }
+
+      /** Evaluate crafting attempt difficulty relative to hero's crafting governing attributes & minigame bonus. */
+      evaluateCraftingDifficulty(prof, categoryKey = "weapon") {
+        if (!prof) return this.getDifficultyMeta("moderate", "Artisan crafting challenge");
+        const normCat = this.normalizeCraftingCategory ? this.normalizeCraftingCategory(categoryKey) : "weapon";
+        const tpls = this.getCampaignCraftingTemplates().filter(t => (t.professionId || t.profession) === prof.id && (!this.normalizeCraftingCategory || this.normalizeCraftingCategory(t) === normCat));
+        const avgDc = tpls.length ? Math.round(tpls.reduce((s, t) => s + (t.baseDC || 12), 0) / tpls.length) : 12;
+        const cb = this.getCraftingSkillBreakdown ? this.getCraftingSkillBreakdown(prof) : { totalBonus: 0, primary: "strength" };
+        let wins = 0;
+        for (let d = 1; d <= 20; d++) {
+          if (d === 20 || (d !== 1 && d + cb.totalBonus >= avgDc)) wins++;
+        }
+        const prob = wins / 20;
+        let tier = "extreme";
+        if (prob >= 0.85) tier = "very_easy";
+        else if (prob >= 0.70) tier = "easy";
+        else if (prob >= 0.50) tier = "moderate";
+        else if (prob >= 0.35) tier = "challenging";
+        else if (prob >= 0.20) tier = "hard";
+        return Object.assign(this.getDifficultyMeta(tier, `Crafting bonus ${cb.totalBonus >= 0 ? "+" : ""}${cb.totalBonus} vs est. DC ${avgDc} (~${Math.round(prob * 100)}%)`), {
+          probability: prob,
+          dc: avgDc,
+          modifier: cb.totalBonus
+        });
+      }
+
+      /** Evaluate location / travel danger relative to hero's combat & survival capabilities. */
+      evaluateLocationDifficulty(locOrId, conn = null) {
+        const loc = typeof locOrId === "string" ? this.getLocation(locOrId) : locOrId;
+        if (!loc) return this.getDifficultyMeta("easy", "Local travel");
+        // Check local hostile creatures / authored encounters first for accurate threat
+        const localFoes = [];
+        (loc.presentCreatures || []).forEach(id => {
+          const cr = this.getCreature(id);
+          if (cr && !(this.state && this.state.worldState && this.state.worldState.deadEntities && this.state.worldState.deadEntities[id])) localFoes.push(cr);
+        });
+        if (localFoes.length > 0) {
+          return this.evaluateCombatDifficulty(localFoes[0]);
+        }
+        const recLevel = Number(loc.recommendedLevel || (conn && conn.dangerRating) || 1);
+        const heroLevel = (this.state && this.state.player && this.state.player.level) || 1;
+        const heroPower = this.getHeroCombatPower();
+        // Blend real combat power with regional tier expectation
+        const expectedThreat = (24 + recLevel * 18) * (loc.restSafety === "forbidden" ? 1.25 : loc.restSafety === "restricted" ? 1.05 : 0.75);
+        const ratio = expectedThreat / Math.max(1, heroPower);
+        let tier = "very_easy";
+        if (ratio >= 2.1 || recLevel - heroLevel >= 4) tier = "extreme";
+        else if (ratio >= 1.5 || recLevel - heroLevel >= 3) tier = "hard";
+        else if (ratio >= 1.05 || recLevel - heroLevel >= 2) tier = "challenging";
+        else if (ratio >= 0.72 || recLevel - heroLevel >= 1) tier = "moderate";
+        else if (ratio >= 0.45) tier = "easy";
+        return this.getDifficultyMeta(tier, `Territory rating (Lvl ${recLevel}, ${loc.restSafety || "wild"}) relative to your capabilities`);
+      }
+
+      /** Evaluate an individual quest objective by inspecting linked encounters, puzzles, skill checks, or location threat. */
+      evaluateObjectiveDifficulty(qDef, obj) {
+        if (!obj) return null;
+        if (obj.completed) return null;
+        const locId = obj.locationId;
+        const loc = locId ? this.getLocation(locId) : null;
+        const txt = String(obj.text || "").toLowerCase();
+
+        // 1. Check authored encounters at this objective's location matching quest/objective
+        const allEncs = (this.world.encounters || []).concat((this.currentAdventure && this.currentAdventure.encounters) || []);
+        const matchingEnc = allEncs.find(e => {
+          if (!e) return false;
+          const out = e.victoryOutcome || {};
+          const uqs = [].concat(out.updateQuest || [], out.updateQuest2 || []);
+          if (qDef && uqs.some(u => u && u.questId === qDef.id && (!obj.id || u.objectiveId === obj.id))) return true;
+          if (locId && e.locationId === locId && /(slay|defeat|kill|confront|destroy|fight|sentinel|troll|wolf|wraith|zealot|skallagrim|vyr|beast|monster|keeper)/.test(txt)) return true;
+          return false;
+        });
+        if (matchingEnc) return this.evaluateCombatDifficulty(matchingEnc.id);
+
+        // 2. Check authored puzzles at this objective's location
+        const allPuzzles = this.world.puzzles || [];
+        const matchingPuzzle = allPuzzles.find(pz => {
+          if (!pz) return false;
+          const uqs = [].concat((pz.successOutcome && pz.successOutcome.updateQuest) || []);
+          if (qDef && uqs.some(u => u && u.questId === qDef.id && (!obj.id || u.objectiveId === obj.id))) return true;
+          if (locId && pz.locationId === locId && /(riddle|pillar|puzzle|decipher|pedestal)/.test(txt)) return true;
+          return false;
+        });
+        if (matchingPuzzle) {
+          return this.evaluateSkillCheckDifficulty(matchingPuzzle.deductionSkill || "mythology_lore", matchingPuzzle.deductionAttribute || "intelligence", matchingPuzzle.deductionDc || 12, { activity: "puzzle" });
+        }
+
+        // 3. Check location actions with skill checks or encounters referencing this quest/objective
+        if (loc && Array.isArray(loc.actions)) {
+          const matchingAct = loc.actions.find(a => {
+            const conds = Array.isArray(a.conditions) ? a.conditions : [];
+            const linksQuest = qDef && conds.some(c => c && c.questId === qDef.id);
+            const out = (a.skillCheck && a.skillCheck.success) || a.outcome || {};
+            const uqs = [].concat(out.updateQuest || []);
+            return linksQuest || (qDef && uqs.some(u => u && u.questId === qDef.id && (!obj.id || u.objectiveId === obj.id)));
+          });
+          if (matchingAct) {
+            if (matchingAct.encounterId) return this.evaluateCombatDifficulty(matchingAct.encounterId);
+            if (matchingAct.skillCheck) return this.evaluateSkillCheckDifficulty(matchingAct.skillCheck.skill, matchingAct.skillCheck.attribute, matchingAct.skillCheck.dc);
+          }
+        }
+
+        // 4. Check locked interactive objects linked to this quest/objective
+        const allObjs = this.world.interactiveObjects || this.interactiveObjects || [];
+        const matchingObj = allObjs.find(o => {
+          const uqs = [].concat((o.unlockOutcome && o.unlockOutcome.updateQuest) || []);
+          return qDef && uqs.some(u => u && u.questId === qDef.id && (!obj.id || u.objectiveId === obj.id));
+        });
+        if (matchingObj && matchingObj.locked && !this.isObjectOpen(matchingObj)) {
+          if (matchingObj.type === "obstacle") return this.evaluateSkillCheckDifficulty("athletics", "strength", matchingObj.heaveDc || 13, { activity: "heave" });
+          if (this.getObjectKeyId(matchingObj) && this.hasItem(this.getObjectKeyId(matchingObj))) return this.getDifficultyMeta("very_easy", "You already carry the required key");
+          return this.evaluateSkillCheckDifficulty("stealth", "agility", this.getObjectLockDc(matchingObj), { activity: "lockpick" });
+        }
+
+        // 5. Pure social / report objectives in safe settlements are Very Easy
+        if (/(speak|talk|return|report|deliver|consult|present)/.test(txt) && (!loc || loc.restSafety === "sanctuary" || loc.restSafety === "settlement")) {
+          return this.getDifficultyMeta("very_easy", "Dialogue / delivery in a settled area");
+        }
+        if (loc) return this.evaluateLocationDifficulty(loc);
+        return this.getDifficultyMeta("easy", "Standard quest objective");
+      }
+
+      /** Evaluate overall quest difficulty from its highest active objective (or authored stage tasks). */
+      evaluateQuestDifficulty(qDef, qState = null) {
+        const q = qState || (qDef && this.state && this.state.worldState && this.state.worldState.quests && this.state.worldState.quests[qDef.id]);
+        if (!q || q.completed || q.failed) return null;
+        const tierOrder = ["very_easy", "easy", "moderate", "challenging", "hard", "extreme"];
+        const activeObjs = Object.values(q.objectives || {}).filter(o => o && !o.completed);
+        let worst = null;
+        activeObjs.forEach(o => {
+          const d = this.evaluateObjectiveDifficulty(qDef, o);
+          if (d && (!worst || tierOrder.indexOf(d.key) > tierOrder.indexOf(worst.key))) worst = d;
+        });
+        return worst || this.getDifficultyMeta("easy", "Current stage is straightforward");
+      }
+
+      /** Evaluate any Action Deck item cleanly (returns null for safe/neutral utility actions). */
+      evaluateActionDifficulty(act) {
+        if (!act) return null;
+        const id = String(act.id || "");
+        // Explicit skill check action
+        if (act.skillCheck) {
+          return this.evaluateSkillCheckDifficulty(act.skillCheck.skill, act.skillCheck.attribute, act.skillCheck.dc, { activity: act.skillCheck.activity });
+        }
+        // Combat encounter action
+        if (act.encounterId || act.handlerType === "encounter" || act.handlerType === "combat") {
+          return this.evaluateCombatDifficulty(act.encounterId || act.creatureId);
+        }
+        // Puzzle action
+        if (act.puzzleId || act.handlerType === "puzzle" || act.handlerType === "riddle") {
+          const pz = (this.world.puzzles || []).find(p => p.id === act.puzzleId);
+          if (pz) return this.evaluateSkillCheckDifficulty(pz.deductionSkill || "mythology_lore", pz.deductionAttribute || "intelligence", pz.deductionDc || 12, { activity: "puzzle" });
+        }
+        // Requirements with skill_check
+        if (Array.isArray(act.requirements)) {
+          const scReq = act.requirements.find(r => r && r.type === "skill_check");
+          if (scReq) return this.evaluateSkillCheckDifficulty(scReq.skill, scReq.attribute, scReq.dc, { activity: scReq.activity });
+        }
+        // Generated action ids: attack NPC, attack creature, pickpocket, lockpick, heave, travel
+        if (id.startsWith("act_attack_")) {
+          const targetId = id.slice(11);
+          return this.evaluateCombatDifficulty(targetId);
+        }
+        if (id.startsWith("act_pickpocket_")) {
+          const npcId = id.slice(15);
+          return this.evaluateSkillCheckDifficulty("stealth", "agility", this.getPickpocketDc(npcId), { activity: "pickpocket" });
+        }
+        if (id.startsWith("act_lockpick_")) {
+          const obj = this.getInteractiveObject(id.slice(13));
+          if (obj) return this.evaluateSkillCheckDifficulty("stealth", "agility", this.getObjectLockDc(obj), { activity: "lockpick" });
+        }
+        if (id.startsWith("act_heave_")) {
+          const obj = this.getInteractiveObject(id.slice(10));
+          if (obj) return this.evaluateSkillCheckDifficulty("athletics", "strength", obj.heaveDc || 13, { activity: "heave" });
+        }
+        if (id.startsWith("act_travel_")) {
+          const destId = id.slice(11);
+          const loc = this.getLocation(destId);
+          if (loc && (loc.restSafety === "forbidden" || loc.restSafety === "restricted" || (loc.recommendedLevel || 1) > 1)) {
+            return this.evaluateLocationDifficulty(loc);
+          }
+        }
+        return null;
+      }
+
+      /** Unified public entry point for evaluating relative difficulty across any activity type. */
+      evaluateRelativeDifficulty(spec = {}) {
+        const sig = this.getPlayerCapabilitySignature();
+        if (this._diffCacheSig !== sig) {
+          this._diffCacheSig = sig;
+          this._diffCache = new Map();
+        }
+        const cacheKey = spec && spec.type ? JSON.stringify(spec) : null;
+        if (cacheKey && this._diffCache.has(cacheKey)) return this._diffCache.get(cacheKey);
+        let result = null;
+        if (spec.type === "skill_check") result = this.evaluateSkillCheckDifficulty(spec.skill, spec.attribute, spec.dc, spec);
+        else if (spec.type === "combat") result = this.evaluateCombatDifficulty(spec.enemies || spec.enemy || spec.encounterId || spec.creatureId);
+        else if (spec.type === "crafting") result = this.evaluateCraftingDifficulty(spec.profession || this.getCampaignProfessions()[0], spec.category || "weapon");
+        else if (spec.type === "location") result = this.evaluateLocationDifficulty(spec.location || spec.locationId, spec.connection);
+        else if (spec.type === "quest") result = this.evaluateQuestDifficulty(spec.questDef || this.getQuestDefinition(spec.questId), spec.questState);
+        else if (spec.type === "objective") result = this.evaluateObjectiveDifficulty(spec.questDef || this.getQuestDefinition(spec.questId), spec.objective);
+        else if (spec.type === "action") result = this.evaluateActionDifficulty(spec.action);
+        if (cacheKey && result) this._diffCache.set(cacheKey, result);
+        return result;
+      }
+
       getRarityRank(rarity) {
         const ranks = { common: 0, crafted: 0, uncommon: 1, rare: 2, exceptional: 3, epic: 3, consecrated: 4, legendary: 4, mythic: 5 };
         const key = String(rarity || "common").toLowerCase();
@@ -16865,8 +18006,23 @@
           if (item.stats.damageMin !== undefined) {
             statsHtml += `<div>Damage: <strong>${item.stats.damageMin}–${item.stats.damageMax} ${item.stats.damageType || ""}</strong></div>`;
           }
+          if (item.stats.attackBonus) {
+            statsHtml += `<div>Attack Bonus: <strong>+${item.stats.attackBonus}</strong></div>`;
+          }
+          if (item.stats.elementalDamage) {
+            statsHtml += `<div style="color: #7cc0ff;">Elemental Damage: <strong>+${item.stats.elementalDamage}</strong></div>`;
+          }
           if (item.stats.defenseBonus) {
             statsHtml += `<div>Defense: <strong>+${item.stats.defenseBonus}</strong></div>`;
+          }
+          if (item.stats.spellBonus) {
+            statsHtml += `<div style="color: #d5a6ff;">Spell Power: <strong>+${item.stats.spellBonus}</strong></div>`;
+          }
+          if (item.stats.spellCapacityBonus) {
+            statsHtml += `<div style="color: #ffe680;">Combat Spell Capacity: <strong>+${item.stats.spellCapacityBonus}</strong></div>`;
+          }
+          if (item.stats.frostResist) {
+            statsHtml += `<div style="color: #5eead4;">Elemental Resist: <strong>+${item.stats.frostResist}</strong></div>`;
           }
           if (item.stats.reachBonus) {
             statsHtml += `<div>Reach: <strong>+${item.stats.reachBonus}</strong></div>`;
@@ -16926,12 +18082,20 @@
           `;
         }
 
+        const rm = this.getItemRarityMeta(item);
+        if (tooltip.classList) {
+          ["none", "common", "uncommon", "rare", "epic", "legendary", "mythic"].forEach(k => tooltip.classList.remove(`rarity-frame-${k}`));
+          tooltip.classList.add(rm.frameClass);
+        }
+        tooltip.dataset.rarity = rm.key;
         tooltip.innerHTML = `
           <div class="tooltip-header">
-            <div class="tooltip-title">${item.name}</div>
-            <div class="tooltip-subtitle">${item.ancientGreek ? item.ancientGreek + " &bull; " : ""}${item.category.toUpperCase()} ${item.slot ? "• " + item.slot.replace('_', ' ').toUpperCase() : ""}</div>
-            ${item.rarity ? `<span class="tooltip-rarity">${item.rarity}</span>` : ""}
-            ${isEquipped ? `<span class="tooltip-rarity" style="border-color: var(--laurel-bright); color: var(--laurel-bright); background: rgba(44,94,59,0.2);">Equipped</span>` : ""}
+            <div class="tooltip-title ${rm.textClass}">${item.name}</div>
+            <div class="tooltip-subtitle">${item.ancientGreek ? item.ancientGreek + " &bull; " : ""}${(item.category || "item").toUpperCase()} ${item.slot ? "• " + item.slot.replace('_', ' ').toUpperCase() : ""}</div>
+            <div style="display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.2rem;">
+              ${rm.badgeHtml}
+              ${isEquipped ? `<span class="rarity-pill" style="color: var(--laurel-bright);">Equipped</span>` : ""}
+            </div>
           </div>
           <div>${item.description || "An authentic artifact of ancient Hellas."}</div>
           ${statsHtml ? `<div class="tooltip-stats-block">${statsHtml}</div>` : ""}
@@ -17083,16 +18247,21 @@
           // Every card can be dragged: onto an equipment slot, onto another item, or onto a toolkit.
           const dragAttrs = `draggable="true" ondragstart="window.engine.onInventoryDragStart(event, '${itemSlot.itemId}', '${itemSlot.equipped ? (itemSlot.slot || "") : ""}')" ondragend="window.engine.onInventoryDragEnd()"`;
 
+          const rm = this.getItemRarityMeta(data);
           return `
-            <div class="item-card" 
+            <div class="item-card ${rm.frameClass}"
                  data-item-id="${itemSlot.itemId}"
+                 data-rarity="${rm.key}"
                  ${dragAttrs}
                  onmouseenter="window.engine.showItemTooltip('${itemSlot.itemId}', this)"
                  onmouseleave="window.engine.hideItemTooltip()"
                  onclick="window.engine.showItemTooltip('${itemSlot.itemId}', this)">
-              <div>
-                <div class="item-name">${data.name}</div>
-                <div style="font-size: 0.75rem; color: var(--bronze); font-style: italic;">
+              <div style="min-width: 0; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                  <div class="item-name ${rm.textClass}">${data.name}</div>
+                  ${rm.badgeHtml}
+                </div>
+                <div style="font-size: 0.75rem; color: var(--bronze); font-style: italic; margin-top: 0.15rem;">
                   ${(data.category || "equipment").toUpperCase()}${itemSlot.equipped ? ` &bull; <strong style='color: var(--laurel-bright);'>EQUIPPED (${String(itemSlot.slot || "").replace("_", " ").toUpperCase()})</strong>` : ""}
                 </div>
                 ${coating ? `<div class="item-coating-badge">${coating.icon} ${this.escapeHtml(coating.name)} &times;${coating.charges}</div>` : ""}
@@ -17102,7 +18271,7 @@
                   <span>Qty: ${itemSlot.quantity}</span>
                   <span>${data.weightKg ? data.weightKg + " kg" : "0.5 kg"}</span>
                 </div>
-                ${actionBtnHtml}
+                <div class="item-card-actions">${actionBtnHtml}</div>
               </div>
             </div>
           `;
@@ -17233,10 +18402,21 @@
           const el = document.getElementById(`eq-${slotKey.replace('_', '-')}`);
           const slotEl = document.getElementById(`slot-${slotKey}`);
 
+          const clearRarityClasses = (node) => {
+            if (!node || !node.classList) return;
+            ["none", "common", "uncommon", "rare", "epic", "legendary", "mythic"].forEach(k => node.classList.remove(`rarity-frame-${k}`));
+          };
           if (equippedItemSlot) {
             const data = this.getItemData(equippedItemSlot.itemId);
-            if (el) el.innerText = data.name + (equippedItemSlot.isTwoHanded ? " (Two-Handed)" : "");
+            const rm = this.getItemRarityMeta(data);
+            if (el) {
+              el.innerText = data.name + (equippedItemSlot.isTwoHanded ? " (Two-Handed)" : "");
+              el.style.color = rm.key !== "none" ? rm.color : "";
+            }
             if (slotEl) {
+              clearRarityClasses(slotEl);
+              slotEl.classList.add(rm.frameClass);
+              slotEl.dataset.rarity = rm.key;
               slotEl.dataset.equippedItemId = equippedItemSlot.itemId;
               slotEl.setAttribute("draggable", "true");
               slotEl.setAttribute("ondragstart", `window.engine.onInventoryDragStart(event, '${equippedItemSlot.itemId}', '${slotKey}')`);
@@ -17251,7 +18431,10 @@
             } else {
               if (el) el.innerText = "None";
             }
+            if (el) el.style.color = "";
             if (slotEl) {
+              clearRarityClasses(slotEl);
+              delete slotEl.dataset.rarity;
               delete slotEl.dataset.equippedItemId;
               slotEl.removeAttribute("draggable");
               slotEl.removeAttribute("ondragstart");
@@ -17566,16 +18749,19 @@
 
       makeActionTile(act, label, onHover) {
         const btn = document.createElement("button");
-        btn.className = `action-card-btn action-tile ${act.type || ""}`;
+        const diff = this.evaluateActionDifficulty(act);
+        btn.className = `action-card-btn action-tile ${act.type || ""} ${diff ? diff.frameClass : ""}`;
+        if (diff && btn.dataset) btn.dataset.difficulty = diff.key;
         if (act.disabled) btn.disabled = true;
         const reqHtml = this.renderRequirementPillsHtml ? this.renderRequirementPillsHtml(act.requirements) : "";
         const reqTip = Array.isArray(act.requirements) && act.requirements.length
           ? act.requirements.map(r => this.evaluateRequirementDisplay(r)).filter(Boolean).map(p => `${p.label}: ${p.currentText}`).join(" • ")
           : "";
-        const tipText = reqTip ? `${this.plainText(act.desc)} [${reqTip}]` : this.plainText(act.desc);
+        const diffTip = diff && diff.reason ? ` [${diff.label}: ${diff.reason}]` : "";
+        const tipText = (reqTip ? `${this.plainText(act.desc)} [${reqTip}]` : this.plainText(act.desc)) + diffTip;
         if (btn.setAttribute) btn.setAttribute("data-tooltip", tipText);
         else btn.title = tipText;
-        btn.innerHTML = `<div class="action-card-title"><span class="sr-only">${act.title}</span><span class="tile-label">${this.getActionIcon(act)} ${label}</span></div>${reqHtml}`;
+        btn.innerHTML = `<div class="action-card-title"><span class="sr-only">${act.title}</span><span class="tile-label">${this.getActionIcon(act)} ${label}</span>${diff ? this.renderDifficultyBadge(diff, { compact: true }) : ""}</div>${reqHtml}`;
         btn.onclick = () => act.handler();
         if (onHover && btn.addEventListener) {
           btn.addEventListener("mouseenter", () => onHover(act));
@@ -17708,13 +18894,15 @@
         });
         const card = (act) => {
           const btn = document.createElement("button");
-          btn.className = `action-card-btn ${act.type || ""}`;
+          const diff = this.evaluateActionDifficulty(act);
+          btn.className = `action-card-btn ${act.type || ""} ${diff ? diff.frameClass : ""}`;
+          if (diff && btn.dataset) btn.dataset.difficulty = diff.key;
           if (act.disabled) btn.disabled = true;
           const reqHtml = this.renderRequirementPillsHtml ? this.renderRequirementPillsHtml(act.requirements) : "";
           btn.innerHTML = `
             <div class="action-card-title">
               <span>${act.title}</span>
-              ${act.badge ? `<span class="action-card-badge">${act.badge}</span>` : ""}
+              <span style="display:inline-flex; align-items:center; gap:0.3rem; flex-wrap:wrap;">${diff ? this.renderDifficultyBadge(diff, { compact: true }) : ""}${act.badge ? `<span class="action-card-badge">${act.badge}</span>` : ""}</span>
             </div>
             <div class="action-card-desc">${this.enrichMythologicalText ? this.enrichMythologicalText(act.desc) : act.desc}</div>
             ${reqHtml}
@@ -17875,9 +19063,11 @@
           qContainer.innerHTML = sideQuests.quests.length ? sideQuests.quests.map(q => {
             const objs = Object.values(q.objectives || {});
             const currentObj = objs.find(o => !o.completed && !o.optional) || objs.find(o => !o.completed) || objs[objs.length - 1];
+            const qDef = this.getQuestDefinition(q.id);
+            const qDiff = this.evaluateQuestDifficulty(qDef, q);
             return `
-            <div class="mini-quest-item" style="cursor: pointer;" onclick="window.engine.switchView('view-quests')" data-tooltip="Open the quest log">
-              <div class="mini-quest-title">${q.title}</div>
+            <div class="mini-quest-item ${qDiff ? qDiff.frameClass : ""}" data-difficulty="${qDiff ? qDiff.key : ""}" style="cursor: pointer;" onclick="window.engine.switchView('view-quests')" data-tooltip="Open the quest log">
+              <div class="mini-quest-title" style="display:flex; justify-content:space-between; align-items:center; gap:0.35rem; flex-wrap:wrap;"><span>${q.title}</span>${qDiff ? this.renderDifficultyBadge(qDiff, { compact: true }) : ""}</div>
               <div class="mini-quest-obj">${currentObj ? currentObj.text : "Quest completed."}</div>
             </div>`;
           }).join("") : `<span style="font-style: italic; color: var(--marble-dim); font-size: 0.85rem;">No active quest. Pin one with ☆ Focus in the quest log.</span>`;
@@ -18023,7 +19213,7 @@
           return `
             <div data-tooltip="${deps.purpose}" style="background: #19181e; padding: 0.4rem 0.65rem; border-radius: 3px; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 0.35rem; ${isPerception ? 'border-left: 2px solid #ffe680;' : ''}">
               <span style="color: var(--parchment); display:flex; align-items:center; flex-wrap:wrap; gap:0.2rem;">
-                <span>${deps.label || skill.replace(/_/g, " ").toUpperCase()}</span>${depBadge}
+                <span>${(deps.label && deps.label !== skill) ? deps.label : skill.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</span>${depBadge}
                 ${isPerception ? `<em style="color: #ffe680; font-size: 0.72rem; margin-left: 0.25rem;">(Passive ${passivePerception})</em>` : ""}
               </span>
               <strong style="color: var(--bronze-bright); white-space:nowrap;">Rank ${rank} (${bonusStr})${rtHtml}</strong>
@@ -18044,9 +19234,11 @@
           if (pts > 0) color = "var(--laurel-bright)";
           if (pts < 0) color = "var(--terracotta-bright)";
           const formattedPts = pts > 0 ? "+" + pts : pts;
+          const deityObj = (this.world.deities || []).find(d => d.id === deity || d.key === deity);
+          const deityLabel = deityObj ? deityObj.name : deity.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
           return `
             <div style="display: flex; justify-content: space-between; border-bottom: 1px dotted #332d24; padding-bottom: 0.2rem;">
-              <span>${deity.toUpperCase()}</span>
+              <span>${deityLabel}</span>
               <strong style="color: ${color};">${formattedPts}</strong>
             </div>
           `;
@@ -18126,24 +19318,29 @@
           const qDef = this.getQuestDefinition(q.id);
           const stageDesc = qDef && qDef.stages && qDef.stages[q.stage] && qDef.stages[q.stage].description;
           const summary = q.summary || stageDesc || (qDef && qDef.summary) || "";
-          const objs = Object.values(q.objectives || {}).map(o => `
-            <div style="margin-top: 0.35rem; color: ${o.completed ? 'var(--laurel-bright)' : 'var(--marble-light)'};">
-              ${o.completed ? "&#10003;" : "&#9675;"} ${o.text} ${o.optional ? "<em style='color: var(--marble-dim)'>(Optional)</em>" : ""}
-            </div>`).join("");
           const isActive = !q.completed && !q.failed;
+          const qDiff = isActive ? this.evaluateQuestDifficulty(qDef, q) : null;
+          const objs = Object.values(q.objectives || {}).map(o => {
+            const oDiff = isActive && !o.completed ? this.evaluateObjectiveDifficulty(qDef, o) : null;
+            return `
+            <div class="quest-obj-row ${oDiff ? oDiff.frameClass : ""}" style="color: ${o.completed ? 'var(--laurel-bright)' : 'var(--marble-light)'};">
+              <span>${o.completed ? "&#10003;" : "&#9675;"} ${o.text} ${o.optional ? "<em style='color: var(--marble-dim)'>(Optional)</em>" : ""}</span>
+              ${oDiff ? this.renderDifficultyBadge(oDiff, { compact: true }) : ""}
+            </div>`;
+          }).join("");
           const focused = focus.has(q.id);
           const deadline = isActive && qDef && qDef.timeSensitive ? this.describeQuestDeadline(q, qDef) : "";
           const focusBtn = isActive ? `<button class="nav-btn quest-focus-btn ${focused ? "focused" : ""}" onclick="window.engine.toggleQuestFocus('${q.id}')" data-tooltip="Focused quests are shown in the story sidebar">${focused ? "★ Focused" : "☆ Focus"}</button>` : "";
           const badge = q.completed ? "<span style='color: var(--laurel-bright); font-size: 0.8rem;'>[COMPLETED]</span>"
             : (q.failed ? "<span style='color: #ff9d82; font-size: 0.8rem;'>[FAILED]</span>" : "");
           const body = `
-              <div style="font-size: 0.9rem; margin-bottom: 0.45rem; color: var(--parchment);">${summary}</div>
+              <div style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--parchment); line-height: 1.55;">${summary}</div>
               ${deadline}
-              <div style="font-size: 0.85rem; padding-left: 0.5rem; border-left: 2px solid var(--bronze-dark);">${objs}</div>`;
+              <div style="font-size: 0.85rem; padding-left: 0.55rem; border-left: 2px solid var(--bronze-dark);">${objs}</div>`;
           return `
-            <div class="journal-card ${focused ? "quest-focused" : ""} ${isActive ? "" : "quest-closed"}">
+            <div class="journal-card ${focused ? "quest-focused" : ""} ${isActive ? "" : "quest-closed"} ${qDiff ? qDiff.frameClass : ""}" data-difficulty="${qDiff ? qDiff.key : ""}">
               <div class="quest-card-head">
-                <h4>${q.title} ${badge}</h4>
+                <h4 style="display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;"><span>${q.title}</span> ${qDiff ? this.renderDifficultyBadge(qDiff, { compact: true }) : ""} ${badge}</h4>
                 ${focusBtn}
               </div>
               <div class="quest-category">${(q.discoveredHidden || (qDef && qDef.hidden)) ? `<span style="color: #ffe680; font-weight: bold;">✦ Hidden Mission</span> • ` : ""}${q.category || (qDef && qDef.category) || "Quest"}${q.chosenPath ? ` • Path: ${q.chosenPath}` : ""}</div>
@@ -18766,7 +19963,7 @@
             <div style="font-size: 0.85rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; margin-bottom: 0.45rem;">
               2. Primary Materials (Determines Form &amp; Core Properties)
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;">
               <div>
                 <label style="font-size: 0.76rem; color: var(--marble-dim); display: block; margin-bottom: 0.2rem;">Primary Material 1 (Core Structure):</label>
                 <select id="craft-mat-1" class="classical-select" style="width: 100%; padding: 0.4rem; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-meander); border-radius: 4px;" onchange="window.engine.updateCraftingPreview()">
@@ -18795,7 +19992,7 @@
                 <span style="font-size: 0.74rem; color: var(--laurel-bright);">${cap.skillLabel} Rank ${cap.currentRank} (${cap.tierName})</span>
               </div>
               <div style="font-size: 0.75rem; color: var(--marble-dim); margin-bottom: 0.5rem;">${nextSlotText}</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.55rem;">
                 ${suppSelectsHtml}
                 ${lockedSlotsHtml}
               </div>
@@ -18867,21 +20064,27 @@
         else if (!hasAllMats) statusText = `<div style="color: #e06c75; font-size: 0.78rem;">⚠️ Insufficient materials in bag for this combination.</div>`;
         else statusText = `<div style="color: var(--laurel-bright); font-size: 0.78rem;">✓ Materials &amp; toolkit ready. Exact outcome will be revealed upon forging!</div>`;
 
+        const craftDiff = this.evaluateCraftingDifficulty(activeProf, catMeta.id);
         const reveal = this.lastCraftReveal;
+        const revealMeta = reveal && reveal.item ? this.getItemRarityMeta(reveal.item) : null;
         const revealHtml = reveal ? `
-          <div style="background: rgba(133, 227, 157, 0.1); border: 1px solid var(--laurel-bright); border-radius: 4px; padding: 0.6rem; margin-top: 0.45rem;">
-            <div style="font-size: 0.72rem; color: var(--laurel-bright); text-transform: uppercase; font-weight: bold;">✦ Last Forged Discovery</div>
-            <div style="font-size: 0.92rem; font-weight: bold; color: #fff; margin-top: 0.15rem;">${reveal.item.name}</div>
-            <div style="font-size: 0.75rem; color: var(--parchment); margin-top: 0.15rem;">${reveal.summary}</div>
+          <div class="${revealMeta ? revealMeta.frameClass : ""}" data-rarity="${revealMeta ? revealMeta.key : "none"}" style="background: rgba(20, 24, 28, 0.9); border-radius: 6px; padding: 0.7rem; margin-top: 0.45rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+              <span style="font-size: 0.7rem; color: var(--laurel-bright); text-transform: uppercase; font-weight: bold;">✦ Last Forged Discovery</span>
+              ${revealMeta ? revealMeta.badgeHtml : ""}
+            </div>
+            <div class="${revealMeta ? revealMeta.textClass : ""}" style="font-size: 0.95rem; font-weight: bold; margin-top: 0.2rem;">${reveal.item.name}</div>
+            <div style="font-size: 0.76rem; color: var(--parchment); margin-top: 0.18rem;">${reveal.summary}</div>
           </div>` : "";
 
         const suppArg = JSON.stringify(chosenSupps).replace(/"/g, "&quot;");
         previewPanelEl.innerHTML = `
-          <div style="font-size: 0.85rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.4rem;">
-            Artisan Attempt (Concealed Outcome)
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap; border-bottom: 1px solid var(--border-meander); padding-bottom: 0.45rem;">
+            <span style="font-size: 0.84rem; font-weight: bold; color: var(--bronze-bright); text-transform: uppercase;">Artisan Attempt</span>
+            ${this.renderDifficultyBadge(craftDiff)}
           </div>
 
-          <div style="background: var(--bg-dark); border-radius: 4px; padding: 0.75rem; border: 1px dashed var(--border-meander);">
+          <div class="${craftDiff.frameClass}" style="background: var(--bg-dark); border-radius: 6px; padding: 0.8rem; border: 1.5px solid var(--border-meander);">
             <div style="font-size: 0.95rem; font-weight: bold; color: #fff;">
               ${catMeta.icon} Unknown ${catMeta.label}
             </div>
@@ -19552,13 +20755,16 @@
         const esc = (t) => this.escapeHtml ? this.escapeHtml(String(t)) : String(t);
         const name = (id) => esc((this.getItemData(id) || {}).name || id);
         const kit = this.getItemData(wb.toolkitId) || {};
-        const slot = (key, label, itemId) => `
-          <div class="workbench-slot ${itemId ? "filled" : ""}" data-wb-slot="${key}">
+        const slot = (key, label, itemId) => {
+          const rm = itemId ? this.getItemRarityMeta(itemId) : null;
+          return `
+          <div class="workbench-slot ${itemId ? `filled ${rm.frameClass}` : ""}" data-wb-slot="${key}">
             <div class="workbench-slot-label">${label}</div>
             ${itemId
-              ? `<div class="workbench-slot-item">${name(itemId)}</div><button type="button" class="workbench-slot-clear" title="Take it off" onclick="window.engine.removeFromWorkbench('${key}')">✕</button>`
+              ? `<div class="workbench-slot-item ${rm.textClass}">${name(itemId)}</div><button type="button" class="workbench-slot-clear" data-tooltip="Take it off" onclick="window.engine.removeFromWorkbench('${key}')">✕</button>`
               : `<div class="workbench-slot-empty">Drop material</div>`}
           </div>`;
+        };
 
         const ready = this.isWorkbenchReady();
         const cats = this.getProfessionCraftingCategories(wb.professionId);
@@ -19586,9 +20792,10 @@
             <div class="workbench-templates">
               ${cats.map(cid => {
                 const m = this.getCraftingCategoryMeta(cid);
+                const cd = this.evaluateCraftingDifficulty(prof, cid);
                 return `
-                  <button type="button" class="workbench-template ${cid === curCat ? "selected" : ""}" onclick="window.engine.selectWorkbenchCategory('${cid}')">
-                    <strong>${m.icon} ${esc(m.label)}</strong>
+                  <button type="button" class="workbench-template ${cd.frameClass} ${cid === curCat ? "selected" : ""}" onclick="window.engine.selectWorkbenchCategory('${cid}')">
+                    <strong style="display:flex; justify-content:space-between; align-items:center; gap:0.35rem; flex-wrap:wrap;"><span>${m.icon} ${esc(m.label)}</span>${this.renderDifficultyBadge(cd, { compact: true })}</strong>
                     <span>Outcome shaped by materials</span>
                   </button>`;
               }).join("")}
@@ -19596,7 +20803,10 @@
             ${hasEmptySupp && allSuppCandidates.length ? `
               <div class="workbench-menu-title">Add supplementary catalyst (${wb.supplements.filter(Boolean).length}/${cap.slots} slots • ${esc(skillProgress)}):</div>
               <div class="workbench-complements">
-                ${allSuppCandidates.slice(0, 6).map(m => `<button type="button" class="workbench-chip" onclick="window.engine.placeOnWorkbench('${m.id}', 'supp')">+ ${esc(m.name)}${(m.properties || {}).magicalAffinity ? ` <em>(affinity ${(m.properties || {}).magicalAffinity})</em>` : ""}</button>`).join("")}
+                ${allSuppCandidates.slice(0, 6).map(m => {
+                  const rm = this.getItemRarityMeta(m);
+                  return `<button type="button" class="workbench-chip ${rm.frameClass}" onclick="window.engine.placeOnWorkbench('${m.id}', 'supp')">+ ${esc(m.name)}${(m.properties || {}).magicalAffinity ? ` <em>(affinity ${(m.properties || {}).magicalAffinity})</em>` : ""}</button>`;
+                }).join("")}
               </div>` : ""}
             <div class="workbench-actions">
               <button type="button" class="btn-classical" onclick="window.engine.craftAtWorkbench('category:${curCat}')">${curMeta.icon} Craft ${esc(curMeta.label)}</button>
@@ -19700,8 +20910,9 @@
         partners.forEach(pid => this.findCombinations(itemId, pid).forEach(m => {
           const blocker = this.getCombinationBlocker(m.def, m.applyId, m.ontoId);
           const a = this.getItemData(m.applyId).name, o = this.getItemData(m.ontoId).name;
-          rows.push(`<button type="button" class="workbench-template" ${blocker ? "disabled" : ""} onclick="document.getElementById('combine-modal').style.display='none'; window.engine.combineItems('${m.applyId}', '${m.ontoId}', '${m.def.id}')">
-              <strong>${esc(this.describeCombination(m))}</strong>
+          const chkDiff = m.def.check ? this.evaluateSkillCheckDifficulty(m.def.check.skill || null, m.def.check.attribute || null, m.def.check.dc || 10) : null;
+          rows.push(`<button type="button" class="workbench-template ${chkDiff ? chkDiff.frameClass : ""}" ${blocker ? "disabled" : ""} onclick="document.getElementById('combine-modal').style.display='none'; window.engine.combineItems('${m.applyId}', '${m.ontoId}', '${m.def.id}')">
+              <strong style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap;"><span>${esc(this.describeCombination(m))}</span>${chkDiff ? this.renderDifficultyBadge(chkDiff, { compact: true }) : ""}</strong>
               <span>${esc(a)} on ${esc(o)}${m.def.check ? ` • ${esc(String(m.def.check.skill || m.def.check.attribute).replace(/_/g, " "))} check DC ${m.def.check.dc || 10}` : ""}${blocker ? ` • ${esc(blocker)}` : ""}</span>
             </button>`);
         }));
