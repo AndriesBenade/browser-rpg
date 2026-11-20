@@ -262,6 +262,12 @@
             "rounds": 2
           },
           "telegraph": "raises a frost-rimmed idol glowing pale blue."
+        },
+        {
+          "name": "Wyrm-Ward Chant",
+          "healAlly": "1d6+2",
+          "style": "support",
+          "telegraph": "chants a frostbound liturgy to knit a wounded ally's flesh."
         }
       ]
     },
