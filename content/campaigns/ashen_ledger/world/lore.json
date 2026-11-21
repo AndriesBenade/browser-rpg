@@ -111,6 +111,27 @@
       "category": "Ancient Mystery",
       "summary": "The forgotten builder who designed the First Seal.",
       "content": "Neither god nor bureaucrat, the Silent Architect fashioned the First Seal so death would heal rather than exploit. Only an Unstamped soul can still hear the Architect's echo."
+    },
+    {
+      "id": "lore_al_crucible_wharf",
+      "title": "The Untaxed Hearth of Crucible Wharf",
+      "category": "Craft & Industry",
+      "summary": "How Master Orla Vane-Kin defied the Furnace Guild to preserve independent Threshold metallurgy.",
+      "content": "When the Furnace Guild seized patent rights over every pale-iron smelter in Vesper-Threshold, Orla Vane-Kin broke her guild signet on her cousin's desk and dragged a salvaged brick crucible down to the fog-shrouded quay. Her motto remains chalked above the bellows: a blade stamped by debt always cuts its own bearer."
+    },
+    {
+      "id": "lore_al_pre_toll_sky",
+      "title": "The Pre-Toll Sky & Salt-Observatory",
+      "category": "World History",
+      "summary": "Before the Chancery's chimneys blackened the heavens, arrivals navigated the Pale Reach by constellations.",
+      "content": "Old carvings at the Shattered Salt-Observatory depict three constellations: the Ferryman's Crown, the Unchained Lantern, and the Far-Shore Gate. The Chancery declared star-navigation unchartered smuggling, yet lightning still welds rare Fulgurite-Silver along the observatory's abandoned copper spires."
+    },
+    {
+      "id": "lore_al_muted_bells",
+      "title": "The Muted Bells of the Ossuary Crypt",
+      "category": "Factions & Orders",
+      "summary": "Why the Chancery buried a generation of consecrated bronze bells beneath lead chains.",
+      "content": "Early Bellwright castings used a pre-Chancery alloy whose overtones dissolved ledger-curses on contact. Unable to melt the sacred bronze in ordinary kilns, High Auditors ordered the bells wrapped in lead chains, lowered into the Ossuary Crypt, and guarded by a tireless brass Bell-Mender."
     }
   ]
 }

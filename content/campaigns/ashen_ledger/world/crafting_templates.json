@@ -431,6 +431,261 @@
           "herb"
         ]
       }
+    },
+    {
+      "id": "tpl_al_halberd",
+      "name": "Quarryman's Halberd",
+      "professionId": "al_foundry_smithing",
+      "category": "weapon",
+      "slot": "two_hand",
+      "baseDC": 13,
+      "baseDamageMin": 7,
+      "baseDamageMax": 12,
+      "damageType": "slashing",
+      "baseWeightKg": 3.1,
+      "baseValueDrachmae": 52,
+      "materialAffinity": {
+        "targetHardness": 8,
+        "targetDurability": 8,
+        "targetWeight": 1.4,
+        "preferredCategories": [
+          "metal",
+          "wood",
+          "crystal"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_helm",
+      "name": "Furnace-Mask Greathelm",
+      "professionId": "al_foundry_smithing",
+      "category": "armor",
+      "slot": "head",
+      "baseDC": 13,
+      "baseAcBonus": 2,
+      "baseWeightKg": 2.2,
+      "baseValueDrachmae": 48,
+      "materialAffinity": {
+        "targetHardness": 8,
+        "targetDurability": 8,
+        "targetWeight": 1.3,
+        "preferredCategories": [
+          "metal",
+          "mineral"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_flail",
+      "name": "Censer-Bell Flail",
+      "professionId": "al_bell_brasswork",
+      "category": "weapon",
+      "slot": "main_hand",
+      "baseDC": 13,
+      "baseDamageMin": 6,
+      "baseDamageMax": 10,
+      "damageType": "bludgeoning",
+      "baseWeightKg": 2,
+      "baseValueDrachmae": 46,
+      "materialAffinity": {
+        "targetHardness": 8,
+        "targetMagic": 7,
+        "targetWeight": 1.2,
+        "preferredCategories": [
+          "metal",
+          "crystal"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_pauldrons",
+      "name": "Resonant Bell-Pauldrons",
+      "professionId": "al_bell_brasswork",
+      "category": "armor",
+      "slot": "shoulders",
+      "baseDC": 12,
+      "baseAcBonus": 2,
+      "baseWeightKg": 2.1,
+      "baseValueDrachmae": 44,
+      "materialAffinity": {
+        "targetHardness": 7,
+        "targetDurability": 8,
+        "targetMagic": 6,
+        "preferredCategories": [
+          "metal",
+          "leather"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_greaves",
+      "name": "Salt-Strider Greaves",
+      "professionId": "al_oilskin_leathercraft",
+      "category": "armor",
+      "slot": "legs",
+      "baseDC": 12,
+      "baseAcBonus": 2,
+      "baseWeightKg": 1.6,
+      "baseValueDrachmae": 40,
+      "materialAffinity": {
+        "targetFlexibility": 8,
+        "targetDurability": 7,
+        "targetWeight": 0.8,
+        "preferredCategories": [
+          "leather",
+          "resin",
+          "textile"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_bandolier",
+      "name": "Smuggler's Rigging Belt",
+      "professionId": "al_oilskin_leathercraft",
+      "category": "armor",
+      "slot": "waist",
+      "baseDC": 11,
+      "baseAcBonus": 1,
+      "baseWeightKg": 0.7,
+      "baseValueDrachmae": 34,
+      "materialAffinity": {
+        "targetFlexibility": 8,
+        "targetDurability": 7,
+        "targetWeight": 0.5,
+        "preferredCategories": [
+          "leather",
+          "resin",
+          "metal"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_bomb_flask",
+      "name": "Cinder-Pitch Flash Flask",
+      "professionId": "al_mnemonic_alchemy",
+      "category": "consumable",
+      "slot": "consumable",
+      "baseDC": 12,
+      "baseHealHp": 0,
+      "baseHealStamina": 10,
+      "baseWeightKg": 0.4,
+      "baseValueDrachmae": 30,
+      "materialAffinity": {
+        "targetMagic": 7,
+        "targetWeight": 0.5,
+        "preferredCategories": [
+          "resin",
+          "crystal",
+          "mineral"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_memory_draught",
+      "name": "Lucid Memory Draught",
+      "professionId": "al_mnemonic_alchemy",
+      "category": "consumable",
+      "slot": "consumable",
+      "baseDC": 13,
+      "baseHealHp": 14,
+      "baseHealStamina": 12,
+      "baseWeightKg": 0.3,
+      "baseValueDrachmae": 42,
+      "materialAffinity": {
+        "targetMagic": 9,
+        "targetWeight": 0.3,
+        "preferredCategories": [
+          "essence",
+          "crystal",
+          "herb"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_focus_orb",
+      "name": "Mnemonic Prism Focus",
+      "professionId": "al_seal_scribing",
+      "category": "armor",
+      "slot": "off_hand",
+      "baseDC": 14,
+      "baseAcBonus": 2,
+      "baseWeightKg": 0.6,
+      "baseValueDrachmae": 56,
+      "materialAffinity": {
+        "targetMagic": 9,
+        "targetHardness": 7,
+        "targetWeight": 0.5,
+        "preferredCategories": [
+          "crystal",
+          "metal",
+          "essence"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_repeater",
+      "name": "Clockwork Tally-Repeater",
+      "professionId": "al_clockwork_artifice",
+      "category": "weapon",
+      "slot": "two_hand",
+      "baseDC": 13,
+      "baseDamageMin": 7,
+      "baseDamageMax": 11,
+      "damageType": "piercing",
+      "baseWeightKg": 2.8,
+      "baseValueDrachmae": 62,
+      "materialAffinity": {
+        "targetHardness": 7,
+        "targetFlexibility": 8,
+        "targetDurability": 8,
+        "preferredCategories": [
+          "metal",
+          "wood",
+          "crystal"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_chronometer",
+      "name": "Brass Threshold Chronometer",
+      "professionId": "al_clockwork_artifice",
+      "category": "accessory",
+      "slot": "accessory",
+      "baseDC": 13,
+      "baseAcBonus": 1,
+      "baseWeightKg": 0.4,
+      "baseValueDrachmae": 54,
+      "materialAffinity": {
+        "targetMagic": 7,
+        "targetFlexibility": 8,
+        "targetWeight": 0.5,
+        "preferredCategories": [
+          "metal",
+          "crystal",
+          "resin"
+        ]
+      }
+    },
+    {
+      "id": "tpl_al_lantern_rig",
+      "name": "Artificer's Aether-Lantern",
+      "professionId": "al_clockwork_artifice",
+      "category": "tool",
+      "slot": "off_hand",
+      "baseDC": 12,
+      "baseAcBonus": 2,
+      "baseWeightKg": 1.1,
+      "baseValueDrachmae": 48,
+      "materialAffinity": {
+        "targetMagic": 8,
+        "targetDurability": 7,
+        "targetWeight": 0.8,
+        "preferredCategories": [
+          "crystal",
+          "metal",
+          "resin"
+        ]
+      }
     }
   ]
 }

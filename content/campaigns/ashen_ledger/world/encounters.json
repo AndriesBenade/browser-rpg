@@ -375,6 +375,93 @@
         },
         "awardXP": 320
       }
+    },
+    {
+      "id": "enc_al_catacomb_golem",
+      "name": "Guardians of the Amber-Vein",
+      "locationId": "loc_al_amber_catacombs",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_slag_golem",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_cinder_beetle",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_cinder_beetle",
+          "position": "backline"
+        }
+      ],
+      "introProse": "A towering Crucible Slag-Golem lumbers from behind a glowing amber pillar as two Slag-Carapace Scuttlers hiss from the slag rubble!",
+      "victoryOutcome": {
+        "text": "The Slag-Golem collapses in a shower of cooling glass shards, leaving the Amber-Vein cistern unguarded.",
+        "setFlags": {
+          "al_catacomb_golem_defeated": true
+        },
+        "awardXP": 95
+      }
+    },
+    {
+      "id": "enc_al_observatory_spire",
+      "name": "Spire of the Shattered Lens",
+      "locationId": "loc_al_salt_observatory",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_glass_harpy",
+          "position": "backline"
+        },
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Lightning arcs across the broken brass dome as a Glass-Harpy and twin wraiths swoop down to defend the star-lens platform!",
+      "victoryOutcome": {
+        "text": "Static crackles away into the salt wind, clearing the way to the Astral Orrery.",
+        "setFlags": {
+          "al_observatory_spire_cleared": true
+        },
+        "awardXP": 110
+      }
+    },
+    {
+      "id": "enc_al_bell_crypt_warden",
+      "name": "The Silencer of the Buried Bells",
+      "locationId": "loc_al_bell_crypt",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_bell_mender",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_soot_automaton",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_soot_automaton",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Heavy iron chains rattle in the gloom. The Bell-Mender Automaton rises from beneath a mound of lead-bound bronze, flanked by two Soot-Automatons!",
+      "victoryOutcome": {
+        "text": "With a final mournful chime, the Bell-Mender's mainspring snaps. Across the crypt, the freed bells hum softly in unison.",
+        "setFlags": {
+          "al_bell_mender_defeated": true
+        },
+        "giveItem": "item_al_resonance_tuning_fork",
+        "awardXP": 165
+      }
     }
   ]
 }

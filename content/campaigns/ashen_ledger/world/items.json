@@ -1218,6 +1218,289 @@
       "weightKg": 0.6,
       "valueDrachmae": 0,
       "description": "A blindingly hot sphere of harvested soul-fuel sought by Black-Ledger brokers and ruthless magi."
+    },
+    {
+      "id": "mat_al_kiln_glass",
+      "name": "Tempered Kiln-Glass",
+      "category": "material",
+      "rarity": "uncommon",
+      "weightKg": 0.7,
+      "valueDrachmae": 24,
+      "description": "Obsidian-amber slag fused at extreme kiln heat; prized for razor edges and arcane foci."
+    },
+    {
+      "id": "mat_al_soul_pitch",
+      "name": "Cinder-Pitch Resin",
+      "category": "material",
+      "rarity": "uncommon",
+      "weightKg": 0.5,
+      "valueDrachmae": 22,
+      "description": "Waterproof black-gold resin weeping from deep quarry catacombs."
+    },
+    {
+      "id": "mat_al_clockwork_springs",
+      "name": "Tempered Brass Mainsprings",
+      "category": "material",
+      "rarity": "uncommon",
+      "weightKg": 0.6,
+      "valueDrachmae": 26,
+      "description": "Precision high-tension springs salvaged from belfry relays and automatons."
+    },
+    {
+      "id": "mat_al_prism_lens",
+      "name": "Mnemonic Prism-Shard",
+      "category": "material",
+      "rarity": "rare",
+      "weightKg": 0.4,
+      "valueDrachmae": 42,
+      "description": "Optical crystal ground in the Shattered Salt-Observatory to refract memory-light."
+    },
+    {
+      "id": "mat_al_fulgurite_silver",
+      "name": "Fulgurite-Silver Ingot",
+      "category": "material",
+      "rarity": "rare",
+      "weightKg": 1.1,
+      "valueDrachmae": 54,
+      "description": "Lightning-veined pale silver forged on the Observatory spire."
+    },
+    {
+      "id": "mat_al_muted_bell_shard",
+      "name": "Muted Bell-Alloy Shard",
+      "category": "material",
+      "rarity": "rare",
+      "weightKg": 1.2,
+      "valueDrachmae": 58,
+      "description": "Ancient pre-Chancery bronze broken from the chained bells of the Ossuary Crypt."
+    },
+    {
+      "id": "item_al_kit_clockwork",
+      "name": "Artificer's Caliper & Mainspring Kit",
+      "category": "tool",
+      "rarity": "uncommon",
+      "weightKg": 1.6,
+      "valueDrachmae": 36,
+      "description": "Precision loupes, gear-files, and winding keys required for Clockwork & Lantern Artifice."
+    },
+    {
+      "id": "item_al_glass_edged_sabre",
+      "name": "Kiln-Glass Edged Cutlass",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "uncommon",
+      "damageMin": 6,
+      "damageMax": 11,
+      "attackBonus": 2,
+      "damageType": "slashing",
+      "weightKg": 1.6,
+      "valueDrachmae": 48,
+      "description": "A harbor cutlass inlaid with serrated Tempered Kiln-Glass along its spine."
+    },
+    {
+      "id": "item_al_prismatic_lantern",
+      "name": "Prismatic Threshold Lantern",
+      "category": "armor",
+      "slot": "off_hand",
+      "rarity": "rare",
+      "acBonus": 2,
+      "attributeBonuses": {
+        "wisdom": 1
+      },
+      "skillBonuses": {
+        "investigation": 2
+      },
+      "weightKg": 1,
+      "valueDrachmae": 68,
+      "description": "A tallow lamp refitted with a Mnemonic Prism-Shard; pierces salt-fog and reveals concealed caches."
+    },
+    {
+      "id": "item_al_pitch_coated_cloak",
+      "name": "Pitch-Sealed Frontier Oilskin",
+      "category": "armor",
+      "slot": "body",
+      "rarity": "uncommon",
+      "acBonus": 3,
+      "damageReduction": 1,
+      "weightKg": 2.1,
+      "valueDrachmae": 52,
+      "description": "Weir oilskin cured with Cinder-Pitch Resin; shrugs off ash-sparks, blades, and mire-acid."
+    },
+    {
+      "id": "item_al_resonant_balm",
+      "name": "Bell-Dust Resonant Balm",
+      "category": "consumable",
+      "rarity": "rare",
+      "healHp": 22,
+      "healStamina": 10,
+      "curesStatus": [
+        "bleeding",
+        "poisoned",
+        "frightened"
+      ],
+      "weightKg": 0.3,
+      "valueDrachmae": 38,
+      "description": "Salve dusted with ancient Muted Bell-Alloy; knits wounds and quiets terror."
+    },
+    {
+      "id": "item_al_masterwork_caliper",
+      "name": "Calibrated Masterwork Caliper",
+      "category": "accessory",
+      "slot": "accessory",
+      "rarity": "rare",
+      "attributeBonuses": {
+        "intelligence": 1
+      },
+      "skillBonuses": {
+        "sleight_of_hand": 2,
+        "investigation": 1
+      },
+      "weightKg": 0.5,
+      "valueDrachmae": 64,
+      "description": "An artificer's precision instrument tuned with fresh brass mainsprings for steady hands and craft mastery."
+    },
+    {
+      "id": "item_al_orla_guild_stamp",
+      "name": "Orla's Unstamped Forge-Mark",
+      "category": "quest",
+      "rarity": "uncommon",
+      "weightKg": 0.2,
+      "valueDrachmae": 0,
+      "description": "An iron punch bearing an anvil and an open lantern; proves your work was forged free of Chancery tax."
+    },
+    {
+      "id": "item_al_pitch_sample_cask",
+      "name": "Sealed Deep-Slag Pitch Cask",
+      "category": "quest",
+      "rarity": "uncommon",
+      "weightKg": 1.2,
+      "valueDrachmae": 0,
+      "description": "A heavy copper cask brimming with volatile Cinder-Pitch tapped from the Amber-Vein Catacombs."
+    },
+    {
+      "id": "item_al_crucible_masterwork_blade",
+      "name": "Dawn-Tempered Fulgurite Sabre",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "legendary",
+      "damageMin": 10,
+      "damageMax": 16,
+      "attackBonus": 3,
+      "damageType": "slashing",
+      "attributeBonuses": {
+        "strength": 1,
+        "agility": 1
+      },
+      "weightKg": 1.7,
+      "valueDrachmae": 195,
+      "description": "Forged alongside Master Orla from Fulgurite-Silver and Muted Bell-Alloy; rings cleanly through Chancery wards."
+    },
+    {
+      "id": "item_al_crucible_aegis_lantern",
+      "name": "Sovereign Crucible Aegis-Lantern",
+      "category": "armor",
+      "slot": "off_hand",
+      "rarity": "legendary",
+      "acBonus": 4,
+      "damageReduction": 2,
+      "attributeBonuses": {
+        "intelligence": 1,
+        "wisdom": 2
+      },
+      "weightKg": 1.3,
+      "valueDrachmae": 195,
+      "description": "An unquenchable Fulgurite-Silver and Bell-Bronze lantern-buckler forged at the Crucible Wharf."
+    },
+    {
+      "id": "item_al_resonance_tuning_fork",
+      "name": "Pre-Toll Bronze Tuning-Fork",
+      "category": "quest",
+      "rarity": "rare",
+      "weightKg": 0.5,
+      "valueDrachmae": 0,
+      "description": "A two-pronged relic recovered from the Crypt of the Muted Bells; matches the pitch of the First Bell."
+    },
+    {
+      "id": "item_al_astral_star_chart",
+      "name": "Pre-Chancery Astral Star-Chart",
+      "category": "quest",
+      "rarity": "rare",
+      "weightKg": 0.3,
+      "valueDrachmae": 0,
+      "description": "Silver-inked vellum mapping constellations visible over the Threshold before the smoke-stacks rose."
+    },
+    {
+      "id": "item_al_bell_warden_chime",
+      "name": "Chime of the Unbound Bell",
+      "category": "accessory",
+      "slot": "neck",
+      "rarity": "rare",
+      "acBonus": 1,
+      "attributeBonuses": {
+        "wisdom": 2
+      },
+      "skillBonuses": {
+        "mythology_lore": 2
+      },
+      "weightKg": 0.4,
+      "valueDrachmae": 110,
+      "description": "Gift of Bell-Scribe Cassian; hums softly whenever deceptive toll-magic approaches."
+    },
+    {
+      "id": "item_al_starlight_astrolabe",
+      "name": "Vael's Silver Astrolabe",
+      "category": "accessory",
+      "slot": "accessory",
+      "rarity": "rare",
+      "attributeBonuses": {
+        "intelligence": 2
+      },
+      "skillBonuses": {
+        "survival": 2,
+        "investigation": 2
+      },
+      "weightKg": 0.5,
+      "valueDrachmae": 115,
+      "description": "A pocket star-finder calibrated to the pre-Chancery sky; guides travelers cleanly across the Pale Reach."
+    },
+    {
+      "id": "item_al_slag_cleaver",
+      "name": "Catacomb Slag-Cleaver",
+      "category": "weapon",
+      "slot": "main_hand",
+      "rarity": "uncommon",
+      "damageMin": 6,
+      "damageMax": 10,
+      "attackBonus": 1,
+      "damageType": "slashing",
+      "weightKg": 2.3,
+      "valueDrachmae": 44,
+      "description": "A heavy quarry-splitter notched for prying kiln-glass seams and cracking beetle carapaces."
+    },
+    {
+      "id": "item_al_artificer_goggles",
+      "name": "Smoked Brass Artificer Goggles",
+      "category": "armor",
+      "slot": "head",
+      "rarity": "uncommon",
+      "acBonus": 1,
+      "skillBonuses": {
+        "investigation": 2,
+        "sleight_of_hand": 1
+      },
+      "weightKg": 0.4,
+      "valueDrachmae": 46,
+      "description": "Amber-lensed brass goggles protecting the eyes from forge glare and salt-storms."
+    },
+    {
+      "id": "item_al_cinder_flash_tonic",
+      "name": "Crucible Quench-Cordial",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "healHp": 12,
+      "healStamina": 14,
+      "weightKg": 0.3,
+      "valueDrachmae": 22,
+      "description": "A sharp ginger-and-amber tonic favored by night-shift smiths to fight exhaustion."
     }
   ]
 }

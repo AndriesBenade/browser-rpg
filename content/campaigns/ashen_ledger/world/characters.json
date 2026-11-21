@@ -771,6 +771,172 @@
       },
       "inventory": [],
       "drachmae": 0
+    },
+    {
+      "id": "npc_al_master_orla",
+      "name": "Master Crucible-Smith Orla Vane-Kin",
+      "role": "Independent Master Artisan & Forge Outfitter",
+      "locationId": "loc_al_crucible_wharf",
+      "factionId": "faction_al_weir_ferrymen",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_master_orla",
+      "moralPreference": {
+        "preferredBand": "positive",
+        "bonusDiscount": 0.1
+      },
+      "description": "Estranged cousin of Furnace Baron Orlov Vane, Orla broke with the Furnace Guild to run an untaxed crucible where honest craft serves survival rather than debt. Her racks hold every artisan toolkit in Vesper-Threshold.",
+      "equipment": {
+        "body": "item_al_pitch_coated_cloak",
+        "head": "item_al_artificer_goggles",
+        "main_hand": "item_al_slag_cleaver"
+      },
+      "inventory": [
+        "item_al_cinder_flash_tonic",
+        "item_al_orla_guild_stamp"
+      ],
+      "drachmae": 160,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_kit_foundry",
+          "price": 26,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_kit_brasswork",
+          "price": 28,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_kit_leather",
+          "price": 24,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_kit_alchemy",
+          "price": 30,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_kit_scribing",
+          "price": 32,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_kit_clockwork",
+          "price": 34,
+          "stock": 3
+        },
+        {
+          "itemId": "mat_al_pale_iron",
+          "price": 13,
+          "stock": 8
+        },
+        {
+          "itemId": "mat_al_bell_bronze",
+          "price": 18,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_al_weir_ashwood",
+          "price": 11,
+          "stock": 8
+        },
+        {
+          "itemId": "mat_al_salt_hide",
+          "price": 12,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_al_kiln_glass",
+          "price": 22,
+          "stock": 5
+        },
+        {
+          "itemId": "mat_al_clockwork_springs",
+          "price": 25,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_artificer_goggles",
+          "price": 44,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_cinder_flash_tonic",
+          "price": 20,
+          "stock": 6
+        }
+      ]
+    },
+    {
+      "id": "npc_al_scribe_cassian",
+      "name": "Bell-Scribe Cassian",
+      "role": "Monastic Bell-Tuner & Bronze Purveyor",
+      "locationId": "loc_al_bellwright_square",
+      "factionId": "faction_al_bellwright_order",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_scribe_cassian",
+      "moralPreference": {
+        "preferredBand": "positive",
+        "bonusDiscount": 0.1
+      },
+      "description": "A soot-fingered novice of the Order of the Last Bell who catalogs the pitch of every silenced bell buried in the Ossuary Bastions.",
+      "equipment": {
+        "body": "item_al_weir_oilskin"
+      },
+      "inventory": [
+        "item_al_tallow_salve"
+      ],
+      "drachmae": 110,
+      "merchantInventory": [
+        {
+          "itemId": "mat_al_bell_bronze",
+          "price": 17,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_al_tallow_herbs",
+          "price": 11,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_al_chancery_brass",
+          "price": 20,
+          "stock": 4
+        },
+        {
+          "itemId": "item_al_kit_brasswork",
+          "price": 28,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 14,
+          "stock": 6
+        },
+        {
+          "itemId": "item_al_resonant_balm",
+          "price": 36,
+          "stock": 2
+        }
+      ]
+    },
+    {
+      "id": "npc_al_astronomer_vael",
+      "name": "Astronomer Vael",
+      "role": "Exiled Star-Cartographer of the Mnemonic Collegium",
+      "locationId": "loc_al_glass_conservatory",
+      "factionId": "faction_al_glass_scholars",
+      "isMerchant": false,
+      "dialogueId": "dlg_al_astronomer_vael",
+      "description": "A grey-cloaked lens-grinder peering upward through the conservatory's smoke-stained skylight, convinced the old stars still shine above the Chancery smog.",
+      "equipment": {
+        "body": "item_al_weir_oilskin"
+      },
+      "inventory": [
+        "item_al_starlight_astrolabe"
+      ],
+      "drachmae": 65
     }
   ]
 }

@@ -202,6 +202,68 @@
           "al_inspected_first_seal": true
         }
       }
+    },
+    {
+      "id": "obj_al_crucible_quench_chest",
+      "locationId": "loc_al_crucible_wharf",
+      "name": "Orla's Unstamped Supply Locker",
+      "type": "container",
+      "locked": false,
+      "description": "An oil-smudged cedar chest beside the anvil, stocked with starter crafting billets for apprentice smiths.",
+      "unlockOutcome": {
+        "setFlags": {
+          "al_opened_orla_locker": true
+        },
+        "giveItem": "mat_al_kiln_glass",
+        "transcript": {
+          "speaker": "Crucible Wharf",
+          "text": "You gather a crisp shard of Tempered Kiln-Glass left out for forge trials.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "obj_al_pitch_cistern",
+      "locationId": "loc_al_amber_catacombs",
+      "name": "Ancient Amber-Vein Pitch Cistern",
+      "type": "mechanism",
+      "locked": false,
+      "description": "A cracked stone basin catching slow, luminous drips of pure Cinder-Pitch Resin beneath the quarry galleries.",
+      "unlockOutcome": {
+        "setFlags": {
+          "al_tapped_pitch_cistern": true
+        },
+        "giveItem": "item_al_pitch_sample_cask",
+        "awardXP": 40,
+        "transcript": {
+          "speaker": "Catacomb Harvest",
+          "text": "You draw a sealed copper cask of rich Deep-Slag Pitch and collect spare Cinder-Pitch Resin from the rim!",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "obj_al_observatory_chart_case",
+      "locationId": "loc_al_salt_observatory",
+      "name": "Brass Star-Chart Cylinder",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 13,
+      "requiredToolId": "item_al_lockpick_set",
+      "description": "A weather-sealed brass scroll tube bolted beneath the shattered telescope dome.",
+      "unlockOutcome": {
+        "setFlags": {
+          "al_found_star_chart": true
+        },
+        "giveItem": "item_al_astral_star_chart",
+        "awardXP": 50,
+        "transcript": {
+          "speaker": "Observatory Discovery",
+          "text": "The corroded clasp gives way, revealing an intact Pre-Chancery Astral Star-Chart inked in silver!",
+          "style": "entry-discovery"
+        }
+      }
     }
   ]
 }

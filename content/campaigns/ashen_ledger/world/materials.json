@@ -9,7 +9,8 @@
       "valueDrachmae": 14,
       "compatibleProfessions": [
         "al_foundry_smithing",
-        "al_bell_brasswork"
+        "al_bell_brasswork",
+        "al_clockwork_artifice"
       ],
       "properties": {
         "hardness": 7,
@@ -30,7 +31,8 @@
       "elementalAffinity": "radiant",
       "compatibleProfessions": [
         "al_foundry_smithing",
-        "al_bell_brasswork"
+        "al_bell_brasswork",
+        "al_clockwork_artifice"
       ],
       "properties": {
         "hardness": 7,
@@ -73,7 +75,8 @@
       "compatibleProfessions": [
         "al_foundry_smithing",
         "al_bell_brasswork",
-        "al_oilskin_leathercraft"
+        "al_oilskin_leathercraft",
+        "al_clockwork_artifice"
       ],
       "properties": {
         "hardness": 5,
@@ -179,7 +182,8 @@
       "compatibleProfessions": [
         "al_bell_brasswork",
         "al_seal_scribing",
-        "al_foundry_smithing"
+        "al_foundry_smithing",
+        "al_clockwork_artifice"
       ],
       "properties": {
         "hardness": 8,
@@ -264,7 +268,8 @@
       "valueDrachmae": 16,
       "compatibleProfessions": [
         "al_bell_brasswork",
-        "al_foundry_smithing"
+        "al_foundry_smithing",
+        "al_clockwork_artifice"
       ],
       "properties": {
         "hardness": 6,
@@ -297,6 +302,134 @@
         "purity": 78
       },
       "description": "Bitter crystalline salt scraped from the Pale Reach; preserves flesh, wards ghosts, and sharpens hexes."
+    },
+    {
+      "id": "mat_al_kiln_glass",
+      "name": "Tempered Kiln-Glass",
+      "category": "crystal",
+      "rarity": "uncommon",
+      "weightKg": 0.7,
+      "valueDrachmae": 24,
+      "compatibleProfessions": [
+        "al_foundry_smithing",
+        "al_seal_scribing",
+        "al_mnemonic_alchemy",
+        "al_clockwork_artifice"
+      ],
+      "properties": {
+        "hardness": 8,
+        "durability": 6,
+        "flexibility": 2,
+        "heatResistance": 9,
+        "magicalAffinity": 7
+      },
+      "description": "Obsidian-amber slag fused at extreme kiln temperatures; flakes into wickedly sharp edges and holds arcane heat."
+    },
+    {
+      "id": "mat_al_soul_pitch",
+      "name": "Cinder-Pitch Resin",
+      "category": "resin",
+      "rarity": "uncommon",
+      "weightKg": 0.5,
+      "valueDrachmae": 22,
+      "compatibleProfessions": [
+        "al_oilskin_leathercraft",
+        "al_mnemonic_alchemy",
+        "al_clockwork_artifice"
+      ],
+      "properties": {
+        "hardness": 4,
+        "durability": 8,
+        "flexibility": 8,
+        "heatResistance": 7,
+        "magicalAffinity": 5
+      },
+      "description": "Dense black-amber resin weeping from deep quarry seams; seals leather against salt-rot and fuels alchemical flasks."
+    },
+    {
+      "id": "mat_al_clockwork_springs",
+      "name": "Tempered Brass Mainsprings",
+      "category": "metal",
+      "rarity": "uncommon",
+      "weightKg": 0.6,
+      "valueDrachmae": 26,
+      "compatibleProfessions": [
+        "al_clockwork_artifice",
+        "al_bell_brasswork",
+        "al_foundry_smithing"
+      ],
+      "properties": {
+        "hardness": 7,
+        "durability": 8,
+        "flexibility": 9,
+        "heatResistance": 6,
+        "magicalAffinity": 4
+      },
+      "description": "Coiled high-tension springs salvaged from belfry relays and automatons; vital for repeaters and precision gear."
+    },
+    {
+      "id": "mat_al_prism_lens",
+      "name": "Mnemonic Prism-Shard",
+      "category": "crystal",
+      "rarity": "rare",
+      "weightKg": 0.4,
+      "valueDrachmae": 42,
+      "compatibleProfessions": [
+        "al_clockwork_artifice",
+        "al_seal_scribing",
+        "al_mnemonic_alchemy"
+      ],
+      "properties": {
+        "hardness": 7,
+        "durability": 7,
+        "flexibility": 3,
+        "heatResistance": 6,
+        "magicalAffinity": 10
+      },
+      "description": "Pre-Chancery optical crystal from the Shattered Salt-Observatory that focuses spirit-light and memory-essence."
+    },
+    {
+      "id": "mat_al_fulgurite_silver",
+      "name": "Fulgurite-Silver Ingot",
+      "category": "metal",
+      "rarity": "rare",
+      "weightKg": 1.1,
+      "valueDrachmae": 54,
+      "compatibleProfessions": [
+        "al_foundry_smithing",
+        "al_bell_brasswork",
+        "al_clockwork_artifice",
+        "al_seal_scribing"
+      ],
+      "properties": {
+        "hardness": 9,
+        "durability": 9,
+        "flexibility": 6,
+        "heatResistance": 8,
+        "magicalAffinity": 9
+      },
+      "description": "Pale silver streaked with lightning-vitrified veins from the Salt-Observatory spire; prized for masterwork blades and seals."
+    },
+    {
+      "id": "mat_al_muted_bell_shard",
+      "name": "Muted Bell-Alloy Shard",
+      "category": "metal",
+      "rarity": "rare",
+      "weightKg": 1.2,
+      "valueDrachmae": 58,
+      "compatibleProfessions": [
+        "al_bell_brasswork",
+        "al_foundry_smithing",
+        "al_clockwork_artifice"
+      ],
+      "properties": {
+        "hardness": 9,
+        "durability": 10,
+        "flexibility": 5,
+        "heatResistance": 9,
+        "magicalAffinity": 9
+      },
+      "description": "Sacred pre-Chancery bronze from the Crypt of the Muted Bells; rings with an unbreakable ward against toll-magic."
     }
   ]
 }

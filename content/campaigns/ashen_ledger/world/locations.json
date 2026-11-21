@@ -78,6 +78,11 @@
           "targetLocationId": "loc_al_audit_archives",
           "distanceKm": 6,
           "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_crucible_wharf",
+          "distanceKm": 6,
+          "dangerRating": 1
         }
       ],
       "hiddenSpots": [
@@ -207,6 +212,11 @@
           "targetLocationId": "loc_al_sewer_sluice",
           "distanceKm": 5,
           "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_crucible_wharf",
+          "distanceKm": 6,
+          "dangerRating": 1
         }
       ],
       "hiddenSpots": [
@@ -256,6 +266,11 @@
           "targetLocationId": "loc_al_quarry_pit",
           "distanceKm": 4,
           "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_crucible_wharf",
+          "distanceKm": 9,
+          "dangerRating": 2
         }
       ],
       "hiddenSpots": [
@@ -684,7 +699,15 @@
           "dangerRating": 3
         }
       ],
-      "hiddenSpots": [],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_kilns_pitch_tap",
+          "name": "Overflow Cinder-Pitch Sump",
+          "difficulty": 11,
+          "rewardItemId": "mat_al_soul_pitch",
+          "description": "Beneath a forgotten cooling grate, thick black-gold Cinder-Pitch Resin has pooled in sealed clay jars."
+        }
+      ],
       "presentCharacters": [],
       "presentCreatures": [],
       "presentItems": []
@@ -723,6 +746,11 @@
           "targetLocationId": "loc_al_rusted_viaduct",
           "distanceKm": 5,
           "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_amber_catacombs",
+          "distanceKm": 8,
+          "dangerRating": 3
         }
       ],
       "hiddenSpots": [],
@@ -763,6 +791,11 @@
         {
           "targetLocationId": "loc_al_whispering_mire",
           "distanceKm": 5,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_amber_catacombs",
+          "distanceKm": 9,
           "dangerRating": 3
         }
       ],
@@ -895,6 +928,11 @@
           "targetLocationId": "loc_al_hollow_cathedral",
           "distanceKm": 4,
           "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_salt_observatory",
+          "distanceKm": 10,
+          "dangerRating": 4
         }
       ],
       "hiddenSpots": [
@@ -980,6 +1018,11 @@
           "targetLocationId": "loc_al_broken_ferry_arch",
           "distanceKm": 9,
           "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_salt_observatory",
+          "distanceKm": 9,
+          "dangerRating": 5
         }
       ],
       "hiddenSpots": [
@@ -1023,6 +1066,11 @@
         {
           "targetLocationId": "loc_al_weeping_orchard",
           "distanceKm": 4,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_amber_catacombs",
+          "distanceKm": 11,
           "dangerRating": 4
         }
       ],
@@ -1114,6 +1162,11 @@
           "targetLocationId": "loc_al_echo_vault",
           "distanceKm": 7,
           "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_bell_crypt",
+          "distanceKm": 8,
+          "dangerRating": 5
         }
       ],
       "hiddenSpots": [],
@@ -1145,6 +1198,11 @@
           "targetLocationId": "loc_al_broken_ferry_arch",
           "distanceKm": 7,
           "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_bell_crypt",
+          "distanceKm": 9,
+          "dangerRating": 5
         }
       ],
       "hiddenSpots": [
@@ -1233,6 +1291,11 @@
           "targetLocationId": "loc_al_scale_sanctum",
           "distanceKm": 8,
           "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_salt_observatory",
+          "distanceKm": 12,
+          "dangerRating": 5
         }
       ],
       "hiddenSpots": [],
@@ -1269,6 +1332,11 @@
           "targetLocationId": "loc_al_scale_sanctum",
           "distanceKm": 7,
           "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_bell_crypt",
+          "distanceKm": 8,
+          "dangerRating": 6
         }
       ],
       "hiddenSpots": [],
@@ -1336,6 +1404,191 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_crucible_wharf",
+      "name": "The Crucible Wharf & Old Forge",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 210,
+        "y": 340
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "A soot-stained timber slipway tucked between the Customs Hall and the Foundries, where an independent hearth still burns untaxed coal. Hanging brass calipers clink in the mist above Master Artisan Orla's open forge.",
+        "overview": "A soot-stained timber slipway tucked between the Customs Hall and the Foundries, where an independent hearth still burns untaxed coal. Hanging brass calipers clink in the mist above Master Artisan Orla's open forge."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_drowned_piers",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_customs_hall",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_cinder_foundries",
+          "distanceKm": 9,
+          "dangerRating": 2
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_crucible_scrap_bin",
+          "name": "Tarnished Quench-Trough Cache",
+          "difficulty": 10,
+          "rewardItemId": "mat_al_clockwork_springs",
+          "description": "Beneath a pile of rusted tongs lies a tin of oiled brass mainsprings salvaged before Baron Vane's embargo."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_amber_catacombs",
+      "name": "The Amber-Vein Catacombs",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 640,
+        "y": 680
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Collapsed slag galleries descending beneath the Debt-Quarries. Warm amber fissures of fossilized Cinder-Pitch resin and vitrified Kiln-Glass pulse softly in the dark while chitinous scuttlers scrape behind cooling slag columns.",
+        "overview": "Collapsed slag galleries descending beneath the Debt-Quarries. Warm amber fissures of fossilized Cinder-Pitch resin and vitrified Kiln-Glass pulse softly in the dark while chitinous scuttlers scrape behind cooling slag columns."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_penitent_camp",
+          "distanceKm": 8,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_rusted_viaduct",
+          "distanceKm": 9,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_whispering_mire",
+          "distanceKm": 11,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_catacomb_kiln_vein",
+          "name": "Vitrified Kiln-Glass Seam",
+          "difficulty": 12,
+          "rewardItemId": "mat_al_kiln_glass",
+          "description": "A glassy blue-orange seam sheared clean by ancient furnace heat yields razor-pure Tempered Kiln-Glass."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [
+        "creature_al_cinder_beetle",
+        "creature_al_slag_golem"
+      ],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_salt_observatory",
+      "name": "The Shattered Salt-Observatory",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 960,
+        "y": 210
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 6,
+      "narrative": {
+        "shortDescription": "A listing tower of salt-fused basalt and cracked brass domes overlooking the Pale Reach. Before the Chancery stamped its first ledger, star-watchers tracked the tides of the Threshold here; static lightning still welds silver veins along the broken spire.",
+        "overview": "A listing tower of salt-fused basalt and cracked brass domes overlooking the Pale Reach. Before the Chancery stamped its first ledger, star-watchers tracked the tides of the Threshold here; static lightning still welds silver veins along the broken spire."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_salt_flats",
+          "distanceKm": 10,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_glass_steppe",
+          "distanceKm": 9,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_broken_ferry_arch",
+          "distanceKm": 12,
+          "dangerRating": 5
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_observatory_prism",
+          "name": "Cracked Astrolabe Drawer",
+          "difficulty": 14,
+          "rewardItemId": "mat_al_prism_lens",
+          "description": "Inside a velvet-lined brass drawer rests an unblemished Mnemonic Prism-Shard ground to refract lantern light."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [
+        "creature_al_glass_harpy",
+        "creature_al_mire_wraith"
+      ],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_bell_crypt",
+      "name": "Crypt of the Muted Bells",
+      "region": "The Ossuary Bastions",
+      "coordinates": {
+        "x": 1160,
+        "y": 560
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 7,
+      "narrative": {
+        "shortDescription": "A vaulted catacomb lined with dozens of bronze bells bound in lead chains so they can never ring again. The Chancery interred these pre-Toll bells after their chimes freed indebted spirits, leaving a tireless brass sentinel to guard the silence.",
+        "overview": "A vaulted catacomb lined with dozens of bronze bells bound in lead chains so they can never ring again. The Chancery interred these pre-Toll bells after their chimes freed indebted spirits, leaving a tireless brass sentinel to guard the silence."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_marrow_bridge",
+          "distanceKm": 8,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_silent_library",
+          "distanceKm": 9,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_echo_vault",
+          "distanceKm": 8,
+          "dangerRating": 6
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_muted_bell_alcove",
+          "name": "Chained Choir Alcove",
+          "difficulty": 14,
+          "rewardItemId": "mat_al_muted_bell_shard",
+          "description": "A fractured pre-Chancery bell lip hums faintly in your palm, shedding dust of ancient Muted Bell-Alloy."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [
+        "creature_al_boss_bell_mender",
+        "creature_al_soot_automaton"
+      ],
       "presentItems": []
     }
   ]

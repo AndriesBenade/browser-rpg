@@ -746,6 +746,208 @@
           "faction_al_unwritten_court": 20
         }
       }
+    },
+    {
+      "id": "quest_al_craft_01_cold_hearth",
+      "title": "The Cold Crucible (Artisan Arc I)",
+      "category": "side",
+      "currentStage": "stage_01",
+      "description": "Master Crucible-Smith Orla at the Crucible Wharf wants to prove that independent artisans can still out-forge Baron Vane's monopoly. Gather Tempered Kiln-Glass or Pale-Iron, craft any piece of equipment or consumable via the Forge, and bring proof of your craft to Orla.",
+      "stages": {
+        "stage_01": {
+          "objectives": [
+            {
+              "id": "obj_craft_trial_item",
+              "text": "Craft any item using the Cinder Crucible & Artisan Works tab",
+              "locationId": "loc_al_crucible_wharf"
+            },
+            {
+              "id": "obj_report_orla_1",
+              "text": "Present your handiwork to Master Orla at the Crucible Wharf",
+              "locationId": "loc_al_crucible_wharf"
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "objectives": []
+        }
+      },
+      "rewards": {
+        "experience": 140,
+        "drachmae": 45,
+        "items": [
+          "item_al_kit_clockwork",
+          "item_al_orla_guild_stamp"
+        ],
+        "reputation": {
+          "faction_al_weir_ferrymen": 15
+        }
+      }
+    },
+    {
+      "id": "quest_al_craft_02_amber_vein",
+      "title": "Resin of the Deep Slag (Artisan Arc II)",
+      "category": "side",
+      "prerequisites": [
+        "quest_al_craft_01_cold_hearth"
+      ],
+      "currentStage": "stage_01",
+      "description": "With her hearth relit, Orla needs deep Cinder-Pitch Resin from the Amber-Vein Catacombs beneath the Debt-Quarries. Tap the Ancient Pitch Cistern, perform a field combination to test its tempering power, then decide whether to share the surplus vein with Dara's quarry families or sell the seam rights to Mintmaster Gideon.",
+      "stages": {
+        "stage_01": {
+          "objectives": [
+            {
+              "id": "obj_tap_pitch_cistern",
+              "text": "Tap the Ancient Amber-Vein Pitch Cistern in the Amber-Vein Catacombs",
+              "locationId": "loc_al_amber_catacombs"
+            },
+            {
+              "id": "obj_perform_combination",
+              "text": "Perform any field Item Combination to test your artisan technique",
+              "locationId": "loc_al_crucible_wharf"
+            },
+            {
+              "id": "obj_resolve_pitch_delivery",
+              "text": "Deliver the Pitch Cask to Master Orla (or broker the seam with Dara or Gideon)",
+              "locationId": "loc_al_crucible_wharf"
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "objectives": []
+        }
+      },
+      "rewards": {
+        "experience": 190,
+        "drachmae": 70,
+        "items": [
+          "mat_al_clockwork_springs",
+          "item_al_artificer_goggles"
+        ],
+        "reputation": {
+          "faction_al_weir_ferrymen": 15,
+          "faction_al_lantern_reformers": 10
+        }
+      }
+    },
+    {
+      "id": "quest_al_craft_03_masterwork_seal",
+      "title": "The Unstamped Masterwork (Artisan Arc III)",
+      "category": "side",
+      "prerequisites": [
+        "quest_al_craft_02_amber_vein"
+      ],
+      "currentStage": "stage_01",
+      "description": "For her magnum opus, Master Orla plans an Unstamped Masterwork able to withstand Chancery toll-wards. Recover Fulgurite-Silver from the Shattered Salt-Observatory and a Muted Bell-Alloy Shard from the Crypt of the Muted Bells, then forge your choice of legendary relic at the Crucible Wharf.",
+      "stages": {
+        "stage_01": {
+          "objectives": [
+            {
+              "id": "obj_get_fulgurite",
+              "text": "Recover a Fulgurite-Silver Ingot from the Shattered Salt-Observatory",
+              "locationId": "loc_al_salt_observatory"
+            },
+            {
+              "id": "obj_get_muted_bronze",
+              "text": "Recover a Muted Bell-Alloy Shard from the Crypt of the Muted Bells",
+              "locationId": "loc_al_bell_crypt"
+            },
+            {
+              "id": "obj_forge_masterwork",
+              "text": "Return to Master Orla at the Crucible Wharf to forge your legendary Masterwork",
+              "locationId": "loc_al_crucible_wharf"
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "objectives": []
+        }
+      },
+      "rewards": {
+        "experience": 300,
+        "drachmae": 110,
+        "reputation": {
+          "faction_al_weir_ferrymen": 25,
+          "faction_al_bellwright_order": 15
+        }
+      }
+    },
+    {
+      "id": "quest_al_side_muted_belfry",
+      "title": "Songs of the Buried Bronze",
+      "category": "side",
+      "currentStage": "stage_01",
+      "description": "Bell-Scribe Cassian in Bellwright Square fears the Chancery's buried bells are losing their final resonance. Brave the Crypt of the Muted Bells, defeat the Bell-Mender Automaton, and return the Pre-Toll Bronze Tuning-Fork to Cassian.",
+      "stages": {
+        "stage_01": {
+          "objectives": [
+            {
+              "id": "obj_defeat_bell_mender",
+              "text": "Defeat the Bell-Mender Automaton in the Crypt of the Muted Bells",
+              "locationId": "loc_al_bell_crypt"
+            },
+            {
+              "id": "obj_return_tuning_fork",
+              "text": "Deliver the Pre-Toll Bronze Tuning-Fork to Bell-Scribe Cassian in Bellwright Square",
+              "locationId": "loc_al_bellwright_square"
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "objectives": []
+        }
+      },
+      "rewards": {
+        "experience": 240,
+        "drachmae": 85,
+        "items": [
+          "item_al_bell_warden_chime"
+        ],
+        "reputation": {
+          "faction_al_bellwright_order": 25
+        }
+      }
+    },
+    {
+      "id": "quest_al_side_observatory_charts",
+      "title": "Star-Maps of the Pre-Toll Sky",
+      "category": "side",
+      "currentStage": "stage_01",
+      "description": "Astronomer Vael at the Glass Conservatory believes the Shattered Salt-Observatory still holds intact star-charts from before the Chancery rose. Recover the Pre-Chancery Astral Star-Chart from the Observatory's scroll cylinder and bring it back to Vael.",
+      "stages": {
+        "stage_01": {
+          "objectives": [
+            {
+              "id": "obj_recover_star_chart",
+              "text": "Recover the Pre-Chancery Astral Star-Chart from the Shattered Salt-Observatory",
+              "locationId": "loc_al_salt_observatory"
+            },
+            {
+              "id": "obj_return_star_chart",
+              "text": "Deliver the Astral Star-Chart to Astronomer Vael at the Glass Conservatory",
+              "locationId": "loc_al_glass_conservatory"
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "objectives": []
+        }
+      },
+      "rewards": {
+        "experience": 220,
+        "drachmae": 75,
+        "items": [
+          "item_al_starlight_astrolabe"
+        ],
+        "reputation": {
+          "faction_al_glass_scholars": 25
+        }
+      }
     }
   ]
 }

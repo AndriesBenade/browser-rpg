@@ -1,10 +1,10 @@
 {
   "id": "campaign_ashen_ledger",
   "name": "The Ashen Ledger: Frontier of the Toll",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "engineVersion": ">=1.0.0",
   "author": "Antigravity & Original Dark Fantasy Designer",
-  "description": "An expansive original dark fantasy RPG spanning 7 regions, 32 interconnected locations, 24 reactive NPCs, 10 competing factions, 18 quests (including a 4-arc main story, 4 morality-exclusive branches, and 4 hidden missions), 16 creatures, 95 items, 14 materials, 22 concealed crafting forms, and 8 campaign spells integrated into the global magic engine.",
+  "description": "An expansive original dark fantasy RPG spanning 7 regions, 36 interconnected locations, 27 reactive NPCs, 10 competing factions, 23 quests (a 4-arc main story, a 3-part Artisan Crafting quest line, 8 exploration side quests, 4 morality-exclusive branches, and 4 hidden missions), 19 creatures, 118 items, 20 materials, 6 professions, 34 concealed crafting forms, 12 field combinations, and 10 campaign spells integrated into the global magic engine.",
   "genre": "dark_fantasy",
   "isDefault": false,
   "isTestCampaign": false,

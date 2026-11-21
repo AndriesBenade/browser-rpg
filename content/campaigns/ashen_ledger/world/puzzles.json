@@ -113,6 +113,36 @@
         },
         "awardXP": 80
       }
+    },
+    {
+      "id": "puzzle_al_observatory_orrery",
+      "locationId": "loc_al_salt_observatory",
+      "title": "The Shattered Astral Orrery",
+      "prompt": "Three tarnished silver rings encircle a lightning-scarred pedestal beneath the open dome. An astronomer's plaque reads:\n\n\"Before the Chancery lit its chimneys, travelers crossed the salt without coin. Only one lantern never charges toll, hangs above every mast, and returns each night though ash hides its face. Name the guide of the Pre-Toll sky.\"",
+      "question": "Align the silver rings to name the ancient guide.",
+      "clueJournalIds": [
+        "lore_al_pre_toll_sky"
+      ],
+      "acceptedKeywords": [
+        "star",
+        "stars",
+        "starlight",
+        "constellation",
+        "north star",
+        "sky"
+      ],
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "intelligence",
+      "deductionDC": 13,
+      "hint": "Astronomer Vael spoke of the lights that guided ships before the smoke-stacks hid the heavens.",
+      "successOutcome": {
+        "text": "The silver rings lock into alignment! A hidden lightning-condenser slides open, revealing a gleaming Fulgurite-Silver Ingot.",
+        "setFlags": {
+          "al_observatory_orrery_solved": true
+        },
+        "giveItem": "mat_al_fulgurite_silver",
+        "awardXP": 60
+      }
     }
   ]
 }

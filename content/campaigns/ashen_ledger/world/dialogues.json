@@ -1104,6 +1104,416 @@
           ]
         }
       }
+    },
+    "dlg_al_master_orla": {
+      "id": "dlg_al_master_orla",
+      "speaker": "Master Crucible-Smith Orla Vane-Kin",
+      "nodes": {
+        "root": {
+          "text": "\"Mind the sparks, traveler. My cousin Orlov thinks every anvil in Vesper-Threshold belongs to the Furnace Guild, yet this hearth still burns untaxed. Need toolkits, raw billets, or a real test of artisan craft?\"",
+          "choices": [
+            {
+              "label": "Browse your forge wares and artisan toolkits.",
+              "target": "open_shop"
+            },
+            {
+              "label": "\"You left the Furnace Guild? Tell me what you need for your forge.\"",
+              "target": "start_craft_1",
+              "condition": {
+                "questNotStarted": "quest_al_craft_01_cold_hearth"
+              }
+            },
+            {
+              "label": "\"I forged a piece at the Crucible as you asked.\"",
+              "target": "finish_craft_1",
+              "condition": {
+                "questActive": "quest_al_craft_01_cold_hearth",
+                "flag": "al_crafted_first_trial"
+              }
+            },
+            {
+              "label": "\"What is the next step in breaking your cousin's craft monopoly?\"",
+              "target": "start_craft_2",
+              "condition": {
+                "questCompleted": "quest_al_craft_01_cold_hearth",
+                "questNotStarted": "quest_al_craft_02_amber_vein"
+              }
+            },
+            {
+              "label": "\"I brought the Deep-Slag Pitch Cask from the Amber-Vein Catacombs.\"",
+              "target": "pitch_choice",
+              "condition": {
+                "questActive": "quest_al_craft_02_amber_vein",
+                "hasItem": "item_al_pitch_sample_cask"
+              }
+            },
+            {
+              "label": "\"Tell me about this Unstamped Masterwork you mentioned.\"",
+              "target": "start_craft_3",
+              "condition": {
+                "questCompleted": "quest_al_craft_02_amber_vein",
+                "questNotStarted": "quest_al_craft_03_masterwork_seal"
+              }
+            },
+            {
+              "label": "\"I have both Fulgurite-Silver and Muted Bell-Alloy. Let's forge the Masterwork!\"",
+              "target": "choose_masterwork",
+              "condition": {
+                "questActive": "quest_al_craft_03_masterwork_seal",
+                "hasItem": "mat_al_fulgurite_silver"
+              }
+            },
+            {
+              "label": "\"Keep the hearth burning, Orla.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "open_shop": {
+          "text": "\"Every toolkit on that rack is balanced by hand, including my Clockwork Caliper kits. Take what you need and forge something honest.\"",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Back",
+              "target": "root"
+            }
+          ]
+        },
+        "start_craft_1": {
+          "text": "\"Good ears! Baron Vane cut off my iron charters, hoping this wharf would freeze cold. Grab some Pale-Iron or Tempered Kiln-Glass, craft ANY weapon, armor, or balm at the Forge, and show me an Unstamped hand can still outwork his guildsmen. I'll gift you my Clockwork Artifice kit in return.\"",
+          "startQuest": "quest_al_craft_01_cold_hearth",
+          "choices": [
+            {
+              "label": "\"I'll put the forge to work.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_craft_1": {
+          "text": "\"By the Quiet Oar, look at that temper line! Clean joinery, zero Chancery tax-stamp. Take this Clockwork Caliper Kit and my Unstamped Forge-Mark. When you're ready for deeper work, ask me about the Amber-Vein Catacombs.\"",
+          "completeQuest": "quest_al_craft_01_cold_hearth",
+          "setFlags": {
+            "al_orla_apprentice": true
+          },
+          "choices": [
+            {
+              "label": "\"Tell me about the Amber-Vein Catacombs now.\"",
+              "target": "start_craft_2"
+            },
+            {
+              "label": "\"Thank you, Master Orla.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_craft_2": {
+          "text": "\"Beneath the Debt-Quarries lie the Amber-Vein Catacombs, where ancient kiln slag weeps Cinder-Pitch Resin. Tap the Ancient Pitch Cistern there, practice a field Item Combination so you know how resin and glass bind on the road, and bring the cask back. Mind the Slag-Golem.\"",
+          "startQuest": "quest_al_craft_02_amber_vein",
+          "discoverLocation": "loc_al_amber_catacombs",
+          "choices": [
+            {
+              "label": "\"I'll head down to the Amber-Vein Catacombs.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "pitch_choice": {
+          "text": "\"Rich, black-gold Deep-Slag Pitch! There is far more in that seam than my forge alone needs. What should we do with the surplus vein map?\"",
+          "choices": [
+            {
+              "label": "\"Share the surplus pitch with Dara Iron-Palm's freezing quarry families.\" [Mercy]",
+              "target": "finish_craft_2_mercy"
+            },
+            {
+              "label": "\"Keep it purely for independent artisans here at the Crucible.\"",
+              "target": "finish_craft_2_neutral"
+            },
+            {
+              "label": "\"Auction the exclusive vein rights to Mintmaster Gideon for a fat purse.\" [Toll]",
+              "target": "finish_craft_2_toll"
+            }
+          ]
+        },
+        "finish_craft_2_mercy": {
+          "text": "\"Spoken like a true craftsperson. Dara's folk will have warm oilskins and lamp-pitch through the cold shifts. Here are your Artificer Goggles and spare brass mainsprings.\"",
+          "consumeItem": "item_al_pitch_sample_cask",
+          "morality": {
+            "virtue": 8,
+            "hubris": 0,
+            "reason": "Shared Amber-Vein Pitch with Quarry Families"
+          },
+          "modifyReputation": {
+            "faction_al_lantern_reformers": 12,
+            "faction_al_weir_ferrymen": 10
+          },
+          "setFlags": {
+            "al_pitch_shared_quarry": true
+          },
+          "completeQuest": "quest_al_craft_02_amber_vein",
+          "choices": [
+            {
+              "label": "\"Now tell me about your Masterwork.\"",
+              "target": "start_craft_3"
+            }
+          ]
+        },
+        "finish_craft_2_neutral": {
+          "text": "\"Practical and safe. The Crucible Wharf will stay stocked for every Unstamped wanderer who needs honest steel.\"",
+          "consumeItem": "item_al_pitch_sample_cask",
+          "completeQuest": "quest_al_craft_02_amber_vein",
+          "choices": [
+            {
+              "label": "\"Now tell me about your Masterwork.\"",
+              "target": "start_craft_3"
+            }
+          ]
+        },
+        "finish_craft_2_toll": {
+          "text": "Orla frowns darkly as Gideon's courier drops a heavy coin-sack onto the anvil. \"I keep my bargains, so take your goggles and your gold, but I had hoped you were different from my cousin.\"",
+          "consumeItem": "item_al_pitch_sample_cask",
+          "giveDrachmae": 90,
+          "morality": {
+            "virtue": 0,
+            "hubris": 10,
+            "reason": "Sold Amber-Vein Rights to Mintmaster Gideon"
+          },
+          "modifyReputation": {
+            "faction_al_cinder_syndicate": 15,
+            "faction_al_weir_ferrymen": -10
+          },
+          "setFlags": {
+            "al_pitch_sold_gideon": true
+          },
+          "completeQuest": "quest_al_craft_02_amber_vein",
+          "choices": [
+            {
+              "label": "\"Coin keeps the bellows pumping. What's next?\"",
+              "target": "start_craft_3"
+            }
+          ]
+        },
+        "start_craft_3": {
+          "text": "\"Now for the crowning work: an Unstamped Masterwork that laughs at Chancery toll-wards. Bring me Fulgurite-Silver from the Shattered Salt-Observatory and a Muted Bell-Alloy Shard from the Crypt of the Muted Bells. Together, we'll quench a legend.\"",
+          "startQuest": "quest_al_craft_03_masterwork_seal",
+          "discoverLocations": [
+            "loc_al_salt_observatory",
+            "loc_al_bell_crypt"
+          ],
+          "choices": [
+            {
+              "label": "\"I'll gather both rare alloys.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "choose_masterwork": {
+          "text": "\"Fulgurite-Silver humming beside ancient Bell-Alloy... I've waited thirty years to heat a crucible like this! Tell me what form shall leave my anvil tonight?\"",
+          "choices": [
+            {
+              "label": "Forge the Dawn-Tempered Fulgurite Sabre (Legendary Weapon).",
+              "target": "forge_blade",
+              "condition": {
+                "hasItem": "mat_al_muted_bell_shard"
+              }
+            },
+            {
+              "label": "Forge the Sovereign Crucible Aegis-Lantern (Legendary Off-Hand).",
+              "target": "forge_lantern",
+              "condition": {
+                "hasItem": "mat_al_muted_bell_shard"
+              }
+            },
+            {
+              "label": "\"I still need a Muted Bell-Alloy Shard from the Crypt of the Muted Bells.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "forge_blade": {
+          "text": "Hours pass in rhythm of hammer and quench. When you lift the Dawn-Tempered Fulgurite Sabre from the oil-bath, silver lightning dances down its fuller with a clear, unbroken bell-note!",
+          "consumeItem": "mat_al_fulgurite_silver",
+          "giveItem": "item_al_crucible_masterwork_blade",
+          "setFlags": {
+            "al_masterwork_forged": true,
+            "al_orla_allied": true
+          },
+          "completeQuest": "quest_al_craft_03_masterwork_seal",
+          "choices": [
+            {
+              "label": "\"A masterwork worthy of the Threshold.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "forge_lantern": {
+          "text": "Hours pass as you braze bell-bronze ribs around a Fulgurite-Silver prism cage. The Sovereign Crucible Aegis-Lantern ignites without oil, shedding steady dawn-gold light that turns back both blade and despair!",
+          "consumeItem": "mat_al_fulgurite_silver",
+          "giveItem": "item_al_crucible_aegis_lantern",
+          "setFlags": {
+            "al_masterwork_forged": true,
+            "al_orla_allied": true
+          },
+          "completeQuest": "quest_al_craft_03_masterwork_seal",
+          "choices": [
+            {
+              "label": "\"Its light will never pay toll.\"",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_scribe_cassian": {
+      "id": "dlg_al_scribe_cassian",
+      "speaker": "Bell-Scribe Cassian",
+      "nodes": {
+        "root": {
+          "text": "\"Peace to your ledger, wayfarer. Prior Aldous tends the living chimes, while I keep count of the bronze bells the Chancery buried alive beneath the Ossuary Bastions.\"",
+          "choices": [
+            {
+              "label": "Browse your bell-bronze and soothing balms.",
+              "target": "shop"
+            },
+            {
+              "label": "\"Buried bells? Tell me about the Crypt of the Muted Bells.\"",
+              "target": "start_belfry",
+              "condition": {
+                "questNotStarted": "quest_al_side_muted_belfry"
+              }
+            },
+            {
+              "label": "\"I silenced the Bell-Mender and recovered the Pre-Toll Tuning-Fork.\"",
+              "target": "finish_belfry",
+              "condition": {
+                "questActive": "quest_al_side_muted_belfry",
+                "hasItem": "item_al_resonance_tuning_fork"
+              }
+            },
+            {
+              "label": "\"May your bells ring true, Cassian.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "shop": {
+          "text": "\"Pure bronze, tallow herbs, and balm for bruised spirits. Every coin feeds the Bellhouse hospice.\"",
+          "openTrade": true,
+          "choices": [
+            {
+              "label": "Back",
+              "target": "root"
+            }
+          ]
+        },
+        "start_belfry": {
+          "text": "\"When the Auditors seized the river tolls, they chained the older mercy-bells in the Crypt of the Muted Bells and set a Brass Bell-Mender to guard their silence. If you recover the Pre-Toll Bronze Tuning-Fork from that crypt, our Order can retune Bellwright Square's ward-chimes!\"",
+          "startQuest": "quest_al_side_muted_belfry",
+          "discoverLocation": "loc_al_bell_crypt",
+          "choices": [
+            {
+              "label": "\"I will brave the Crypt of the Muted Bells.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_belfry": {
+          "text": "Cassian strikes the bronze fork gently; a luminous harmonic swells across Bellwright Square. \"Listen! Even the smoke seems to lift. Wear this Chime of the Unbound Bell with our Order's gratitude.\"",
+          "consumeItem": "item_al_resonance_tuning_fork",
+          "morality": {
+            "virtue": 8,
+            "hubris": 0,
+            "reason": "Restored the Resonance of the Buried Bells"
+          },
+          "setFlags": {
+            "al_muted_bells_freed": true
+          },
+          "completeQuest": "quest_al_side_muted_belfry",
+          "choices": [
+            {
+              "label": "\"Let them ring across the Threshold.\"",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_astronomer_vael": {
+      "id": "dlg_al_astronomer_vael",
+      "speaker": "Astronomer Vael",
+      "nodes": {
+        "root": {
+          "text": "\"People look down at ledgers and slag-pits and forget there was ever a sky above Vesper-Threshold. Before the chimneys choked the heavens, sailors crossed the Mist-Weir by starlight alone.\"",
+          "choices": [
+            {
+              "label": "\"Is any record of that Pre-Toll sky left?\"",
+              "target": "start_charts",
+              "condition": {
+                "questNotStarted": "quest_al_side_observatory_charts"
+              }
+            },
+            {
+              "label": "\"I recovered the Pre-Chancery Astral Star-Chart from the Salt-Observatory.\"",
+              "target": "finish_charts",
+              "condition": {
+                "questActive": "quest_al_side_observatory_charts",
+                "hasItem": "item_al_astral_star_chart"
+              }
+            },
+            {
+              "label": "\"Tell me about the Shattered Salt-Observatory.\"",
+              "target": "lore_hint"
+            },
+            {
+              "label": "\"Clear skies to you, Vael.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "lore_hint": {
+          "text": "\"The tower sits north of the Weeping Salt-Flats. Its silver orrery honors the stars that guided souls without tolls. If you align its rings, the lightning-condenser still yields Fulgurite-Silver!\"",
+          "addJournalKnowledge": {
+            "title": "The Pre-Toll Sky",
+            "text": "Astronomer Vael says the Shattered Salt-Observatory honors the Stars that guided arrivals before the Chancery rose."
+          },
+          "discoverLocation": "loc_al_salt_observatory",
+          "choices": [
+            {
+              "label": "Back",
+              "target": "root"
+            }
+          ]
+        },
+        "start_charts": {
+          "text": "\"Yes! My mentor sealed our last Pre-Chancery Astral Star-Chart inside a brass cylinder at the Shattered Salt-Observatory before the Auditors expelled us. Bring me that chart, and I will give you my calibrated Silver Astrolabe.\"",
+          "startQuest": "quest_al_side_observatory_charts",
+          "discoverLocation": "loc_al_salt_observatory",
+          "choices": [
+            {
+              "label": "\"I'll search the Shattered Salt-Observatory.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_charts": {
+          "text": "Vael unrolls the silver-inked vellum with trembling hands. \"Look! The Ferryman's Crown, the Unchained Lantern, the Far-Shore Gate... they are all still there above the soot! Take my Silver Astrolabe, friend.\"",
+          "consumeItem": "item_al_astral_star_chart",
+          "morality": {
+            "virtue": 6,
+            "hubris": 0,
+            "reason": "Preserved Pre-Chancery Astral Knowledge"
+          },
+          "setFlags": {
+            "al_star_charts_preserved": true
+          },
+          "completeQuest": "quest_al_side_observatory_charts",
+          "choices": [
+            {
+              "label": "\"May the old stars guide us again.\"",
+              "target": "exit"
+            }
+          ]
+        }
+      }
     }
   }
 }

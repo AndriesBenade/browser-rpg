@@ -331,6 +331,122 @@
         },
         "transcript": "Whispers spread across Weir-Port and Bellwright Square of an Unstamped wanderer who chooses mercy over profit."
       }
+    },
+    {
+      "id": "evt_al_craft1_item_crafted",
+      "trigger": "ITEM_CRAFTED",
+      "conditions": {},
+      "worldConditions": {
+        "questActive": "quest_al_craft_01_cold_hearth"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_crafted_first_trial": true
+        },
+        "updateQuest": {
+          "questId": "quest_al_craft_01_cold_hearth",
+          "objectiveId": "obj_craft_trial_item"
+        },
+        "transcript": "Your fresh handiwork cools with a crisp metallic ring. Master Orla will want to inspect it at the Crucible Wharf!"
+      }
+    },
+    {
+      "id": "evt_al_craft2_cistern_tapped",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_tapped_pitch_cistern"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_craft_02_amber_vein"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_craft_02_amber_vein",
+          "objectiveId": "obj_tap_pitch_cistern"
+        }
+      }
+    },
+    {
+      "id": "evt_al_craft2_item_combined",
+      "trigger": "ITEM_COMBINED",
+      "conditions": {},
+      "worldConditions": {
+        "questActive": "quest_al_craft_02_amber_vein"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_performed_craft_combo": true
+        },
+        "updateQuest": {
+          "questId": "quest_al_craft_02_amber_vein",
+          "objectiveId": "obj_perform_combination"
+        },
+        "transcript": "Your field combination binds cleanly, proving your command of Threshold materials."
+      }
+    },
+    {
+      "id": "evt_al_craft3_fulgurite_got",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "mat_al_fulgurite_silver"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_craft_03_masterwork_seal"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_craft_03_masterwork_seal",
+          "objectiveId": "obj_get_fulgurite"
+        }
+      }
+    },
+    {
+      "id": "evt_al_craft3_muted_bronze_got",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "mat_al_muted_bell_shard"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_craft_03_masterwork_seal"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_craft_03_masterwork_seal",
+          "objectiveId": "obj_get_muted_bronze"
+        }
+      }
+    },
+    {
+      "id": "evt_al_muted_belfry_boss_down",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_bell_mender_defeated"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_muted_belfry"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_muted_belfry",
+          "objectiveId": "obj_defeat_bell_mender"
+        }
+      }
+    },
+    {
+      "id": "evt_al_observatory_chart_got",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_astral_star_chart"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_observatory_charts"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_observatory_charts",
+          "objectiveId": "obj_recover_star_chart"
+        }
+      }
     }
   ]
 }

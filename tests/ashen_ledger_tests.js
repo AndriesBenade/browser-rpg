@@ -64,34 +64,34 @@ async function bootAshenLedger(opts = {}) {
   });
 
   // 2. Scale Benchmarks, World Graph Connectivity & Creative Independence
-  await test('Ashen Ledger 2: Exceeds largest campaign benchmarks, 32 locations strongly connected across 7 regions, zero source contamination', async () => {
+  await test('Ashen Ledger 2: Exceeds largest campaign benchmarks, 36 locations strongly connected across 7 regions, zero source contamination', async () => {
     const { engine } = await bootAshenLedger();
     const w = engine.world;
 
-    assert.strictEqual(w.locations.length, 32, 'Must have 32 locations');
-    assert.strictEqual(w.characters.length, 24, 'Must have 24 NPCs');
-    assert.strictEqual(w.creatures.length, 16, 'Must have 16 creatures');
-    assert.strictEqual(w.items.length, 95, 'Must have 95 items');
+    assert.strictEqual(w.locations.length, 36, 'Must have 36 locations');
+    assert.strictEqual(w.characters.length, 27, 'Must have 27 NPCs');
+    assert.strictEqual(w.creatures.length, 19, 'Must have 19 creatures');
+    assert.strictEqual(w.items.length, 118, 'Must have 118 items');
     assert.strictEqual(w.factions.length, 10, 'Must have 10 factions');
-    assert.strictEqual(w.quests.length, 18, 'Must have 18 quests');
-    assert.strictEqual(w.encounters.length, 15, 'Must have 15 encounters');
-    assert.strictEqual(w.materials.length, 14, 'Must have 14 materials');
-    assert.strictEqual(w.craftingTemplates.length, 22, 'Must have 22 crafting templates');
-    assert.strictEqual(w.professions.length, 5, 'Must have 5 professions');
-    assert.strictEqual(w.combinations.length, 7, 'Must have 7 combinations');
-    assert.strictEqual(w.interactiveObjects.length, 10, 'Must have 10 interactive objects');
-    assert.strictEqual(w.events.length, 21, 'Must have 21 events');
-    assert.strictEqual(w.mythology.length, 16, 'Must have 16 codex lore entries');
-    assert.strictEqual(w.spells.length, 8, 'Must have 8 campaign spells');
+    assert.strictEqual(w.quests.length, 23, 'Must have 23 quests');
+    assert.strictEqual(w.encounters.length, 18, 'Must have 18 encounters');
+    assert.strictEqual(w.materials.length, 20, 'Must have 20 materials');
+    assert.strictEqual(w.craftingTemplates.length, 34, 'Must have 34 crafting templates');
+    assert.strictEqual(w.professions.length, 6, 'Must have 6 professions');
+    assert.strictEqual(w.combinations.length, 12, 'Must have 12 combinations');
+    assert.strictEqual(w.interactiveObjects.length, 13, 'Must have 13 interactive objects');
+    assert.strictEqual(w.events.length, 28, 'Must have 28 events');
+    assert.strictEqual(w.mythology.length, 19, 'Must have 19 codex lore entries');
+    assert.strictEqual(w.spells.length, 10, 'Must have 10 campaign spells');
 
     const regions = new Set(w.locations.map(l => l.region));
     assert.strictEqual(regions.size, 7, `Expected 7 regions, got ${regions.size}`);
 
     const bosses = w.creatures.filter(c => c.isBoss);
-    assert.strictEqual(bosses.length, 5, 'Must have 5 bosses');
+    assert.strictEqual(bosses.length, 6, 'Must have 6 bosses');
 
     const merchants = w.characters.filter(c => c.isMerchant);
-    assert.ok(merchants.length >= 9, `Expected >= 9 merchants, got ${merchants.length}`);
+    assert.ok(merchants.length >= 11, `Expected >= 11 merchants, got ${merchants.length}`);
 
     // Strong connectivity check (BFS forward + reverse from starting location)
     const locMap = new Map(w.locations.map(l => [l.id, l]));
@@ -105,7 +105,7 @@ async function bootAshenLedger(opts = {}) {
         if (locMap.has(next) && !fwd.has(next)) { fwd.add(next); q1.push(next); }
       }
     }
-    assert.strictEqual(fwd.size, 32, `Forward BFS reached ${fwd.size}/32 locations`);
+    assert.strictEqual(fwd.size, 36, `Forward BFS reached ${fwd.size}/36 locations`);
 
     const revEdges = new Map();
     for (const l of w.locations) {
@@ -121,7 +121,7 @@ async function bootAshenLedger(opts = {}) {
         if (!rev.has(prev)) { rev.add(prev); q2.push(prev); }
       }
     }
-    assert.strictEqual(rev.size, 32, `Reverse BFS reached ${rev.size}/32 locations`);
+    assert.strictEqual(rev.size, 36, `Reverse BFS reached ${rev.size}/36 locations`);
 
     // Creative independence & zero em dashes check
     const banned = ['kaelen', 'abyssal trench', 'paragon', 'ascended', 'burdens', 'subjugation'];
@@ -139,12 +139,12 @@ async function bootAshenLedger(opts = {}) {
     }
   });
 
-  // 3. Global Magic System Integration (25 Spells, HP-Toll, Morality-Gated, Multi-Enemy Combat)
-  await test('Ashen Ledger 3: Registers 8 campaign spells into Global Magic Engine (25 total), enforces HP-toll & morality gates in combat', async () => {
+  // 3. Global Magic System Integration (27 Spells, HP-Toll, Morality-Gated, Multi-Enemy Combat)
+  await test('Ashen Ledger 3: Registers 10 campaign spells into Global Magic Engine (27 total), enforces HP-toll & morality gates in combat', async () => {
     const { engine } = await bootAshenLedger();
     const p = engine.state.player;
     const catalog = engine.getGlobalSpellCatalog();
-    assert.strictEqual(catalog.length, 25, `Expected 25 total spells (17 global + 8 campaign), got ${catalog.length}`);
+    assert.strictEqual(catalog.length, 27, `Expected 27 total spells (17 global + 10 campaign), got ${catalog.length}`);
 
     // Grant skill milestones to earn AKP legitimately
     p.skills.mythology_lore = 4;
@@ -365,6 +365,92 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(engine.getMoralitySummary().score, 18, 'Loaded save must preserve morality score');
     assert.ok(engine.state.worldState.quests['quest_al_moral_pos_sanctuary'], 'Loaded save must preserve morality-exclusive quest');
     assert.strictEqual(engine.state.worldState.flags.al_archive_riddle_solved, true, 'Loaded save must preserve puzzle flags');
+  });
+
+  // 8. Crucible & Frontier Expansion: 3-Part Crafting Quest Line, 6th Profession, New Combinations, Puzzle & Side Quests
+  await test('Ashen Ledger 8: Full 3-part Crafting Quest Line, Clockwork Artifice profession, new combinations, Astral Orrery puzzle & bonus side quests', async () => {
+    const { engine } = await bootAshenLedger();
+    const p = engine.state.player;
+    p.skills.athletics = 5;
+    p.skills.sleight_of_hand = 5;
+    p.skills.mythology_lore = 4;
+    p.skills.investigation = 4;
+    p.attributes.strength = 16;
+    p.attributes.intelligence = 16;
+    const origRoll = engine.rollD20;
+    engine.rollD20 = () => 18;
+
+    // Part 1: Start 'The Cold Crucible' via Master Orla, craft an item -> ITEM_CRAFTED event updates quest -> complete Part 1
+    engine.openDialogue('dlg_al_master_orla', 'start_craft_1');
+    assert.ok(engine.state.worldState.quests['quest_al_craft_01_cold_hearth'], 'Crafting Part 1 must start');
+    engine.addItem('item_al_kit_foundry', 1);
+    engine.addItem('mat_al_pale_iron', 3);
+    engine.addItem('mat_al_kiln_glass', 2);
+    engine.currentCraftingProfession = 'al_foundry_smithing';
+    const trialCraft = engine.craftItem('weapon', 'mat_al_pale_iron', 'mat_al_kiln_glass');
+    assert.strictEqual(trialCraft && trialCraft.success, true, 'Trial craft with Pale-Iron + Tempered Kiln-Glass must succeed');
+    assert.strictEqual(engine.state.worldState.flags.al_crafted_first_trial, true, 'ITEM_CRAFTED event must set al_crafted_first_trial');
+    engine.openDialogue('dlg_al_master_orla', 'finish_craft_1');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_craft_01_cold_hearth'].completed, true, 'Crafting Part 1 must complete');
+    assert.strictEqual(engine.hasItem('item_al_kit_clockwork'), true, 'Part 1 must reward Clockwork Artifice toolkit');
+
+    // Test 6th profession (Clockwork & Lantern Artifice) concealed crafting!
+    engine.addItem('mat_al_clockwork_springs', 3);
+    engine.addItem('mat_al_prism_lens', 2);
+    engine.currentCraftingProfession = 'al_clockwork_artifice';
+    const artificeCraft = engine.craftItem('accessory', 'mat_al_clockwork_springs', 'mat_al_prism_lens');
+    assert.strictEqual(artificeCraft && artificeCraft.success, true, `Clockwork Artifice craft must succeed: ${JSON.stringify(artificeCraft)}`);
+
+    // Part 2: Start 'Resin of the Deep Slag', tap pitch cistern, run field combination -> ITEM_COMBINED updates quest -> resolve with Mercy
+    engine.openDialogue('dlg_al_master_orla', 'start_craft_2');
+    assert.ok(engine.state.worldState.quests['quest_al_craft_02_amber_vein'], 'Crafting Part 2 must start');
+    engine.setWorldFlags({ al_tapped_pitch_cistern: true });
+    engine.addItem('item_al_pitch_sample_cask', 1);
+    engine.addItem('mat_al_kiln_glass', 1);
+    if (!engine.hasItem('item_al_dock_cutlass')) engine.addItem('item_al_dock_cutlass', 1);
+    const glassCombo = engine.combineItems('mat_al_kiln_glass', 'item_al_dock_cutlass');
+    assert.strictEqual(glassCombo && glassCombo.success, true, 'New Kiln-Glass cutlass combination must succeed');
+    assert.strictEqual(engine.state.worldState.flags.al_performed_craft_combo, true, 'ITEM_COMBINED event must fire for Part 2');
+    engine.openDialogue('dlg_al_master_orla', 'finish_craft_2_mercy');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_craft_02_amber_vein'].completed, true, 'Crafting Part 2 must complete');
+    assert.ok(engine.getMoralitySummary().score >= 8, 'Sharing pitch with quarry families must award positive morality');
+
+    // Part 3: Start 'The Unstamped Masterwork', solve Observatory Orrery puzzle for Fulgurite-Silver + acquire Muted Bell-Alloy -> forge Legendary Sabre!
+    engine.openDialogue('dlg_al_master_orla', 'start_craft_3');
+    assert.ok(engine.state.worldState.quests['quest_al_craft_03_masterwork_seal'], 'Crafting Part 3 must start');
+    engine.openPuzzle('puzzle_al_observatory_orrery');
+    engine.resolveRiddleChoice('solved');
+    assert.strictEqual(engine.state.worldState.flags.al_observatory_orrery_solved, true, 'Astral Orrery puzzle must solve cleanly');
+    assert.strictEqual(engine.hasItem('mat_al_fulgurite_silver'), true, 'Orrery puzzle must award Fulgurite-Silver Ingot');
+    engine.addItem('mat_al_muted_bell_shard', 1);
+    engine.openDialogue('dlg_al_master_orla', 'forge_blade');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_craft_03_masterwork_seal'].completed, true, 'Crafting Part 3 must complete');
+    assert.strictEqual(engine.hasItem('item_al_crucible_masterwork_blade'), true, 'Must receive legendary Dawn-Tempered Fulgurite Sabre');
+
+    // Bonus Side Quests (Muted Belfry + Observatory Charts) + New Campaign Spells
+    engine.openDialogue('dlg_al_scribe_cassian', 'start_belfry');
+    engine.setWorldFlags({ al_bell_mender_defeated: true });
+    engine.addItem('item_al_resonance_tuning_fork', 1);
+    engine.openDialogue('dlg_al_scribe_cassian', 'finish_belfry');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_side_muted_belfry'].completed, true, 'Muted Belfry side quest must complete');
+    assert.strictEqual(engine.hasItem('item_al_bell_warden_chime'), true);
+
+    engine.openDialogue('dlg_al_astronomer_vael', 'start_charts');
+    engine.addItem('item_al_astral_star_chart', 1);
+    engine.openDialogue('dlg_al_astronomer_vael', 'finish_charts');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_side_observatory_charts'].completed, true, 'Observatory Charts side quest must complete');
+    assert.strictEqual(engine.hasItem('item_al_starlight_astrolabe'), true);
+
+    // Acquire & cast new campaign spells in new Bell Crypt boss encounter
+    engine.syncArcaneKnowledgePoints();
+    assert.strictEqual(engine.acquireSpell('al_spell_crucible_temper').success, true, 'Must acquire Crucible Temper');
+    assert.strictEqual(engine.acquireSpell('al_spell_prismatic_refraction').success, true, 'Must acquire Prismatic Refraction');
+    engine.startCombatEncounter('enc_al_bell_crypt_warden');
+    assert.strictEqual(engine.combatSession.enemies.length, 3, 'Bell Crypt Warden encounter spawns Boss + 2 automatons');
+    engine.castCombatSpell('al_spell_crucible_temper');
+    assert.ok(engine.combatSession.ward >= 6, 'Crucible Temper grants Arcane Ward');
+    engine.combatSession = null;
+    engine.rollD20 = origRoll;
   });
 
   console.log('\n=================================================================');

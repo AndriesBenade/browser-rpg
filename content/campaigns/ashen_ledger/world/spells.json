@@ -291,6 +291,69 @@
         "verb": "shatters reality with the Thirteenth Toll across"
       },
       "desc": "Forbidden climax invocation: pay 4 HP to ring the Thirteenth Bell across up to 3 foes for 2d6 + INT mod + 3 damage, stripping guards and shattering morale (3 Stamina)."
+    },
+    {
+      "id": "al_spell_crucible_temper",
+      "name": "Crucible Temper",
+      "icon": "⚒️",
+      "discipline": "abjuration",
+      "tier": 1,
+      "costPoints": 1,
+      "staminaCost": 1,
+      "minSkills": {
+        "mythology_lore": 1
+      },
+      "targeting": {
+        "targetType": "self",
+        "maxTargets": 0,
+        "range": "self",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": false,
+        "label": "Self"
+      },
+      "effect": {
+        "ward": 6,
+        "selfMods": {
+          "ac": 2,
+          "attack": 2,
+          "rounds": 3
+        },
+        "verb": "sheathes gear in incandescent crucible heat"
+      },
+      "desc": "Invoke the Crucible Wharf's untaxed flame: gain +6 Arcane Ward and +2 Attack & +2 AC for 3 rounds (1 Stamina)."
+    },
+    {
+      "id": "al_spell_prismatic_refraction",
+      "name": "Prismatic Refraction",
+      "icon": "💎",
+      "discipline": "divination",
+      "tier": 2,
+      "costPoints": 2,
+      "staminaCost": 2,
+      "minSkills": {
+        "mythology_lore": 2,
+        "investigation": 1
+      },
+      "targeting": {
+        "targetType": "all_enemies",
+        "maxTargets": 2,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": true,
+        "label": "Multi • Up to 2 Foes"
+      },
+      "effect": {
+        "damageDice": "1d8",
+        "damageStat": "intelligence",
+        "flatDamage": 3,
+        "stripEnemyGuard": true,
+        "targetAcPenalty": 2,
+        "element": "radiant",
+        "verb": "splits blinding pre-Toll starlight across enemy ranks"
+      },
+      "desc": "Refract observatory memory-light across up to 2 foes (bypasses cover) for 1d8 + INT mod + 3 radiant damage, stripping Guard and reducing AC by 2 (2 Stamina)."
     }
   ]
 }

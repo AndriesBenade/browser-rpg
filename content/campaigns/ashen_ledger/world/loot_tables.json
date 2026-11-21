@@ -398,6 +398,73 @@
         "min": 45,
         "max": 75
       }
+    },
+    {
+      "id": "lt_al_cinder_beetle",
+      "entries": [
+        {
+          "itemId": "mat_al_kiln_glass",
+          "chance": 0.8
+        },
+        {
+          "itemId": "mat_al_soul_pitch",
+          "chance": 0.7
+        },
+        {
+          "itemId": "item_al_cinder_flash_tonic",
+          "chance": 0.3
+        }
+      ],
+      "currency": {
+        "min": 10,
+        "max": 20
+      }
+    },
+    {
+      "id": "lt_al_slag_golem",
+      "entries": [
+        {
+          "itemId": "mat_al_kiln_glass",
+          "chance": 0.95
+        },
+        {
+          "itemId": "mat_al_clockwork_springs",
+          "chance": 0.85
+        },
+        {
+          "itemId": "item_al_slag_cleaver",
+          "chance": 0.45
+        }
+      ],
+      "currency": {
+        "min": 26,
+        "max": 45
+      }
+    },
+    {
+      "id": "lt_al_bell_mender_boss",
+      "entries": [
+        {
+          "itemId": "mat_al_muted_bell_shard",
+          "chance": 1
+        },
+        {
+          "itemId": "mat_al_clockwork_springs",
+          "chance": 0.95
+        },
+        {
+          "itemId": "item_al_resonance_tuning_fork",
+          "chance": 1
+        },
+        {
+          "itemId": "item_al_resonant_balm",
+          "chance": 0.7
+        }
+      ],
+      "currency": {
+        "min": 55,
+        "max": 90
+      }
     }
   ]
 }

@@ -710,6 +710,135 @@
         "morale": 19
       },
       "respawnHours": 0
+    },
+    {
+      "id": "creature_al_cinder_beetle",
+      "name": "Slag-Carapace Scuttler",
+      "category": "beast",
+      "role": "skirmisher",
+      "tier": 2,
+      "level": 4,
+      "maxHealth": 26,
+      "armorClass": 14,
+      "morale": 10,
+      "xpReward": 75,
+      "respawnHours": 16,
+      "vitals": {
+        "health": 26,
+        "maxHealth": 26,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 10
+      },
+      "lootTableId": "lt_al_cinder_beetle",
+      "description": "A waist-high subterranean beetle whose fused glass shell crackles with trapped kiln heat.",
+      "actions": [
+        {
+          "name": "Glass-Mandible Snap",
+          "damage": "1d8+2",
+          "attackBonus": 4,
+          "description": "snaps glowing vitrified mandibles"
+        },
+        {
+          "name": "Pitch Spit",
+          "damage": "1d6+2",
+          "attackBonus": 4,
+          "status": {
+            "id": "bleeding",
+            "rounds": 2,
+            "value": 2
+          },
+          "description": "hurls scalding cinder-pitch"
+        }
+      ]
+    },
+    {
+      "id": "creature_al_slag_golem",
+      "name": "Crucible Slag-Golem",
+      "category": "construct",
+      "role": "bruiser",
+      "tier": 3,
+      "level": 5,
+      "maxHealth": 44,
+      "armorClass": 15,
+      "morale": 14,
+      "xpReward": 135,
+      "respawnHours": 24,
+      "vitals": {
+        "health": 44,
+        "maxHealth": 44,
+        "stamina": 26,
+        "maxStamina": 26,
+        "morale": 14
+      },
+      "lootTableId": "lt_al_slag_golem",
+      "description": "An abandoned Furnace Guild ore-hauler whose cracked brass core leaked molten glass into a hulking armored shell.",
+      "actions": [
+        {
+          "name": "Crucible Fist",
+          "damage": "2d6+3",
+          "attackBonus": 5,
+          "description": "brings a slag-encrusted piston arm crashing down"
+        },
+        {
+          "name": "Superheated Vent",
+          "damage": "1d8+3",
+          "attackBonus": 4,
+          "status": {
+            "id": "weakened",
+            "rounds": 2,
+            "value": 2
+          },
+          "description": "blasts choking furnace steam across the gallery"
+        }
+      ]
+    },
+    {
+      "id": "creature_al_boss_bell_mender",
+      "name": "The Bell-Mender Automaton",
+      "category": "construct",
+      "role": "boss",
+      "tier": 4,
+      "level": 7,
+      "isBoss": true,
+      "maxHealth": 78,
+      "armorClass": 16,
+      "morale": 16,
+      "xpReward": 260,
+      "respawnHours": 0,
+      "vitals": {
+        "health": 78,
+        "maxHealth": 78,
+        "stamina": 46,
+        "maxStamina": 46,
+        "morale": 16
+      },
+      "lootTableId": "lt_al_bell_mender_boss",
+      "description": "A towering multi-armed brass warden built to silence the buried bells of the Ossuary Crypt. Cracked tuning-chains swing from its iron shoulders.",
+      "actions": [
+        {
+          "name": "Lead-Chain Lash",
+          "damage": "2d6+4",
+          "attackBonus": 7,
+          "status": {
+            "id": "entangled",
+            "rounds": 2,
+            "value": 0
+          },
+          "description": "whips weighted silencing chains across the stone vault"
+        },
+        {
+          "name": "Dissonant Gong Slam",
+          "damage": "2d8+3",
+          "attackBonus": 6,
+          "status": {
+            "id": "frightened",
+            "rounds": 2,
+            "value": 0
+          },
+          "description": "strikes its cracked breastplate with a deafening iron toll"
+        }
+      ]
     }
   ]
 }

@@ -20,24 +20,44 @@
 
 ---
 
-## 2. Scale Benchmarks vs. Existing Campaigns
+## 2. Scale Benchmarks vs. Existing Campaigns (v1.1 Crucible & Frontier Expansion)
 
-| Content Category | Greek Mythology | Lanternfall (Dev) | The Northern Realms | **The Ashen Ledger** |
+| Content Category | Greek Mythology | Lanternfall (Dev) | The Northern Realms | **The Ashen Ledger (v1.1)** |
 | :--- | :---: | :---: | :---: | :---: |
-| Locations | 19 | 5 | 25 | **32** (+28%) |
+| Locations | 19 | 5 | 25 | **36** (+44%) |
 | Regions | 5 | 1 | 5 | **7** (+40%) |
-| NPCs (Merchants) | 14 (4) | 3 (1) | 17 (6) | **24 (9)** (+41%) |
+| NPCs (Merchants) | 14 (4) | 3 (1) | 17 (6) | **27 (11)** (+59%) |
 | Factions | 4 | 2 | 8 | **10** (+25%) |
-| Quests (Main / Side / Moral-Excl / Hidden) | 7 | 4 | 11 | **18** (4 / 6 / 4 / 4) (+64%) |
-| Creatures (Bosses) | 12 (2) | 4 (1) | 10 (2) | **16 (5)** (+60%) |
-| Tactical Encounters | 8 | 3 | 10 | **15** (+50%) |
-| Items | 66 | 14 | 54 | **95** (+44%) |
-| Crafting Materials | 10 | 4 | 10 | **14** (+40%) |
-| Crafting Templates (Concealed) | 15 | 4 | 16 | **22** (+38%) |
-| Professions / Combinations | 7 / 4 | 2 / 1 | 4 / 5 | **5 / 7** |
-| Campaign Spells (+17 Global) | 0 (17) | 0 (17) | 0 (17) | **8 (25 total)** |
-| Interactive Objects / Puzzles | 2 / 1 | 2 / 1 | 6 / 3 | **10 / 4** |
-| World Events / Codex Lore / Glossary | 6 / 12 / 18 | 4 / 2 / 4 | 14 / 10 / 24 | **21 / 16 / 34** |
+| Quests (Main / Crafting Arc / Side / Moral-Excl / Hidden) | 7 | 4 | 11 | **23** (4 / 3 / 8 / 4 / 4) (+109%) |
+| Creatures (Bosses) | 12 (2) | 4 (1) | 10 (2) | **19 (6)** (+90%) |
+| Tactical Encounters | 8 | 3 | 10 | **18** (+80%) |
+| Items | 66 | 14 | 54 | **118** (+79%) |
+| Crafting Materials | 10 | 4 | 10 | **20** (+100%) |
+| Crafting Templates (Concealed) | 15 | 4 | 16 | **34** (+113%) |
+| Professions / Combinations | 7 / 4 | 2 / 1 | 4 / 5 | **6 / 12** |
+| Campaign Spells (+17 Global) | 0 (17) | 0 (17) | 0 (17) | **10 (27 total)** |
+| Interactive Objects / Puzzles | 2 / 1 | 2 / 1 | 6 / 3 | **13 / 5** |
+| World Events / Codex Lore / Glossary | 6 / 12 / 18 | 4 / 2 / 4 | 14 / 10 / 24 | **28 / 19 / 39** |
+
+### Crucible & Frontier Expansion Highlights (v1.1)
+- **4 Additional Interconnected Locations (36 total, 19 hiddenSpots):**
+  - `loc_al_crucible_wharf` (The Crucible Wharf & Old Forge - Weir-Port, home of Master Artisan Orla Vane-Kin)
+  - `loc_al_amber_catacombs` (The Amber-Vein Catacombs - Ash-Fields, guarded by Crucible Slag-Golem & Slag-Carapace Scuttlers)
+  - `loc_al_salt_observatory` (The Shattered Salt-Observatory - Pale Reach, home of Puzzle #5 `puzzle_al_observatory_orrery` -> answer: `star` / `starlight`)
+  - `loc_al_bell_crypt` (Crypt of the Muted Bells - Ossuary Bastions, guarded by Boss #6 `creature_al_boss_bell_mender`)
+- **Dedicated 3-Part Crafting Side Quest Line (Master Crucible-Smith Orla Vane-Kin, `npc_al_master_orla`):**
+  1. `quest_al_craft_01_cold_hearth` (*The Cold Crucible*) - Craft any item (`ITEM_CRAFTED` event) to earn `item_al_kit_clockwork` & Orla's Unstamped Forge-Mark.
+  2. `quest_al_craft_02_amber_vein` (*Resin of the Deep Slag*) - Tap the Ancient Pitch Cistern (`obj_al_pitch_cistern`), perform any Field Combination (`ITEM_COMBINED` event), and choose whether to share surplus pitch with Dara's quarry families (+Mercy), keep it independent, or auction vein rights to Mintmaster Gideon (+Toll & +90 coin).
+  3. `quest_al_craft_03_masterwork_seal` (*The Unstamped Masterwork*) - Recover `mat_al_fulgurite_silver` (from `puzzle_al_observatory_orrery`) & `mat_al_muted_bell_shard` (from `loc_al_bell_crypt`) to forge your choice of legendary relic: **Dawn-Tempered Fulgurite Sabre** (`item_al_crucible_masterwork_blade`) OR **Sovereign Crucible Aegis-Lantern** (`item_al_crucible_aegis_lantern`).
+- **2 Additional Exploration Side Quests:**
+  - `quest_al_side_muted_belfry` (*Songs of the Buried Bronze* - Bell-Scribe Cassian `npc_al_scribe_cassian`, merchant at Bellwright Square -> defeat Bell-Mender Automaton & return Pre-Toll Tuning-Fork).
+  - `quest_al_side_observatory_charts` (*Star-Maps of the Pre-Toll Sky* - Astronomer Vael `npc_al_astronomer_vael` at Glass Conservatory -> recover Pre-Chancery Astral Star-Chart from `loc_al_salt_observatory`).
+- **Major Crafting Expansion:**
+  - **6th Profession:** `al_clockwork_artifice` (*Clockwork & Lantern Artifice*, requires `item_al_kit_clockwork`).
+  - **6 New Materials (20 total):** Tempered Kiln-Glass, Cinder-Pitch Resin, Tempered Brass Mainsprings, Mnemonic Prism-Shard, Fulgurite-Silver Ingot, Muted Bell-Alloy Shard.
+  - **12 New Concealed Templates (34 total):** Quarryman's Halberd, Furnace-Mask Greathelm, Censer-Bell Flail, Resonant Bell-Pauldrons, Salt-Strider Greaves, Smuggler's Rigging Belt, Cinder-Pitch Flash Flask, Lucid Memory Draught, Mnemonic Prism Focus, Clockwork Tally-Repeater, Brass Threshold Chronometer, Artificer's Aether-Lantern.
+  - **5 New Field Combinations (12 total):** Kiln-Glass Cutlass inlay, Prismatic Threshold Lantern, Pitch-Sealed Frontier Oilskin, Bell-Dust Resonant Balm, Calibrated Masterwork Caliper.
+- **2 Additional Campaign Spells (10 Campaign / 27 Total):** `al_spell_crucible_temper` (Abjuration self Ward + AC/Attack buff) & `al_spell_prismatic_refraction` (Divination 2-target radiant strike stripping Guard & lowering AC).
 
 ---
 

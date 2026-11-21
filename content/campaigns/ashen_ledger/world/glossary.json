@@ -352,6 +352,58 @@
       ],
       "simpleEnglish": "Subterranean mirror-cistern in the Threshold Abyss holding centuries of confiscated mortal memories.",
       "explanation": "Subterranean mirror-cistern in the Threshold Abyss holding centuries of confiscated mortal memories."
+    },
+    {
+      "key": "kiln_glass",
+      "name": "Tempered Kiln-Glass",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Tempered Kiln-Glass",
+        "Kiln-Glass"
+      ],
+      "simpleEnglish": "Volcanic amber-black slag glass prized by Crucible smiths for razor inlays and heat-resistant foci.",
+      "explanation": "Volcanic amber-black slag glass prized by Crucible smiths for razor inlays and heat-resistant foci."
+    },
+    {
+      "key": "cinder_pitch",
+      "name": "Cinder-Pitch Resin",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Cinder-Pitch Resin",
+        "Cinder-Pitch"
+      ],
+      "simpleEnglish": "Luminous black-gold resin weeping from the Amber-Vein Catacombs; waterproofs oilskins and fuels alchemy.",
+      "explanation": "Luminous black-gold resin weeping from the Amber-Vein Catacombs; waterproofs oilskins and fuels alchemy."
+    },
+    {
+      "key": "fulgurite_silver",
+      "name": "Fulgurite-Silver",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Fulgurite-Silver"
+      ],
+      "simpleEnglish": "Lightning-veined silver formed atop the Shattered Salt-Observatory; the premier alloy for masterwork gear.",
+      "explanation": "Lightning-veined silver formed atop the Shattered Salt-Observatory; the premier alloy for masterwork gear."
+    },
+    {
+      "key": "muted_bell_alloy",
+      "name": "Muted Bell-Alloy",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Muted Bell-Alloy"
+      ],
+      "simpleEnglish": "Ancient pre-Chancery bronze buried in the Crypt of the Muted Bells, resonant against toll-magic.",
+      "explanation": "Ancient pre-Chancery bronze buried in the Crypt of the Muted Bells, resonant against toll-magic."
+    },
+    {
+      "key": "clockwork_artifice",
+      "name": "Clockwork Artifice",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Clockwork Artifice"
+      ],
+      "simpleEnglish": "The craft of assembling brass repeaters, chronometers, and prismatic threshold lanterns from salvaged mainsprings.",
+      "explanation": "The craft of assembling brass repeaters, chronometers, and prismatic threshold lanterns from salvaged mainsprings."
     }
   ]
 }

@@ -49,6 +49,16 @@
       "governingSkill": "mythology_lore",
       "requiredToolkitId": "item_al_kit_scribing",
       "description": "Inscribe mnemonic rings, arcane focus staves, spirit-wards, and threshold talismans."
+    },
+    {
+      "id": "al_clockwork_artifice",
+      "name": "Clockwork & Lantern Artifice",
+      "icon": "⚙️",
+      "governingAttribute": "intelligence",
+      "secondaryAttribute": "agility",
+      "governingSkill": "sleight_of_hand",
+      "requiredToolkitId": "item_al_kit_clockwork",
+      "description": "Assemble mechanical repeaters, prismatic threshold lanterns, brass chronometers, and spring-loaded frontier rigs."
     }
   ]
 }
