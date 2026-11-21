@@ -194,7 +194,21 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     assert.ok(p.feats.includes('master_artificer'), 'Level 3 feat saved onto character');
 
     // Verify modular gameplay integration across systems:
-    // A. Magic capacity & spell power (arcane_reservoir + spellweaver_focus)
+    // A. Multi-rank feat support (master_artificer maxRanks: 2) & crafting breakdown unification
+    const craftProf = engine.getCampaignProfessions()[0];
+    const craftBk1 = engine.getCraftingSkillBreakdown(craftProf, 0);
+    assert.strictEqual(craftBk1.featBonus, 2, 'Rank 1 Master Artificer adds +2 inside getCraftingSkillBreakdown');
+    assert.strictEqual(engine.getFeatRank('master_artificer'), 1);
+    assert.ok(engine.getAvailableFeats(6).some(f => f.id === 'master_artificer'), 'rankable feat remains eligible until maxRanks');
+    p.feats.push('master_artificer');
+    assert.strictEqual(engine.getFeatRank('master_artificer'), 2);
+    assert.strictEqual(engine.getCraftingSkillBreakdown(craftProf, 0).featBonus, 4, 'Rank 2 Master Artificer scales to +4 crafting bonus');
+    assert.strictEqual(engine.getAvailableFeats(6).some(f => f.id === 'master_artificer'), false, 'rankable feat blocked once maxRanks reached');
+    // Unintended extra pushes beyond maxRanks are capped safely
+    p.feats.push('master_artificer');
+    assert.strictEqual(engine.getFeatEffectSum('craftingBonus'), 4, 'getFeatEffectSum strictly caps effect at maxRanks');
+
+    // B. Magic capacity & spell power (arcane_reservoir + spellweaver_focus)
     p.attributes.wisdom = 14;
     p.attributes.intelligence = 14;
     p.skills.mythology_lore = 3;
@@ -297,6 +311,12 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     const greekCamp = engine.campaigns.get('campaign_greek_mythology');
     const greekTheme = engine.applyCampaignTheme(greekCamp);
     assert.strictEqual(greekTheme.accent, defaults.accent, 'switching campaigns cleanly resets theme to Greek default');
+
+    // Verify all extended --theme-* CSS custom properties are actively consumed in stylesheets
+    const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+    ['--theme-heading', '--theme-button-bg', '--theme-button-hover', '--theme-nav-active', '--theme-success', '--theme-warning', '--theme-error', '--theme-notification'].forEach(tok => {
+      assert.ok(html.includes(`var(${tok})`), `CSS must actively consume ${tok}`);
+    });
   });
 
   // ---------------------------------------------------------------------------
@@ -450,7 +470,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // 9. Part 11: Wait & Time Advancement Feature
   // ---------------------------------------------------------------------------
   await test('Part 11 Wait & Time Advancement: advances clock & scheduled events with ZERO healing/rest/item loss, blocked in combat', async () => {
-    const { engine } = await bootCampaign('campaign_greek_mythology');
+    const { env, engine } = await bootCampaign('campaign_greek_mythology');
     const p = engine.state.player;
     const w = engine.state.worldState;
 
@@ -484,9 +504,11 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     assert.strictEqual(engine.executeWait(0).success, false, '0 hours rejected');
     assert.strictEqual(engine.executeWait(48).success, false, '>24 hours rejected');
 
-    // Strictly blocked during active combat
+    // Strictly blocked during active combat (both engine logic and Story header button state)
     engine.startCombat(engine.getCreature('creature_cithaeron_wolf'), { encounterId: 'enc_fissure_beast' });
     assert.ok(engine.combatSession && !engine.combatSession.ended, 'combat session is active');
+    engine.renderHUD();
+    assert.strictEqual(env.el('btn-story-wait').disabled, true, 'Story Wait button disables visually during active combat');
     const duringCombat = engine.executeWait(2);
     assert.strictEqual(duringCombat.success, false, 'Wait blocked during active combat');
     assert.strictEqual(duringCombat.blocked, true);

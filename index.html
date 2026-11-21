@@ -41,9 +41,9 @@
       --shadow-depth: 0 8px 24px rgba(0, 0, 0, 0.7);
       --shadow-gold: 0 0 15px rgba(217, 173, 82, 0.25);
       --theme-heading: #d9ad52;
-      --theme-button-bg: linear-gradient(180deg, #332a1d 0%, #1d1811 100%);
-      --theme-button-hover: #473926;
-      --theme-nav-active: rgba(217, 173, 82, 0.16);
+      --theme-button-bg: linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%);
+      --theme-button-hover: var(--bronze-bright);
+      --theme-nav-active: linear-gradient(180deg, var(--bronze-dark) 0%, #3d2f13 100%);
       --theme-success: #3f8554;
       --theme-warning: #e0be36;
       --theme-error: #d9532e;
@@ -187,7 +187,7 @@
 
     .nav-btn.active {
       color: var(--parchment);
-      background: linear-gradient(180deg, var(--bronze-dark) 0%, #3d2f13 100%);
+      background: var(--theme-nav-active);
       border-color: var(--bronze-bright);
       box-shadow: var(--shadow-gold);
     }
@@ -860,8 +860,8 @@
 
     .toast-card {
       pointer-events: auto;
-      background: #17161d;
-      border: 1px solid #3d3627;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-meander);
       border-radius: 5px;
       padding: 0.65rem 0.9rem;
       box-shadow: 0 6px 18px rgba(0,0,0,0.7), 0 0 10px rgba(0,0,0,0.5);
@@ -888,18 +888,23 @@
     }
 
     .toast-card.toast-positive {
-      border-left: 4px solid var(--bronze-bright);
-      background: linear-gradient(90deg, rgba(224, 190, 54, 0.12) 0%, #17161d 100%);
+      border-left: 4px solid var(--theme-success);
+      background: linear-gradient(90deg, rgba(63, 133, 84, 0.14) 0%, var(--bg-surface) 100%);
+    }
+
+    .toast-card.toast-warning {
+      border-left: 4px solid var(--theme-warning);
+      background: linear-gradient(90deg, rgba(224, 190, 54, 0.14) 0%, var(--bg-surface) 100%);
     }
 
     .toast-card.toast-negative {
-      border-left: 4px solid var(--terracotta-bright);
-      background: linear-gradient(90deg, rgba(217, 83, 46, 0.14) 0%, #17161d 100%);
+      border-left: 4px solid var(--theme-error);
+      background: linear-gradient(90deg, rgba(217, 83, 46, 0.14) 0%, var(--bg-surface) 100%);
     }
 
     .toast-card.toast-info {
-      border-left: 4px solid var(--lapis-bright);
-      background: linear-gradient(90deg, rgba(74, 122, 189, 0.14) 0%, #17161d 100%);
+      border-left: 4px solid var(--theme-notification);
+      background: linear-gradient(90deg, rgba(74, 122, 189, 0.14) 0%, var(--bg-surface) 100%);
     }
 
     .toast-icon {
@@ -1102,7 +1107,7 @@
       font-size: 0.8rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--bronze-bright);
+      color: var(--theme-heading);
       border-bottom: 1px solid #2d2820;
       padding-bottom: 0.35rem;
       margin-bottom: 0.55rem;
@@ -2572,7 +2577,7 @@
 
     /* Classical buttons */
     .btn-classical {
-      background: linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%);
+      background: var(--theme-button-bg);
       border: 1px solid var(--bronze-bright);
       color: #17140e;
       font-family: var(--font-heading);
@@ -2587,7 +2592,8 @@
     }
 
     .btn-classical:hover {
-      filter: brightness(1.2);
+      border-color: var(--theme-button-hover);
+      filter: brightness(1.18);
     }
 
     /* =========================================================================
@@ -4122,9 +4128,9 @@
               </radialGradient>
             </defs>
 
-            <rect width="800" height="650" fill="url(#map-vignette)"/>
-            <rect x="15" y="15" width="770" height="620" fill="none" stroke="#3d3323" stroke-width="2"/>
-            <rect x="20" y="20" width="760" height="610" fill="none" stroke="#26221c" stroke-width="1" stroke-dasharray="8, 4"/>
+            <rect id="map-bg-rect" x="0" y="0" width="800" height="650" fill="url(#map-vignette)"/>
+            <rect id="map-frame-outer" x="15" y="15" width="770" height="620" fill="none" stroke="#3d3323" stroke-width="2"/>
+            <rect id="map-frame-inner" x="20" y="20" width="760" height="610" fill="none" stroke="#26221c" stroke-width="1" stroke-dasharray="8, 4"/>
 
             <path d="M 120 180 Q 300 120 540 160 T 720 280" fill="none" stroke="#25242e" stroke-width="12" stroke-linecap="round"/>
             <path d="M 280 220 Q 420 170 600 240" fill="none" stroke="#201f26" stroke-width="8" stroke-linecap="round"/>
@@ -7033,9 +7039,9 @@
           textPrimary: "#e6e3dd",
           textParchment: "#f2ebd9",
           textMuted: "#99958d",
-          buttonBg: "linear-gradient(180deg, #332a1d 0%, #1d1811 100%)",
-          buttonHover: "#473926",
-          navActive: "rgba(217, 173, 82, 0.16)",
+          buttonBg: "linear-gradient(180deg, var(--bronze) 0%, var(--bronze-dark) 100%)",
+          buttonHover: "var(--bronze-bright)",
+          navActive: "linear-gradient(180deg, var(--bronze-dark) 0%, #3d2f13 100%)",
           success: "#3f8554",
           warning: "#e0be36",
           error: "#d9532e",
@@ -7901,10 +7907,11 @@
             name: "Arcane Reservoir",
             category: "magic",
             minLevel: 3,
+            maxRanks: 2,
             minAttributes: { wisdom: 12 },
             systems: ["magic", "combat"],
             effects: { spellCapacityBonus: 1, spellPowerBonus: 1 },
-            desc: "Deepened mystical endurance: +1 Combat Spell Capacity per battle and +1 Spell Power."
+            desc: "Deepened mystical endurance: +1 Combat Spell Capacity per battle and +1 Spell Power per rank (up to 2 ranks)."
           },
           spellweaver_focus: {
             id: "spellweaver_focus",
@@ -7935,9 +7942,10 @@
             name: "Master Artificer",
             category: "crafting",
             minLevel: 3,
+            maxRanks: 2,
             systems: ["crafting"],
             effects: { craftingBonus: 2, craftingValueMult: 0.15 },
-            desc: "Honed workshop technique: +2 bonus on all crafting checks and +15% appraisal value on items you forge."
+            desc: "Honed workshop technique: +2 bonus on all crafting checks and +15% appraisal value per rank (up to 2 ranks)."
           },
           catalyst_alchemist: {
             id: "catalyst_alchemist",
@@ -8144,38 +8152,54 @@
         };
       }
 
+      getFeatRank(featId) {
+        const p = (this.state && this.state.player) || {};
+        if (!Array.isArray(p.feats) || !featId) return 0;
+        return p.feats.filter(id => id === featId).length;
+      }
+
       isFeatActive(featId) {
         const p = (this.state && this.state.player) || {};
         if (!Array.isArray(p.feats) || !p.feats.includes(featId)) return false;
         return this.checkFeatEligibility(featId).eligible;
       }
 
-      /** Sum a numeric effect across all active feats on the player (modular gameplay hook). */
+      /** Sum a numeric effect across all active feats on the player (respecting maxRanks caps). */
       getFeatEffectSum(effectKey) {
         const p = (this.state && this.state.player) || {};
         if (!Array.isArray(p.feats) || p.feats.length === 0) return 0;
         const defs = this.getHeroicFeatDefinitions();
+        const counts = {};
+        p.feats.forEach(fid => { counts[fid] = (counts[fid] || 0) + 1; });
         let total = 0;
-        p.feats.forEach(fid => {
+        Object.entries(counts).forEach(([fid, rawCount]) => {
           const f = defs[fid];
           if (!f || !f.effects || !this.isFeatActive(fid)) return;
           const v = Number(f.effects[effectKey]);
-          if (Number.isFinite(v)) total += v;
+          if (Number.isFinite(v)) {
+            const cappedRanks = Math.min(rawCount, Math.max(1, Number(f.maxRanks) || 1));
+            total += v * cappedRanks;
+          }
         });
         return total;
       }
 
-      /** Sum skill-specific bonuses granted by all active feats. */
+      /** Sum skill-specific bonuses granted by all active feats (respecting maxRanks caps). */
       getFeatSkillBonus(skillName) {
         const p = (this.state && this.state.player) || {};
         if (!Array.isArray(p.feats) || p.feats.length === 0 || !skillName) return 0;
         const defs = this.getHeroicFeatDefinitions();
+        const counts = {};
+        p.feats.forEach(fid => { counts[fid] = (counts[fid] || 0) + 1; });
         let total = 0;
-        p.feats.forEach(fid => {
+        Object.entries(counts).forEach(([fid, rawCount]) => {
           const f = defs[fid];
           if (!f || !f.effects || !f.effects.skillBonuses || !this.isFeatActive(fid)) return;
           const v = Number(f.effects.skillBonuses[skillName]);
-          if (Number.isFinite(v)) total += v;
+          if (Number.isFinite(v)) {
+            const cappedRanks = Math.min(rawCount, Math.max(1, Number(f.maxRanks) || 1));
+            total += v * cappedRanks;
+          }
         });
         return total;
       }
@@ -8183,7 +8207,6 @@
       getAvailableFeats(levelOverride = null) {
         const defs = this.getHeroicFeatDefinitions();
         const p = (this.state && this.state.player) || {};
-        const playerFeats = Array.isArray(p.feats) ? p.feats : [];
         if (levelOverride === null && this.levelUpState && this.levelUpState.grantsFeat === false) {
           return [];
         }
@@ -8196,13 +8219,15 @@
         if (this.levelUpState && Array.isArray(this.levelUpState.selectedSkills)) {
           this.levelUpState.selectedSkills.forEach(sk => { projSkills[sk] = (projSkills[sk] || 0) + 1; });
         }
-        return Object.values(defs).filter(f => !playerFeats.includes(f.id) && this.checkFeatEligibility(f, targetLevel, projAttrs, projSkills).eligible);
+        return Object.values(defs).filter(f => {
+          const maxR = Math.max(1, Number(f.maxRanks) || 1);
+          return this.getFeatRank(f.id) < maxR && this.checkFeatEligibility(f, targetLevel, projAttrs, projSkills).eligible;
+        });
       }
 
       getAllFeatsWithEligibility() {
         const defs = this.getHeroicFeatDefinitions();
         const p = (this.state && this.state.player) || {};
-        const playerFeats = Array.isArray(p.feats) ? p.feats : [];
         const targetLevel = this.levelUpState ? this.levelUpState.nextLevel : ((p.level || 1) + 1);
         const projAttrs = Object.assign({}, p.attributes || {});
         if (this.levelUpState && this.levelUpState.selectedAttr && projAttrs[this.levelUpState.selectedAttr] !== undefined) {
@@ -8213,8 +8238,8 @@
           this.levelUpState.selectedSkills.forEach(sk => { projSkills[sk] = (projSkills[sk] || 0) + 1; });
         }
         return Object.values(defs)
-          .filter(f => !playerFeats.includes(f.id))
-          .map(f => Object.assign({}, f, { eligibility: this.checkFeatEligibility(f, targetLevel, projAttrs, projSkills) }))
+          .filter(f => this.getFeatRank(f.id) < Math.max(1, Number(f.maxRanks) || 1))
+          .map(f => Object.assign({}, f, { currentRank: this.getFeatRank(f.id), maxRanks: Math.max(1, Number(f.maxRanks) || 1), eligibility: this.checkFeatEligibility(f, targetLevel, projAttrs, projSkills) }))
           .sort((a, b) => (b.eligibility.eligible - a.eligibility.eligible) || ((a.minLevel || 1) - (b.minLevel || 1)) || a.name.localeCompare(b.name));
       }
 
@@ -8641,10 +8666,12 @@
           p.skills[sk] = (p.skills[sk] || 0) + 1;
         });
 
-        // Feat boost
+        // Feat boost (prevents duplicates unless feat supports multiple ranks up to maxRanks)
         if (s.selectedFeat) {
           if (!p.feats) p.feats = [];
-          if (!p.feats.includes(s.selectedFeat)) {
+          const fDef = (this.getHeroicFeatDefinitions() || {})[s.selectedFeat];
+          const maxR = Math.max(1, Number(fDef && fDef.maxRanks) || 1);
+          if (this.getFeatRank(s.selectedFeat) < maxR) {
             p.feats.push(s.selectedFeat);
           }
         }
@@ -9073,13 +9100,15 @@
         const secMod = deps.secondary ? this.getModifier(this.getEffectiveAttribute(deps.secondary)) : 0;
         const secondaryBonus = secMod > 0 ? Math.ceil(secMod / 2) : 0;
         const mgBonus = minigameBonus !== null ? minigameBonus : (this.craftingMinigameBonus || 0);
+        const featBonus = this.getFeatEffectSum ? this.getFeatEffectSum("craftingBonus") : 0;
         return {
           primary: deps.primary,
           secondary: deps.secondary,
           primaryMod,
           secondaryBonus,
           minigameBonus: mgBonus,
-          totalBonus: primaryMod + secondaryBonus + mgBonus
+          featBonus,
+          totalBonus: primaryMod + secondaryBonus + mgBonus + featBonus
         };
       }
 
@@ -10908,7 +10937,9 @@
         materials.forEach(m => {
           if (!m || !m.id) addFinding("error", "Crafting", "Material entry missing 'id'.", "Add a unique 'id' to each material.");
           else if (!m.name) addFinding("error", "Crafting", `Material '${m.id}' missing 'name'.`, "Add a display 'name' to this material.");
-          else passCheck();
+          else if (!m.properties || typeof m.properties !== "object") {
+            addFinding("warning", "Crafting", `Material '${m.id}' is missing a 'properties' object (hardness/durability/flexibility/magicalAffinity).`, "Define material properties so concealed crafting can evaluate its form accurately.", { field: `materials[${m.id}].properties`, expected: "properties object", actual: String(m.properties) });
+          } else passCheck();
         });
 
         // 17. Optional Campaign Soundtrack URL Sanity Check
@@ -12444,7 +12475,8 @@
         const countFactor = 1 + 0.35 * Math.log2(Math.max(1, defeated.length));
         const repeatMult = isRepeatEncounter ? 0.5 : 1.0;
         const baseCoinsByRank = [2, 5, 10, 18, 30, 48][Math.max(0, Math.min(5, effectiveRank))] || 8;
-        drachmaeWon = Math.max(1, Math.round(baseCoinsByRank * countFactor * (hasBoss ? 1.35 : 1.0) * repeatMult));
+        const encFeatCoinMult = 1 + (this.getFeatEffectSum ? this.getFeatEffectSum("lootCoinMult") : 0);
+        drachmaeWon = Math.max(1, Math.round(baseCoinsByRank * countFactor * (hasBoss ? 1.35 : 1.0) * repeatMult * encFeatCoinMult));
 
         // 1. Authored encounter-specific bonus loot table or encounterLoot entries (if present)
         if (encDef && encDef.bonusLootTableId) {
@@ -20057,6 +20089,11 @@
           this.zoomMap(factor, pt.x, pt.y);
         }, { passive: false });
 
+        wrap.addEventListener("dblclick", (e) => {
+          const pt = clientToSvg(e.clientX, e.clientY);
+          this.zoomMap(1.35, pt.x, pt.y);
+        });
+
         let dragging = false;
         let startClientX = 0, startClientY = 0;
         let startViewX = 0, startViewY = 0;
@@ -20190,7 +20227,28 @@
         if (!svgEdges || !svgNodes) return;
 
         this.setupMapInteractions();
-        this.ensureMapViewState();
+        const mvBounds = this.ensureMapViewState();
+        const bgRect = document.getElementById("map-bg-rect");
+        const outerRect = document.getElementById("map-frame-outer");
+        const innerRect = document.getElementById("map-frame-inner");
+        if (bgRect && typeof bgRect.setAttribute === "function") {
+          bgRect.setAttribute("x", String(mvBounds.baseX));
+          bgRect.setAttribute("y", String(mvBounds.baseY));
+          bgRect.setAttribute("width", String(mvBounds.baseW));
+          bgRect.setAttribute("height", String(mvBounds.baseH));
+        }
+        if (outerRect && typeof outerRect.setAttribute === "function") {
+          outerRect.setAttribute("x", String(mvBounds.baseX + 15));
+          outerRect.setAttribute("y", String(mvBounds.baseY + 15));
+          outerRect.setAttribute("width", String(Math.max(100, mvBounds.baseW - 30)));
+          outerRect.setAttribute("height", String(Math.max(100, mvBounds.baseH - 30)));
+        }
+        if (innerRect && typeof innerRect.setAttribute === "function") {
+          innerRect.setAttribute("x", String(mvBounds.baseX + 20));
+          innerRect.setAttribute("y", String(mvBounds.baseY + 20));
+          innerRect.setAttribute("width", String(Math.max(90, mvBounds.baseW - 40)));
+          innerRect.setAttribute("height", String(Math.max(90, mvBounds.baseH - 40)));
+        }
         svgEdges.innerHTML = "";
         svgNodes.innerHTML = "";
         this._mapLabelEntries = [];
@@ -22115,6 +22173,13 @@
           document.getElementById("hud-hero-xp").innerText = `${p.xp || 0} / ${p.xpNext || this.getXPForNextLevel(p.level || 1)}`;
         }
 
+        const waitBtn = document.getElementById("btn-story-wait");
+        if (waitBtn && this.canWaitNow) {
+          const wCheck = this.canWaitNow();
+          waitBtn.disabled = !wCheck.allowed;
+          waitBtn.style.opacity = wCheck.allowed ? "" : "0.45";
+        }
+
         const envEl = document.getElementById("story-location-weather");
         if (envEl) {
           const env = this.describeEnvironment();
@@ -22684,11 +22749,15 @@
             featsContainer.innerHTML = `<span style="font-style: italic; color: var(--marble-dim);">No heroic feats unlocked yet. Ascend in level to claim divine boons of the immortals.</span>`;
           } else {
             const featDefs = this.getHeroicFeatDefinitions();
-            featsContainer.innerHTML = p.feats.map(fId => {
+            const featCounts = new Map();
+            p.feats.forEach(fId => featCounts.set(fId, (featCounts.get(fId) || 0) + 1));
+            featsContainer.innerHTML = Array.from(featCounts.entries()).map(([fId, count]) => {
               const f = featDefs[fId] || { name: fId, desc: "" };
+              const maxR = Math.max(1, Number(f.maxRanks) || 1);
+              const rankTag = (maxR > 1 || count > 1) ? ` <span style="font-size:0.72rem; color:var(--bronze-bright);">(Rank ${count}/${maxR})</span>` : "";
               return `
-                <div style="margin-bottom: 0.45rem; background: rgba(224, 190, 54, 0.08); padding: 0.35rem 0.55rem; border-left: 2px solid #e0be36; border-radius: 2px;">
-                  <strong style="color: #ffe680;">${f.name}:</strong> <span style="font-size: 0.8rem; color: #ded7c6;">${f.desc}</span>
+                <div style="margin-bottom: 0.45rem; background: rgba(224, 190, 54, 0.08); padding: 0.35rem 0.55rem; border-left: 2px solid var(--bronze-bright); border-radius: 2px;">
+                  <strong style="color: var(--theme-heading);">${f.name}${rankTag}:</strong> <span style="font-size: 0.8rem; color: var(--parchment);">${f.desc}</span>
                 </div>
               `;
             }).join("");
@@ -23691,6 +23760,7 @@
           <div style="font-size: 0.82rem; line-height: 1.5;">
             <div>Primary (${cb.primary.toUpperCase()}): <strong style="color:var(--laurel-bright);">${cb.primaryMod >= 0 ? "+" + cb.primaryMod : cb.primaryMod}</strong></div>
             ${cb.secondary ? `<div>Secondary (${cb.secondary.toUpperCase()}): <strong style="color:var(--lapis-bright);">+${cb.secondaryBonus}</strong></div>` : ""}
+            ${cb.featBonus ? `<div>Artisan Feat Bonus: <strong style="color:#ffe680;">+${cb.featBonus}</strong></div>` : ""}
             <div>Forge Strike Bonus: <strong style="color:${cb.minigameBonus > 0 ? '#f5a623' : 'var(--marble-dim)'};">+${cb.minigameBonus}</strong></div>
             <div style="border-top: 1px solid var(--border-meander); padding-top: 0.3rem; margin-top: 0.3rem;">
               Total Crafting Bonus: <strong style="color:var(--bronze-bright);">${cb.totalBonus >= 0 ? "+" + cb.totalBonus : cb.totalBonus}</strong>
@@ -23777,11 +23847,10 @@
         this.performActivity("crafting", { craftingMinutes: template.craftingMinutes || 120 });
 
         const cb = this.getCraftingSkillBreakdown(prof, minigameBonus);
-        const featCraftBonus = this.getFeatEffectSum ? this.getFeatEffectSum("craftingBonus") : 0;
         const featQualityShift = this.getFeatEffectSum ? this.getFeatEffectSum("craftingQualityMargin") : 0;
         const baseDC = template.baseDC || 12;
 
-        const roll = this.resolveD20({ modifier: cb.totalBonus + featCraftBonus, dc: baseDC });
+        const roll = this.resolveD20({ modifier: cb.totalBonus, dc: baseDC });
         const totalRoll = roll.total;
         const fx = this.applyCriticalEffects("crafting", roll);
 
@@ -24232,7 +24301,7 @@
         }
 
         const current = target === "p0" ? wb.primary[0] : target === "p1" ? wb.primary[1] : wb.supplements[Number(target.slice(4))];
-        if (this.countOnWorkbench(itemId) - (current === itemId ? 1 : 0) + 1 > this.getItemQuantity(itemId)) return fail(`You have no more ${name} to put down.`);
+        if (this.countOnWorkbench(itemId) - (current === itemId ? 1 : 0) + 1 > this.getItemQuantity(itemId, { excludeEquipped: true })) return fail(`You have no more ${name} to put down.`);
 
         if (target === "p0") wb.primary[0] = itemId;
         else if (target === "p1") wb.primary[1] = itemId;
@@ -24280,7 +24349,7 @@
         const prof = this.getWorkbenchProfession();
         if (!prof) return [];
         return this.getCampaignMaterials()
-          .filter(m => this.isMaterialForProfession(m.id, prof) && this.getItemQuantity(m.id) - this.countOnWorkbench(m.id) > 0)
+          .filter(m => this.isMaterialForProfession(m.id, prof) && this.getItemQuantity(m.id, { excludeEquipped: true }) - this.countOnWorkbench(m.id) > 0)
           .sort((a, b) => ((b.properties || {}).magicalAffinity || 0) - ((a.properties || {}).magicalAffinity || 0));
       }
 

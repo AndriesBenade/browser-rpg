@@ -8,6 +8,17 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 30 - 2026-11-21 (Phase Two verification audit & polish: theme CSS token wiring, multi-rank feats, crafting feat unification, dynamic large-map SVG bounds & workbench/wait refinements)
+* **Collaborator / Model**: User & Antigravity
+* **Audit Findings Repaired (`index.html`, `tests/phase2_systems_tests.js`)**:
+  * **Campaign UI Theme Token Consumption**: Wired all 8 extended `--theme-*` CSS custom properties (`--theme-heading`, `--theme-button-bg`, `--theme-button-hover`, `--theme-nav-active`, `--theme-success`, `--theme-warning`, `--theme-error`, `--theme-notification`) directly into `.nav-btn.active`, `.widget-title`, `.btn-classical`, `.btn-classical:hover`, and `.toast-card` variants while preserving identical default Greek visuals.
+  * **Multi-Rank Feat Support & Crafting Unification**: Added `getFeatRank(featId)` and `maxRanks` enforcement across `getAvailableFeats()`, `getAllFeatsWithEligibility()`, `confirmLevelUp()`, `getFeatEffectSum()`, `getFeatSkillBonus()`, and `renderCharacterSheet()` (preventing unintended stacking beyond `maxRanks`, rendering `Rank X/Y` cleanly without duplicate cards; enabled `maxRanks: 2` on `master_artificer` and `arcane_reservoir`). Unified `craftingBonus` feat effects inside `getCraftingSkillBreakdown()` so the Forge header, preview, difficulty indicator, workbench roll display, and `craftItem()` roll all match 100%. Wired `lootCoinMult` into `resolveEncounterCompletionLoot()`.
+  * **World Map Large-Scale SVG Frame & Double-Click Zoom**: Dynamically sized `#map-bg-rect`, `#map-frame-outer`, and `#map-frame-inner` in `renderMap()` to match `computeMapBounds()` so maps larger than `800x650` never clip at fixed edges, and added double-click zoom-in (`dblclick`).
+  * **Crafting Workbench, Validator & Wait UI Polish**: Aligned `placeOnWorkbench()` and `getWorkbenchCandidates()` with `{ excludeEquipped: true }` multi-stack inventory checks, added material `properties` validation in `validateCampaign()`, and synced `#btn-story-wait.disabled` visually in `renderHUD()` during active combat.
+* **Verification**:
+  * Expanded [phase2_systems_tests.js](file:///c:/Users/Liza/Documents/browser-rpg/tests/phase2_systems_tests.js) to guard multi-rank feat caps, unified crafting breakdown, all 8 `--theme-*` CSS usages, and combat `#btn-story-wait` disabling.
+  * Full `npm test` passes **236 / 236** + `sync-embedded-content.js --check` (69 files in sync). Zero Unicode em dashes added.
+
 ### Session 29 - 2026-11-20 (Phase Two: Experience & Skill Progression Overhaul, Modular 3-Level Feat System, World Map Zoom/Pan, Campaign UI Themes, Soundtrack Embed, Crafting Fix, Verification Overhaul & Wait System)
 * **Collaborator / Model**: User & Antigravity
 * **Summary of Implemented Systems (`index.html`, `content/campaigns/northern_realms/campaign.json`, `documentation/`, `tests/phase2_systems_tests.js`)**:
