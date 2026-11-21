@@ -1,0 +1,25 @@
+{
+  "traits": [
+    {
+      "id": "trait_al_stubborn_memory",
+      "name": "Unbroken Memory",
+      "desc": "+2 on Mythology & Lore and Investigation checks to resist erasure."
+    },
+    {
+      "id": "trait_al_lantern_steady",
+      "name": "Steady Under Fog",
+      "desc": "+2 on Perception and Tracking across dim frontier lands."
+    },
+    {
+      "id": "trait_al_hard_bargainer",
+      "name": "Toll-Hardened",
+      "desc": "10% trade discount with merchants and +1 Persuasion.",
+      "merchantDiscount": 0.1
+    },
+    {
+      "id": "trait_al_cinder_nerve",
+      "name": "Cinder-Tempered Nerve",
+      "desc": "+2 on Endurance and Athletics checks in harsh environments."
+    }
+  ]
+}

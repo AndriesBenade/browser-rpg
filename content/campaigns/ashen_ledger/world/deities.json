@@ -1,0 +1,32 @@
+{
+  "deities": [
+    {
+      "id": "deity_al_vesper_oar",
+      "key": "vesper_oar",
+      "name": "The Quiet Oar",
+      "domain": "True Rest, Passage & Unbroken Promises",
+      "description": "The older principle of the crossing, revered by ferrymen and bellwrights who believe death was meant to grant peace rather than eternal labor."
+    },
+    {
+      "id": "deity_al_brass_scale",
+      "key": "brass_scale",
+      "name": "The Brass Scale",
+      "domain": "Order, Ledger-Law & Debt",
+      "description": "The civic idol of the Chancery of Scales: cold equilibrium, recorded obligation, and survival purchased through strict hierarchy."
+    },
+    {
+      "id": "deity_al_pale_lantern",
+      "key": "pale_lantern",
+      "name": "The Pale Lantern",
+      "domain": "Memory, Inquiry & Endurance",
+      "description": "Honored by frontier wardens and glass scholars who keep memory intact against the erasing salt-winds of the Reach."
+    },
+    {
+      "id": "deity_al_cinder_maw",
+      "key": "cinder_maw",
+      "name": "The Cinder Maw",
+      "domain": "Sacrifice, Ambition & Transmutation",
+      "description": "Whispered to by desperate alchemists and furnace barons who trade conscience and vitality for raw transmutative power."
+    }
+  ]
+}

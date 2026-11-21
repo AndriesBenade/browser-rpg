@@ -1,0 +1,1109 @@
+{
+  "dialogues": {
+    "dlg_al_ferryman_corvus": {
+      "speaker": "Oar-Keeper Corvus",
+      "nodes": {
+        "root": {
+          "text": "Rain beads along Corvus's tarred oilskin as he eyes your fractured brass tally. 'Unstamped, eh? The Chancery Auditors hate a broken number. Walk soft, traveler, and speak to Clerk Maren in the Customs Hall if you want to stay out of the Ash-Quarry.'",
+          "updateQuest": {
+            "questId": "quest_al_main_01_unstamped",
+            "objectiveId": "obj_speak_corvus"
+          },
+          "choices": [
+            {
+              "label": "Ask what happened to the old Ferry crossing.",
+              "target": "lore_crossing"
+            },
+            {
+              "label": "Offer to recover his stolen ferry-charm from the Drowned Piers.",
+              "condition": {
+                "questNotStarted": "quest_al_side_missing_oar"
+              },
+              "target": "start_oar"
+            },
+            {
+              "label": "Return his consecrated oar charm freely.",
+              "condition": {
+                "questActive": "quest_al_side_missing_oar",
+                "flag": "al_cleared_pier_ambush"
+              },
+              "target": "return_oar_good"
+            },
+            {
+              "label": "Leave the quay.",
+              "target": "exit"
+            }
+          ]
+        },
+        "lore_crossing": {
+          "text": "'Centuries back, a dead soul crossed the Mist-Weir and stepped into Quiet. Then the Chancery bolted brass scales across the river and started taxing memory like coal. Some of us still remember the Quiet Oar.'",
+          "addJournalKnowledge": {
+            "id": "lore_al_quiet_oar",
+            "title": "The Quiet Oar",
+            "text": "Before Chancery coins and smoke, a simple wooden oar carried the dead to rest."
+          },
+          "choices": [
+            {
+              "label": "Thank Corvus and step back.",
+              "target": "root"
+            }
+          ]
+        },
+        "start_oar": {
+          "text": "'Black-Ledger cutthroats jumped my apprentice on the Drowned Piers and took my blessed oar-charm. Clear them out and bring it back, and I will share what I know of the Threshold.'",
+          "startQuest": "quest_al_side_missing_oar",
+          "choices": [
+            {
+              "label": "I will search the Drowned Piers.",
+              "target": "exit"
+            }
+          ]
+        },
+        "return_oar_good": {
+          "text": "Corvus clasps your wrist with calloused fingers. 'Honesty is rarer than quiet in Weir-Port. Keep the Charm of the Quiet Oar; it strengthens any invocation you cast.'",
+          "morality": {
+            "virtue": 12,
+            "hubris": 0,
+            "reason": "Returned Corvus's Oar Charm freely"
+          },
+          "giveItem": "item_al_talisman_first_oar",
+          "completeQuest": "quest_al_side_missing_oar",
+          "choices": [
+            {
+              "label": "Farewell, Corvus.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_clerk_maren": {
+      "speaker": "Clerk Maren Vance",
+      "nodes": {
+        "root": {
+          "text": "Clerk Maren glances past the swaying ash-lamps before leaning across her ink-stained desk. 'Your tally cracked on the weir. Keep it hidden! If an Auditor logs you as Unstamped, they will bind you to the Cinder Foundries for fifty years.'",
+          "updateQuest": {
+            "questId": "quest_al_main_01_unstamped",
+            "objectiveId": "obj_speak_maren"
+          },
+          "choices": [
+            {
+              "label": "Ask where you can learn the truth about your broken tally.",
+              "target": "point_archives"
+            },
+            {
+              "label": "[Positive Morality] Ask if the Quiet Reformers need help smuggling quarry families.",
+              "condition": {
+                "moralityBand": "positive",
+                "minMoralityScore": 15,
+                "questNotStarted": "quest_al_moral_pos_sanctuary"
+              },
+              "target": "start_pos_sanctuary"
+            },
+            {
+              "label": "Leave the Customs Hall.",
+              "target": "exit"
+            }
+          ]
+        },
+        "point_archives": {
+          "text": "'Go to Chief Archivist Solene in the Audit Archives. Tell her Maren sent you. And take care around Baron Vane's men in the Brass-Works.'",
+          "setFlags": {
+            "al_maren_vouched": true
+          },
+          "choices": [
+            {
+              "label": "I will seek out Archivist Solene.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_pos_sanctuary": {
+          "text": "Maren exhales in relief. 'Word of your mercy reached the clerks' hall. Take these stamped sanctuary writs to Prior Aldous in Bellwright Square before the bailiffs raid the Penitent Camp.'",
+          "startQuest": "quest_al_moral_pos_sanctuary",
+          "setFlags": {
+            "al_carrying_sanctuary_writs": true
+          },
+          "choices": [
+            {
+              "label": "I will deliver them safely to Prior Aldous.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_merchant_halda": {
+      "speaker": "Brine-Mother Halda",
+      "nodes": {
+        "root": {
+          "text": "'Steel, oilskin, whetstones, and foundry kits! Nothing stamped by the Chancery, everything paid in honest coin.'",
+          "choices": [
+            {
+              "label": "Ask about Lantern-Row rumors.",
+              "target": "rumor"
+            },
+            {
+              "label": "Leave the stall.",
+              "target": "exit"
+            }
+          ]
+        },
+        "rumor": {
+          "text": "'Furnace Baron Vane doubled ash-quotas again. Half the quarry crew is ready to strike at Penitent's Camp.'",
+          "choices": [
+            {
+              "label": "Good to know.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_innkeeper_bram": {
+      "speaker": "Bram of the Salt-Wick",
+      "nodes": {
+        "root": {
+          "text": "Bram ladles steaming barley broth into a tin mug. 'Warm hearth, no Auditors at the door. Rest your bones here whenever Weir-Port turns ugly.'",
+          "choices": [
+            {
+              "label": "[Foreclosure of the Docks] Demand the delinquent boardinghouse contracts for Vespera Null.",
+              "condition": {
+                "questActive": "quest_al_moral_neg_foreclosure"
+              },
+              "target": "foreclose_bram"
+            },
+            {
+              "label": "Thank Bram and move on.",
+              "target": "exit"
+            }
+          ]
+        },
+        "foreclose_bram": {
+          "text": "Bram's jaw hardens as you lay Vespera's black wax writ on the counter. 'So you sold your spine to the Black-Ledger. Take the slips and get out of my house!'",
+          "setFlags": {
+            "al_foreclosed_salt_wick": true
+          },
+          "morality": {
+            "virtue": 0,
+            "hubris": 10,
+            "reason": "Foreclosed on the Salt-Wick debtors"
+          },
+          "choices": [
+            {
+              "label": "Pocket the contracts and leave.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_broker_vespera": {
+      "speaker": "Broker Vespera Null",
+      "nodes": {
+        "root": {
+          "text": "Vespera turns a black wax seal between gloved fingers. 'Sentiment buys no fuel in Vesper-Threshold, traveler. Only leverage.'",
+          "choices": [
+            {
+              "label": "[Negative Morality] Ask about profitable Black-Ledger work.",
+              "condition": {
+                "moralityBand": "negative",
+                "maxMoralityScore": -15,
+                "questNotStarted": "quest_al_moral_neg_foreclosure"
+              },
+              "target": "start_neg_foreclosure"
+            },
+            {
+              "label": "Deliver the foreclosed Salt-Wick contracts.",
+              "condition": {
+                "questActive": "quest_al_moral_neg_foreclosure",
+                "flag": "al_foreclosed_salt_wick"
+              },
+              "target": "finish_neg_foreclosure"
+            },
+            {
+              "label": "Step away from the pier.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_neg_foreclosure": {
+          "text": "Vespera smiles thinly. 'Finally, someone who grasps arithmetic. Go to the Salt-Wick Boardinghouse, seize Bram's delinquent debtor slips, and bring them here for your cut.'",
+          "startQuest": "quest_al_moral_neg_foreclosure",
+          "choices": [
+            {
+              "label": "Consider it done.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_neg_foreclosure": {
+          "text": "'Clean, swift, and profitable. Take your coin and this Black-Ledger ring. If your ruthlessness deepens, Lord-Auctioneer Kestrel in the Velvet Court has an even larger contract.'",
+          "completeQuest": "quest_al_moral_neg_foreclosure",
+          "choices": [
+            {
+              "label": "Pleasure doing business.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_smuggler_rooks": {
+      "speaker": "Tallow-Jack Rooks",
+      "nodes": {
+        "root": {
+          "text": "Rooks tips his soot-stained cap beneath the blue cistern lamps. 'Need lockpicks, salt-cloaks, or a quiet fence for dockside finds?'",
+          "choices": [
+            {
+              "label": "Sell Corvus's river charm to the Freebooters instead of returning it.",
+              "condition": {
+                "questActive": "quest_al_side_missing_oar",
+                "flag": "al_cleared_pier_ambush"
+              },
+              "target": "fence_oar"
+            },
+            {
+              "label": "Leave the cistern.",
+              "target": "exit"
+            }
+          ]
+        },
+        "fence_oar": {
+          "text": "Rooks whistles low and counts out heavy silver. 'Smart move, friend. Sentiment never bought a warm coat.'",
+          "morality": {
+            "virtue": 0,
+            "hubris": 12,
+            "reason": "Sold Corvus's river charm to smugglers"
+          },
+          "giveDrachmae": 75,
+          "completeQuest": "quest_al_side_missing_oar",
+          "choices": [
+            {
+              "label": "Pocket the coin.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_baron_vane": {
+      "speaker": "Furnace Baron Orlov Vane",
+      "nodes": {
+        "root": {
+          "text": "Baron Vane wipes brass spectacles against his coat. 'Everyone curses the Cinder Foundries until the city lanterns flicker out and the Pale Reach creeps over the walls. Are you here to preach, or to be useful?'",
+          "choices": [
+            {
+              "label": "Take Vane's hush-gold to leave the quarry strike broken.",
+              "condition": {
+                "questActive": "quest_al_side_foundry_strike"
+              },
+              "target": "baron_deal"
+            },
+            {
+              "label": "Leave the foundries.",
+              "target": "exit"
+            }
+          ]
+        },
+        "baron_deal": {
+          "text": "'Pragmatism! Here is your retainer. Tell Dara Iron-Palm the kilns do not stop for tears.'",
+          "morality": {
+            "virtue": 0,
+            "hubris": 18,
+            "reason": "Accepted Baron Vane's hush-gold over the quarry laborers"
+          },
+          "giveDrachmae": 110,
+          "completeQuest": "quest_al_side_foundry_strike",
+          "choices": [
+            {
+              "label": "Take the coin and go.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_archivist_solene": {
+      "speaker": "Chief Archivist Solene",
+      "nodes": {
+        "root": {
+          "text": "Solene closes a towering iron ledger with a muted thud. 'So you are the Unstamped arrival Maren whispered about. Your shattered tally matches a pre-Chancery numeral from before the First Scale was forged.'",
+          "updateQuest": {
+            "questId": "quest_al_main_01_unstamped",
+            "objectiveId": "obj_reach_archives"
+          },
+          "completeQuest": "quest_al_main_01_unstamped",
+          "choices": [
+            {
+              "label": "Ask what the Chancery is hiding in the Cinder Foundries.",
+              "condition": {
+                "questNotStarted": "quest_al_main_02_furnace_tithe"
+              },
+              "target": "start_arc2"
+            },
+            {
+              "label": "Ask about the Chancery Scales riddle.",
+              "target": "clue_scales"
+            },
+            {
+              "label": "Leave the Archives.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_arc2": {
+          "text": "'Crack the Magistrate Ledger-Safe here in the Archives and confront Foreman Krag at the Smoking Cinder Kilns. Prove the Furnace Guild is staging border losses to harvest soul-ash, then bring the proof to Magistrate Lyra!'",
+          "startQuest": "quest_al_main_02_furnace_tithe",
+          "choices": [
+            {
+              "label": "I will expose the Ledgers of Smoke.",
+              "target": "exit"
+            }
+          ]
+        },
+        "clue_scales": {
+          "text": "'Every Chancery vault lock honors the twin-panned Brass Scale. Remember that emblem when testing the archive tumblers.'",
+          "addJournalKnowledge": {
+            "id": "lore_al_chancery_scales",
+            "title": "Emblem of the Brass Scale",
+            "text": "The Chancery's locks and decrees are keyed to the Brass Scale."
+          },
+          "choices": [
+            {
+              "label": "Thank Solene.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_mintmaster_gideon": {
+      "speaker": "Mintmaster Gideon",
+      "nodes": {
+        "root": {
+          "text": "'Every coin struck here weighs exactly one grain of stamped brass. Buy what you need and keep your hands off the presses.'",
+          "choices": [
+            {
+              "label": "Leave the Mint.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_prior_aldous": {
+      "speaker": "Prior Aldous of the Last Bell",
+      "nodes": {
+        "root": {
+          "text": "A soft bronze chime echoes across the square as Prior Aldous bows. 'Peace to your memory, wayfarer. The Order of the Last Bell believes rest should never be bought on credit.'",
+          "choices": [
+            {
+              "label": "Ask about the Seventh Bell.",
+              "condition": {
+                "questNotStarted": "quest_al_side_bell_bronze"
+              },
+              "target": "start_bell"
+            },
+            {
+              "label": "Deliver Consecrated Bell-Bronze & Fulgurite Ash-Quartz for the Seventh Bell.",
+              "condition": {
+                "questActive": "quest_al_side_bell_bronze",
+                "hasItem": "mat_al_bell_bronze"
+              },
+              "target": "finish_bell"
+            },
+            {
+              "label": "Deliver Clerk Maren's sanctuary writs for the quarry families.",
+              "condition": {
+                "questActive": "quest_al_moral_pos_sanctuary",
+                "flag": "al_carrying_sanctuary_writs"
+              },
+              "target": "finish_pos_sanctuary"
+            },
+            {
+              "label": "Ask about the legend of the Thirteenth Chime.",
+              "target": "clue_quiet"
+            },
+            {
+              "label": "Depart in peace.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_bell": {
+          "text": "'Bring me Consecrated Bell-Bronze and Fulgurite Ash-Quartz from the Reach, and our Seventh Bell will toll calm across the lower city.'",
+          "startQuest": "quest_al_side_bell_bronze",
+          "choices": [
+            {
+              "label": "I will gather the materials.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_bell": {
+          "text": "'Magnificent alloy! Take this Mantle of Quiet with the gratitude of the Order.'",
+          "completeQuest": "quest_al_side_bell_bronze",
+          "choices": [
+            {
+              "label": "May the bell ring clear.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_pos_sanctuary": {
+          "text": "Prior Aldous places a hand over the sealed writs. 'Thirty indebted souls will sleep beyond the kilns tonight because you chose mercy over coin. Take Maren's Reformer Pin and our blessing.'",
+          "completeQuest": "quest_al_moral_pos_sanctuary",
+          "choices": [
+            {
+              "label": "Keep them safe, Prior.",
+              "target": "exit"
+            }
+          ]
+        },
+        "clue_quiet": {
+          "text": "'Twelve chimes count the Chancery's shifts. The thirteenth belongs to Quiet, the true rest no ledger can tax.'",
+          "addJournalKnowledge": {
+            "id": "lore_al_first_quiet",
+            "title": "The First Quiet",
+            "text": "The thirteenth silent chime represents Quiet, the peace no tax can claim."
+          },
+          "choices": [
+            {
+              "label": "I will remember.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_gutter_informant": {
+      "speaker": "Sluice-Rat Pem",
+      "nodes": {
+        "root": {
+          "text": "'Keep your lamp low down here! Ash-hounds nest by the warm grates, and Freebooter Rooks runs the hidden cistern just south of the sluice.'",
+          "choices": [
+            {
+              "label": "Thanks for the warning.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_magistrate_lyra": {
+      "speaker": "Magistrate Lyra Thorne",
+      "nodes": {
+        "root": {
+          "text": "Magistrate Lyra looks out over the soot-blackened Lower City. 'The Chancery was founded to keep the Threshold from crumbling, not to turn souls into lamp-oil for immortal patricians.'",
+          "choices": [
+            {
+              "label": "Present the Black-Ink Expenditure Ledger & Krag's downfall.",
+              "condition": {
+                "questActive": "quest_al_main_02_furnace_tithe",
+                "flag": "al_read_secret_ledger"
+              },
+              "target": "finish_arc2"
+            },
+            {
+              "label": "Present the Pre-Chancery River Charter from the Drowned Piers.",
+              "condition": {
+                "questActive": "quest_al_hidden_01_drowned_charter",
+                "hasItem": "item_al_drowned_charter_piece"
+              },
+              "target": "finish_hidden_charter"
+            },
+            {
+              "label": "Leave the Terrace.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_arc2": {
+          "text": "'You have proved what High Auditor Crassus denied for decades! Yet he still holds the First Seal chained in the Threshold Abyss. Cross Lantern-Wall Bastion into the Pale Reach and recover the three Seal Fragments: Passage, Memory, and Quiet.'",
+          "updateQuest": {
+            "questId": "quest_al_main_02_furnace_tithe",
+            "objectiveId": "obj_report_solene"
+          },
+          "completeQuest": "quest_al_main_02_furnace_tithe",
+          "startQuest": "quest_al_main_03_frontier_keys",
+          "choices": [
+            {
+              "label": "I will cross into the Pale Reach.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_hidden_charter": {
+          "text": "Lyra stares at the ancient wax seal in stunned silence. 'This charter predates the Chancery itself! With this document, the Reformers can challenge Crassus's very right to tax the Weir!'",
+          "completeQuest": "quest_al_hidden_01_drowned_charter",
+          "choices": [
+            {
+              "label": "Use it wisely, Magistrate.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_savant_elara": {
+      "speaker": "Savant Elara Glasswright",
+      "nodes": {
+        "root": {
+          "text": "Thousands of glass phials chime faintly behind Savant Elara. 'Every memory distilled here is a life rescued from salt-erosion. And remember, arcanist: study Lore and Investigation to earn Arcane Knowledge Points for your Grimoire.'",
+          "choices": [
+            {
+              "label": "Offer to retrieve Weeping Orchard Amber for the Conservatory.",
+              "condition": {
+                "questNotStarted": "quest_al_side_glass_memory"
+              },
+              "target": "start_amber"
+            },
+            {
+              "label": "Deliver Weeping Orchard Amber to Savant Elara.",
+              "condition": {
+                "questActive": "quest_al_side_glass_memory",
+                "hasItem": "mat_al_weeping_amber"
+              },
+              "target": "finish_amber"
+            },
+            {
+              "label": "Ask what survives when fire and ledgers turn to dust.",
+              "target": "clue_memory"
+            },
+            {
+              "label": "Step back into the dome.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_amber": {
+          "text": "'Bring me pure Weeping Orchard Amber from the Ossuary Bastions. Tread gently around Serena; grief made her dangerous, not malice.'",
+          "startQuest": "quest_al_side_glass_memory",
+          "choices": [
+            {
+              "label": "I will bring back the amber.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_amber": {
+          "text": "'Flawless clarity! Take this Mnemonic Prism Band; it sharpens every invocation and uncovers concealed seams.'",
+          "completeQuest": "quest_al_side_glass_memory",
+          "choices": [
+            {
+              "label": "Thank you, Savant.",
+              "target": "exit"
+            }
+          ]
+        },
+        "clue_memory": {
+          "text": "'When flame dies and brass corrodes, only Memory and the vows we kept endure.'",
+          "addJournalKnowledge": {
+            "id": "lore_al_memory_fuel",
+            "title": "What Outlives the Flame",
+            "text": "Memory and unbroken vows survive even after ash-flames and brass ledgers turn to dust."
+          },
+          "choices": [
+            {
+              "label": "I will remember that.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_auctioneer_kestrel": {
+      "speaker": "Lord-Auctioneer Kestrel",
+      "nodes": {
+        "root": {
+          "text": "Kestrel swirls pale amber wine in a crystal flute. 'Order requires fuel, and fuel requires debtors. Only idealists pretend eternity is free.'",
+          "choices": [
+            {
+              "label": "[Negative Morality] Inquire about the Velvet Court's private commission.",
+              "condition": {
+                "moralityBand": "negative",
+                "maxMoralityScore": -25,
+                "questNotStarted": "quest_al_moral_neg_cinder_crown"
+              },
+              "target": "start_neg_crown"
+            },
+            {
+              "label": "Deliver the Condensed Sovereign Ash-Core.",
+              "condition": {
+                "questActive": "quest_al_moral_neg_cinder_crown",
+                "hasItem": "item_al_condensed_ash_core"
+              },
+              "target": "finish_neg_crown"
+            },
+            {
+              "label": "Leave the Auction Court.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_neg_crown": {
+          "text": "'Splendid. Raid the Obsidian Toll-Coffer in the Vault of Unpaid Echoes, bring me the Condensed Sovereign Ash-Core, and the Cinder-Debt Executioner Glaive is yours.'",
+          "startQuest": "quest_al_moral_neg_cinder_crown",
+          "choices": [
+            {
+              "label": "I will claim the Ash-Core.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_neg_crown": {
+          "text": "Kestrel's eyes reflect the blinding core. 'Exquisite power! Wield the Cinder-Debt Glaive as a sovereign of ash, not a servant.'",
+          "completeQuest": "quest_al_moral_neg_cinder_crown",
+          "choices": [
+            {
+              "label": "Claim the glaive.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_horologist_tomas": {
+      "speaker": "Horologist Tomas",
+      "nodes": {
+        "root": {
+          "text": "Tomas presses his palm against the vibrating brass frame. 'Twelve hammers strike for the Auditors. Find the thirteenth gear-key and speak the word of rest, and the tower reveals what Crassus hid inside.'",
+          "choices": [
+            {
+              "label": "Nod in thanks.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_strike_leader_dara": {
+      "speaker": "Dara Iron-Palm",
+      "nodes": {
+        "root": {
+          "text": "Dara wraps soot-blackened knuckles in linen. 'Baron Vane sent iron automatons into the Ash-Quarry to crush our strike. Stand with us, traveler, and we will never forget it.'",
+          "choices": [
+            {
+              "label": "Promise to break the Quarry Strikebreakers.",
+              "condition": {
+                "questNotStarted": "quest_al_side_foundry_strike"
+              },
+              "target": "start_strike"
+            },
+            {
+              "label": "Tell Dara the Strikebreakers are broken and the quarry shift is free.",
+              "condition": {
+                "questActive": "quest_al_side_foundry_strike",
+                "flag": "al_quarry_strikebreakers_defeated"
+              },
+              "target": "finish_strike_good"
+            },
+            {
+              "label": "Leave the camp.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_strike": {
+          "text": "'Vent the Foundry pressure wheel or smash the strikebreaker squad in the Great Ash-Quarry, then come back to me.'",
+          "startQuest": "quest_al_side_foundry_strike",
+          "choices": [
+            {
+              "label": "I am on my way.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_strike_good": {
+          "text": "Dara lets out a fierce laugh. 'You broke Vane's iron bullies! The quarry workers stand with the Quiet Reformers now!'",
+          "morality": {
+            "virtue": 15,
+            "hubris": 0,
+            "reason": "Defended the Ash-Quarry laborers against Furnace strikebreakers"
+          },
+          "completeQuest": "quest_al_side_foundry_strike",
+          "choices": [
+            {
+              "label": "Stay strong, Dara.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_quarry_overseer_brent": {
+      "speaker": "Overseer Brent",
+      "nodes": {
+        "root": {
+          "text": "'I only keep the ore tallies! If you are looking for pale-iron veins, check the collapsed chalk drift on the east wall.'",
+          "choices": [
+            {
+              "label": "Move on.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_warden_scout_fenn": {
+      "speaker": "Scout Fenn",
+      "nodes": {
+        "root": {
+          "text": "'Keep low on the viaduct! Crystallized salt-jackals and shard-kites rush the beacons whenever the fog drops.'",
+          "choices": [
+            {
+              "label": "Watch the line, Scout.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_captain_voss": {
+      "speaker": "Captain Astrid Voss",
+      "nodes": {
+        "root": {
+          "text": "Captain Voss rests a gloved hand on her lantern-halberd. 'Beyond this bastion lies the Pale Reach. No Chancery writ protects you out there, only sharp eyes and sharper steel.'",
+          "choices": [
+            {
+              "label": "Offer to clear the raiders off the Rusted Viaduct.",
+              "condition": {
+                "questNotStarted": "quest_al_side_warden_beacon"
+              },
+              "target": "start_viaduct"
+            },
+            {
+              "label": "Report that the Rusted Viaduct beacons are secure.",
+              "condition": {
+                "questActive": "quest_al_side_warden_beacon",
+                "flag": "al_viaduct_beacons_defended"
+              },
+              "target": "finish_viaduct"
+            },
+            {
+              "label": "Deliver the Secret Auditor-Furnace Pact from the Clockwork Belfry.",
+              "condition": {
+                "questActive": "quest_al_hidden_03_clockwork_conspiracy",
+                "hasItem": "item_al_syndicate_pact_seal"
+              },
+              "target": "finish_hidden_pact"
+            },
+            {
+              "label": "Step onto the ramparts.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_viaduct": {
+          "text": "'Clear the salt-jackal raid off the Rusted Viaduct and I will outfit you from the Bastion armory.'",
+          "startQuest": "quest_al_side_warden_beacon",
+          "choices": [
+            {
+              "label": "I will secure the viaduct.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_viaduct": {
+          "text": "'Clean work! Take this Lantern-Wall Kettle Helm and the respect of the Pale Frontier Wardens.'",
+          "completeQuest": "quest_al_side_warden_beacon",
+          "choices": [
+            {
+              "label": "Hold the wall, Captain.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_hidden_pact": {
+          "text": "Voss reads the wax-sealed pact, her face turning pale with fury. 'Crassus traded my rangers' blood for Furnace longevity shares! The Pale Wardens will march on the Chancery when you move on the First Seal. Take my Fulgurite Arc-Bow!'",
+          "setFlags": {
+            "al_wardens_allied_against_crassus": true
+          },
+          "completeQuest": "quest_al_hidden_03_clockwork_conspiracy",
+          "choices": [
+            {
+              "label": "Stand ready, Captain.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_cairn_hermit": {
+      "speaker": "Old Cairn-Keeper Yarrow",
+      "nodes": {
+        "root": {
+          "text": "Yarrow balances a flat salt-stone on a trembling stack. 'Three ancient charms lie scattered across the Viaduct, the Salt-Flats, and the Whispering Mire. Gather the Triad and you shall hear the old ferry bell.'",
+          "choices": [
+            {
+              "label": "Present all three Frontier Salt-Charms.",
+              "condition": {
+                "questActive": "quest_al_hidden_04_pale_ferry",
+                "hasItem": "item_al_frontier_charm_1"
+              },
+              "target": "finish_pale_ferry"
+            },
+            {
+              "label": "Leave Yarrow in peace.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_pale_ferry": {
+          "text": "As you lay the Bone, Glass, and Silver charms atop the cairn, a phantom timber barge glides silently through the white fog, tolling a single silver bell of peace. Yarrow presses the Locket of the Unforgotten into your palm.",
+          "morality": {
+            "virtue": 10,
+            "hubris": 0,
+            "reason": "Honored the forgotten souls of the Pale Ferry"
+          },
+          "completeQuest": "quest_al_hidden_04_pale_ferry",
+          "choices": [
+            {
+              "label": "Bow to the passing barge.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_mire_herbalist": {
+      "speaker": "Reed-Witch Senna",
+      "nodes": {
+        "root": {
+          "text": "'Amber varnish, memory-salves, and shroudweave! The Chancery calls us monsters out here, yet their own apothecaries buy my roots in secret.'",
+          "choices": [
+            {
+              "label": "Leave the fen-hut.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_regent_malcor_envoy": {
+      "speaker": "Herald Calen of the Unwritten",
+      "nodes": {
+        "root": {
+          "text": "Calen's porcelain mask tilts thoughtfully beneath the ossuary arches. 'We were once magistrates, clerks, and wardens like any in the city, until Crassus branded us Unwritten to hide his crimes. Do you bring parley, or war?'",
+          "choices": [
+            {
+              "label": "Request a formal parley with the Unwritten Court.",
+              "condition": {
+                "questNotStarted": "quest_al_side_unwritten_truce"
+              },
+              "target": "start_truce"
+            },
+            {
+              "label": "Pledge fair truce and ask Regent Malcor for the Fragment of Memory.",
+              "condition": {
+                "questActive": "quest_al_side_unwritten_truce"
+              },
+              "target": "grant_truce"
+            },
+            {
+              "label": "Depart the Hollow Nave.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_truce": {
+          "text": "'Speak truthfully, traveler. If you swear to end Crassus's ledger-tyranny rather than hunt exiles, Regent Malcor will entrust you with the Fragment of Memory without bloodshed.'",
+          "startQuest": "quest_al_side_unwritten_truce",
+          "choices": [
+            {
+              "label": "I will honor a truce with the Unwritten.",
+              "target": "grant_truce"
+            },
+            {
+              "label": "I need time to decide.",
+              "target": "exit"
+            }
+          ]
+        },
+        "grant_truce": {
+          "text": "'Then let no blood stain the Hollow Nave today. Take the Fragment of Memory, and remember that monsters are often made by the empires that fear them.'",
+          "setFlags": {
+            "al_unwritten_truce_forged": true
+          },
+          "morality": {
+            "virtue": 10,
+            "hubris": 0,
+            "reason": "Forged a peaceful truce with the Court of the Unwritten"
+          },
+          "giveItem": "item_al_seal_fragment_memory",
+          "completeQuest": "quest_al_side_unwritten_truce",
+          "choices": [
+            {
+              "label": "Accept the Fragment of Memory.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_weeping_serena": {
+      "speaker": "Serena the Amber-Bound",
+      "nodes": {
+        "root": {
+          "text": "Golden tears glint along Serena's crystalline armor. 'I kept my oath to the refugees the Chancery left to freeze. Why do you disturb this orchard?'",
+          "choices": [
+            {
+              "label": "[Positive Morality] Speak gently and offer to perform the Rite of Quiet for her fallen.",
+              "condition": {
+                "moralityBand": "positive",
+                "minMoralityScore": 25,
+                "questNotStarted": "quest_al_moral_pos_mercy_bell"
+              },
+              "target": "start_mercy_vow"
+            },
+            {
+              "label": "Complete the Rite of Quiet with Serena.",
+              "condition": {
+                "questActive": "quest_al_moral_pos_mercy_bell"
+              },
+              "target": "finish_mercy_vow"
+            },
+            {
+              "label": "Step respectfully back among the glass trees.",
+              "target": "exit"
+            }
+          ]
+        },
+        "start_mercy_vow": {
+          "text": "Serena lowers her halberd in quiet wonder. 'You carry no taint of the Auction Court. Stay and speak the Rite of Quiet beside me, so my watch may finally end in peace.'",
+          "startQuest": "quest_al_moral_pos_mercy_bell",
+          "choices": [
+            {
+              "label": "Speak the Rite of Quiet now.",
+              "target": "finish_mercy_vow"
+            }
+          ]
+        },
+        "finish_mercy_vow": {
+          "text": "The amber shell around Serena's shoulders melts into warm light. 'Thank you, Lantern of Mercy. Take my Vow-Bound Sabre of Quiet and remind the Threshold what honor looks like.'",
+          "setFlags": {
+            "al_serena_redeemed": true
+          },
+          "completeQuest": "quest_al_moral_pos_mercy_bell",
+          "choices": [
+            {
+              "label": "Rest well, Captain Serena.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dlg_al_silent_architect_echo": {
+      "speaker": "Echo of the Silent Architect",
+      "nodes": {
+        "root": {
+          "text": "The translucent Architect gazes out over the dry riverbed of floating ash. 'Every empire built on stolen breath claims it alone holds back the dark. What truth have you carried to the Ferry-Arch?'",
+          "choices": [
+            {
+              "label": "Present the Silent Architect's Stone Tablet.",
+              "condition": {
+                "questActive": "quest_al_hidden_02_silent_architect",
+                "hasItem": "item_al_architect_tablet"
+              },
+              "target": "finish_hidden_architect"
+            },
+            {
+              "label": "[Finale - Mercy] Restore the First Seal of Quiet and end forced soul-harvesting.",
+              "condition": {
+                "questActive": "quest_al_main_04_first_seal",
+                "flag": "al_high_auditor_defeated"
+              },
+              "target": "ending_quiet"
+            },
+            {
+              "label": "[Finale - Reform] Reforge the Chancery under a Humane Charter of Consent.",
+              "condition": {
+                "questActive": "quest_al_main_04_first_seal",
+                "flag": "al_high_auditor_defeated"
+              },
+              "target": "ending_reform"
+            },
+            {
+              "label": "[Finale - Ruthless] Seize the Sovereign Scale and rule Vesper-Threshold yourself.",
+              "condition": {
+                "questActive": "quest_al_main_04_first_seal",
+                "flag": "al_high_auditor_defeated"
+              },
+              "target": "ending_seize"
+            },
+            {
+              "label": "Depart the Broken Ferry-Arch.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_hidden_architect": {
+          "text": "'You kept both compassion and truth alive across the Ossuary. Wear the Diadem of the Seventh Bell; let your magic carry the calm of the original Seal.'",
+          "completeQuest": "quest_al_hidden_02_silent_architect",
+          "choices": [
+            {
+              "label": "Accept the Diadem.",
+              "target": "exit"
+            }
+          ]
+        },
+        "ending_quiet": {
+          "text": "You seat the three silver arcs into the First Seal. Across Vesper-Threshold, the furnace smoke clears, the seventh bell tolls, and the river barges finally carry weary souls into true Quiet.",
+          "morality": {
+            "virtue": 25,
+            "hubris": 0,
+            "reason": "Restored the First Seal of Quiet"
+          },
+          "setFlags": {
+            "al_campaign_ending_quiet": true
+          },
+          "completeQuest": "quest_al_main_04_first_seal",
+          "choices": [
+            {
+              "label": "Watch the dawn break over the Mist-Weir.",
+              "target": "exit"
+            }
+          ]
+        },
+        "ending_reform": {
+          "text": "You reforge the Seal into an open compact of consent. Magistrate Lyra and Captain Voss abolish debt-forfeiture, turning Vesper-Threshold into a free refuge between worlds.",
+          "morality": {
+            "virtue": 10,
+            "hubris": 5,
+            "reason": "Established a Humane Reform Charter"
+          },
+          "setFlags": {
+            "al_campaign_ending_reform": true
+          },
+          "completeQuest": "quest_al_main_04_first_seal",
+          "choices": [
+            {
+              "label": "Return to the reformed city.",
+              "target": "exit"
+            }
+          ]
+        },
+        "ending_seize": {
+          "text": "You bind the First Seal to your own ledger. The brass lanterns flare blinding gold as the Furnace Guild and Velvet Court kneel to a new Sovereign of Ash.",
+          "morality": {
+            "virtue": 0,
+            "hubris": 30,
+            "reason": "Seized the Sovereign Scale of Vesper-Threshold"
+          },
+          "setFlags": {
+            "al_campaign_ending_sovereign": true
+          },
+          "completeQuest": "quest_al_main_04_first_seal",
+          "choices": [
+            {
+              "label": "Ascend the Obsidian Terrace.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

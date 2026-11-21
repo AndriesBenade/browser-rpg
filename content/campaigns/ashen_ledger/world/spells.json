@@ -1,0 +1,296 @@
+{
+  "spells": [
+    {
+      "id": "al_spell_cinder_writ",
+      "name": "Cinder Writ of Forfeiture",
+      "icon": "🔥",
+      "discipline": "evocation",
+      "tier": 1,
+      "costPoints": 1,
+      "staminaCost": 1,
+      "minSkills": {
+        "mythology_lore": 1
+      },
+      "targeting": {
+        "targetType": "single",
+        "maxTargets": 1,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": false,
+        "label": "Single • Bypasses Cover"
+      },
+      "effect": {
+        "damageDice": "1d10",
+        "damageStat": "intelligence",
+        "flatDamage": 2,
+        "selfCostHp": 2,
+        "element": "fire",
+        "enemyStatus": {
+          "id": "bleeding",
+          "rounds": 2,
+          "value": 2
+        },
+        "verb": "brands with a blazing ash-writ"
+      },
+      "desc": "Power at a toll: sacrifice 2 HP to sear any enemy (bypasses cover) for 1d10 + INT mod + 2 fire damage and 2 rounds of burning bleed (1 Stamina)."
+    },
+    {
+      "id": "al_spell_ossuary_ward",
+      "name": "Ossuary Rib-Ward",
+      "icon": "🦴",
+      "discipline": "abjuration",
+      "tier": 1,
+      "costPoints": 1,
+      "staminaCost": 1,
+      "minSkills": {
+        "mythology_lore": 1
+      },
+      "targeting": {
+        "targetType": "self",
+        "maxTargets": 0,
+        "range": "self",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": false,
+        "label": "Self"
+      },
+      "effect": {
+        "ward": 8,
+        "selfMods": [
+          {
+            "key": "dr",
+            "value": 1,
+            "rounds": 3
+          }
+        ],
+        "verb": "weaves calcified mist-plates around you"
+      },
+      "desc": "Conjure interlocking spectral bone-plates granting +8 Arcane Ward and +1 Damage Reduction for 3 rounds (1 Stamina)."
+    },
+    {
+      "id": "al_spell_toll_siphon",
+      "name": "Compound Toll Siphon",
+      "icon": "⚖️",
+      "discipline": "necromancy",
+      "tier": 2,
+      "costPoints": 2,
+      "staminaCost": 2,
+      "minSkills": {
+        "mythology_lore": 2
+      },
+      "prerequisites": [
+        "siphon_vitality"
+      ],
+      "targeting": {
+        "targetType": "all_enemies",
+        "maxTargets": 2,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": true,
+        "label": "Multi • Up to 2 Foes"
+      },
+      "effect": {
+        "damageDice": "1d6",
+        "damageStat": "intelligence",
+        "flatDamage": 1,
+        "drainFraction": 0.5,
+        "flatHeal": 1,
+        "moraleDamage": 2,
+        "verb": "collects compounded vitality from"
+      },
+      "desc": "Exact a heavy spiritual toll from up to 2 enemies for 1d6 + INT mod + 1 damage each, draining half the total into your own health (2 Stamina)."
+    },
+    {
+      "id": "al_spell_mirage_cairn",
+      "name": "Salt-Fog Mirage",
+      "icon": "🌫️",
+      "discipline": "illusion",
+      "tier": 2,
+      "costPoints": 1,
+      "staminaCost": 1,
+      "minSkills": {
+        "mythology_lore": 2
+      },
+      "targeting": {
+        "targetType": "all_enemies",
+        "maxTargets": 2,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": true,
+        "label": "Multi • Up to 2 Foes"
+      },
+      "effect": {
+        "damageDice": "1d4",
+        "damageStat": "intelligence",
+        "enemyStatus": {
+          "id": "confused",
+          "rounds": 2,
+          "value": 0
+        },
+        "enemyMods": [
+          {
+            "key": "enemyAttack",
+            "value": -2,
+            "rounds": 2
+          }
+        ],
+        "verb": "blinds with shifting frontier fog"
+      },
+      "desc": "Roll freezing Pale Reach mist over up to 2 enemies, inflicting 1d4 + INT mod damage, Confused (2r), and -2 enemy attack (1 Stamina)."
+    },
+    {
+      "id": "al_spell_lantern_shade",
+      "name": "Summon Unwritten Echo",
+      "icon": "🕯️",
+      "discipline": "conjuration",
+      "tier": 2,
+      "costPoints": 2,
+      "staminaCost": 2,
+      "minSkills": {
+        "mythology_lore": 2
+      },
+      "minAttributes": {
+        "wisdom": 12
+      },
+      "targeting": {
+        "targetType": "single",
+        "maxTargets": 1,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": false,
+        "label": "Single • Bypasses Cover"
+      },
+      "effect": {
+        "damageDice": "1d8",
+        "damageStat": "wisdom",
+        "ward": 5,
+        "selfMods": [
+          {
+            "key": "attack",
+            "value": 2,
+            "rounds": 2
+          }
+        ],
+        "verb": "calls an Unwritten echo to strike"
+      },
+      "desc": "Manifest a loyal frontier echo that strikes any target for 1d8 + WIS mod damage while shielding you (+5 Ward, +2 attack for 2r; 2 Stamina)."
+    },
+    {
+      "id": "al_spell_mercy_shroud",
+      "name": "Vespers of True Quiet",
+      "icon": "🔔",
+      "discipline": "restoration",
+      "tier": 2,
+      "costPoints": 2,
+      "staminaCost": 2,
+      "minSkills": {
+        "mythology_lore": 2
+      },
+      "minMoralityScore": 10,
+      "targeting": {
+        "targetType": "self",
+        "maxTargets": 0,
+        "range": "self",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": false,
+        "label": "Self"
+      },
+      "effect": {
+        "healDice": "2d6",
+        "healStat": "wisdom",
+        "flatHeal": 3,
+        "staminaRestore": 4,
+        "cureSelf": [
+          "bleeding",
+          "poisoned",
+          "frightened",
+          "weakened"
+        ],
+        "verb": "tolls the merciful chime of the Quiet Oar"
+      },
+      "desc": "Requires Positive Morality (+10): toll a resonant bell of true mercy, restoring 2d6 + WIS mod + 3 Health, +4 Stamina, and cleansing all afflictions (2 Stamina)."
+    },
+    {
+      "id": "al_spell_debt_chains",
+      "name": "Chains of Compounded Debt",
+      "icon": "⛓️",
+      "discipline": "control",
+      "tier": 2,
+      "costPoints": 2,
+      "staminaCost": 2,
+      "minSkills": {
+        "mythology_lore": 2
+      },
+      "maxMoralityScore": -10,
+      "targeting": {
+        "targetType": "all_enemies",
+        "maxTargets": 2,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": true,
+        "label": "Multi • Up to 2 Foes"
+      },
+      "effect": {
+        "damageDice": "1d8",
+        "damageStat": "intelligence",
+        "flatDamage": 2,
+        "enemyStatus": {
+          "id": "entangled",
+          "rounds": 2,
+          "value": 0
+        },
+        "enemyStatus2": {
+          "id": "frightened",
+          "rounds": 2,
+          "value": 0
+        },
+        "moraleDamage": 4,
+        "verb": "shackles in burning ledger-chains"
+      },
+      "desc": "Requires Negative Morality (-10): bind up to 2 enemies in searing debt-chains for 1d8 + INT mod + 2 damage, Entangled & Frightened (2r), and -4 Morale (2 Stamina)."
+    },
+    {
+      "id": "al_spell_bell_of_unmaking",
+      "name": "Thirteenth Toll of Unmaking",
+      "icon": "💀",
+      "discipline": "evocation",
+      "tier": 3,
+      "costPoints": 3,
+      "staminaCost": 3,
+      "minSkills": {
+        "mythology_lore": 4
+      },
+      "minAttributes": {
+        "intelligence": 14
+      },
+      "prerequisites": [
+        "al_spell_cinder_writ"
+      ],
+      "targeting": {
+        "targetType": "all_enemies",
+        "maxTargets": 3,
+        "range": "magic",
+        "bypassFrontline": true,
+        "requiresLineOfSight": false,
+        "aoe": true,
+        "label": "AoE • Up to 3 Foes"
+      },
+      "effect": {
+        "damageDice": "2d6",
+        "damageStat": "intelligence",
+        "flatDamage": 3,
+        "selfCostHp": 4,
+        "stripEnemyGuard": true,
+        "moraleDamage": 4,
+        "verb": "shatters reality with the Thirteenth Toll across"
+      },
+      "desc": "Forbidden climax invocation: pay 4 HP to ring the Thirteenth Bell across up to 3 foes for 2d6 + INT mod + 3 damage, stripping guards and shattering morale (3 Stamina)."
+    }
+  ]
+}

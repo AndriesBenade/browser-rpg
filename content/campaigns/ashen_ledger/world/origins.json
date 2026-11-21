@@ -1,0 +1,36 @@
+{
+  "origins": [
+    {
+      "id": "origin_al_weir_born",
+      "name": "Weir-Port Arrival",
+      "description": "Awoke on the misty docks with an unbroken will and sharp eyes (+1 Perception).",
+      "bonuses": {
+        "perception": 1
+      }
+    },
+    {
+      "id": "origin_al_lower_city",
+      "name": "Brass-Works Debtor",
+      "description": "Forged under chimney-smoke and clanging presses (+1 Endurance).",
+      "bonuses": {
+        "endurance": 1
+      }
+    },
+    {
+      "id": "origin_al_glass_ward",
+      "name": "Conservatory Ward",
+      "description": "Touched by bottled memories from forgotten lives (+1 Intelligence).",
+      "bonuses": {
+        "intelligence": 1
+      }
+    },
+    {
+      "id": "origin_al_salt_reach",
+      "name": "Pale Reach Wanderer",
+      "description": "Walked the salt-flats and returned with your name intact (+1 Wisdom).",
+      "bonuses": {
+        "wisdom": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "backgrounds": [
+    {
+      "id": "bg_al_unstamped_clerk",
+      "name": "Disgraced Audit Clerk",
+      "description": "You once balanced Chancery ledgers before noticing whole regiments of debtors vanished without burial.",
+      "bonuses": {
+        "intelligence": 1
+      },
+      "skills": {
+        "investigation": 2,
+        "persuasion": 1
+      },
+      "startingEquipment": [
+        "item_al_brass_tallow_lamp"
+      ]
+    },
+    {
+      "id": "bg_al_quarry_survivor",
+      "name": "Ash-Quarry Escapee",
+      "description": "Years hauling pale-iron ore left you scarred, stubborn, and impossible to break.",
+      "bonuses": {
+        "endurance": 1
+      },
+      "skills": {
+        "athletics": 2,
+        "survival": 1
+      },
+      "startingEquipment": [
+        "item_al_pale_whetstone"
+      ]
+    },
+    {
+      "id": "bg_al_weir_ferryhand",
+      "name": "Mist-Weir Ferryhand",
+      "description": "You poled arrival barges through black fog long enough to memorize every hidden pier.",
+      "bonuses": {
+        "wisdom": 1
+      },
+      "skills": {
+        "perception": 2,
+        "tracking": 1
+      },
+      "startingEquipment": [
+        "item_al_smoked_eel"
+      ]
+    },
+    {
+      "id": "bg_al_bell_apprentice",
+      "name": "Last-Bell Apprentice",
+      "description": "Raised among the bronze-founders, you hear truth and falsehood like clean or cracked bells.",
+      "bonuses": {
+        "wisdom": 1
+      },
+      "skills": {
+        "mythology_lore": 2,
+        "medicine": 1
+      },
+      "startingEquipment": [
+        "item_al_quiet_incense"
+      ]
+    },
+    {
+      "id": "bg_al_debt_skipper",
+      "name": "Dockside Debt-Skipper",
+      "description": "You survived the Drowned Piers by staying two alleys ahead of every bailiff.",
+      "bonuses": {
+        "agility": 1
+      },
+      "skills": {
+        "stealth": 2,
+        "deception": 1
+      },
+      "startingEquipment": [
+        "item_al_lockpick_set"
+      ]
+    },
+    {
+      "id": "bg_al_frontier_deserter",
+      "name": "Lantern-Wall Veteran",
+      "description": "You held the rusted viaduct until you realized the Chancery was starving your post on purpose.",
+      "bonuses": {
+        "strength": 1
+      },
+      "skills": {
+        "melee_combat": 1,
+        "ranged_combat": 1,
+        "tracking": 1
+      },
+      "startingEquipment": [
+        "item_al_salt_tea"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "puzzles": [
+    {
+      "id": "puzzle_al_customs_scale",
+      "locationId": "loc_al_audit_archives",
+      "title": "The Unbalanced Archive Lock",
+      "prompt": "Etched into the iron door of the Restricted Vault is an auditor's riddle:\n\n'I weigh the beggar and the sovereign alike, yet hold no gold of my own. Break my beam and the city goes dark; tip my pans and a soul is bought. What am I?'",
+      "question": "Name the emblem carved into the vault dial.",
+      "clueJournalIds": [
+        "lore_al_chancery_scales"
+      ],
+      "acceptedKeywords": [
+        "scale",
+        "scales",
+        "balance",
+        "brass scale",
+        "brass scales"
+      ],
+      "deductionSkill": "investigation",
+      "deductionAttribute": "intelligence",
+      "deductionDC": 12,
+      "hint": "Every coin, decree, and banner of the Chancery bears this twin-panned instrument.",
+      "successOutcome": {
+        "text": "The brass tumblers align with a solemn chime! The Restricted Vault opens, revealing the High Auditor's cipher-roll.",
+        "setFlags": {
+          "al_archive_riddle_solved": true
+        },
+        "giveItem": "item_al_archive_brass_key",
+        "awardXP": 45
+      }
+    },
+    {
+      "id": "puzzle_al_belfry_chimes",
+      "locationId": "loc_al_clockwork_belfry",
+      "title": "Enigma of the Thirteenth Chime",
+      "prompt": "Twelve bronze hammers strike the hours of labor, yet a thirteenth silent hammer hangs bound in black silk above an inscription:\n\n'Twelve tolls belong to the Ledger; the thirteenth belongs to what no tax can collect and every weary soul seeks.'",
+      "question": "Speak the word that frees the thirteenth hammer.",
+      "clueJournalIds": [
+        "lore_al_first_quiet"
+      ],
+      "acceptedKeywords": [
+        "quiet",
+        "rest",
+        "silence",
+        "peace",
+        "sleep"
+      ],
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "wisdom",
+      "deductionDC": 13,
+      "hint": "The Order of the Last Bell preaches that death was meant to end in true rest.",
+      "successOutcome": {
+        "text": "The silent hammer falls once with a deep resonance that shivers through the tower, revealing a hidden Syndicate dispatch!",
+        "setFlags": {
+          "al_thirteenth_chime_rung": true
+        },
+        "awardXP": 60
+      }
+    },
+    {
+      "id": "puzzle_al_library_tablet",
+      "locationId": "loc_al_silent_library",
+      "title": "Cipher of the Unstamped Scriptorium",
+      "prompt": "A wax-cylinder plinth asks in archaic script:\n\n'Before coins were struck from bone and smoke was sold by weight, what wooden instrument carried every traveler across the dark water without asking their name?'",
+      "question": "Identify the older emblem of the crossing.",
+      "clueJournalIds": [
+        "lore_al_quiet_oar"
+      ],
+      "acceptedKeywords": [
+        "oar",
+        "quiet oar",
+        "ferry",
+        "barge",
+        "ferryman"
+      ],
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "intelligence",
+      "deductionDC": 13,
+      "hint": "The Oar-Keepers' Union at Weir-Port still swears by this simple river tool.",
+      "successOutcome": {
+        "text": "The plinth slides aside, uncovering the First Seal Fragment of Passage!",
+        "setFlags": {
+          "al_library_cipher_solved": true
+        },
+        "giveItem": "item_al_seal_fragment_passage",
+        "awardXP": 70
+      }
+    },
+    {
+      "id": "puzzle_al_scale_sanctum_trial",
+      "locationId": "loc_al_scale_sanctum",
+      "title": "Inscription of the First Scale",
+      "prompt": "At the threshold of the First Seal Chamber, two pans hover empty over the abyss:\n\n'Fuel burns until only cinder remains; empires tax until only ghosts remain. What survives when both flame and ledger turn to dust?'",
+      "question": "Answer the threshold's final question.",
+      "clueJournalIds": [
+        "lore_al_memory_fuel"
+      ],
+      "acceptedKeywords": [
+        "memory",
+        "memories",
+        "vow",
+        "oath",
+        "truth"
+      ],
+      "deductionSkill": "mythology_lore",
+      "deductionAttribute": "wisdom",
+      "deductionDC": 14,
+      "hint": "The Mnemonic Collegium guards what outlives every mortal body.",
+      "successOutcome": {
+        "text": "The silver chains slacken with a ringing sigh, opening the way into the Chamber of the First Seal!",
+        "setFlags": {
+          "al_sanctum_gate_unsealed": true
+        },
+        "awardXP": 80
+      }
+    }
+  ]
+}

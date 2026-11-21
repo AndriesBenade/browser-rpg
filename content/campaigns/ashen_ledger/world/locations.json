@@ -1,0 +1,1342 @@
+{
+  "locations": [
+    {
+      "id": "loc_al_ferry_quay",
+      "name": "Weir-Port Ferry Quay",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 160,
+        "y": 480
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "Rain-darkened pilings creak where black river-barges unload bewildered arrivals beneath swinging tallow-lanterns.",
+        "overview": "Rain-darkened pilings creak where black river-barges unload bewildered arrivals beneath swinging tallow-lanterns."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_customs_hall",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_lantern_market",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_drowned_piers",
+          "distanceKm": 7,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_quay_tag",
+          "name": "Shattered Brass Tally",
+          "dc": 10,
+          "itemId": "item_al_shattered_tally",
+          "text": "Wedged between wet quay planks you pry loose a stamped brass tally bearing half a forgotten seal."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_customs_hall",
+      "name": "Hall of First Tallies",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 280,
+        "y": 420
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "Row upon row of slate desks groan under ledgers while pale clerks stamp arrival writs by the hiss of ash-lamps.",
+        "overview": "Row upon row of slate desks groan under ledgers while pale clerks stamp arrival writs by the hiss of ash-lamps."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_ferry_quay",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_lantern_market",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_cinder_foundries",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_audit_archives",
+          "distanceKm": 6,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_customs_slip",
+          "name": "Misfiled Debt Slip",
+          "dc": 11,
+          "itemId": "item_al_audit_cipher",
+          "text": "Behind an overturned inkwell lies a folded audit slip showing phantom border requisitions."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_lantern_market",
+      "name": "Lantern-Row Market",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 260,
+        "y": 560
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "Canvas awnings shelter spice-boilers, scrap-smiths, and memory-peddlers hawking wares over crackling braziers.",
+        "overview": "Canvas awnings shelter spice-boilers, scrap-smiths, and memory-peddlers hawking wares over crackling braziers."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_ferry_quay",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_customs_hall",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_salt_boardinghouse",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_bellwright_square",
+          "distanceKm": 7,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_market_coin",
+          "name": "Dropped Toll-Purse",
+          "dc": 11,
+          "itemId": "item_al_tallow_salve",
+          "text": "Tucked beneath an awning post rests an unclaimed apothecary salve."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_salt_boardinghouse",
+      "name": "The Salt-Wick Boardinghouse",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 160,
+        "y": 650
+      },
+      "restSafety": "sanctuary",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "A warm, soot-stained tenement run by retired ferrymen where unstamped souls trade rumors over hot barley broth.",
+        "overview": "A warm, soot-stained tenement run by retired ferrymen where unstamped souls trade rumors over hot barley broth."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_lantern_market",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_drowned_piers",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_smuggler_cistern",
+          "distanceKm": 6,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_drowned_piers",
+      "name": "The Drowned Piers",
+      "region": "Weir-Port & Customs Quays",
+      "coordinates": {
+        "x": 100,
+        "y": 360
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Half-submerged jetties rot in oil-slick mist where smugglers cache contraband and river-scavengers prowl at dusk.",
+        "overview": "Half-submerged jetties rot in oil-slick mist where smugglers cache contraband and river-scavengers prowl at dusk."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_ferry_quay",
+          "distanceKm": 7,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_salt_boardinghouse",
+          "distanceKm": 9,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_sewer_sluice",
+          "distanceKm": 5,
+          "dangerRating": 2
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_pier_charter",
+          "name": "Waterlogged Charter Tube",
+          "dc": 12,
+          "itemId": "item_al_drowned_charter_piece",
+          "text": "Inside a barnacled brass cylinder you find a pre-Chancery river charter sealed in wax."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_cinder_foundries",
+      "name": "The Cinder Foundries",
+      "region": "The Chancery Brass-Works",
+      "coordinates": {
+        "x": 430,
+        "y": 440
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Colossal brass retorts hiss and shudder as gangs of indebted laborers shovel pale soul-ash into blazing furnaces.",
+        "overview": "Colossal brass retorts hiss and shudder as gangs of indebted laborers shovel pale soul-ash into blazing furnaces."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_customs_hall",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_bone_mint",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_bellwright_square",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_quarry_pit",
+          "distanceKm": 4,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_foundry_slag",
+          "name": "Pure Crucible Slag",
+          "dc": 12,
+          "itemId": "mat_al_cinder_slag",
+          "text": "Beneath a cooling chute you salvage a shard of dense, ember-veined crucible slag."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_audit_archives",
+      "name": "The Audit Archives",
+      "region": "The Chancery Brass-Works",
+      "coordinates": {
+        "x": 410,
+        "y": 310
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Towering iron shelving stretches into vaulted gloom, holding three centuries of soul-contracts, tax-rolls, and sealed decrees.",
+        "overview": "Towering iron shelving stretches into vaulted gloom, holding three centuries of soul-contracts, tax-rolls, and sealed decrees."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_customs_hall",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_high_chancery",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_glass_conservatory",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_bone_mint",
+          "distanceKm": 9,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_archive_manifest",
+          "name": "Altered Conscription Roll",
+          "dc": 13,
+          "itemId": "item_al_forged_roll",
+          "text": "Between duplicate binders you discover proof that Frontier casualty tallies were deliberately inflated."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_bone_mint",
+      "name": "The Bone & Brass Mint",
+      "region": "The Chancery Brass-Works",
+      "coordinates": {
+        "x": 540,
+        "y": 380
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Hydraulic presses strike gleaming toll-coins stamped with twin scales while armed bailiffs watch every doorway.",
+        "overview": "Hydraulic presses strike gleaming toll-coins stamped with twin scales while armed bailiffs watch every doorway."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_cinder_foundries",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_audit_archives",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_clockwork_belfry",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_cinder_kilns",
+          "distanceKm": 7,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_bellwright_square",
+      "name": "Bellwright Square",
+      "region": "The Chancery Brass-Works",
+      "coordinates": {
+        "x": 420,
+        "y": 580
+      },
+      "restSafety": "sanctuary",
+      "recommendedLevel": 1,
+      "narrative": {
+        "shortDescription": "Bronze chimes hang above quiet cobblestones around the monastery foundry of the Order of the Last Bell.",
+        "overview": "Bronze chimes hang above quiet cobblestones around the monastery foundry of the Order of the Last Bell."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_lantern_market",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_cinder_foundries",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_sewer_sluice",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_penitent_camp",
+          "distanceKm": 8,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_bell_shard",
+          "name": "Consecrated Bell-Bronze",
+          "dc": 11,
+          "itemId": "mat_al_bell_bronze",
+          "text": "Near the quenching trough sits an ingot of resonant consecrated bell-bronze."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_sewer_sluice",
+      "name": "Under-Sluice Runnels",
+      "region": "The Chancery Brass-Works",
+      "coordinates": {
+        "x": 290,
+        "y": 680
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Echoing brick culverts carry warm ash-runoff beneath the Lower City, frequented by fugitives and mutated gutter-hounds.",
+        "overview": "Echoing brick culverts carry warm ash-runoff beneath the Lower City, frequented by fugitives and mutated gutter-hounds."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_drowned_piers",
+          "distanceKm": 5,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_bellwright_square",
+          "distanceKm": 9,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_smuggler_cistern",
+          "distanceKm": 8,
+          "dangerRating": 2
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_sluice_cache",
+          "name": "Cutpurse Grate Cache",
+          "dc": 12,
+          "itemId": "item_al_lockpick_set",
+          "text": "Wired behind a rusted sluice valve sits a waxed roll of fine locksmith picks."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_high_chancery",
+      "name": "Terrace of the High Chancery",
+      "region": "The Gilded Terraces",
+      "coordinates": {
+        "x": 460,
+        "y": 170
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "Polished obsidian steps ascend past gilded ash-braziers where senior magistrates and aristocratic creditors debate the price of eternity.",
+        "overview": "Polished obsidian steps ascend past gilded ash-braziers where senior magistrates and aristocratic creditors debate the price of eternity."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_audit_archives",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_glass_conservatory",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_velvet_court",
+          "distanceKm": 5,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_glass_conservatory",
+      "name": "The Mnemonic Conservatory",
+      "region": "The Gilded Terraces",
+      "coordinates": {
+        "x": 600,
+        "y": 190
+      },
+      "restSafety": "sanctuary",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "A domed hall of leaded glass where thousands of luminescent memory-phials chime softly in warm drafts.",
+        "overview": "A domed hall of leaded glass where thousands of luminescent memory-phials chime softly in warm drafts."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_audit_archives",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_high_chancery",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_clockwork_belfry",
+          "distanceKm": 6,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_glass_phial",
+          "name": "Unlabelled Amber Phial",
+          "dc": 12,
+          "itemId": "mat_al_distilled_memory",
+          "text": "Behind a cracked cabinet pane glows a sealed vial of pure distilled memory."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_velvet_court",
+      "name": "The Velvet Auction Court",
+      "region": "The Gilded Terraces",
+      "coordinates": {
+        "x": 330,
+        "y": 140
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "Curtained galleries where debt-syndicates bid on expired tallies and patricians sip luminous longevity elixirs.",
+        "overview": "Curtained galleries where debt-syndicates bid on expired tallies and patricians sip luminous longevity elixirs."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_high_chancery",
+          "distanceKm": 5,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_clockwork_belfry",
+      "name": "The Clockwork Belfry",
+      "region": "The Gilded Terraces",
+      "coordinates": {
+        "x": 650,
+        "y": 300
+      },
+      "restSafety": "restricted",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "Massive brass pendulums swing in deafening rhythm, timing the city's curfew chimes and hiding a secret gear-chamber above the dial.",
+        "overview": "Massive brass pendulums swing in deafening rhythm, timing the city's curfew chimes and hiding a secret gear-chamber above the dial."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_bone_mint",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_glass_conservatory",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_lantern_wall_gate",
+          "distanceKm": 5,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_belfry_cipher",
+          "name": "Thirteenth Chime Plate",
+          "dc": 14,
+          "itemId": "item_al_belfry_gear_key",
+          "text": "Clipped behind the thirteenth gear tooth lies a tarnished brass relay key."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_quarry_pit",
+      "name": "The Great Ash-Quarry",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 580,
+        "y": 520
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Terraced pits of grey chalk and fossilized bone descend beneath timber cranes where debtors haul ash-ore in chains.",
+        "overview": "Terraced pits of grey chalk and fossilized bone descend beneath timber cranes where debtors haul ash-ore in chains."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_cinder_foundries",
+          "distanceKm": 4,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_cinder_kilns",
+          "distanceKm": 6,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_penitent_camp",
+          "distanceKm": 7,
+          "dangerRating": 2
+        },
+        {
+          "targetLocationId": "loc_al_rusted_viaduct",
+          "distanceKm": 8,
+          "dangerRating": 2
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_quarry_ore",
+          "name": "Exposed Pale-Iron Vein",
+          "dc": 12,
+          "itemId": "mat_al_pale_iron",
+          "text": "In a collapsed quarry gallery you pry loose raw pale-iron ore."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_cinder_kilns",
+      "name": "Smoking Cinder Kilns",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 680,
+        "y": 440
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "Beehive brick ovens belch amber sparks across blackened heath, guarded by Furnace Guild enforcers and soot-constructs.",
+        "overview": "Beehive brick ovens belch amber sparks across blackened heath, guarded by Furnace Guild enforcers and soot-constructs."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_bone_mint",
+          "distanceKm": 7,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_quarry_pit",
+          "distanceKm": 6,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_lantern_wall_gate",
+          "distanceKm": 9,
+          "dangerRating": 3
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_penitent_camp",
+      "name": "Penitent's Shanty Camp",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 520,
+        "y": 660
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "Patchwork tents huddled against a basalt ridge where exhausted quarry workers share scraps and whisper of rebellion.",
+        "overview": "Patchwork tents huddled against a basalt ridge where exhausted quarry workers share scraps and whisper of rebellion."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_bellwright_square",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_quarry_pit",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_smuggler_cistern",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_rusted_viaduct",
+          "distanceKm": 5,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_rusted_viaduct",
+      "name": "The Rusted Viaduct",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 720,
+        "y": 600
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "A skeletal iron railway bridge spans a choking ash-gorge, patrolled by Frontier Wardens watching the pale mist below.",
+        "overview": "A skeletal iron railway bridge spans a choking ash-gorge, patrolled by Frontier Wardens watching the pale mist below."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_quarry_pit",
+          "distanceKm": 8,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_penitent_camp",
+          "distanceKm": 5,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_lantern_wall_gate",
+          "distanceKm": 7,
+          "dangerRating": 3
+        },
+        {
+          "targetLocationId": "loc_al_whispering_mire",
+          "distanceKm": 5,
+          "dangerRating": 3
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_viaduct_charm",
+          "name": "First Frontier Salt-Charm",
+          "dc": 13,
+          "itemId": "item_al_frontier_charm_1",
+          "text": "Tied to a fallen iron stanchion hangs a weathered bone salt-charm."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_smuggler_cistern",
+      "name": "The Freebooter Cistern",
+      "region": "The Ash-Fields & Debt-Quarries",
+      "coordinates": {
+        "x": 380,
+        "y": 760
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 2,
+      "narrative": {
+        "shortDescription": "An underground reservoir lit by stolen blue tallow-lamps where Unstamped Freebooters trade frontier gear and safe passage.",
+        "overview": "An underground reservoir lit by stolen blue tallow-lamps where Unstamped Freebooters trade frontier gear and safe passage."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_salt_boardinghouse",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_sewer_sluice",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_penitent_camp",
+          "distanceKm": 7,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_lantern_wall_gate",
+      "name": "Lantern-Wall Bastion",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 800,
+        "y": 420
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 3,
+      "narrative": {
+        "shortDescription": "A stark basalt fortress crowned with blazing ash-beacons marking the last boundary of Chancery authority before the endless salt-frontier.",
+        "overview": "A stark basalt fortress crowned with blazing ash-beacons marking the last boundary of Chancery authority before the endless salt-frontier."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_clockwork_belfry",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_cinder_kilns",
+          "distanceKm": 9,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_rusted_viaduct",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_salt_flats",
+          "distanceKm": 5,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_drifting_cairns",
+          "distanceKm": 6,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_salt_flats",
+      "name": "The Bleached Salt-Flats",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 940,
+        "y": 360
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Blinding crusts of white mineral stretch to a horizon of drifting gray fog, littered with half-buried standards from forgotten ages.",
+        "overview": "Blinding crusts of white mineral stretch to a horizon of drifting gray fog, littered with half-buried standards from forgotten ages."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_lantern_wall_gate",
+          "distanceKm": 5,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_drifting_cairns",
+          "distanceKm": 9,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_glass_steppe",
+          "distanceKm": 6,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_hollow_cathedral",
+          "distanceKm": 4,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_salt_charm2",
+          "name": "Second Frontier Salt-Charm",
+          "dc": 13,
+          "itemId": "item_al_frontier_charm_2",
+          "text": "Half-fused into a salt pillar gleams a carved glass frontier charm."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_drifting_cairns",
+      "name": "Field of Drifting Cairns",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 920,
+        "y": 520
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Stacked stone markers shift position whenever the fog thickens, humming with stray memories shed by wandering souls.",
+        "overview": "Stacked stone markers shift position whenever the fog thickens, humming with stray memories shed by wandering souls."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_lantern_wall_gate",
+          "distanceKm": 6,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_salt_flats",
+          "distanceKm": 9,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_whispering_mire",
+          "distanceKm": 4,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_marrow_bridge",
+          "distanceKm": 6,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_glass_steppe",
+      "name": "The Shattered Glass Steppe",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 1040,
+        "y": 220
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Jagged plains of lightning-vitrified ash sing in the wind like broken harps; luminous essence pools in the craters.",
+        "overview": "Jagged plains of lightning-vitrified ash sing in the wind like broken harps; luminous essence pools in the craters."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_salt_flats",
+          "distanceKm": 6,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_hollow_cathedral",
+          "distanceKm": 8,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_broken_ferry_arch",
+          "distanceKm": 9,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_steppe_quartz",
+          "name": "Fulgurite Ash-Quartz",
+          "dc": 14,
+          "itemId": "mat_al_ash_quartz",
+          "text": "From a smoking fulgurite spire you snap free a crystal of humming ash-quartz."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_whispering_mire",
+      "name": "The Whispering Mire",
+      "region": "The Pale Reach",
+      "coordinates": {
+        "x": 870,
+        "y": 690
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Pale reed-fens bubble with warm mist that echoes half-remembered mortal lullabies and conceals ravenous mire-wraiths.",
+        "overview": "Pale reed-fens bubble with warm mist that echoes half-remembered mortal lullabies and conceals ravenous mire-wraiths."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_rusted_viaduct",
+          "distanceKm": 5,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_drifting_cairns",
+          "distanceKm": 4,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_weeping_orchard",
+          "distanceKm": 4,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_mire_charm3",
+          "name": "Third Frontier Salt-Charm",
+          "dc": 14,
+          "itemId": "item_al_frontier_charm_3",
+          "text": "Resting atop a sunken skiff prow lies an unbroken silver-wire frontier charm."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_hollow_cathedral",
+      "name": "The Hollow Nave",
+      "region": "The Ossuary Bastions",
+      "coordinates": {
+        "x": 1100,
+        "y": 380
+      },
+      "restSafety": "settlement",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "A cathedral carved from calcified mist-stone where the Court of the Unwritten holds solemn audience beneath starless vaults.",
+        "overview": "A cathedral carved from calcified mist-stone where the Court of the Unwritten holds solemn audience beneath starless vaults."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_salt_flats",
+          "distanceKm": 4,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_glass_steppe",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_marrow_bridge",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_silent_library",
+          "distanceKm": 6,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_marrow_bridge",
+      "name": "Bridge of Whispered Oaths",
+      "region": "The Ossuary Bastions",
+      "coordinates": {
+        "x": 1060,
+        "y": 560
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 5,
+      "narrative": {
+        "shortDescription": "An arched causeway of ivory stone suspended over a roaring canyon of grey cloud, defended by altered sentinel knights.",
+        "overview": "An arched causeway of ivory stone suspended over a roaring canyon of grey cloud, defended by altered sentinel knights."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_drifting_cairns",
+          "distanceKm": 6,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_hollow_cathedral",
+          "distanceKm": 7,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_weeping_orchard",
+          "distanceKm": 6,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_echo_vault",
+          "distanceKm": 7,
+          "dangerRating": 5
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_silent_library",
+      "name": "The Unstamped Scriptorium",
+      "region": "The Ossuary Bastions",
+      "coordinates": {
+        "x": 1210,
+        "y": 440
+      },
+      "restSafety": "restricted",
+      "recommendedLevel": 5,
+      "narrative": {
+        "shortDescription": "Rows of stone tablets and wax cylinders preserve the true history of the Threshold before the Chancery ever minted a coin.",
+        "overview": "Rows of stone tablets and wax cylinders preserve the true history of the Threshold before the Chancery ever minted a coin."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_hollow_cathedral",
+          "distanceKm": 6,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_broken_ferry_arch",
+          "distanceKm": 7,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_library_tablet",
+          "name": "Architect's Uncut Tablet",
+          "dc": 14,
+          "itemId": "item_al_architect_tablet",
+          "text": "Inside a hollow lectern rests the Silent Architect's original design of the First Seal."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_weeping_orchard",
+      "name": "The Weeping Glass Orchard",
+      "region": "The Ossuary Bastions",
+      "coordinates": {
+        "x": 1030,
+        "y": 740
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 4,
+      "narrative": {
+        "shortDescription": "Translucent trees drip resinous tears that preserve dying vows in amber, watched over by a grieving transformed Warden.",
+        "overview": "Translucent trees drip resinous tears that preserve dying vows in amber, watched over by a grieving transformed Warden."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_whispering_mire",
+          "distanceKm": 4,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_marrow_bridge",
+          "distanceKm": 6,
+          "dangerRating": 4
+        },
+        {
+          "targetLocationId": "loc_al_echo_vault",
+          "distanceKm": 9,
+          "dangerRating": 4
+        }
+      ],
+      "hiddenSpots": [
+        {
+          "id": "spot_al_orchard_resin",
+          "name": "Weeping Amber Tears",
+          "dc": 13,
+          "itemId": "mat_al_weeping_amber",
+          "text": "You gather glowing drops of weeping amber from the oldest glass-trunk."
+        }
+      ],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_broken_ferry_arch",
+      "name": "The Broken Ferry-Arch",
+      "region": "The Threshold Abyss",
+      "coordinates": {
+        "x": 1220,
+        "y": 260
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 5,
+      "narrative": {
+        "shortDescription": "Colossal basalt piers frame a dry riverbed of floating dust where the very first crossing barges once departed into true silence.",
+        "overview": "Colossal basalt piers frame a dry riverbed of floating dust where the very first crossing barges once departed into true silence."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_glass_steppe",
+          "distanceKm": 9,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_silent_library",
+          "distanceKm": 7,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_scale_sanctum",
+          "distanceKm": 8,
+          "dangerRating": 5
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_echo_vault",
+      "name": "Vault of Unpaid Echoes",
+      "region": "The Threshold Abyss",
+      "coordinates": {
+        "x": 1180,
+        "y": 660
+      },
+      "restSafety": "wild",
+      "recommendedLevel": 5,
+      "narrative": {
+        "shortDescription": "A subterranean cistern of obsidian mirrors where stolen centuries of mortal memory swirl like trapped storm-clouds.",
+        "overview": "A subterranean cistern of obsidian mirrors where stolen centuries of mortal memory swirl like trapped storm-clouds."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_marrow_bridge",
+          "distanceKm": 7,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_weeping_orchard",
+          "distanceKm": 9,
+          "dangerRating": 5
+        },
+        {
+          "targetLocationId": "loc_al_scale_sanctum",
+          "distanceKm": 7,
+          "dangerRating": 5
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_scale_sanctum",
+      "name": "Sanctum of the First Scale",
+      "region": "The Threshold Abyss",
+      "coordinates": {
+        "x": 1260,
+        "y": 520
+      },
+      "restSafety": "restricted",
+      "recommendedLevel": 6,
+      "narrative": {
+        "shortDescription": "A circular bridge of black iron surrounding a colossal brass balance that weighs every soul arriving in Vesper-Threshold.",
+        "overview": "A circular bridge of black iron surrounding a colossal brass balance that weighs every soul arriving in Vesper-Threshold."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_broken_ferry_arch",
+          "distanceKm": 8,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_echo_vault",
+          "distanceKm": 7,
+          "dangerRating": 1
+        },
+        {
+          "targetLocationId": "loc_al_first_seal_chamber",
+          "distanceKm": 9,
+          "dangerRating": 1
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    },
+    {
+      "id": "loc_al_first_seal_chamber",
+      "name": "Chamber of the First Seal",
+      "region": "The Threshold Abyss",
+      "coordinates": {
+        "x": 1320,
+        "y": 520
+      },
+      "restSafety": "forbidden",
+      "recommendedLevel": 6,
+      "narrative": {
+        "shortDescription": "At the silent heart of the Threshold stands a monolithic silver ring bound in Chancery chains: the fractured seal that governs rest or eternal toll.",
+        "overview": "At the silent heart of the Threshold stands a monolithic silver ring bound in Chancery chains: the fractured seal that governs rest or eternal toll."
+      },
+      "connections": [
+        {
+          "targetLocationId": "loc_al_scale_sanctum",
+          "distanceKm": 9,
+          "dangerRating": 5
+        }
+      ],
+      "hiddenSpots": [],
+      "presentCharacters": [],
+      "presentCreatures": [],
+      "presentItems": []
+    }
+  ]
+}

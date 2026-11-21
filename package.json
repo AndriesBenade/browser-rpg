@@ -4,7 +4,7 @@
   "description": "Greek Mythology Text-Driven RPG Engine",
   "private": true,
   "scripts": {
-    "test": "node tests/engine_tests.js && node tests/behaviour_tests.js && node tests/dev_campaign_tests.js && node tests/northern_realms_tests.js && node tests/multi_enemy_combat_tests.js && node tests/phase2_systems_tests.js && node scripts/sync-embedded-content.js --check",
+    "test": "node tests/engine_tests.js && node tests/behaviour_tests.js && node tests/dev_campaign_tests.js && node tests/northern_realms_tests.js && node tests/multi_enemy_combat_tests.js && node tests/phase2_systems_tests.js && node tests/global_magic_morality_tests.js && node tests/ashen_ledger_tests.js && node scripts/sync-embedded-content.js --check",
     "sync:embedded": "node scripts/sync-embedded-content.js",
     "test:legacy": "node tests/engine_tests.js",
     "test:behaviour": "node tests/behaviour_tests.js",
@@ -12,6 +12,8 @@
     "test:northern": "node tests/northern_realms_tests.js",
     "test:combat": "node tests/multi_enemy_combat_tests.js",
     "test:phase2": "node tests/phase2_systems_tests.js",
+    "test:magic": "node tests/global_magic_morality_tests.js",
+    "test:ashen": "node tests/ashen_ledger_tests.js",
     "test:browser": "node tests/browser_smoke.js",
     "build": "node scripts/build-release.js --check"
   },

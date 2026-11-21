@@ -1,0 +1,357 @@
+{
+  "glossary": [
+    {
+      "key": "vesper_threshold",
+      "name": "Vesper-Threshold",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Vesper-Threshold"
+      ],
+      "simpleEnglish": "The vast twilight realm where dead souls arrive, now industrialized by the Chancery of Scales.",
+      "explanation": "The vast twilight realm where dead souls arrive, now industrialized by the Chancery of Scales."
+    },
+    {
+      "key": "chancery_scales",
+      "name": "Chancery of Scales",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Chancery of Scales",
+        "Chancery"
+      ],
+      "simpleEnglish": "The ruling afterlife bureaucracy that taxes memory and administers Vesper-Threshold through brass ledgers.",
+      "explanation": "The ruling afterlife bureaucracy that taxes memory and administers Vesper-Threshold through brass ledgers."
+    },
+    {
+      "key": "aether_ash",
+      "name": "Aether-Ash",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Aether-Ash",
+        "soul-ash"
+      ],
+      "simpleEnglish": "Luminous ash distilled from residual mortal memory, burned to power city lamps, furnaces, and longevity elixirs.",
+      "explanation": "Luminous ash distilled from residual mortal memory, burned to power city lamps, furnaces, and longevity elixirs."
+    },
+    {
+      "key": "pale_reach",
+      "name": "The Pale Reach",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Pale Reach"
+      ],
+      "simpleEnglish": "The endless, salt-swept frontier outside the Lantern-Wall where forgotten ages and exiles dwell.",
+      "explanation": "The endless, salt-swept frontier outside the Lantern-Wall where forgotten ages and exiles dwell."
+    },
+    {
+      "key": "unstamped",
+      "name": "Unstamped",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Unstamped"
+      ],
+      "simpleEnglish": "An arriving soul whose brass tally shattered or was never logged, leaving them outside Chancery law.",
+      "explanation": "An arriving soul whose brass tally shattered or was never logged, leaving them outside Chancery law."
+    },
+    {
+      "key": "soul_tally",
+      "name": "Soul-Tally",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "soul-tally",
+        "tally-plates"
+      ],
+      "simpleEnglish": "A stamped brass identification tag recording an arrival's debt balance and labor assignment.",
+      "explanation": "A stamped brass identification tag recording an arrival's debt balance and labor assignment."
+    },
+    {
+      "key": "mist_weir",
+      "name": "The Mist-Weir",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Mist-Weir",
+        "Ferry-Weir"
+      ],
+      "simpleEnglish": "The dark, fog-shrouded river across which mortal souls arrive by barge at Weir-Port.",
+      "explanation": "The dark, fog-shrouded river across which mortal souls arrive by barge at Weir-Port."
+    },
+    {
+      "key": "quiet_oar",
+      "name": "The Quiet Oar",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Quiet Oar"
+      ],
+      "simpleEnglish": "Ancient emblem of the Oar-Keepers' Union representing free, peaceful passage before the Chancery.",
+      "explanation": "Ancient emblem of the Oar-Keepers' Union representing free, peaceful passage before the Chancery."
+    },
+    {
+      "key": "first_seal",
+      "name": "First Seal of Quiet",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "First Seal"
+      ],
+      "simpleEnglish": "The fractured silver ring that originally granted dead souls peaceful rest before the Chancery chained it.",
+      "explanation": "The fractured silver ring that originally granted dead souls peaceful rest before the Chancery chained it."
+    },
+    {
+      "key": "unwritten",
+      "name": "The Unwritten",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Unwritten",
+        "Court of the Unwritten"
+      ],
+      "simpleEnglish": "Exiled and ash-altered souls cast beyond the Lantern-Wall who built a solemn kingdom in the Hollow Nave.",
+      "explanation": "Exiled and ash-altered souls cast beyond the Lantern-Wall who built a solemn kingdom in the Hollow Nave."
+    },
+    {
+      "key": "furnace_guild",
+      "name": "Furnace Guild",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Furnace Guild"
+      ],
+      "simpleEnglish": "The industrial alchemists and kiln-barons who refine Aether-Ash and control the Ash-Quarry.",
+      "explanation": "The industrial alchemists and kiln-barons who refine Aether-Ash and control the Ash-Quarry."
+    },
+    {
+      "key": "quiet_reformers",
+      "name": "Quiet Reformers",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Quiet Reformers"
+      ],
+      "simpleEnglish": "Principled clerks, archivists, and councilors inside the Chancery working to end debt-forfeiture.",
+      "explanation": "Principled clerks, archivists, and councilors inside the Chancery working to end debt-forfeiture."
+    },
+    {
+      "key": "last_bell",
+      "name": "Order of the Last Bell",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Order of the Last Bell",
+        "Bellwright"
+      ],
+      "simpleEnglish": "Monastic bronze-casters who toll consecrated bells to soothe tormented spirits and aid refugees.",
+      "explanation": "Monastic bronze-casters who toll consecrated bells to soothe tormented spirits and aid refugees."
+    },
+    {
+      "key": "mnemonic_collegium",
+      "name": "Mnemonic Collegium",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Mnemonic Collegium"
+      ],
+      "simpleEnglish": "Arcane scholars of the Glass Conservatory who preserve bottled memories without burning them.",
+      "explanation": "Arcane scholars of the Glass Conservatory who preserve bottled memories without burning them."
+    },
+    {
+      "key": "black_ledger",
+      "name": "Black-Ledger Brokers",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Black-Ledger"
+      ],
+      "simpleEnglish": "Ruthless debt-traffickers who buy delinquent soul-contracts and collect through intimidation.",
+      "explanation": "Ruthless debt-traffickers who buy delinquent soul-contracts and collect through intimidation."
+    },
+    {
+      "key": "lantern_wall",
+      "name": "Lantern-Wall",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Lantern-Wall",
+        "Lantern-Line"
+      ],
+      "simpleEnglish": "The fortified basalt border wall separating the lit Chancery districts from the wild Pale Reach.",
+      "explanation": "The fortified basalt border wall separating the lit Chancery districts from the wild Pale Reach."
+    },
+    {
+      "key": "pale_wardens",
+      "name": "Pale Frontier Wardens",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Pale Frontier Wardens",
+        "Pale Wardens"
+      ],
+      "simpleEnglish": "Hardened border rangers holding the viaducts and bastion gates against frontier threats.",
+      "explanation": "Hardened border rangers holding the viaducts and bastion gates against frontier threats."
+    },
+    {
+      "key": "freebooters",
+      "name": "Unstamped Freebooters",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Freebooters"
+      ],
+      "simpleEnglish": "Smugglers and frontier runners operating from the cisterns beneath Weir-Port.",
+      "explanation": "Smugglers and frontier runners operating from the cisterns beneath Weir-Port."
+    },
+    {
+      "key": "weeping_amber",
+      "name": "Weeping Amber",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "weeping amber",
+        "Weeping Orchard Amber"
+      ],
+      "simpleEnglish": "Translucent golden resin from the Weeping Glass Orchard that preserves dying oaths.",
+      "explanation": "Translucent golden resin from the Weeping Glass Orchard that preserves dying oaths."
+    },
+    {
+      "key": "bell_bronze",
+      "name": "Bell-Bronze",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "bell-bronze"
+      ],
+      "simpleEnglish": "Resonant monastic alloy whose chimes weaken corrupted spirits and reinforce shields.",
+      "explanation": "Resonant monastic alloy whose chimes weaken corrupted spirits and reinforce shields."
+    },
+    {
+      "key": "pale_iron",
+      "name": "Pale-Iron",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "pale-iron"
+      ],
+      "simpleEnglish": "Dense grey iron mined from the Great Ash-Quarry, prized by foundry smiths.",
+      "explanation": "Dense grey iron mined from the Great Ash-Quarry, prized by foundry smiths."
+    },
+    {
+      "key": "fulgurite",
+      "name": "Fulgurite Ash-Quartz",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "fulgurite"
+      ],
+      "simpleEnglish": "Lightning-vitrified crystal spires formed during static storms over the Shattered Glass Steppe.",
+      "explanation": "Lightning-vitrified crystal spires formed during static storms over the Shattered Glass Steppe."
+    },
+    {
+      "key": "shroudweave",
+      "name": "Shroudweave",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "shroudweave"
+      ],
+      "simpleEnglish": "Weightless silver-grey filaments spun from vanquished mire-wraiths for arcane vestments.",
+      "explanation": "Weightless silver-grey filaments spun from vanquished mire-wraiths for arcane vestments."
+    },
+    {
+      "key": "ledger_law",
+      "name": "Ledger-Law",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Ledger-Law"
+      ],
+      "simpleEnglish": "The Chancery's legal code equating spiritual worth with recorded debt and industrial output.",
+      "explanation": "The Chancery's legal code equating spiritual worth with recorded debt and industrial output."
+    },
+    {
+      "key": "thirteenth_chime",
+      "name": "Thirteenth Chime",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Thirteenth Chime"
+      ],
+      "simpleEnglish": "The bound silent hammer of the Clockwork Belfry symbolizing true rest beyond twelve labor shifts.",
+      "explanation": "The bound silent hammer of the Clockwork Belfry symbolizing true rest beyond twelve labor shifts."
+    },
+    {
+      "key": "velvet_court",
+      "name": "Velvet Auction Court",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Velvet Court",
+        "Velvet Auction Court"
+      ],
+      "simpleEnglish": "Opulent upper-terrace gallery where patricians bid on expired contracts and longevity wine.",
+      "explanation": "Opulent upper-terrace gallery where patricians bid on expired contracts and longevity wine."
+    },
+    {
+      "key": "hollow_nave",
+      "name": "The Hollow Nave",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Hollow Nave"
+      ],
+      "simpleEnglish": "Calcified mist-stone cathedral serving as the seat of Regent Malcor and the Unwritten Court.",
+      "explanation": "Calcified mist-stone cathedral serving as the seat of Regent Malcor and the Unwritten Court."
+    },
+    {
+      "key": "silent_architect",
+      "name": "The Silent Architect",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Silent Architect"
+      ],
+      "simpleEnglish": "The forgotten designer of the First Seal whose translucent echo still waits at the Broken Ferry-Arch.",
+      "explanation": "The forgotten designer of the First Seal whose translucent echo still waits at the Broken Ferry-Arch."
+    },
+    {
+      "key": "arcane_knowledge",
+      "name": "Arcane Knowledge Points",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Arcane Knowledge Points",
+        "AKP"
+      ],
+      "simpleEnglish": "Global magical progression points earned from skill milestones to permanently acquire new spells in your Grimoire.",
+      "explanation": "Global magical progression points earned from skill milestones to permanently acquire new spells in your Grimoire."
+    },
+    {
+      "key": "tollcraft",
+      "name": "Tollcraft",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Tollcraft"
+      ],
+      "simpleEnglish": "Forbidden Threshold magic that exacts a direct vitality or moral toll in exchange for devastating force.",
+      "explanation": "Forbidden Threshold magic that exacts a direct vitality or moral toll in exchange for devastating force."
+    },
+    {
+      "key": "vow_blade",
+      "name": "Vow-Bound Gear",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Vow-Bound"
+      ],
+      "simpleEnglish": "Threshold relics whose properties resonate with the promises, mercy, or ruthlessness of their wielder.",
+      "explanation": "Threshold relics whose properties resonate with the promises, mercy, or ruthlessness of their wielder."
+    },
+    {
+      "key": "ossuary_ivory",
+      "name": "Ossuary Ivory",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "ossuary ivory"
+      ],
+      "simpleEnglish": "Hardened mist-stone bone gathered in the Ossuary Bastions for blades and sentinel armor.",
+      "explanation": "Hardened mist-stone bone gathered in the Ossuary Bastions for blades and sentinel armor."
+    },
+    {
+      "key": "threshold_salt",
+      "name": "Threshold Salt",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Threshold Salt",
+        "salt-flats"
+      ],
+      "simpleEnglish": "Bitter crystalline mineral blanketing the Pale Reach that preserves memory and wards spirits.",
+      "explanation": "Bitter crystalline mineral blanketing the Pale Reach that preserves memory and wards spirits."
+    },
+    {
+      "key": "echo_vault",
+      "name": "Vault of Unpaid Echoes",
+      "category": "The Ashen Ledger",
+      "terms": [
+        "Vault of Unpaid Echoes",
+        "Echo Vault"
+      ],
+      "simpleEnglish": "Subterranean mirror-cistern in the Threshold Abyss holding centuries of confiscated mortal memories.",
+      "explanation": "Subterranean mirror-cistern in the Threshold Abyss holding centuries of confiscated mortal memories."
+    }
+  ]
+}

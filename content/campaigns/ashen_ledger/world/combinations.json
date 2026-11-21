@@ -1,0 +1,131 @@
+{
+  "combinations": [
+    {
+      "id": "comb_al_hone_cutlass",
+      "name": "Hone on Pale-Iron Stone",
+      "icon": "🪨",
+      "apply": "item_al_pale_whetstone",
+      "onto": "item_al_dock_cutlass",
+      "result": "item_al_dock_cutlass_honed",
+      "consumeApplied": 0,
+      "minutes": 10,
+      "xp": 6,
+      "text": "You draw the pale-iron stone steadily along the cutlass until it gleams like fresh frost."
+    },
+    {
+      "id": "comb_al_coat_cinder",
+      "name": "Coat Blade with Cinder-Oil",
+      "icon": "🔥",
+      "apply": "item_al_cinder_oil",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "slashing",
+          "piercing"
+        ]
+      },
+      "coating": {
+        "name": "Cinder-Oil",
+        "icon": "🔥",
+        "charges": 3,
+        "damageBonus": 2,
+        "status": {
+          "id": "bleeding",
+          "rounds": 2,
+          "value": 2
+        }
+      },
+      "minutes": 5,
+      "text": "Volatile amber oil clings to your blade, smoking gently in the damp air."
+    },
+    {
+      "id": "comb_al_coat_amber",
+      "name": "Varnish with Weeping Amber",
+      "icon": "✨",
+      "apply": "item_al_amber_varnish",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "slashing",
+          "piercing",
+          "bludgeoning"
+        ]
+      },
+      "coating": {
+        "name": "Weeping Amber",
+        "icon": "✨",
+        "charges": 4,
+        "damageBonus": 3,
+        "status": {
+          "id": "weakened",
+          "rounds": 2,
+          "value": 0
+        }
+      },
+      "minutes": 5,
+      "text": "Translucent amber varnish dries into a singing edge that weakens tormented spirits."
+    },
+    {
+      "id": "comb_al_enrich_salve",
+      "name": "Infuse Salve with Distilled Memory",
+      "icon": "🧪",
+      "apply": "mat_al_distilled_memory",
+      "onto": "item_al_tallow_salve",
+      "result": "item_al_strong_salve",
+      "requiresItem": "item_al_kit_alchemy",
+      "check": {
+        "skill": "medicine",
+        "attribute": "wisdom",
+        "dc": 11,
+        "failureConsumesApplied": false
+      },
+      "minutes": 20,
+      "xp": 8,
+      "text": "The distilled memory blends smoothly into bittersage, yielding an extraordinarily potent salve."
+    },
+    {
+      "id": "comb_al_salt_blade",
+      "name": "Rub Weapon with Threshold Salt",
+      "icon": "🧂",
+      "apply": "mat_al_void_salt",
+      "onto": {
+        "category": "weapon",
+        "damageTypes": [
+          "slashing",
+          "piercing"
+        ]
+      },
+      "coating": {
+        "name": "Threshold Salt",
+        "icon": "🧂",
+        "charges": 3,
+        "damageBonus": 2
+      },
+      "minutes": 5,
+      "text": "Bitter frontier salt cakes along the steel, stinging unnatural flesh on contact."
+    },
+    {
+      "id": "comb_al_steep_cordial",
+      "name": "Concentrate Bellwright Cordial",
+      "icon": "🌿",
+      "apply": "mat_al_weeping_amber",
+      "onto": "item_al_tallow_salve",
+      "result": "item_al_bellwright_cordial",
+      "minutes": 15,
+      "xp": 6,
+      "text": "Warm weeping amber transforms ordinary bittersage balm into a restorative monastic cordial."
+    },
+    {
+      "id": "comb_al_blend_elixir",
+      "name": "Distill Frontier Memory Elixir",
+      "icon": "💠",
+      "apply": "mat_al_distilled_memory",
+      "onto": "item_al_bellwright_cordial",
+      "result": "item_al_memory_draught",
+      "requiresItem": "item_al_kit_alchemy",
+      "minutes": 20,
+      "xp": 8,
+      "text": "Your alembic condenses the mixture into a luminous Mnemonic Elixir."
+    }
+  ]
+}

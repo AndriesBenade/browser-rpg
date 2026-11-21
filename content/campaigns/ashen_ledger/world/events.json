@@ -1,0 +1,336 @@
+{
+  "events": [
+    {
+      "id": "evt_al_hidden1_unlock",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_drowned_charter_piece"
+      },
+      "worldConditions": {
+        "hasItem": "item_al_drowned_charter_piece",
+        "flag": "al_read_secret_ledger"
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_01_drowned_charter",
+        "transcript": "Matching the Drowned Piers charter against the secret ledger uncovers a hidden truth: The Drowned Charter!"
+      }
+    },
+    {
+      "id": "evt_al_hidden1_unlock_alt",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_read_secret_ledger"
+      },
+      "worldConditions": {
+        "hasItem": "item_al_drowned_charter_piece",
+        "flag": "al_read_secret_ledger"
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_01_drowned_charter",
+        "transcript": "Cross-referencing your pre-Chancery river charter with the secret ledger reveals a hidden mission: The Drowned Charter!"
+      }
+    },
+    {
+      "id": "evt_al_hidden2_unlock",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_architect_tablet"
+      },
+      "worldConditions": {
+        "hasItem": "item_al_architect_tablet",
+        "flag": "al_unwritten_truce_forged"
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_02_silent_architect",
+        "transcript": "Holding the Silent Architect's Tablet after making peace with the Unwritten unlocks a hidden quest: Lament of the Silent Architect!"
+      }
+    },
+    {
+      "id": "evt_al_hidden2_unlock_serena",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_serena_redeemed"
+      },
+      "worldConditions": {
+        "hasItem": "item_al_architect_tablet",
+        "flag": "al_serena_redeemed"
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_02_silent_architect",
+        "transcript": "Your mercy toward Serena resonates with the Architect's Tablet, revealing a hidden path at the Broken Ferry-Arch!"
+      }
+    },
+    {
+      "id": "evt_al_hidden3_unlock",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_belfry_vault_opened"
+      },
+      "worldConditions": {
+        "flagsAll": [
+          "al_thirteenth_chime_rung",
+          "al_belfry_vault_opened"
+        ]
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_03_clockwork_conspiracy",
+        "transcript": "The Thirteenth Chime and the Relay Vault together expose a hidden conspiracy: deliver the pact to Captain Voss!"
+      }
+    },
+    {
+      "id": "evt_al_hidden3_unlock_alt",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_thirteenth_chime_rung"
+      },
+      "worldConditions": {
+        "flagsAll": [
+          "al_thirteenth_chime_rung",
+          "al_belfry_vault_opened"
+        ]
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_03_clockwork_conspiracy",
+        "transcript": "The resonant thirteenth chime exposes the hidden pact in the Relay Vault: The Thirteenth Chime!"
+      }
+    },
+    {
+      "id": "evt_al_hidden4_unlock_a",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_frontier_charm_1"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_has_charm_1": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_hidden4_unlock_b",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_frontier_charm_2"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_has_charm_2": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_hidden4_unlock_c",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_frontier_charm_3"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_has_charm_3": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_hidden4_unlock_all",
+      "trigger": "FLAG_SET",
+      "conditions": {},
+      "worldConditions": {
+        "flagsAll": [
+          "al_has_charm_1",
+          "al_has_charm_2",
+          "al_has_charm_3"
+        ],
+        "questNotStarted": "quest_al_hidden_04_pale_ferry"
+      },
+      "outcomes": {
+        "startQuest": "quest_al_hidden_04_pale_ferry",
+        "transcript": "All three Frontier Salt-Charms hum in harmony, unlocking a hidden quest: Passage Beyond the Salt!"
+      }
+    },
+    {
+      "id": "evt_al_arc2_ledger_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_read_secret_ledger"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_02_furnace_tithe"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_02_furnace_tithe",
+          "objectiveId": "obj_ledger_safe"
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc2_krag_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_kiln_warden_defeated"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_02_furnace_tithe"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_02_furnace_tithe",
+          "objectiveId": "obj_confront_krag"
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc3_passage_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_seal_fragment_passage"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_03_frontier_keys"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_03_frontier_keys",
+          "objectiveId": "obj_frag_passage"
+        },
+        "setFlags": {
+          "al_got_frag_passage": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc3_memory_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_seal_fragment_memory"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_03_frontier_keys"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_03_frontier_keys",
+          "objectiveId": "obj_frag_memory"
+        },
+        "setFlags": {
+          "al_got_frag_memory": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc3_quiet_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_seal_fragment_quiet"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_03_frontier_keys"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_03_frontier_keys",
+          "objectiveId": "obj_frag_quiet"
+        },
+        "setFlags": {
+          "al_got_frag_quiet": true
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc3_complete_to_arc4",
+      "trigger": "FLAG_SET",
+      "conditions": {},
+      "worldConditions": {
+        "flagsAll": [
+          "al_got_frag_passage",
+          "al_got_frag_memory",
+          "al_got_frag_quiet"
+        ],
+        "questActive": "quest_al_main_03_frontier_keys"
+      },
+      "outcomes": {
+        "completeQuest": "quest_al_main_03_frontier_keys",
+        "startQuest": "quest_al_main_04_first_seal",
+        "transcript": "All three silver arcs of the First Seal resonate together! The Sanctum of the First Scale awaits."
+      }
+    },
+    {
+      "id": "evt_al_arc4_crassus_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_high_auditor_defeated"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_main_04_first_seal"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_04_first_seal",
+          "objectiveId": "obj_unseal_sanctum"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_pier_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_cleared_pier_ambush"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_missing_oar"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_missing_oar",
+          "objectiveId": "obj_clear_piers"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_quarry_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_quarry_strikebreakers_defeated"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_foundry_strike"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_foundry_strike",
+          "objectiveId": "obj_vent_flue"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_viaduct_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_viaduct_beacons_defended"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_warden_beacon"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_warden_beacon",
+          "objectiveId": "obj_defend_viaduct"
+        }
+      }
+    },
+    {
+      "id": "evt_al_moral_echo_react",
+      "trigger": "MORALITY_CHANGED",
+      "conditions": {},
+      "worldConditions": {
+        "minMoralityScore": 20
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_reputation_merciful": true
+        },
+        "transcript": "Whispers spread across Weir-Port and Bellwright Square of an Unstamped wanderer who chooses mercy over profit."
+      }
+    }
+  ]
+}

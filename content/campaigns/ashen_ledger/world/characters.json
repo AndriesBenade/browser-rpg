@@ -1,0 +1,776 @@
+{
+  "characters": [
+    {
+      "id": "npc_al_ferryman_corvus",
+      "name": "Oar-Keeper Corvus",
+      "role": "Senior Weir Ferryman",
+      "locationId": "loc_al_ferry_quay",
+      "factionId": "faction_al_weir_ferrymen",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_ferryman_corvus",
+      "description": "A salt-bearded river warden wrapped in tarred oilskin who remembers when the Mist-Weir carried the dead to peace instead of ledger-desks.",
+      "equipment": {
+        "main_hand": "item_al_weir_harpoon",
+        "body": "item_al_weir_oilskin"
+      },
+      "inventory": [
+        "item_al_salted_biscuit",
+        "item_al_brass_tallow_lamp"
+      ],
+      "drachmae": 28
+    },
+    {
+      "id": "npc_al_clerk_maren",
+      "name": "Clerk Maren Vance",
+      "role": "Quiet Reformer Archivist",
+      "locationId": "loc_al_customs_hall",
+      "factionId": "faction_al_lantern_reformers",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_clerk_maren",
+      "description": "A weary, ink-stained customs clerk who secretly alters debt-tallies to keep desperate arrivals out of the Great Ash-Quarry.",
+      "equipment": {
+        "hands": "item_al_scribe_gloves",
+        "neck": "item_al_lantern_reformer_pin"
+      },
+      "inventory": [
+        "item_al_tallow_salve",
+        "item_al_audit_cipher"
+      ],
+      "drachmae": 35
+    },
+    {
+      "id": "npc_al_merchant_tamsin",
+      "name": "Brine-Mother Halda",
+      "role": "Lantern-Row Provisions & Weapons Merchant",
+      "locationId": "loc_al_lantern_market",
+      "factionId": "faction_al_weir_ferrymen",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_merchant_halda",
+      "description": "A sharp-tongued quay outfitter selling harbor steel, tallow lamps, healing balms, and artisan toolkits beneath a yellow oilskin awning.",
+      "equipment": {
+        "body": "item_al_weir_oilskin",
+        "main_hand": "item_al_dock_cutlass"
+      },
+      "inventory": [
+        "item_al_tallow_salve",
+        "item_al_smoked_eel"
+      ],
+      "drachmae": 90,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 14,
+          "stock": 6
+        },
+        {
+          "itemId": "item_al_salted_biscuit",
+          "price": 6,
+          "stock": 8
+        },
+        {
+          "itemId": "item_al_dock_cutlass",
+          "price": 18,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_weir_harpoon",
+          "price": 24,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_salt_longbow",
+          "price": 28,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_dock_buckler",
+          "price": 18,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_pale_whetstone",
+          "price": 15,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_kit_foundry",
+          "price": 28,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_kit_leather",
+          "price": 24,
+          "stock": 2
+        },
+        {
+          "itemId": "mat_al_pale_iron",
+          "price": 14,
+          "stock": 5
+        },
+        {
+          "itemId": "mat_al_weir_ashwood",
+          "price": 12,
+          "stock": 5
+        }
+      ]
+    },
+    {
+      "id": "npc_al_innkeeper_bram",
+      "name": "Bram of the Salt-Wick",
+      "role": "Boardinghouse Keeper & Broth-Brewer",
+      "locationId": "loc_al_salt_boardinghouse",
+      "factionId": "faction_al_weir_ferrymen",
+      "isMerchant": true,
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_innkeeper_bram",
+      "description": "A broad-shouldered ex-ferryman who keeps the hearth stoked and asks no guest for their Chancery stamp.",
+      "equipment": {
+        "body": "item_al_weir_oilskin"
+      },
+      "inventory": [
+        "item_al_barley_broth"
+      ],
+      "drachmae": 65,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_barley_broth",
+          "price": 9,
+          "stock": 8
+        },
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 14,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_salt_tea",
+          "price": 10,
+          "stock": 6
+        },
+        {
+          "itemId": "item_al_smoked_eel",
+          "price": 8,
+          "stock": 6
+        },
+        {
+          "itemId": "item_al_ash_antidote",
+          "price": 14,
+          "stock": 4
+        }
+      ]
+    },
+    {
+      "id": "npc_al_broker_vespera",
+      "name": "Broker Vespera Null",
+      "role": "Black-Ledger Debt Factor",
+      "locationId": "loc_al_drowned_piers",
+      "factionId": "faction_al_toll_corsairs",
+      "moralPreference": "negative",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_broker_vespera",
+      "description": "Dressed in immaculate mourning-velvet despite the pier mud, Vespera deals in seized soul-contracts, stilettos, and ruthless profit.",
+      "equipment": {
+        "main_hand": "item_al_debt_stiletto",
+        "ring_2": "item_al_ring_black_interest"
+      },
+      "inventory": [
+        "item_al_lockpick_set",
+        "item_al_cinder_oil"
+      ],
+      "drachmae": 140,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 15,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_debt_stiletto",
+          "price": 32,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_lockpick_set",
+          "price": 18,
+          "stock": 4
+        },
+        {
+          "itemId": "item_al_cinder_oil",
+          "price": 24,
+          "stock": 4
+        },
+        {
+          "itemId": "item_al_ring_black_interest",
+          "price": 92,
+          "stock": 1
+        },
+        {
+          "itemId": "mat_al_void_salt",
+          "price": 22,
+          "stock": 4
+        }
+      ]
+    },
+    {
+      "id": "npc_al_smuggler_rooks",
+      "name": "Tallow-Jack Rooks",
+      "role": "Freebooter Quartermaster",
+      "locationId": "loc_al_smuggler_cistern",
+      "factionId": "faction_al_salt_smugglers",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_smuggler_rooks",
+      "description": "A grinning frontier runner with blue soot under his fingernails who smuggles unstamped arrivals past the Lantern-Wall for the right price.",
+      "equipment": {
+        "body": "item_al_salt_cloak",
+        "main_hand": "item_al_dock_cutlass"
+      },
+      "inventory": [
+        "item_al_lockpick_set",
+        "item_al_cinder_stimulant"
+      ],
+      "drachmae": 110,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 14,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_salt_cloak",
+          "price": 36,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_frontier_striders",
+          "price": 76,
+          "stock": 1
+        },
+        {
+          "itemId": "item_al_lockpick_set",
+          "price": 18,
+          "stock": 4
+        },
+        {
+          "itemId": "item_al_cinder_oil",
+          "price": 24,
+          "stock": 3
+        },
+        {
+          "itemId": "mat_al_salt_hide",
+          "price": 13,
+          "stock": 5
+        },
+        {
+          "itemId": "mat_al_oilskin_canvas",
+          "price": 11,
+          "stock": 5
+        }
+      ]
+    },
+    {
+      "id": "npc_al_baron_vane",
+      "name": "Furnace Baron Orlov Vane",
+      "role": "Master of the Cinder Foundries",
+      "locationId": "loc_al_cinder_foundries",
+      "factionId": "faction_al_cinder_syndicate",
+      "moralPreference": "negative",
+      "dialogueId": "dlg_al_baron_vane",
+      "description": "An oil-slick industrialist with brass-rimmed spectacles who genuinely believes Vesper-Threshold's lamps justify any human cost.",
+      "equipment": {
+        "body": "item_al_foundry_apron",
+        "ring_1": "item_al_ring_cinder_seal"
+      },
+      "inventory": [
+        "item_al_cinder_stimulant",
+        "mat_al_cinder_slag"
+      ],
+      "drachmae": 180
+    },
+    {
+      "id": "npc_al_archivist_solene",
+      "name": "Chief Archivist Solene",
+      "role": "Keeper of the Three-Century Rolls",
+      "locationId": "loc_al_audit_archives",
+      "factionId": "faction_al_lantern_reformers",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_archivist_solene",
+      "description": "An austere scholar whose photographic memory of Chancery law makes her the Reformers' sharpest weapon against High Auditor Crassus.",
+      "equipment": {
+        "hands": "item_al_scribe_gloves"
+      },
+      "inventory": [
+        "item_al_quiet_incense"
+      ],
+      "drachmae": 55
+    },
+    {
+      "id": "npc_al_mintmaster_gideon",
+      "name": "Mintmaster Gideon",
+      "role": "Brass-Works Quartermaster & Factor",
+      "locationId": "loc_al_bone_mint",
+      "factionId": "faction_al_chancery_auditors",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_mintmaster_gideon",
+      "description": "A meticulous coin-assayer selling Chancery greatcoats, foundry gear, brasswork moulds, and stamped materials.",
+      "equipment": {
+        "body": "item_al_auditor_greatcoat",
+        "main_hand": "item_al_auditor_baton"
+      },
+      "inventory": [
+        "mat_al_chancery_brass"
+      ],
+      "drachmae": 150,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 15,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_auditor_greatcoat",
+          "price": 48,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_auditor_baton",
+          "price": 22,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_foundry_gauntlets",
+          "price": 20,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_kit_brasswork",
+          "price": 30,
+          "stock": 2
+        },
+        {
+          "itemId": "mat_al_chancery_brass",
+          "price": 16,
+          "stock": 6
+        },
+        {
+          "itemId": "mat_al_cinder_slag",
+          "price": 24,
+          "stock": 4
+        }
+      ]
+    },
+    {
+      "id": "npc_al_prior_aldous",
+      "name": "Prior Aldous of the Last Bell",
+      "role": "Monastic Bell-Founder",
+      "locationId": "loc_al_bellwright_square",
+      "factionId": "faction_al_bellwright_order",
+      "moralPreference": "positive",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_prior_aldous",
+      "description": "A calm, burn-scarred monk whose bronze bells ring out peace for the weary dead and shield travelers from despair.",
+      "equipment": {
+        "main_hand": "item_al_bell_hammer",
+        "back": "item_al_quiet_mantle"
+      },
+      "inventory": [
+        "item_al_bellwright_cordial",
+        "mat_al_bell_bronze"
+      ],
+      "drachmae": 80,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_bellwright_cordial",
+          "price": 26,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_quiet_incense",
+          "price": 20,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_bell_tower_shield",
+          "price": 46,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_bell_hammer",
+          "price": 85,
+          "stock": 1
+        },
+        {
+          "itemId": "item_al_kit_alchemy",
+          "price": 30,
+          "stock": 2
+        },
+        {
+          "itemId": "mat_al_bell_bronze",
+          "price": 26,
+          "stock": 4
+        },
+        {
+          "itemId": "mat_al_tallow_herbs",
+          "price": 10,
+          "stock": 6
+        }
+      ]
+    },
+    {
+      "id": "npc_al_gutter_informant",
+      "name": "Sluice-Rat Pem",
+      "role": "Under-City Scavenger & Scout",
+      "locationId": "loc_al_sewer_sluice",
+      "factionId": "faction_al_salt_smugglers",
+      "dialogueId": "dlg_al_gutter_informant",
+      "description": "A sharp-eared youth who maps every runoff tunnel and secret grate beneath the Chancery.",
+      "equipment": {
+        "head": "item_al_coal_hood"
+      },
+      "inventory": [
+        "item_al_salted_biscuit"
+      ],
+      "drachmae": 22
+    },
+    {
+      "id": "npc_al_magistrate_lyra",
+      "name": "Magistrate Lyra Thorne",
+      "role": "Reformist High Councilor",
+      "locationId": "loc_al_high_chancery",
+      "factionId": "faction_al_lantern_reformers",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_magistrate_lyra",
+      "description": "One of the few senior councilors who still remembers what justice meant before longevity elixirs corrupted the Velvet Court.",
+      "equipment": {
+        "neck": "item_al_pendant_brass_scale"
+      },
+      "inventory": [
+        "item_al_patrician_vintage"
+      ],
+      "drachmae": 120
+    },
+    {
+      "id": "npc_al_savant_elara",
+      "name": "Savant Elara Glasswright",
+      "role": "Dean of the Mnemonic Collegium",
+      "locationId": "loc_al_glass_conservatory",
+      "factionId": "faction_al_glass_scholars",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_savant_elara",
+      "description": "A silver-haired arcanist surrounded by chiming glass phials who trades mnemonic foci, scribing tools, and distilled essences.",
+      "equipment": {
+        "main_hand": "item_al_mnemonic_staff",
+        "head": "item_al_glass_circlet",
+        "body": "item_al_shroudweave_robe"
+      },
+      "inventory": [
+        "item_al_memory_draught",
+        "mat_al_distilled_memory"
+      ],
+      "drachmae": 160,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_memory_draught",
+          "price": 48,
+          "stock": 4
+        },
+        {
+          "itemId": "item_al_bellwright_cordial",
+          "price": 26,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_mnemonic_staff",
+          "price": 52,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_glass_circlet",
+          "price": 82,
+          "stock": 1
+        },
+        {
+          "itemId": "item_al_scribe_gloves",
+          "price": 34,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_kit_scribing",
+          "price": 32,
+          "stock": 2
+        },
+        {
+          "itemId": "mat_al_distilled_memory",
+          "price": 48,
+          "stock": 3
+        },
+        {
+          "itemId": "mat_al_tallow_herbs",
+          "price": 10,
+          "stock": 6
+        }
+      ]
+    },
+    {
+      "id": "npc_al_auctioneer_kestrel",
+      "name": "Lord-Auctioneer Kestrel",
+      "role": "Master of the Velvet Court",
+      "locationId": "loc_al_velvet_court",
+      "factionId": "faction_al_chancery_auditors",
+      "moralPreference": "negative",
+      "dialogueId": "dlg_al_auctioneer_kestrel",
+      "description": "A silk-robed patrician who sips golden longevity wine while auctioning off forgotten lives with polite detachment.",
+      "equipment": {
+        "neck": "item_al_pendant_brass_scale"
+      },
+      "inventory": [
+        "item_al_patrician_vintage"
+      ],
+      "drachmae": 220
+    },
+    {
+      "id": "npc_al_horologist_tomas",
+      "name": "Horologist Tomas",
+      "role": "Keeper of the Clockwork Belfry",
+      "locationId": "loc_al_clockwork_belfry",
+      "factionId": "faction_al_bellwright_order",
+      "dialogueId": "dlg_al_horologist_tomas",
+      "description": "A deafened clockmaker who reads time in the vibration of brass gears and guards the legend of the Thirteenth Chime.",
+      "equipment": {
+        "body": "item_al_weir_oilskin"
+      },
+      "inventory": [
+        "mat_al_chancery_brass"
+      ],
+      "drachmae": 42
+    },
+    {
+      "id": "npc_al_strike_leader_dara",
+      "name": "Dara Iron-Palm",
+      "role": "Quarry Labor Organizer",
+      "locationId": "loc_al_penitent_camp",
+      "factionId": "faction_al_lantern_reformers",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_strike_leader_dara",
+      "description": "A fierce former smith who rallied the indebted quarry crews after the Furnace Guild doubled shifts to feed the Upper Terraces.",
+      "equipment": {
+        "main_hand": "item_al_foundry_cleaver",
+        "hands": "item_al_foundry_gauntlets"
+      },
+      "inventory": [
+        "item_al_cinder_stimulant"
+      ],
+      "drachmae": 30
+    },
+    {
+      "id": "npc_al_quarry_overseer_brent",
+      "name": "Overseer Brent",
+      "role": "Disillusioned Quarry Clerk",
+      "locationId": "loc_al_quarry_pit",
+      "factionId": "faction_al_cinder_syndicate",
+      "dialogueId": "dlg_al_quarry_overseer_brent",
+      "description": "A nervous tally-keeper torn between his Furnace Guild paycheck and his horror at the strikebreaker automatons.",
+      "equipment": {
+        "body": "item_al_auditor_greatcoat"
+      },
+      "inventory": [
+        "item_al_tallow_salve"
+      ],
+      "drachmae": 45
+    },
+    {
+      "id": "npc_al_warden_scout_fenn",
+      "name": "Scout Fenn",
+      "role": "Viaduct Beacon-Watcher",
+      "locationId": "loc_al_rusted_viaduct",
+      "factionId": "faction_al_pale_wardens",
+      "dialogueId": "dlg_al_warden_scout_fenn",
+      "description": "A wind-chapped ranger perched along the iron trestle, keeping watch over the smoking salt-gorge.",
+      "equipment": {
+        "main_hand": "item_al_salt_longbow",
+        "head": "item_al_warden_helm"
+      },
+      "inventory": [
+        "item_al_salt_tea"
+      ],
+      "drachmae": 32
+    },
+    {
+      "id": "npc_al_captain_voss",
+      "name": "Captain Astrid Voss",
+      "role": "Commander of Lantern-Wall Bastion",
+      "locationId": "loc_al_lantern_wall_gate",
+      "factionId": "faction_al_pale_wardens",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_captain_voss",
+      "description": "A scarred frontier veteran who fiercely protects her rangers while suspecting the Chancery uses her garrison as disposable fodder.",
+      "equipment": {
+        "main_hand": "item_al_lantern_halberd",
+        "body": "item_al_warden_brigandine",
+        "head": "item_al_warden_helm"
+      },
+      "inventory": [
+        "item_al_bellwright_cordial",
+        "item_al_salt_tea"
+      ],
+      "drachmae": 135,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_bellwright_cordial",
+          "price": 26,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_tallow_salve",
+          "price": 14,
+          "stock": 6
+        },
+        {
+          "itemId": "item_al_brass_crossbow",
+          "price": 54,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_warden_brigandine",
+          "price": 96,
+          "stock": 1
+        },
+        {
+          "itemId": "item_al_warden_helm",
+          "price": 38,
+          "stock": 2
+        },
+        {
+          "itemId": "item_al_ring_salt_ward",
+          "price": 46,
+          "stock": 2
+        },
+        {
+          "itemId": "mat_al_void_salt",
+          "price": 22,
+          "stock": 4
+        }
+      ]
+    },
+    {
+      "id": "npc_al_cairn_hermit",
+      "name": "Old Cairn-Keeper Yarrow",
+      "role": "Wandering Memory-Seer",
+      "locationId": "loc_al_drifting_cairns",
+      "factionId": "faction_al_weir_ferrymen",
+      "dialogueId": "dlg_al_cairn_hermit",
+      "description": "A blind hermit who stacks stones for every forgotten soul lost in the Reach and whispers of the Pre-Chancery Ferry.",
+      "equipment": {
+        "back": "item_al_salt_cloak"
+      },
+      "inventory": [
+        "item_al_quiet_incense",
+        "item_al_salt_tea"
+      ],
+      "drachmae": 18
+    },
+    {
+      "id": "npc_al_mire_herbalist",
+      "name": "Reed-Witch Senna",
+      "role": "Frontier Apothecary & Salvager",
+      "locationId": "loc_al_whispering_mire",
+      "factionId": "faction_al_unwritten_court",
+      "isMerchant": true,
+      "dialogueId": "dlg_al_mire_herbalist",
+      "description": "An exiled alchemist dwelling among the reed-fens who trades rare amber varnishes, frontier reagents, and curative elixirs.",
+      "equipment": {
+        "body": "item_al_shroudweave_robe"
+      },
+      "inventory": [
+        "mat_al_tallow_herbs",
+        "mat_al_wraith_silk"
+      ],
+      "drachmae": 120,
+      "merchantInventory": [
+        {
+          "itemId": "item_al_strong_salve",
+          "price": 54,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_bellwright_cordial",
+          "price": 26,
+          "stock": 5
+        },
+        {
+          "itemId": "item_al_amber_varnish",
+          "price": 38,
+          "stock": 3
+        },
+        {
+          "itemId": "item_al_ash_antidote",
+          "price": 14,
+          "stock": 5
+        },
+        {
+          "itemId": "mat_al_weeping_amber",
+          "price": 42,
+          "stock": 3
+        },
+        {
+          "itemId": "mat_al_wraith_silk",
+          "price": 44,
+          "stock": 3
+        },
+        {
+          "itemId": "mat_al_ash_quartz",
+          "price": 45,
+          "stock": 2
+        }
+      ]
+    },
+    {
+      "id": "npc_al_regent_malcor_envoy",
+      "name": "Herald Calen of the Unwritten",
+      "role": "Voice of the Hollow Nave",
+      "locationId": "loc_al_hollow_cathedral",
+      "factionId": "faction_al_unwritten_court",
+      "dialogueId": "dlg_al_regent_malcor_envoy",
+      "description": "A porcelain-masked exile whose cracked throat speaks with quiet dignity on behalf of Regent Malcor and the Unwritten Court.",
+      "equipment": {
+        "main_hand": "item_al_unwritten_edge",
+        "body": "item_al_ossuary_plate"
+      },
+      "inventory": [
+        "mat_al_ossuary_marrow"
+      ],
+      "drachmae": 65
+    },
+    {
+      "id": "npc_al_weeping_serena",
+      "name": "Serena the Amber-Bound",
+      "role": "Grieving Frontier Captain",
+      "locationId": "loc_al_weeping_orchard",
+      "factionId": "faction_al_pale_wardens",
+      "moralPreference": "positive",
+      "dialogueId": "dlg_al_weeping_serena",
+      "description": "Half-encased in translucent golden resin, Serena stands sentinel over the graves of abandoned refugees. Compassion may reach her where steel fails.",
+      "equipment": {
+        "main_hand": "item_al_lantern_halberd",
+        "neck": "item_al_locket_unforgotten"
+      },
+      "inventory": [
+        "mat_al_weeping_amber"
+      ],
+      "drachmae": 40
+    },
+    {
+      "id": "npc_al_silent_architect_echo",
+      "name": "Echo of the Silent Architect",
+      "role": "Remnant of the First Seal's Builder",
+      "locationId": "loc_al_broken_ferry_arch",
+      "factionId": "faction_al_glass_scholars",
+      "dialogueId": "dlg_al_silent_architect_echo",
+      "description": "A serene, flickering silhouette seated upon the dry basalt pier, waiting centuries for someone unstamped to weigh the true cost of the Seal.",
+      "equipment": {
+        "neck": "item_al_talisman_first_oar"
+      },
+      "inventory": [],
+      "drachmae": 0
+    }
+  ]
+}

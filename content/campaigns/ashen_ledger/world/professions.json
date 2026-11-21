@@ -1,0 +1,54 @@
+{
+  "professions": [
+    {
+      "id": "al_foundry_smithing",
+      "name": "Foundry Smithing & Ironwork",
+      "icon": "🔨",
+      "governingAttribute": "strength",
+      "secondaryAttribute": "endurance",
+      "governingSkill": "athletics",
+      "requiredToolkitId": "item_al_kit_foundry",
+      "description": "Forge pale-iron weapons, slag-plate armor, and frontier implements."
+    },
+    {
+      "id": "al_bell_brasswork",
+      "name": "Bell-Casting & Brasswork",
+      "icon": "🔔",
+      "governingAttribute": "intelligence",
+      "secondaryAttribute": "strength",
+      "governingSkill": "investigation",
+      "requiredToolkitId": "item_al_kit_brasswork",
+      "description": "Cast consecrated bronze shields, hammers, clockwork crossbows, and resonant chimes."
+    },
+    {
+      "id": "al_oilskin_leathercraft",
+      "name": "Oilskin & Salt-Leathercraft",
+      "icon": "🧵",
+      "governingAttribute": "agility",
+      "secondaryAttribute": "endurance",
+      "governingSkill": "survival",
+      "requiredToolkitId": "item_al_kit_leather",
+      "description": "Stitch weather-warded oilskin coats, stealth cloaks, brigandines, and frontier boots."
+    },
+    {
+      "id": "al_mnemonic_alchemy",
+      "name": "Mnemonic Alchemy & Distillation",
+      "icon": "🧪",
+      "governingAttribute": "wisdom",
+      "secondaryAttribute": "intelligence",
+      "governingSkill": "medicine",
+      "requiredToolkitId": "item_al_kit_alchemy",
+      "description": "Distill healing salves, furnace tonics, memory elixirs, and volatile blade oils."
+    },
+    {
+      "id": "al_seal_scribing",
+      "name": "Runic Scribing & Sealcraft",
+      "icon": "📜",
+      "governingAttribute": "intelligence",
+      "secondaryAttribute": "wisdom",
+      "governingSkill": "mythology_lore",
+      "requiredToolkitId": "item_al_kit_scribing",
+      "description": "Inscribe mnemonic rings, arcane focus staves, spirit-wards, and threshold talismans."
+    }
+  ]
+}

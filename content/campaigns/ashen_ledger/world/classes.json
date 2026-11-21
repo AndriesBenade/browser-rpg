@@ -1,0 +1,300 @@
+{
+  "classes": [
+    {
+      "id": "al_lantern_warden",
+      "name": "Lantern-Wall Warden",
+      "description": "Hardened frontier vanguard trained to hold the line against salt-horrors with steel, shield, and grim resolve.",
+      "bonuses": {
+        "strength": 2,
+        "endurance": 2
+      },
+      "skills": {
+        "melee_combat": 2,
+        "athletics": 2,
+        "perception": 1
+      },
+      "startingEquipment": [
+        "item_al_dock_cutlass",
+        "item_al_dock_buckler",
+        "item_al_weir_oilskin",
+        "item_al_tallow_salve",
+        "item_al_salted_biscuit"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_bastion_brace",
+          "name": "Bastion Brace",
+          "level": 1,
+          "desc": "Hold the Lantern-Wall line: +1 Armor Class in battle.",
+          "passive": {
+            "ac": 1
+          }
+        },
+        {
+          "id": "feat_al_lantern_flare",
+          "name": "Lantern Flare",
+          "level": 2,
+          "desc": "Blaze ash-light into up to 2 foes (1d6+2 dmg & Weakened 2r).",
+          "combat": {
+            "stamina": 2,
+            "damage": "1d6+2",
+            "enemyStatus": {
+              "id": "weakened",
+              "rounds": 2
+            },
+            "targetType": "all_enemies",
+            "maxTargets": 2,
+            "aoe": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "al_mnemonic_arcanist",
+      "name": "Mnemonic Arcanist",
+      "description": "Scholar of distilled memory and threshold seals who unlocks broad spell repertoires quickly through Arcane Knowledge Points.",
+      "bonuses": {
+        "intelligence": 2,
+        "wisdom": 2
+      },
+      "skills": {
+        "mythology_lore": 3,
+        "investigation": 2,
+        "perception": 1
+      },
+      "startingEquipment": [
+        "item_al_mnemonic_staff",
+        "item_al_weir_oilskin",
+        "item_al_tallow_salve",
+        "item_al_salt_tea",
+        "item_al_kit_scribing"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_mnemonic_echo",
+          "name": "Mnemonic Echo",
+          "level": 1,
+          "desc": "Deep memory mastery: +1 bonus on Mythology & Lore and Investigation checks.",
+          "passive": {
+            "skillBonus": {
+              "mythology_lore": 1,
+              "investigation": 1
+            }
+          }
+        },
+        {
+          "id": "feat_al_glass_pulse",
+          "name": "Prism Pulse",
+          "level": 2,
+          "desc": "Shatter bottled essence across up to 3 foes for 1d6+INT damage.",
+          "combat": {
+            "stamina": 2,
+            "damage": "1d6",
+            "addIntelligence": true,
+            "targetType": "all_enemies",
+            "maxTargets": 3,
+            "aoe": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "al_weir_smuggler",
+      "name": "Freebooter Runner",
+      "description": "Nimble contraband runner and frontier sharpshooter skilled in locks, alleys, and lethal opening strikes.",
+      "bonuses": {
+        "agility": 2,
+        "charisma": 2
+      },
+      "skills": {
+        "ranged_combat": 2,
+        "stealth": 2,
+        "deception": 2
+      },
+      "startingEquipment": [
+        "item_al_salt_longbow",
+        "item_al_debt_stiletto",
+        "item_al_weir_oilskin",
+        "item_al_lockpick_set",
+        "item_al_tallow_salve"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_alley_step",
+          "name": "Fog-Runner's Step",
+          "level": 1,
+          "desc": "+1 ranged attack and +1 Stealth in murky borders.",
+          "passive": {
+            "attackRanged": 1,
+            "skillBonus": {
+              "stealth": 1
+            }
+          }
+        },
+        {
+          "id": "feat_al_brine_flash",
+          "name": "Brine-Flash Volley",
+          "level": 2,
+          "desc": "Blind and rake a target from cover (1d8+2 dmg & Confused 2r).",
+          "combat": {
+            "stamina": 2,
+            "damage": "1d8+2",
+            "enemyStatus": {
+              "id": "confused",
+              "rounds": 2
+            },
+            "range": "ranged",
+            "bypassFrontline": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "al_bell_cantor",
+      "name": "Bellwright Cantor",
+      "description": "Devoted caster of consecrated bronze who blends sturdy mace-craft with cleansing restorations.",
+      "bonuses": {
+        "wisdom": 2,
+        "endurance": 2
+      },
+      "skills": {
+        "mythology_lore": 2,
+        "medicine": 2,
+        "melee_combat": 1
+      },
+      "startingEquipment": [
+        "item_al_auditor_baton",
+        "item_al_dock_buckler",
+        "item_al_weir_oilskin",
+        "item_al_bellwright_cordial",
+        "item_al_kit_brasswork"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_calm_chime",
+          "name": "Resonant Calm",
+          "level": 1,
+          "desc": "+1 healing and resistance against fear.",
+          "passive": {
+            "skillBonus": {
+              "medicine": 1
+            }
+          }
+        },
+        {
+          "id": "feat_al_tolling_mend",
+          "name": "Chime of Quiet",
+          "level": 2,
+          "desc": "Restore 2d4+3 Health and fortify +4 Ward.",
+          "combat": {
+            "stamina": 2,
+            "heal": "2d4+3",
+            "ward": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "al_cinder_alchemist",
+      "name": "Crucible Alchemist",
+      "description": "Resourceful distiller of furnace slag and marsh herbs who excels at concealed crafting, coatings, and volatile concoctions.",
+      "bonuses": {
+        "intelligence": 2,
+        "endurance": 2
+      },
+      "skills": {
+        "medicine": 2,
+        "survival": 2,
+        "investigation": 2
+      },
+      "startingEquipment": [
+        "item_al_weir_harpoon",
+        "item_al_weir_oilskin",
+        "item_al_kit_alchemy",
+        "item_al_cinder_oil",
+        "item_al_tallow_salve"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_crucible_hands",
+          "name": "Crucible Hands",
+          "level": 1,
+          "desc": "+1 survival and +1 medicine from relentless workshop practice.",
+          "passive": {
+            "skillBonus": {
+              "survival": 1,
+              "medicine": 1
+            }
+          }
+        },
+        {
+          "id": "feat_al_cinder_flask",
+          "name": "Cinder-Slag Flask",
+          "level": 2,
+          "desc": "Hurl an unstable crucible bomb hitting up to 2 foes (1d6+3 & Bleeding 2r).",
+          "combat": {
+            "stamina": 2,
+            "damage": "1d6+3",
+            "enemyStatus": {
+              "id": "bleeding",
+              "rounds": 2,
+              "value": 2
+            },
+            "targetType": "all_enemies",
+            "maxTargets": 2,
+            "aoe": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "al_debt_inquisitor",
+      "name": "Chancery Inquisitor",
+      "description": "Sharp-eyed investigator and silver-tongued negotiator versed in Ledger-Law, interrogation, and merciless steel.",
+      "bonuses": {
+        "charisma": 2,
+        "strength": 2
+      },
+      "skills": {
+        "persuasion": 2,
+        "investigation": 2,
+        "melee_combat": 2
+      },
+      "startingEquipment": [
+        "item_al_auditor_baton",
+        "item_al_weir_oilskin",
+        "item_al_pendant_brass_scale",
+        "item_al_tallow_salve",
+        "item_al_salted_biscuit"
+      ],
+      "classFeatures": [
+        {
+          "id": "feat_al_ledger_eye",
+          "name": "Auditor's Scrutiny",
+          "level": 1,
+          "desc": "+2 on Persuasion and Investigation when probing secrets.",
+          "passive": {
+            "skillBonus": {
+              "persuasion": 2,
+              "investigation": 1
+            }
+          }
+        },
+        {
+          "id": "feat_al_verdict_strike",
+          "name": "Final Verdict",
+          "level": 2,
+          "desc": "Punishing strike dealing 2d6+2 damage and lowering foe morale.",
+          "combat": {
+            "stamina": 2,
+            "damage": "2d6+2",
+            "enemyStatus": {
+              "id": "weakened",
+              "rounds": 2
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

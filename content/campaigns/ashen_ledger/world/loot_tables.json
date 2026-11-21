@@ -1,0 +1,403 @@
+{
+  "lootTables": [
+    {
+      "id": "lt_al_gutter_hound",
+      "entries": [
+        {
+          "itemId": "mat_al_salt_hide",
+          "chance": 0.85
+        },
+        {
+          "itemId": "item_al_smoked_eel",
+          "chance": 0.35
+        }
+      ],
+      "currency": {
+        "min": 4,
+        "max": 9
+      }
+    },
+    {
+      "id": "lt_al_dock_cutthroat",
+      "entries": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "chance": 0.5
+        },
+        {
+          "itemId": "item_al_debt_stiletto",
+          "chance": 0.25
+        },
+        {
+          "itemId": "mat_al_oilskin_canvas",
+          "chance": 0.6
+        }
+      ],
+      "currency": {
+        "min": 8,
+        "max": 16
+      }
+    },
+    {
+      "id": "lt_al_debt_bailiff",
+      "entries": [
+        {
+          "itemId": "mat_al_chancery_brass",
+          "chance": 0.75
+        },
+        {
+          "itemId": "item_al_auditor_baton",
+          "chance": 0.25
+        },
+        {
+          "itemId": "item_al_cinder_stimulant",
+          "chance": 0.45
+        }
+      ],
+      "currency": {
+        "min": 12,
+        "max": 22
+      }
+    },
+    {
+      "id": "lt_al_soot_automaton",
+      "entries": [
+        {
+          "itemId": "mat_al_cinder_slag",
+          "chance": 0.85
+        },
+        {
+          "itemId": "mat_al_pale_iron",
+          "chance": 0.7
+        },
+        {
+          "itemId": "item_al_cinder_oil",
+          "chance": 0.4
+        }
+      ],
+      "currency": {
+        "min": 10,
+        "max": 20
+      }
+    },
+    {
+      "id": "lt_al_furnace_enforcer",
+      "entries": [
+        {
+          "itemId": "mat_al_cinder_slag",
+          "chance": 0.7
+        },
+        {
+          "itemId": "item_al_foundry_apron",
+          "chance": 0.22
+        },
+        {
+          "itemId": "item_al_cinder_stimulant",
+          "chance": 0.55
+        }
+      ],
+      "currency": {
+        "min": 14,
+        "max": 26
+      }
+    },
+    {
+      "id": "lt_al_salt_stalker",
+      "entries": [
+        {
+          "itemId": "mat_al_void_salt",
+          "chance": 0.85
+        },
+        {
+          "itemId": "mat_al_salt_hide",
+          "chance": 0.65
+        }
+      ],
+      "currency": {
+        "min": 12,
+        "max": 22
+      }
+    },
+    {
+      "id": "lt_al_mire_wraith",
+      "entries": [
+        {
+          "itemId": "mat_al_wraith_silk",
+          "chance": 0.75
+        },
+        {
+          "itemId": "mat_al_tallow_herbs",
+          "chance": 0.6
+        },
+        {
+          "itemId": "item_al_quiet_incense",
+          "chance": 0.35
+        }
+      ],
+      "currency": {
+        "min": 15,
+        "max": 28
+      }
+    },
+    {
+      "id": "lt_al_glass_harpy",
+      "entries": [
+        {
+          "itemId": "mat_al_ash_quartz",
+          "chance": 0.7
+        },
+        {
+          "itemId": "mat_al_void_salt",
+          "chance": 0.6
+        }
+      ],
+      "currency": {
+        "min": 14,
+        "max": 26
+      }
+    },
+    {
+      "id": "lt_al_unwritten_knight",
+      "entries": [
+        {
+          "itemId": "mat_al_ossuary_marrow",
+          "chance": 0.85
+        },
+        {
+          "itemId": "item_al_unwritten_edge",
+          "chance": 0.28
+        },
+        {
+          "itemId": "item_al_bellwright_cordial",
+          "chance": 0.5
+        }
+      ],
+      "currency": {
+        "min": 20,
+        "max": 36
+      }
+    },
+    {
+      "id": "lt_al_cantor_acolyte",
+      "entries": [
+        {
+          "itemId": "mat_al_bell_bronze",
+          "chance": 0.7
+        },
+        {
+          "itemId": "mat_al_distilled_memory",
+          "chance": 0.35
+        },
+        {
+          "itemId": "item_al_memory_draught",
+          "chance": 0.3
+        }
+      ],
+      "currency": {
+        "min": 18,
+        "max": 32
+      }
+    },
+    {
+      "id": "lt_al_boss_kiln_warden",
+      "isBoss": true,
+      "guaranteed": [
+        "mat_al_cinder_slag",
+        "item_al_ring_cinder_seal"
+      ],
+      "entries": [
+        {
+          "itemId": "item_al_foundry_cleaver",
+          "chance": 0.65
+        },
+        {
+          "itemId": "item_al_memory_draught",
+          "chance": 0.7
+        }
+      ],
+      "currency": {
+        "min": 35,
+        "max": 55
+      }
+    },
+    {
+      "id": "lt_al_boss_weeping_warden",
+      "isBoss": true,
+      "guaranteed": [
+        "mat_al_weeping_amber"
+      ],
+      "entries": [
+        {
+          "itemId": "item_al_lantern_halberd",
+          "chance": 0.6
+        },
+        {
+          "itemId": "item_al_locket_unforgotten",
+          "chance": 0.5
+        }
+      ],
+      "currency": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    {
+      "id": "lt_al_boss_hollow_regent",
+      "isBoss": true,
+      "guaranteed": [
+        "mat_al_ossuary_marrow",
+        "mat_al_wraith_silk"
+      ],
+      "entries": [
+        {
+          "itemId": "item_al_ossuary_plate",
+          "chance": 0.45
+        },
+        {
+          "itemId": "item_al_aegis_of_scales",
+          "chance": 0.6
+        }
+      ],
+      "currency": {
+        "min": 50,
+        "max": 80
+      }
+    },
+    {
+      "id": "lt_al_boss_high_auditor",
+      "isBoss": true,
+      "guaranteed": [
+        "item_al_first_scale_scepter"
+      ],
+      "entries": [
+        {
+          "itemId": "item_al_memory_draught",
+          "chance": 0.9
+        },
+        {
+          "itemId": "mat_al_distilled_memory",
+          "chance": 0.8
+        }
+      ],
+      "currency": {
+        "min": 70,
+        "max": 110
+      }
+    },
+    {
+      "id": "lt_al_customs_box",
+      "entries": [
+        {
+          "itemId": "item_al_tallow_salve",
+          "chance": 0.9
+        },
+        {
+          "itemId": "mat_al_chancery_brass",
+          "chance": 0.85
+        },
+        {
+          "itemId": "item_al_pendant_brass_scale",
+          "chance": 0.4
+        }
+      ],
+      "currency": {
+        "min": 18,
+        "max": 30
+      }
+    },
+    {
+      "id": "lt_al_smuggler_stash",
+      "entries": [
+        {
+          "itemId": "item_al_lockpick_set",
+          "chance": 0.8
+        },
+        {
+          "itemId": "item_al_cinder_oil",
+          "chance": 0.85
+        },
+        {
+          "itemId": "item_al_salt_cloak",
+          "chance": 0.45
+        }
+      ],
+      "currency": {
+        "min": 20,
+        "max": 36
+      }
+    },
+    {
+      "id": "lt_al_belfry_vault",
+      "entries": [
+        {
+          "itemId": "mat_al_bell_bronze",
+          "chance": 0.9
+        },
+        {
+          "itemId": "item_al_ring_memory_prism",
+          "chance": 0.65
+        }
+      ],
+      "currency": {
+        "min": 25,
+        "max": 45
+      }
+    },
+    {
+      "id": "lt_al_quarry_drift",
+      "entries": [
+        {
+          "itemId": "mat_al_pale_iron",
+          "chance": 1,
+          "quantity": 2
+        },
+        {
+          "itemId": "item_al_cinder_stimulant",
+          "chance": 0.8
+        }
+      ],
+      "currency": {
+        "min": 10,
+        "max": 20
+      }
+    },
+    {
+      "id": "lt_al_glass_reliquary",
+      "entries": [
+        {
+          "itemId": "mat_al_distilled_memory",
+          "chance": 0.95
+        },
+        {
+          "itemId": "item_al_glass_circlet",
+          "chance": 0.5
+        }
+      ],
+      "currency": {
+        "min": 20,
+        "max": 35
+      }
+    },
+    {
+      "id": "lt_al_echo_vault_coffer",
+      "entries": [
+        {
+          "itemId": "mat_al_ash_quartz",
+          "chance": 0.9
+        },
+        {
+          "itemId": "item_al_amber_varnish",
+          "chance": 0.8
+        },
+        {
+          "itemId": "item_al_relic_quiet_crown",
+          "chance": 0.35
+        }
+      ],
+      "currency": {
+        "min": 45,
+        "max": 75
+      }
+    }
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "encounters": [
+    {
+      "id": "enc_al_sluice_hounds",
+      "name": "Under-Sluice Ash-Hound Pack",
+      "locationId": "loc_al_sewer_sluice",
+      "repeatable": true,
+      "cooldownHours": 16,
+      "enemies": [
+        {
+          "creatureId": "creature_al_gutter_hound",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_gutter_hound",
+          "position": "frontline"
+        }
+      ],
+      "introProse": "Two gaunt ash-hounds emerge from the steaming culvert shadows, jaws flecked with grey cinders!",
+      "victoryOutcome": {
+        "text": "The sluice runnel falls silent as the scavengers scatter into the dark.",
+        "awardXP": 35
+      }
+    },
+    {
+      "id": "enc_al_pier_ambush",
+      "name": "Black-Ledger Pier Ambush",
+      "locationId": "loc_al_drowned_piers",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_dock_cutthroat",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_dock_cutthroat",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Dockside cutthroats step out from behind rotting pilings, blades gleaming in the mist!",
+      "victoryOutcome": {
+        "text": "You clear the Drowned Piers of Black-Ledger enforcers.",
+        "setFlags": {
+          "al_cleared_pier_ambush": true
+        },
+        "awardXP": 45
+      }
+    },
+    {
+      "id": "enc_al_customs_seizure",
+      "name": "Chancery Bailiff Detachment",
+      "locationId": "loc_al_bone_mint",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_debt_bailiff",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_bailiff_marksman",
+          "position": "backline"
+        }
+      ],
+      "introProse": "A brass-plated bailiff bars the Mint alley while an arbalest takes aim from behind a coin-cart!",
+      "victoryOutcome": {
+        "text": "The bailiff patrol yields the street.",
+        "awardXP": 60
+      }
+    },
+    {
+      "id": "enc_al_quarry_strikebreakers",
+      "name": "Foundry Strikebreaker Squad",
+      "locationId": "loc_al_quarry_pit",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_soot_automaton",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_furnace_enforcer",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_cantor_acolyte",
+          "position": "backline"
+        }
+      ],
+      "introProse": "A hissing ash-automaton stomps into the quarry pit flanked by a Furnace Overseer and a chanting bell-mender!",
+      "victoryOutcome": {
+        "text": "With the strikebreakers broken, the exhausted quarry laborers raise a hoarse cheer!",
+        "setFlags": {
+          "al_quarry_strikebreakers_defeated": true
+        },
+        "awardXP": 110
+      }
+    },
+    {
+      "id": "enc_al_kiln_warden_boss",
+      "name": "Foreman Krag & Kiln Enforcers",
+      "locationId": "loc_al_cinder_kilns",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_kiln_warden",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_furnace_enforcer",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_bailiff_marksman",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Foreman Krag steps out of the blazing kiln smoke, brass bellows wheezing inside his chest as his guards lock formation!",
+      "victoryOutcome": {
+        "text": "Foreman Krag crashes to the cinders! His furnace manifests expose the Syndicate's manufactured border shortage.",
+        "setFlags": {
+          "al_kiln_warden_defeated": true
+        },
+        "awardXP": 150
+      }
+    },
+    {
+      "id": "enc_al_viaduct_raid",
+      "name": "Salt-Jackal Raid on the Viaduct",
+      "locationId": "loc_al_rusted_viaduct",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_salt_stalker",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_salt_stalker",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_glass_harpy",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Crystallized salt-jackals bound across the rusted iron sleepers while a shard-kite circles overhead!",
+      "victoryOutcome": {
+        "text": "The viaduct beacons burn clear once more.",
+        "setFlags": {
+          "al_viaduct_beacons_defended": true
+        },
+        "awardXP": 95
+      }
+    },
+    {
+      "id": "enc_al_salt_flats_pack",
+      "name": "Bleached Salt-Flats Prowlers",
+      "locationId": "loc_al_salt_flats",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_salt_stalker",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Out of the white mineral haze charge a salt-jackal and a drifting mire-wraith!",
+      "victoryOutcome": {
+        "text": "The salt-wind disperses the vanquished mist.",
+        "awardXP": 75
+      }
+    },
+    {
+      "id": "enc_al_cairn_wraiths",
+      "name": "Chorus of the Drifting Cairns",
+      "locationId": "loc_al_drifting_cairns",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Two mournful wraiths rise between the shifting cairn stones, whispering forgotten mortal names!",
+      "victoryOutcome": {
+        "text": "Quiet settles across the cairns as the wraiths dissolve into pale dust.",
+        "awardXP": 85
+      }
+    },
+    {
+      "id": "enc_al_glass_steppe_flock",
+      "name": "Fulgurite Shard-Kite Flock",
+      "locationId": "loc_al_glass_steppe",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_glass_harpy",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_glass_harpy",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Singing slivers of storm-glass rain down as two shard-kites stoop from the amber clouds!",
+      "victoryOutcome": {
+        "text": "Shards of humming quartz litter the glass steppe.",
+        "awardXP": 90
+      }
+    },
+    {
+      "id": "enc_al_mire_ambush",
+      "name": "Whispering Mire Haunting",
+      "locationId": "loc_al_whispering_mire",
+      "repeatable": true,
+      "cooldownHours": 24,
+      "enemies": [
+        {
+          "creatureId": "creature_al_salt_stalker",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "backline"
+        },
+        {
+          "creatureId": "creature_al_cantor_acolyte",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Pale lanterns bob across the reeds as a mire-wraith and a rogue bell-cantor set their hounds upon you!",
+      "victoryOutcome": {
+        "text": "The reeds fall calm beneath the violet sky.",
+        "awardXP": 105
+      }
+    },
+    {
+      "id": "enc_al_marrow_bridge_guard",
+      "name": "Sentinels of the Oath-Bridge",
+      "locationId": "loc_al_marrow_bridge",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_unwritten_knight",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_unwritten_knight",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_cantor_acolyte",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Two ivory-armored Oath-Broken Sentinels raise their blades in solemn salute before barring the bridge!",
+      "victoryOutcome": {
+        "text": "The bridge stands open toward the Threshold Abyss.",
+        "setFlags": {
+          "al_marrow_bridge_cleared": true
+        },
+        "awardXP": 145
+      }
+    },
+    {
+      "id": "enc_al_weeping_warden_boss",
+      "name": "Serena of the Weeping Orchard",
+      "locationId": "loc_al_weeping_orchard",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_weeping_warden",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_mire_wraith",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Amber tears fall like glass rain as Serena lowers her lantern-halberd: 'Leave the fallen to sleep, or prove you deserve to pass!'",
+      "victoryOutcome": {
+        "text": "Serena sinks to one knee among the glowing roots, her amber armor cracking softly.",
+        "setFlags": {
+          "al_weeping_warden_confronted": true
+        },
+        "awardXP": 185
+      }
+    },
+    {
+      "id": "enc_al_hollow_regent_boss",
+      "name": "Trial of Regent Malcor",
+      "locationId": "loc_al_hollow_cathedral",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_hollow_regent",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_unwritten_knight",
+          "position": "frontline"
+        }
+      ],
+      "introProse": "Regent Malcor rises from the ossuary dais, pale blade drawn: 'If you will not parley with the Unwritten, then earn our seal by steel!'",
+      "victoryOutcome": {
+        "text": "Malcor yields the Fragment of Memory with grim respect.",
+        "setFlags": {
+          "al_hollow_regent_defeated": true
+        },
+        "giveItem": "item_al_seal_fragment_memory",
+        "awardXP": 220
+      }
+    },
+    {
+      "id": "enc_al_echo_vault_boss",
+      "name": "The Echo-Warden of the Vault",
+      "locationId": "loc_al_echo_vault",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_echo_collector",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_glass_harpy",
+          "position": "backline"
+        }
+      ],
+      "introProse": "Obsidian mirrors shatter outward as the Echo-Warden assembles itself in a storm of stolen voices!",
+      "victoryOutcome": {
+        "text": "The stolen echoes spiral upward into silence, leaving the Fragment of Quiet behind.",
+        "setFlags": {
+          "al_echo_warden_defeated": true
+        },
+        "giveItem": "item_al_seal_fragment_quiet",
+        "awardXP": 250
+      }
+    },
+    {
+      "id": "enc_al_high_auditor_finale",
+      "name": "High Auditor Crassus & Chancery Guard",
+      "locationId": "loc_al_first_seal_chamber",
+      "repeatable": false,
+      "enemies": [
+        {
+          "creatureId": "creature_al_boss_high_auditor",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_debt_bailiff",
+          "position": "frontline"
+        },
+        {
+          "creatureId": "creature_al_cantor_acolyte",
+          "position": "backline"
+        }
+      ],
+      "introProse": "High Auditor Crassus raises the Scepter of the Broken Scale beneath the chained First Seal: 'You would plunge Vesper-Threshold into darkness for a fairy tale of rest!'",
+      "victoryOutcome": {
+        "text": "High Auditor Crassus falls before the chained silver ring! The fate of the First Seal now rests in your hands.",
+        "setFlags": {
+          "al_high_auditor_defeated": true
+        },
+        "awardXP": 320
+      }
+    }
+  ]
+}
