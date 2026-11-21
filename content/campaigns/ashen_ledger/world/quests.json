@@ -92,7 +92,8 @@
           "faction_al_lantern_reformers": 15,
           "faction_al_pale_wardens": 10
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_main_03_frontier_keys",
@@ -134,7 +135,8 @@
         "reputation": {
           "faction_al_glass_scholars": 15
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_main_04_first_seal",
@@ -209,7 +211,8 @@
       "rewards": {
         "experience": 450,
         "drachmae": 150
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_missing_oar",
@@ -270,7 +273,8 @@
       "rewards": {
         "experience": 130,
         "drachmae": 35
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_foundry_strike",
@@ -329,7 +333,8 @@
       "rewards": {
         "experience": 180,
         "drachmae": 50
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_glass_memory",
@@ -366,7 +371,8 @@
         "reputation": {
           "faction_al_glass_scholars": 15
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_warden_beacon",
@@ -403,7 +409,8 @@
         "reputation": {
           "faction_al_pale_wardens": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_bell_bronze",
@@ -436,7 +443,8 @@
         "reputation": {
           "faction_al_bellwright_order": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_unwritten_truce",
@@ -465,7 +473,8 @@
         "reputation": {
           "faction_al_unwritten_court": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_moral_pos_sanctuary",
@@ -501,7 +510,8 @@
           "faction_al_lantern_reformers": 25,
           "faction_al_bellwright_order": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_moral_pos_mercy_bell",
@@ -537,7 +547,8 @@
           "faction_al_pale_wardens": 25,
           "faction_al_bellwright_order": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_moral_neg_foreclosure",
@@ -573,7 +584,8 @@
           "faction_al_toll_corsairs": 25,
           "faction_al_weir_ferrymen": -15
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_moral_neg_cinder_crown",
@@ -609,7 +621,8 @@
           "faction_al_chancery_auditors": 25,
           "faction_al_cinder_syndicate": 20
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_hidden_01_drowned_charter",
@@ -783,7 +796,8 @@
         "reputation": {
           "faction_al_weir_ferrymen": 15
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_craft_02_amber_vein",
@@ -830,7 +844,8 @@
           "faction_al_weir_ferrymen": 15,
           "faction_al_lantern_reformers": 10
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_craft_03_masterwork_seal",
@@ -873,7 +888,8 @@
           "faction_al_weir_ferrymen": 25,
           "faction_al_bellwright_order": 15
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_muted_belfry",
@@ -910,7 +926,8 @@
         "reputation": {
           "faction_al_bellwright_order": 25
         }
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_al_side_observatory_charts",
@@ -947,7 +964,8 @@
         "reputation": {
           "faction_al_glass_scholars": 25
         }
-      }
+      },
+      "autoStart": false
     }
   ]
 }

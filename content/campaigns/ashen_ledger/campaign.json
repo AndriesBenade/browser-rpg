@@ -92,27 +92,27 @@
     "Night": "Deep night blankets the Threshold. Cold salt-winds carry distant bell-chimes and whispers from the Pale Reach."
   },
   "theme": {
-    "bgVoid": "#0b0a0e",
-    "bgSurface": "#141219",
-    "bgCard": "#1d1923",
-    "bgCardHover": "#282230",
-    "accent": "#c98a3b",
-    "accentBright": "#e8b25a",
-    "accentDark": "#6b4720",
-    "secondaryAccent": "#563b69",
-    "secondaryAccentBright": "#9b72bd",
-    "border": "#45364d",
-    "heading": "#e8b25a",
-    "textPrimary": "#ece6dc",
-    "textParchment": "#f5efe6",
-    "textMuted": "#9e93a6",
-    "navActive": "rgba(201, 138, 59, 0.2)",
-    "success": "#59a87a",
-    "warning": "#e8b25a",
-    "error": "#d95b5b",
-    "notification": "#9b72bd",
-    "track": "#16131c",
-    "glow": "rgba(232, 178, 90, 0.38)"
+    "bgVoid": "#090712",
+    "bgSurface": "#120d21",
+    "bgCard": "#1b1430",
+    "bgCardHover": "#261c42",
+    "accent": "#b680ff",
+    "accentBright": "#d6b4ff",
+    "accentDark": "#7846c4",
+    "secondaryAccent": "#277d7a",
+    "secondaryAccentBright": "#5ce6d8",
+    "border": "#4a3570",
+    "heading": "#d8b8ff",
+    "textPrimary": "#ece8f5",
+    "textParchment": "#f6f2ff",
+    "textMuted": "#a295bd",
+    "navActive": "rgba(169, 112, 255, 0.24)",
+    "success": "#5be0a5",
+    "warning": "#f0b865",
+    "error": "#f0657a",
+    "notification": "#5ce6d8",
+    "track": "#140f24",
+    "glow": "rgba(169, 112, 255, 0.45)"
   },
   "modules": {
     "locations": "content/campaigns/ashen_ledger/world/locations.json",
@@ -207,6 +207,205 @@
       "name": "The Black-Ledger Brokers",
       "description": "Merciless debt-traffickers and private bailiffs who buy delinquent soul-tallies at auction and extract profit from desperation.",
       "defaultReputation": -5
+    }
+  ],
+  "progression": {
+    "levelTitles": {
+      "1": "Unstamped Arrival",
+      "2": "Weir-Port Wayfarer",
+      "3": "Lantern-Bearer",
+      "4": "Crucible Adept",
+      "5": "Frontier Warden",
+      "6": "Keeper of the Seventh Bell",
+      "7": "Seal-Breaker"
+    },
+    "maxLevelTitle": "Sovereign of the Threshold"
+  },
+  "law": {
+    "guardFactions": [
+      "faction_al_chancery_auditors",
+      "faction_al_pale_wardens"
+    ],
+    "fineBase": 30,
+    "finePerOffence": 18,
+    "jailHours": 16,
+    "jailLocationId": "loc_al_customs_hall"
+  },
+  "maxCompanions": 2,
+  "defeatRecoveryLocationId": "loc_al_bellwright_square",
+  "d20Rules": {
+    "criticals": true,
+    "masteryRank": 8,
+    "reliableTalentMin": 6
+  },
+  "activityDurations": {
+    "inspect": 10,
+    "interact": 15,
+    "harvest": 30,
+    "puzzle": 20,
+    "combat": 15,
+    "shortRest": 60,
+    "fullRest": 480
+  },
+  "cooldownRules": {
+    "persuade": 4,
+    "deceive": 4,
+    "negotiate": 8,
+    "bluff": 8,
+    "pickpocket": 12,
+    "track": 8,
+    "forage": 8,
+    "puzzle": 2,
+    "action": 2
+  },
+  "survival": {
+    "enabled": true,
+    "rationItems": [
+      "item_al_salted_biscuit",
+      "item_al_smoked_eel",
+      "item_al_salt_tea"
+    ],
+    "campEventChance": 0.25,
+    "hiddenCaches": true
+  },
+  "weather": {
+    "enabled": true,
+    "types": {
+      "weir_fog": {
+        "label": "Thick Mist-Weir Fog",
+        "icon": "🌫️",
+        "weight": 30,
+        "perception": -2,
+        "stealth": 2,
+        "ranged": -1,
+        "travelTime": 1.15
+      },
+      "ash_fall": {
+        "label": "Drifting Cinder-Soot",
+        "icon": "💨",
+        "weight": 25,
+        "perception": -1,
+        "ranged": -1,
+        "travelTime": 1.1
+      },
+      "salt_squall": {
+        "label": "Static Salt-Squall",
+        "icon": "⚡",
+        "weight": 20,
+        "perception": -3,
+        "ranged": -2,
+        "travelTime": 1.3,
+        "travelStamina": 1.25
+      },
+      "twilight_calm": {
+        "label": "Violet Lantern-Calm",
+        "icon": "🕯️",
+        "weight": 25,
+        "perception": 1,
+        "travelTime": 1
+      }
+    }
+  },
+  "minigames": {
+    "stalk": {
+      "title": "Mist-Weir Alley Stalk",
+      "subtitle": "Slip past dockside scavengers and debt-bailiff patrols in the fog",
+      "rewardItemId": "item_al_smoked_eel",
+      "rewardQty": 2,
+      "perfectItemId": "mat_al_salt_hide",
+      "xp": 15,
+      "successText": "You shadow a night-barge haul and come away with fresh Weir rations.",
+      "perfectText": "Silent as drifting ash! You slip out unseen with rations and prime Salt-Cured Hide.",
+      "failText": "A loose dock plank creaks underfoot and your quarry bolts into the mist."
+    },
+    "mortar": {
+      "title": "Mnemonic Alchemist's Mortar",
+      "subtitle": "Grind tallow-herbs and ash-quartz into restorative threshold balms",
+      "perfectItemId": "item_al_cinder_flash_tonic",
+      "perfectText": "A crisp violet-gold draught of Crucible Quench-Cordial!"
+    },
+    "astragaloi": {
+      "title": "Chancery Bone-Tallies",
+      "subtitle": "Cast the brass-weighted tally dice upon the boardinghouse slate",
+      "deity": "vesper_oar",
+      "deityName": "The Quiet Oar",
+      "faceNames": [
+        "Quiet Oar",
+        "Brass Scale",
+        "Pale Lantern",
+        "Cinder Maw"
+      ],
+      "perfectName": "The Unbroken Passage",
+      "drachmae": 10,
+      "castLabel": "Cast the Tally Dice"
+    },
+    "forge": {
+      "title": "Crucible Wharf Anvil Strike",
+      "subtitle": "Hammer glowing pale-iron and kiln-glass free of Chancery stamps"
+    },
+    "shield_clash": {
+      "title": "Lantern-Wall Shield Clash",
+      "subtitle": "Brace your buckler against frontier horrors and bailiff shock-batons"
+    }
+  },
+  "consequenceRules": [
+    {
+      "id": "rule_al_lyra_death",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_al_magistrate_lyra"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_magistrate_lyra_dead": true
+        },
+        "modifyReputation": {
+          "faction_al_lantern_reformers": -70,
+          "faction_al_chancery_auditors": -40
+        },
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Magistrate Lyra Thorne has fallen! Reformist clerks scatter in fear while High Chancery bells toll martial lockdown.",
+          "style": "entry-consequence"
+        },
+        "addJournalChronicle": {
+          "title": "Fall of Magistrate Lyra",
+          "text": "Magistrate Lyra Thorne was slain, crippling the Quiet Reformers inside the High Chancery."
+        }
+      }
+    },
+    {
+      "id": "rule_al_voss_death",
+      "event": "ENTITY_DEATH",
+      "conditions": {
+        "targetEntityId": "npc_al_captain_voss"
+      },
+      "outcomes": {
+        "setFlags": {
+          "al_captain_voss_dead": true
+        },
+        "modifyReputation": {
+          "faction_al_pale_wardens": -70
+        },
+        "transcript": {
+          "speaker": "World Consequence",
+          "text": "Captain Astrid Voss has fallen at the Lantern-Wall Gate! Frontier wardens seal the viaduct bastions in grief and fury.",
+          "style": "entry-consequence"
+        }
+      }
+    }
+  ],
+  "settings": {
+    "allowAnyEntityCombat": true,
+    "lockpickingEnabled": true,
+    "randomEncountersEnabled": true,
+    "livingWorldSimulation": true
+  },
+  "tutorials": [
+    {
+      "id": "tut_al_arrival",
+      "title": "Arrival at Vesper-Threshold",
+      "summary": "Speak with Oar-Keeper Corvus on the Weir-Port Ferry Quay, report to Clerk Maren at the Customs Hall, visit Master Orla at Crucible Wharf for artisan crafting, and open your Character Grimoire to unlock global and dark-fantasy spells with Arcane Knowledge Points."
     }
   ]
 }

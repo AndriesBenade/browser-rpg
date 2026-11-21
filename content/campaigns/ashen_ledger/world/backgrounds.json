@@ -3,14 +3,17 @@
     {
       "id": "bg_al_unstamped_clerk",
       "name": "Disgraced Audit Clerk",
+      "category": "Chancery",
       "description": "You once balanced Chancery ledgers before noticing whole regiments of debtors vanished without burial.",
-      "bonuses": {
-        "intelligence": 1
+      "proficiencies": [
+        "investigation",
+        "persuasion"
+      ],
+      "startingBonus": {
+        "drachmae": 20
       },
-      "skills": {
-        "investigation": 2,
-        "persuasion": 1
-      },
+      "passiveBonus": "Knows Chancery filing codes and spots forged debt-writs quickly.",
+      "dialoguePerk": "Clerks and magistrates treat you as a former insider who understands ledger-law.",
       "startingEquipment": [
         "item_al_brass_tallow_lamp"
       ]
@@ -18,59 +21,75 @@
     {
       "id": "bg_al_quarry_survivor",
       "name": "Ash-Quarry Escapee",
-      "description": "Years hauling pale-iron ore left you scarred, stubborn, and impossible to break.",
-      "bonuses": {
-        "endurance": 1
+      "category": "Labor & Craft",
+      "description": "Years hauling pale-iron ore in Cinder-Basin left you scarred, stubborn, and impossible to break.",
+      "proficiencies": [
+        "athletics",
+        "survival"
+      ],
+      "startingBonus": {
+        "drachmae": 10
       },
-      "skills": {
-        "athletics": 2,
-        "survival": 1
-      },
+      "passiveBonus": "Endures harsh soot-storms and heavy gear without tiring quickly.",
+      "dialoguePerk": "Quarry workers and independent smiths trust your calloused hands on sight.",
       "startingEquipment": [
-        "item_al_pale_whetstone"
+        "item_al_pale_whetstone",
+        "item_al_kit_foundry"
       ]
     },
     {
       "id": "bg_al_weir_ferryhand",
       "name": "Mist-Weir Ferryhand",
-      "description": "You poled arrival barges through black fog long enough to memorize every hidden pier.",
-      "bonuses": {
-        "wisdom": 1
+      "category": "Maritime",
+      "description": "You poled arrival barges through black fog long enough to memorize every hidden pier and shoal.",
+      "proficiencies": [
+        "perception",
+        "tracking"
+      ],
+      "startingBonus": {
+        "drachmae": 15
       },
-      "skills": {
-        "perception": 2,
-        "tracking": 1
-      },
+      "passiveBonus": "Reads river mist, footprints, and dockside ambushes effortlessly.",
+      "dialoguePerk": "Oar-Keepers share harbor news and ferry lore freely with a fellow hand.",
       "startingEquipment": [
+        "item_al_smoked_eel",
         "item_al_smoked_eel"
       ]
     },
     {
       "id": "bg_al_bell_apprentice",
       "name": "Last-Bell Apprentice",
-      "description": "Raised among the bronze-founders, you hear truth and falsehood like clean or cracked bells.",
-      "bonuses": {
-        "wisdom": 1
+      "category": "Monastic",
+      "description": "Raised among the bronze-founders of Bellwright Square, you hear truth and falsehood like clean or cracked bells.",
+      "proficiencies": [
+        "mythology_lore",
+        "medicine"
+      ],
+      "startingBonus": {
+        "drachmae": 15
       },
-      "skills": {
-        "mythology_lore": 2,
-        "medicine": 1
-      },
+      "passiveBonus": "Starts closer to early Arcane Knowledge milestones through Lore & Medicine.",
+      "dialoguePerk": "Bellwrights and scholars recognize your calm cadence and monastic training.",
       "startingEquipment": [
-        "item_al_quiet_incense"
+        "item_al_quiet_incense",
+        "item_al_tallow_salve"
       ]
     },
     {
       "id": "bg_al_debt_skipper",
       "name": "Dockside Debt-Skipper",
-      "description": "You survived the Drowned Piers by staying two alleys ahead of every bailiff.",
-      "bonuses": {
-        "agility": 1
+      "category": "Underworld",
+      "description": "You survived the Drowned Piers by staying two alleys ahead of every bailiff and collector.",
+      "proficiencies": [
+        "stealth",
+        "deception",
+        "sleight_of_hand"
+      ],
+      "startingBonus": {
+        "drachmae": 25
       },
-      "skills": {
-        "stealth": 2,
-        "deception": 1
-      },
+      "passiveBonus": "Always knows a bolted window, loose grate, or fenced purse.",
+      "dialoguePerk": "Smugglers and gutter informants talk business without testing your nerve.",
       "startingEquipment": [
         "item_al_lockpick_set"
       ]
@@ -78,17 +97,21 @@
     {
       "id": "bg_al_frontier_deserter",
       "name": "Lantern-Wall Veteran",
-      "description": "You held the rusted viaduct until you realized the Chancery was starving your post on purpose.",
-      "bonuses": {
-        "strength": 1
+      "category": "Military",
+      "description": "You held the rusted viaduct until you realized the Chancery was starving your garrison on purpose.",
+      "proficiencies": [
+        "melee_combat",
+        "ranged_combat",
+        "tracking"
+      ],
+      "startingBonus": {
+        "drachmae": 15
       },
-      "skills": {
-        "melee_combat": 1,
-        "ranged_combat": 1,
-        "tracking": 1
-      },
+      "passiveBonus": "Seasoned against salt-stalkers, ambushes, and frontier deprivations.",
+      "dialoguePerk": "Pale Frontier Wardens still salute a veteran of the Rusted Viaduct.",
       "startingEquipment": [
-        "item_al_salt_tea"
+        "item_al_salt_tea",
+        "item_al_salted_biscuit"
       ]
     }
   ]

@@ -17,7 +17,20 @@
         "item_al_salted_biscuit",
         "item_al_brass_tallow_lamp"
       ],
-      "drachmae": 28
+      "drachmae": 28,
+      "title": "Senior Weir Ferryman",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_clerk_maren",
@@ -36,7 +49,20 @@
         "item_al_tallow_salve",
         "item_al_audit_cipher"
       ],
-      "drachmae": 35
+      "drachmae": 35,
+      "title": "Quiet Reformer Archivist",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_merchant_tamsin",
@@ -112,7 +138,20 @@
           "price": 12,
           "stock": 5
         }
-      ]
+      ],
+      "title": "Lantern-Row Provisions & Weapons Merchant",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_innkeeper_bram",
@@ -157,7 +196,20 @@
           "price": 14,
           "stock": 4
         }
-      ]
+      ],
+      "title": "Boardinghouse Keeper & Broth-Brewer",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_broker_vespera",
@@ -209,7 +261,20 @@
           "price": 22,
           "stock": 4
         }
-      ]
+      ],
+      "title": "Black-Ledger Debt Factor",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_smuggler_rooks",
@@ -265,7 +330,20 @@
           "price": 11,
           "stock": 5
         }
-      ]
+      ],
+      "title": "Freebooter Quartermaster",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_baron_vane",
@@ -284,7 +362,20 @@
         "item_al_cinder_stimulant",
         "mat_al_cinder_slag"
       ],
-      "drachmae": 180
+      "drachmae": 180,
+      "title": "Master of the Cinder Foundries",
+      "vitals": {
+        "health": 38,
+        "maxHealth": 38,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_archivist_solene",
@@ -301,7 +392,20 @@
       "inventory": [
         "item_al_quiet_incense"
       ],
-      "drachmae": 55
+      "drachmae": 55,
+      "title": "Keeper of the Three-Century Rolls",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_mintmaster_gideon",
@@ -356,7 +460,20 @@
           "price": 24,
           "stock": 4
         }
-      ]
+      ],
+      "title": "Brass-Works Quartermaster & Factor",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_prior_aldous",
@@ -413,7 +530,20 @@
           "price": 10,
           "stock": 6
         }
-      ]
+      ],
+      "title": "Monastic Bell-Founder",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_gutter_informant",
@@ -429,7 +559,30 @@
       "inventory": [
         "item_al_salted_biscuit"
       ],
-      "drachmae": 22
+      "drachmae": 22,
+      "title": "Under-City Scavenger & Scout",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      },
+      "companion": {
+        "role": "Sluice-Runner & Lockbreaker",
+        "attackBonus": 4,
+        "damage": "1d6+2",
+        "skillBonus": {
+          "stealth": 2,
+          "sleight_of_hand": 2
+        },
+        "description": "Quick-fingered informant who knows every back-alley ambush and lock tumbler in Weir-Port."
+      }
     },
     {
       "id": "npc_al_magistrate_lyra",
@@ -446,7 +599,20 @@
       "inventory": [
         "item_al_patrician_vintage"
       ],
-      "drachmae": 120
+      "drachmae": 120,
+      "title": "Reformist High Councilor",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_savant_elara",
@@ -508,7 +674,20 @@
           "price": 10,
           "stock": 6
         }
-      ]
+      ],
+      "title": "Dean of the Mnemonic Collegium",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_auctioneer_kestrel",
@@ -525,7 +704,20 @@
       "inventory": [
         "item_al_patrician_vintage"
       ],
-      "drachmae": 220
+      "drachmae": 220,
+      "title": "Master of the Velvet Court",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_horologist_tomas",
@@ -541,7 +733,20 @@
       "inventory": [
         "mat_al_chancery_brass"
       ],
-      "drachmae": 42
+      "drachmae": 42,
+      "title": "Keeper of the Clockwork Belfry",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_strike_leader_dara",
@@ -559,7 +764,20 @@
       "inventory": [
         "item_al_cinder_stimulant"
       ],
-      "drachmae": 30
+      "drachmae": 30,
+      "title": "Quarry Labor Organizer",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_quarry_overseer_brent",
@@ -575,7 +793,21 @@
       "inventory": [
         "item_al_tallow_salve"
       ],
-      "drachmae": 45
+      "drachmae": 45,
+      "title": "Disillusioned Quarry Clerk",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      },
+      "isGuard": true
     },
     {
       "id": "npc_al_warden_scout_fenn",
@@ -592,7 +824,30 @@
       "inventory": [
         "item_al_salt_tea"
       ],
-      "drachmae": 32
+      "drachmae": 32,
+      "title": "Viaduct Beacon-Watcher",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      },
+      "companion": {
+        "role": "Frontier Ranger & Marksman",
+        "attackBonus": 5,
+        "damage": "1d8+2",
+        "skillBonus": {
+          "perception": 2,
+          "tracking": 2
+        },
+        "description": "A sharp-eyed viaduct ranger who covers your flank with salt-iron arrows."
+      }
     },
     {
       "id": "npc_al_captain_voss",
@@ -649,7 +904,21 @@
           "price": 22,
           "stock": 4
         }
-      ]
+      ],
+      "title": "Commander of Lantern-Wall Bastion",
+      "vitals": {
+        "health": 38,
+        "maxHealth": 38,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      },
+      "isGuard": true
     },
     {
       "id": "npc_al_cairn_hermit",
@@ -666,7 +935,20 @@
         "item_al_quiet_incense",
         "item_al_salt_tea"
       ],
-      "drachmae": 18
+      "drachmae": 18,
+      "title": "Wandering Memory-Seer",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_mire_herbalist",
@@ -721,7 +1003,20 @@
           "price": 45,
           "stock": 2
         }
-      ]
+      ],
+      "title": "Frontier Apothecary & Salvager",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_regent_malcor_envoy",
@@ -738,7 +1033,20 @@
       "inventory": [
         "mat_al_ossuary_marrow"
       ],
-      "drachmae": 65
+      "drachmae": 65,
+      "title": "Voice of the Hollow Nave",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_weeping_serena",
@@ -756,7 +1064,20 @@
       "inventory": [
         "mat_al_weeping_amber"
       ],
-      "drachmae": 40
+      "drachmae": 40,
+      "title": "Grieving Frontier Captain",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_silent_architect_echo",
@@ -770,7 +1091,20 @@
         "neck": "item_al_talisman_first_oar"
       },
       "inventory": [],
-      "drachmae": 0
+      "drachmae": 0,
+      "title": "Remnant of the First Seal's Builder",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_master_orla",
@@ -866,7 +1200,20 @@
           "price": 20,
           "stock": 6
         }
-      ]
+      ],
+      "title": "Independent Master Artisan & Forge Outfitter",
+      "vitals": {
+        "health": 38,
+        "maxHealth": 38,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_scribe_cassian",
@@ -919,7 +1266,20 @@
           "price": 36,
           "stock": 2
         }
-      ]
+      ],
+      "title": "Monastic Bell-Tuner & Bronze Purveyor",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     },
     {
       "id": "npc_al_astronomer_vael",
@@ -936,7 +1296,20 @@
       "inventory": [
         "item_al_starlight_astrolabe"
       ],
-      "drachmae": 65
+      "drachmae": 65,
+      "title": "Exiled Star-Cartographer of the Mnemonic Collegium",
+      "vitals": {
+        "health": 24,
+        "maxHealth": 24,
+        "stamina": 16,
+        "maxStamina": 16,
+        "morale": 12
+      },
+      "combatStats": {
+        "armorClass": 13,
+        "attackBonus": 4,
+        "damage": "1d6+2"
+      }
     }
   ]
 }

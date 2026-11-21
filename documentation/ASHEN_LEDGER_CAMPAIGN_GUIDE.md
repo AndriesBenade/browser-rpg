@@ -11,7 +11,9 @@
 - **Title:** *The Ashen Ledger: Frontier of the Toll*
 - **Manifest:** `content/campaigns/ashen_ledger/campaign.json`
 - **Genre:** Original Dark Fantasy / Industrial Afterlife Frontier
-- **Theme:** Obsidian, tarnished brass, and spectral violet (`#0b0a0e`, `#c98a3b`, `#9b72bd`)
+- **Theme:** Spectral Amethyst, Ghost-Violet & Lantern-Teal Obsidian (`#090712`, `#a970ff`, `#5ce6d8`) - visually distinct from Greek Gold and Nordic Blue.
+- **Custom Rank Titles (`progression.levelTitles`):** `Unstamped Arrival` -> `Weir-Port Wayfarer` -> `Lantern-Bearer` -> `Crucible Adept` -> `Frontier Warden` -> `Keeper of the Seventh Bell` -> `Seal-Breaker` -> `Sovereign of the Threshold`.
+- **Full Engine System Parity:** Configured with bespoke Threshold `weather` (4 weather types), `law` (Chancery Bailiffs & Pale Wardens), `survival` rations, all 5 custom-themed `minigames`, `consequenceRules`, 6 region-scoped `randomEncounters`, 2 recruitable companions (*Scout Fenn* & *Sluice-Rat Pem*), location `terrain` & bespoke hub `actions`, custom `distractors` on all 5 puzzles, and full `epithets`/`symbols` on all 4 Powers of the Threshold.
 - **Starting Location:** `loc_al_ferry_quay` (Ferry-Weir Quay, Weir-Port)
 - **Default Hero:** Rowan
 

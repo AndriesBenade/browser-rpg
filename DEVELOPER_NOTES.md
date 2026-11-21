@@ -8,6 +8,34 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 34 - 2026-11-21 (*The Ashen Ledger* Final Forensic End-to-End Interconnectedness Audit & Repairs)
+* **Collaborator / Model**: User & Antigravity
+* **Critical Interconnectedness Gaps Found & Repaired (`content/campaigns/ashen_ledger/world/`)**:
+  * **All 22 Hidden Spots Repaired (`locations.json`)**: Normalized every `hiddenSpots` entry to `{ id, name, dc, text, outcome: { giveItem } }` (previously used top-level `itemId`/`rewardItemId` without `outcome`, so `searchArea()` logged discovery text without awarding hidden mission relics or rare crafting materials). Verified live via `searchArea()` awarding `item_al_drowned_charter_piece` and triggering Hidden Mission 1 automatically.
+  * **Interactive Objects Playability (`interactive_objects.json`)**: Repaired `obj_al_foundry_pressure_valve`, `obj_al_pitch_cistern`, and `obj_al_first_seal_altar` to `type: "obstacle"` (`heaveDc`) so players receive clickable Athletics Heave buttons firing `unlockOutcome`, and normalized `obj.loot` string arrays (`["mat_al_soul_pitch", ...]`) on `obj_al_pitch_cistern`, `obj_al_crucible_quench_chest`, and `obj_al_bellwright_font` so `lootContainer()` awards every item cleanly.
+  * **Companion Recruitment Wired (`dialogues.json`)**: Added live `recruitCompanion` dialogue branches to `dlg_al_gutter_informant` (*Sluice-Rat Pem*) and `dlg_al_warden_scout_fenn` (*Scout Fenn*) so both companions can be recruited in gameplay.
+  * **100% Reachability & Coverage Verified**: Confirmed all **23 / 23 quests** are startable & completable, **50 / 50 required items/materials/tools/keys** are obtainable in-game, **6 / 6 crafting professions** craft cleanly, **12 / 12 field combinations** (transforms + coatings) succeed, **5 / 5 puzzles** solve cleanly, **10 / 10 campaign spells** (+ 17 global = 27) acquire & cast cleanly in multi-enemy combat, and **0 map node overlaps** exist across all 36 strongly connected locations.
+* **Verification**:
+  * Expanded [ashen_ledger_tests.js](file:///c:/Users/Liza/Documents/browser-rpg/tests/ashen_ledger_tests.js) to **9 / 9 suites** locking in all end-to-end interconnectedness checks; re-synced embedded content (`npm run sync:embedded`, 95 files in sync). Full `npm test` passes **250 / 250** across all 8 test suites.
+
+### Session 33 - 2026-11-21 (*The Ashen Ledger* Full Parity & Identity Audit vs. *The Northern Realms*: Creation Bonuses, Distinct Spectral Amethyst Theme, Codex/Puzzle/Item/Quest Fixes & World Systems)
+* **Collaborator / Model**: User & Antigravity
+* **Audit Findings Repaired (Side-by-Side Comparison with *The Northern Realms*)**:
+  * **Character Creation Bonuses & Clarity (`index.html`, `origins.json`, `classes.json`, `backgrounds.json`, `traits.json`)**:
+    * Rebuilt *Ashen Ledger* `origins.json` (6 bespoke origins), `traits.json` (6 bespoke traits), `classes.json` (6 classes), and `backgrounds.json` (6 backgrounds) to match exact engine schemas (`description` + bright-green `perks`, `attributes`, `skills`, `reputation`, `checkBonus`, `maxHealth`, `maxMorale`, `subtitle`, `archetype`, `primaryAttributes`, `statBonuses`, `proficiencies`, `passiveBonus`, `dialoguePerk`, `startingBonus`, and proper `type: "passive"|"active"` `classFeatures` with `effect` / `combat.staminaCost` / `uses`).
+    * Upgraded `renderWizardStep2()` in [index.html](file:///c:/Users/Liza/Documents/browser-rpg/index.html) to render clear green mechanical perk summaries (`+X Attribute`, Title-Case proficiencies, Level 1 feature names, and starting coin bonuses) on Class & Background cards, added `maxHealth` support to `applyCreationPerks()`, made Step 4 wizard intro copy campaign-neutral, and reset non-Greek hero HUD defaults (`defaultHeroName`, `getLevelTitle(1)`) inside `resetStateForActiveCampaign()` so Greek defaults (`Alkaios`, `Ephebos`, `Boeotian Freeman`) never appear during non-Greek creation.
+  * **Unmistakable Dark-Fantasy UI Theme (`campaign.json`)**: Replaced the brass-gold accent (too visually close to Greek Mythology's default gold) with a bold **Spectral Amethyst, Ghost-Violet & Lantern-Teal Obsidian** palette (`#090712` void, `#120d21` surface, `#1b1430` card, `#a970ff` spectral amethyst accent, `#d6b4ff` violet headings, `#5ce6d8` lantern-teal secondary accents).
+  * **Quest Auto-Start, Codex, Consumables & Puzzles (`quests.json`, `lore.json`, `items.json`, `puzzles.json`, `crafting_templates.json`)**:
+    * Fixed `autoStart: false` on all 22 non-opening quests so new heroes start cleanly with only `quest_al_main_01_unstamped` (fixing the `Quests 10` Day-1 flood).
+    * Populated `text` on all 19 Codex entries in `lore.json` so the Codex & Lore view renders full prose.
+    * Normalized `stats` blocks across all 118 items (`restoreHealth`/`restoreStamina` on consumables, `damage`/`damageMin`/`damageMax` on weapons, `acBonus`/`defenseBonus` on armor) and `restoreHealth`/`restoreStamina` on alchemy crafting templates.
+    * Added bespoke dark-fantasy `distractors`, lowercase `deductionDc`, and custom failure/wrong-answer prose on all 5 puzzles so Greek fallback distractors never appear.
+  * **Full Living-World Parity (`campaign.json`, `encounters.json`, `locations.json`, `characters.json`, `deities.json`, `tutorials.json`, `professions.json`)**: Added custom Threshold `progression.levelTitles` (`Unstamped Arrival` .. `Sovereign of the Threshold`), `law`, `survival` rations, 4 bespoke `weather` types, all 5 custom-themed `minigames`, `consequenceRules`, 6 region-scoped `randomEncounters`, location `terrain` & bespoke hub `actions`, `epithets`/`symbols` on all 4 Threshold Powers, `workstation`/`itemCategories` on all 6 professions, and `title`/`vitals`/`combatStats`/`isGuard` + 2 recruitable companions (*Scout Fenn* & *Sluice-Rat Pem*).
+* **Verification**:
+  * Regenerated embedded content (`npm run sync:embedded`, 95 files in sync) and normalized `index.html` to uniform CRLF.
+  * `runComprehensiveCampaignValidation('campaign_ashen_ledger', { includeFunctional: true })` passes **841 / 841 checks (0 errors, 0 warnings)** and **6 / 6 isolated functional crafting checks**.
+  * Expanded [ashen_ledger_tests.js](file:///c:/Users/Liza/Documents/browser-rpg/tests/ashen_ledger_tests.js) to assert the new Spectral Amethyst theme, single auto-started quest, custom rank title, populated Codex `.text`, random encounters, and complete Origin/Class/Background/Trait bonus schemas. Full `npm test` passes **249 / 249**.
+
 ### Session 32 - 2026-11-21 (*The Ashen Ledger* v1.1 "Crucible & Frontier Expansion": extra exploration across every layer, major crafting overhaul & 3-part Crafting Side Quest Line)
 * **Collaborator / Model**: User & Antigravity
 * **Expanded Exploration & World Content (`content/campaigns/ashen_ledger/world/`)**:

@@ -478,13 +478,35 @@
       }
     },
     "dlg_al_gutter_informant": {
+      "id": "dlg_al_gutter_informant",
       "speaker": "Sluice-Rat Pem",
       "nodes": {
         "root": {
-          "text": "'Keep your lamp low down here! Ash-hounds nest by the warm grates, and Freebooter Rooks runs the hidden cistern just south of the sluice.'",
+          "text": "\"Keep your lamp low down here! Ash-hounds nest by the warm grates, and Freebooter Rooks runs the hidden cistern just south of the sluice. If you need nimble fingers for locked strongboxes or a sharp blade in the alleys, I can watch your back.\"",
           "choices": [
             {
-              "label": "Thanks for the warning.",
+              "label": "\"Travel with me, Pem. I could use a lockbreaker and scout.\"",
+              "target": "recruit_pem",
+              "condition": {
+                "flag": "al_recruited_pem",
+                "expected": false
+              }
+            },
+            {
+              "label": "\"Thanks for the warning, Pem.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "recruit_pem": {
+          "text": "Pem grins and checks a pair of slim pick-wires tucked in his cuff. \"Lead the way, Unstamped. Just promise we keep clear of the Bailiffs' cages!\"",
+          "recruitCompanion": "npc_al_gutter_informant",
+          "setFlags": {
+            "al_recruited_pem": true
+          },
+          "choices": [
+            {
+              "label": "\"Stay sharp behind me.\"",
               "target": "exit"
             }
           ]
@@ -747,13 +769,35 @@
       }
     },
     "dlg_al_warden_scout_fenn": {
+      "id": "dlg_al_warden_scout_fenn",
       "speaker": "Scout Fenn",
       "nodes": {
         "root": {
-          "text": "'Keep low on the viaduct! Crystallized salt-jackals and shard-kites rush the beacons whenever the fog drops.'",
+          "text": "\"Keep low on the viaduct! Crystallized salt-jackals and shard-kites rush the beacons whenever the fog drops. If you are pushing out into the Pale Reach or the Amber-Vein Catacombs, my bow is yours.\"",
           "choices": [
             {
-              "label": "Watch the line, Scout.",
+              "label": "\"Come with me, Fenn. Two pairs of eyes beat the salt-fog.\"",
+              "target": "recruit_fenn",
+              "condition": {
+                "flag": "al_recruited_fenn",
+                "expected": false
+              }
+            },
+            {
+              "label": "\"Watch the line, Scout.\"",
+              "target": "exit"
+            }
+          ]
+        },
+        "recruit_fenn": {
+          "text": "Fenn slings a salt-iron quiver tight across his shoulder and salutes crisply. \"Glad to march beside someone who actually checks their corners. Lead on!\"",
+          "recruitCompanion": "npc_al_warden_scout_fenn",
+          "setFlags": {
+            "al_recruited_fenn": true
+          },
+          "choices": [
+            {
+              "label": "\"Let's move out.\"",
               "target": "exit"
             }
           ]

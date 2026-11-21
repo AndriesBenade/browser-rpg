@@ -72,7 +72,7 @@
       "id": "obj_al_foundry_pressure_valve",
       "locationId": "loc_al_cinder_foundries",
       "name": "Main Retort Pressure Wheel",
-      "type": "mechanism",
+      "type": "obstacle",
       "locked": true,
       "isPickable": false,
       "unpickableReason": "A heavy brass pressure wheel requires muscle, not lockpicks.",
@@ -88,7 +88,8 @@
           "text": "Steam roars into the rafters as pressure drops, giving the quarry workers breathing room!",
           "style": "entry-discovery"
         }
-      }
+      },
+      "heaveDc": 13
     },
     {
       "id": "obj_al_belfry_gear_cabinet",
@@ -125,7 +126,10 @@
         "setFlags": {
           "al_blessed_at_font": true
         }
-      }
+      },
+      "loot": [
+        "item_al_quiet_incense"
+      ]
     },
     {
       "id": "obj_al_quarry_collapse",
@@ -194,14 +198,18 @@
       "id": "obj_al_first_seal_altar",
       "locationId": "loc_al_first_seal_chamber",
       "name": "Chained Ring of the First Seal",
-      "type": "mechanism",
-      "locked": false,
+      "type": "obstacle",
+      "locked": true,
       "description": "The ancient silver ring that governed peaceful passage before the Chancery riveted its brass scales around it.",
       "unlockOutcome": {
         "setFlags": {
           "al_inspected_first_seal": true
         }
-      }
+      },
+      "isPickable": false,
+      "heaveDc": 12,
+      "requiredAttribute": "strength",
+      "narrativeOpen": "The Chancery iron collar lies split aside, exposing the humming silver arc of the First Seal."
     },
     {
       "id": "obj_al_crucible_quench_chest",
@@ -220,14 +228,19 @@
           "text": "You gather a crisp shard of Tempered Kiln-Glass left out for forge trials.",
           "style": "entry-discovery"
         }
-      }
+      },
+      "loot": [
+        "mat_al_kiln_glass",
+        "mat_al_pale_iron",
+        "mat_al_pale_iron"
+      ]
     },
     {
       "id": "obj_al_pitch_cistern",
       "locationId": "loc_al_amber_catacombs",
       "name": "Ancient Amber-Vein Pitch Cistern",
-      "type": "mechanism",
-      "locked": false,
+      "type": "obstacle",
+      "locked": true,
       "description": "A cracked stone basin catching slow, luminous drips of pure Cinder-Pitch Resin beneath the quarry galleries.",
       "unlockOutcome": {
         "setFlags": {
@@ -240,7 +253,15 @@
           "text": "You draw a sealed copper cask of rich Deep-Slag Pitch and collect spare Cinder-Pitch Resin from the rim!",
           "style": "entry-discovery"
         }
-      }
+      },
+      "isPickable": false,
+      "heaveDc": 11,
+      "requiredAttribute": "strength",
+      "loot": [
+        "mat_al_soul_pitch",
+        "mat_al_soul_pitch"
+      ],
+      "narrativeOpen": "The cooled slag crust is pried back, exposing the glowing vein of Cinder-Pitch Resin."
     },
     {
       "id": "obj_al_observatory_chart_case",

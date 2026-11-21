@@ -341,11 +341,23 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(engine.state.worldState.flags.al_archive_riddle_solved, true, 'Customs Scale puzzle must set solved flag');
     assert.strictEqual(engine.hasItem('item_al_archive_brass_key'), true, 'Customs Scale puzzle must award archive brass key');
 
-    // Theme check
+    // Theme check (Spectral Amethyst & Lantern-Teal Obsidian - unmistakably distinct from default Greek Gold & Nordic Blue)
     const theme = engine.activeCampaign.theme;
-    assert.strictEqual(theme.bgVoid, '#0b0a0e', 'Obsidian void background must be configured');
-    assert.strictEqual(theme.accent, '#c98a3b', 'Brass accent must be configured');
-    assert.strictEqual(theme.secondaryAccentBright, '#9b72bd', 'Violet secondary accent must be configured');
+    assert.strictEqual(theme.bgVoid, '#090712', 'Spectral Obsidian void background must be configured');
+    assert.strictEqual(theme.accent, '#b680ff', 'Spectral Amethyst primary accent must be configured');
+    assert.strictEqual(theme.secondaryAccentBright, '#5ce6d8', 'Lantern-Teal secondary accent must be configured');
+
+    // Parity checks: only 1 quest auto-starts, custom rank title, Codex prose, puzzle distractors, random encounters, and real creation perks
+    assert.strictEqual(engine.state.player.heroTitle, 'Unstamped Arrival', 'Level 1 rank must use custom Ashen Ledger title');
+    assert.ok(engine.world.mythology.every(e => e.text && e.text.length > 20), 'Every Codex entry must have non-empty .text prose');
+    assert.ok(engine.world.randomEncounters.length >= 6, 'Campaign must configure region-scoped random encounters');
+    const q1Active = Object.keys(engine.state.worldState.quests || {});
+    assert.strictEqual(q1Active.length, 1, `Only opening main quest should auto-start, got: ${JSON.stringify(q1Active)}`);
+    assert.strictEqual(q1Active[0], 'quest_al_main_01_unstamped');
+    assert.ok(engine.world.traits.every(t => t.description && t.perks), 'Every trait must have both narrative description and green perks line');
+    assert.ok(engine.world.origins.every(o => o.description && o.perks), 'Every origin must have both narrative description and green perks line');
+    assert.ok(engine.world.classes.every(c => c.statBonuses && Array.isArray(c.proficiencies) && c.subtitle), 'Every class must define statBonuses, proficiencies & subtitle');
+    assert.ok(engine.world.backgrounds.every(b => Array.isArray(b.proficiencies) && b.passiveBonus && b.category), 'Every background must define proficiencies, passiveBonus & category');
 
     // Save/Load persistence + campaign switching check (spells, morality, flags, location, campaignId)
     p.skills.mythology_lore = 3;
@@ -450,6 +462,106 @@ async function bootAshenLedger(opts = {}) {
     engine.castCombatSpell('al_spell_crucible_temper');
     assert.ok(engine.combatSession.ward >= 6, 'Crucible Temper grants Arcane Ward');
     engine.combatSession = null;
+    engine.rollD20 = origRoll;
+  });
+
+  // 9. Forensic End-to-End Interconnectedness: Real searchArea hiddenSpots, Interactive Objects, Companion Recruitment, All 6 Professions, All 12 Combinations & All 10 Campaign Spells
+  await test('Ashen Ledger 9: End-to-end interconnectedness (searchArea hiddenSpots, interactive objects, 2 companions, all 6 professions, all 12 combos, all 5 puzzles, all 10 spells)', async () => {
+    const { engine } = await bootAshenLedger({ classId: 'al_lantern_warden', backgroundId: 'bg_al_quarry_survivor' });
+    const p = engine.state.player;
+    ['strength', 'intelligence', 'wisdom', 'agility', 'charisma', 'endurance'].forEach(k => p.attributes[k] = 18);
+    Object.keys(p.skills).forEach(k => p.skills[k] = 6);
+    const origRoll = engine.rollD20;
+    engine.rollD20 = () => 18;
+
+    // Real searchArea() hiddenSpot awards item & triggers Hidden Mission 1
+    engine.setWorldFlags({ al_read_secret_ledger: true });
+    engine.state.worldState.currentLocationId = 'loc_al_drowned_piers';
+    engine.searchArea('loc_al_drowned_piers');
+    assert.strictEqual(engine.hasItem('item_al_drowned_charter_piece'), true, 'searchArea must award hidden spot item');
+    assert.ok(engine.state.worldState.quests['quest_al_hidden_01_drowned_charter'], 'Hidden spot item must trigger Hidden Mission 1');
+
+    // Interactive objects: heave + loot
+    engine.state.worldState.currentLocationId = 'loc_al_amber_catacombs';
+    engine.heaveObstacle('obj_al_pitch_cistern');
+    assert.strictEqual(engine.state.worldState.flags.al_tapped_pitch_cistern, true);
+    assert.strictEqual(engine.hasItem('item_al_pitch_sample_cask'), true);
+    engine.lootContainer('obj_al_pitch_cistern');
+    assert.strictEqual(engine.hasItem('mat_al_soul_pitch'), true);
+
+    engine.state.worldState.currentLocationId = 'loc_al_cinder_foundries';
+    engine.heaveObstacle('obj_al_foundry_pressure_valve');
+    assert.strictEqual(engine.state.worldState.flags.al_vented_foundry_flue, true);
+
+    engine.state.worldState.currentLocationId = 'loc_al_crucible_wharf';
+    engine.lootContainer('obj_al_crucible_quench_chest');
+    assert.strictEqual(engine.hasItem('mat_al_kiln_glass'), true);
+
+    // Companion recruitment via dialogue
+    engine.openDialogue('dlg_al_gutter_informant', 'recruit_pem');
+    engine.openDialogue('dlg_al_warden_scout_fenn', 'recruit_fenn');
+    const comps = engine.state.player.companions || engine.state.worldState.companions || [];
+    assert.ok(comps.length >= 2, 'Both Sluice-Rat Pem and Scout Fenn must be recruitable');
+
+    // All 6 crafting professions
+    for (const prof of engine.world.professions) {
+      if (prof.requiredToolkitId) engine.addItem(prof.requiredToolkitId, 1);
+    }
+    const profMatrix = [
+      ['al_foundry_smithing', 'weapon', 'mat_al_pale_iron', 'mat_al_weir_ashwood'],
+      ['al_bell_brasswork', 'weapon', 'mat_al_bell_bronze', 'mat_al_chancery_brass'],
+      ['al_oilskin_leathercraft', 'armor', 'mat_al_salt_hide', 'mat_al_soul_pitch'],
+      ['al_mnemonic_alchemy', 'consumable', 'mat_al_tallow_herbs', 'mat_al_distilled_memory'],
+      ['al_seal_scribing', 'weapon', 'mat_al_ash_quartz', 'mat_al_prism_lens'],
+      ['al_clockwork_artifice', 'weapon', 'mat_al_clockwork_springs', 'mat_al_fulgurite_silver']
+    ];
+    for (const [pid, cat, m1, m2] of profMatrix) {
+      engine.addItem(m1, 3); engine.addItem(m2, 3);
+      engine.currentCraftingProfession = pid;
+      const r = engine.craftItem(cat, m1, m2);
+      assert.strictEqual(r && r.success, true, `Crafting failed for profession ${pid}`);
+    }
+
+    // All 12 combinations
+    for (const comb of engine.world.combinations) {
+      const ontoId = typeof comb.onto === 'string' ? comb.onto : 'item_al_dock_cutlass';
+      engine.addItem(comb.apply, 2);
+      if (!engine.hasItem(ontoId)) engine.addItem(ontoId, 2);
+      if (comb.requiresItem && !engine.hasItem(comb.requiresItem)) engine.addItem(comb.requiresItem, 1);
+      const cr = engine.combineItems(comb.apply, ontoId);
+      assert.strictEqual(cr && cr.success, true, `Combination failed: ${comb.id}`);
+    }
+
+    // All 5 puzzles
+    const puzList = Object.values(engine.currentAdventure.puzzles || {});
+    assert.strictEqual(puzList.length, 5, 'Must have 5 inscribed puzzles');
+    for (const puz of puzList) {
+      engine.openPuzzle(puz.id);
+      engine.resolveRiddleChoice('solved');
+    }
+
+    // All 10 campaign spells acquire & cast cleanly
+    engine.syncArcaneKnowledgePoints();
+    engine.state.player.magicProgression.totalEarnedPoints += 60;
+    engine.modifyMorality(25, 0, 'Audit Pos', { decisionKey: 'test9_pos' });
+    for (let pass = 0; pass < 3; pass++) {
+      for (const sp of engine.getGlobalSpellCatalog()) {
+        if (!engine.isSpellKnown(sp.id) && !sp.maxMoralityScore) engine.acquireSpell(sp.id);
+      }
+    }
+    engine.modifyMorality(0, 50, 'Audit Neg', { decisionKey: 'test9_neg' });
+    for (const sp of engine.world.spells.filter(s => s.maxMoralityScore)) {
+      if (!engine.isSpellKnown(sp.id)) engine.acquireSpell(sp.id);
+    }
+    for (const sp of engine.world.spells) {
+      assert.strictEqual(engine.isSpellKnown(sp.id), true, `Spell not acquired: ${sp.id}`);
+      engine.startCombatEncounter('enc_al_viaduct_raid');
+      p.vitals.health = p.vitals.maxHealth;
+      p.vitals.stamina = p.vitals.maxStamina;
+      const res = engine.castCombatSpell(sp.id);
+      assert.strictEqual(res && res.success, true, `Spell cast failed: ${sp.id}`);
+      engine.combatSession = null;
+    }
     engine.rollD20 = origRoll;
   });
 

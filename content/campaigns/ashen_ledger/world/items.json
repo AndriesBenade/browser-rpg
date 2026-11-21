@@ -14,7 +14,8 @@
         "damageMax": 7,
         "damageType": "slashing"
       },
-      "description": "A heavy-bellied harbor blade carried by ferry hands and dock watchmen."
+      "description": "A heavy-bellied harbor blade carried by ferry hands and dock watchmen.",
+      "damage": "1d6"
     },
     {
       "id": "item_al_dock_cutlass_honed",
@@ -31,7 +32,8 @@
         "attackBonus": 1,
         "damageType": "slashing"
       },
-      "description": "A harbor cutlass sharpened on pale-iron stone to a gleaming edge."
+      "description": "A harbor cutlass sharpened on pale-iron stone to a gleaming edge.",
+      "damage": "1d8"
     },
     {
       "id": "item_al_auditor_baton",
@@ -47,7 +49,8 @@
         "damageMax": 8,
         "damageType": "bludgeoning"
       },
-      "description": "Weighted with stamped coin-brass to subdue delinquent debtors without staining their ledgers."
+      "description": "Weighted with stamped coin-brass to subdue delinquent debtors without staining their ledgers.",
+      "damage": "1d8"
     },
     {
       "id": "item_al_foundry_cleaver",
@@ -63,7 +66,8 @@
         "damageMax": 12,
         "damageType": "slashing"
       },
-      "description": "A brutal two-handed iron chopper originally built to split hardened furnace slag."
+      "description": "A brutal two-handed iron chopper originally built to split hardened furnace slag.",
+      "damage": "1d10+1"
     },
     {
       "id": "item_al_weir_harpoon",
@@ -80,7 +84,8 @@
         "attackBonus": 1,
         "damageType": "piercing"
       },
-      "description": "A balanced ashwood pike used to fend off river-scavengers along the Mist-Weir."
+      "description": "A balanced ashwood pike used to fend off river-scavengers along the Mist-Weir.",
+      "damage": "1d8"
     },
     {
       "id": "item_al_debt_stiletto",
@@ -97,7 +102,8 @@
         "attackBonus": 2,
         "damageType": "piercing"
       },
-      "description": "A slender triangular blade favored by dockside debt-collectors for slipping between coat-plates."
+      "description": "A slender triangular blade favored by dockside debt-collectors for slipping between coat-plates.",
+      "damage": "1d6"
     },
     {
       "id": "item_al_lantern_halberd",
@@ -115,7 +121,8 @@
         "elementalDamage": 2,
         "damageType": "slashing"
       },
-      "description": "A polearm bearing a caged ash-ember beneath its axe-head; cuts through salt-fog and corrupted hides alike."
+      "description": "A polearm bearing a caged ash-ember beneath its axe-head; cuts through salt-fog and corrupted hides alike.",
+      "damage": "2d6+2"
     },
     {
       "id": "item_al_salt_longbow",
@@ -132,7 +139,8 @@
         "range": "ranged",
         "damageType": "piercing"
       },
-      "description": "A tall weir-ash bow prized by Pale Frontier Wardens for picking off threats across salt-flats."
+      "description": "A tall weir-ash bow prized by Pale Frontier Wardens for picking off threats across salt-flats.",
+      "damage": "1d8"
     },
     {
       "id": "item_al_brass_crossbow",
@@ -150,7 +158,8 @@
         "range": "ranged",
         "damageType": "piercing"
       },
-      "description": "Clockwork-latched brass crossbow issued to Lantern-Wall sharpshooters."
+      "description": "Clockwork-latched brass crossbow issued to Lantern-Wall sharpshooters.",
+      "damage": "1d8"
     },
     {
       "id": "item_al_fulgurite_bow",
@@ -169,7 +178,8 @@
         "range": "ranged",
         "damageType": "piercing"
       },
-      "description": "Reinforced with humming ash-quartz tips that charge every arrow with static storm-light."
+      "description": "Reinforced with humming ash-quartz tips that charge every arrow with static storm-light.",
+      "damage": "1d10+1"
     },
     {
       "id": "item_al_bell_hammer",
@@ -187,7 +197,8 @@
         "spellBonus": 1,
         "damageType": "bludgeoning"
       },
-      "description": "Cast from consecrated bell-bronze; each strike tolls a clear harmonic that staggers tormented spirits."
+      "description": "Cast from consecrated bell-bronze; each strike tolls a clear harmonic that staggers tormented spirits.",
+      "damage": "1d10+1"
     },
     {
       "id": "item_al_mnemonic_staff",
@@ -204,7 +215,8 @@
         "spellBonus": 2,
         "damageType": "bludgeoning"
       },
-      "description": "Crowned with a caged memory-phial that amplifies arcane invocations."
+      "description": "Crowned with a caged memory-phial that amplifies arcane invocations.",
+      "damage": "1d6"
     },
     {
       "id": "item_al_vowblade_mercy",
@@ -223,7 +235,8 @@
         "spellBonus": 2,
         "damageType": "slashing"
       },
-      "description": "An oath-forged blade tempered in weeping amber for those who chose mercy over profit; grows warm when defending the helpless."
+      "description": "An oath-forged blade tempered in weeping amber for those who chose mercy over profit; grows warm when defending the helpless.",
+      "damage": "2d6+2"
     },
     {
       "id": "item_al_cinder_glaive_toll",
@@ -242,7 +255,8 @@
         "elementalDamage": 3,
         "damageType": "slashing"
       },
-      "description": "Tempered from seized soul-ash contracts; strikes with terrifying finality at the cost of carrying its debtors' whispers."
+      "description": "Tempered from seized soul-ash contracts; strikes with terrifying finality at the cost of carrying its debtors' whispers.",
+      "damage": "2d6+2"
     },
     {
       "id": "item_al_unwritten_edge",
@@ -259,7 +273,8 @@
         "attackBonus": 2,
         "damageType": "slashing"
       },
-      "description": "Carved from fossilized mist-ivory by the Court of the Unwritten; light as bone and razor-true."
+      "description": "Carved from fossilized mist-ivory by the Court of the Unwritten; light as bone and razor-true.",
+      "damage": "1d10+1"
     },
     {
       "id": "item_al_first_scale_scepter",
@@ -279,7 +294,8 @@
         "spellCapacityBonus": 1,
         "damageType": "bludgeoning"
       },
-      "description": "A relic forged from the first Chancery balance beam; grants +1 Combat Spell Capacity and commands both brass law and threshold ash."
+      "description": "A relic forged from the first Chancery balance beam; grants +1 Combat Spell Capacity and commands both brass law and threshold ash.",
+      "damage": "2d6+2"
     },
     {
       "id": "item_al_weir_oilskin",
@@ -292,7 +308,9 @@
       "stats": {
         "defenseBonus": 1
       },
-      "description": "Stiff tallow-waxed coat that turns aside cold mist and glancing knives."
+      "description": "Stiff tallow-waxed coat that turns aside cold mist and glancing knives.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_auditor_greatcoat",
@@ -305,7 +323,9 @@
       "stats": {
         "defenseBonus": 3
       },
-      "description": "Heavy charcoal wool lined with riveted brass tally-plates."
+      "description": "Heavy charcoal wool lined with riveted brass tally-plates.",
+      "type": "armor",
+      "acBonus": 3
     },
     {
       "id": "item_al_foundry_apron",
@@ -319,7 +339,9 @@
         "defenseBonus": 4,
         "damageReduction": 1
       },
-      "description": "Heavy hammered iron chestplate worn by senior kiln-overseers."
+      "description": "Heavy hammered iron chestplate worn by senior kiln-overseers.",
+      "type": "armor",
+      "acBonus": 4
     },
     {
       "id": "item_al_warden_brigandine",
@@ -333,7 +355,9 @@
         "defenseBonus": 5,
         "damageReduction": 1
       },
-      "description": "Layered pale-iron scales stitched beneath bleached frontier canvas."
+      "description": "Layered pale-iron scales stitched beneath bleached frontier canvas.",
+      "type": "armor",
+      "acBonus": 5
     },
     {
       "id": "item_al_shroudweave_robe",
@@ -347,7 +371,9 @@
         "defenseBonus": 3,
         "spellBonus": 2
       },
-      "description": "Woven from wraith-silk and silver wire to channel invocations cleanly."
+      "description": "Woven from wraith-silk and silver wire to channel invocations cleanly.",
+      "type": "armor",
+      "acBonus": 3
     },
     {
       "id": "item_al_ossuary_plate",
@@ -361,7 +387,9 @@
         "defenseBonus": 6,
         "damageReduction": 2
       },
-      "description": "Interlocking plates of calcified ivory and bell-bronze worn by guardians of the Hollow Nave."
+      "description": "Interlocking plates of calcified ivory and bell-bronze worn by guardians of the Hollow Nave.",
+      "type": "armor",
+      "acBonus": 6
     },
     {
       "id": "item_al_dock_buckler",
@@ -415,7 +443,9 @@
       "stats": {
         "defenseBonus": 1
       },
-      "description": "Filters furnace smoke and ash-dust in the Lower City."
+      "description": "Filters furnace smoke and ash-dust in the Lower City.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_warden_helm",
@@ -428,7 +458,9 @@
       "stats": {
         "defenseBonus": 2
       },
-      "description": "Brimmed pale-iron helm with smoked glass lenses against salt-glare."
+      "description": "Brimmed pale-iron helm with smoked glass lenses against salt-glare.",
+      "type": "armor",
+      "acBonus": 2
     },
     {
       "id": "item_al_glass_circlet",
@@ -443,7 +475,9 @@
         "spellBonus": 2,
         "perceptionBonus": 1
       },
-      "description": "Set with a shard of distilled memory-glass that sharpens arcane focus."
+      "description": "Set with a shard of distilled memory-glass that sharpens arcane focus.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_salt_cloak",
@@ -457,7 +491,9 @@
         "defenseBonus": 1,
         "stealthBonus": 2
       },
-      "description": "Ash-grey frontier wool that blends seamlessly into pale fog."
+      "description": "Ash-grey frontier wool that blends seamlessly into pale fog.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_quiet_mantle",
@@ -471,7 +507,9 @@
         "defenseBonus": 2,
         "spellBonus": 1
       },
-      "description": "Trimmed in tiny bronze chimes that steady the wearer's spirit."
+      "description": "Trimmed in tiny bronze chimes that steady the wearer's spirit.",
+      "type": "armor",
+      "acBonus": 2
     },
     {
       "id": "item_al_foundry_gauntlets",
@@ -484,7 +522,9 @@
       "stats": {
         "defenseBonus": 1
       },
-      "description": "Thick riveted leather and iron gloves built to handle hot crucibles."
+      "description": "Thick riveted leather and iron gloves built to handle hot crucibles.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_scribe_gloves",
@@ -498,7 +538,8 @@
         "spellBonus": 1,
         "investigationBonus": 1
       },
-      "description": "Fine kidskin gloves inked with mnemonic runes."
+      "description": "Fine kidskin gloves inked with mnemonic runes.",
+      "type": "armor"
     },
     {
       "id": "item_al_weir_boots",
@@ -511,7 +552,9 @@
       "stats": {
         "defenseBonus": 1
       },
-      "description": "Sturdy tarred boots built for slick timber docks and muddy quarries."
+      "description": "Sturdy tarred boots built for slick timber docks and muddy quarries.",
+      "type": "armor",
+      "acBonus": 1
     },
     {
       "id": "item_al_frontier_striders",
@@ -525,7 +568,9 @@
         "defenseBonus": 2,
         "stealthBonus": 1
       },
-      "description": "Soled with salted hound-hide that leaves faint tracks across glass-steppes."
+      "description": "Soled with salted hound-hide that leaves faint tracks across glass-steppes.",
+      "type": "armor",
+      "acBonus": 2
     },
     {
       "id": "item_al_talisman_first_oar",
@@ -539,7 +584,8 @@
         "spellCapacityBonus": 1,
         "spellBonus": 1
       },
-      "description": "A miniature carved weir-ash oar blessed by the Oar-Keepers; grants +1 Combat Spell Capacity."
+      "description": "A miniature carved weir-ash oar blessed by the Oar-Keepers; grants +1 Combat Spell Capacity.",
+      "type": "relic"
     },
     {
       "id": "item_al_pendant_brass_scale",
@@ -552,7 +598,8 @@
       "stats": {
         "persuasionBonus": 2
       },
-      "description": "Marks its bearer as someone who understands the letter of Ledger-Law."
+      "description": "Marks its bearer as someone who understands the letter of Ledger-Law.",
+      "type": "relic"
     },
     {
       "id": "item_al_locket_unforgotten",
@@ -566,7 +613,8 @@
         "spellBonus": 2,
         "defenseBonus": 1
       },
-      "description": "Holds a drop of weeping amber containing a mortal vow that refuses to fade."
+      "description": "Holds a drop of weeping amber containing a mortal vow that refuses to fade.",
+      "type": "relic"
     },
     {
       "id": "item_al_ring_cinder_seal",
@@ -579,7 +627,8 @@
       "stats": {
         "attackBonus": 1
       },
-      "description": "Warm to the touch; forged from slag-iron and stamped with a blazing crucible."
+      "description": "Warm to the touch; forged from slag-iron and stamped with a blazing crucible.",
+      "type": "relic"
     },
     {
       "id": "item_al_ring_salt_ward",
@@ -593,7 +642,8 @@
         "defenseBonus": 1,
         "perceptionBonus": 1
       },
-      "description": "A silver band inlaid with salt crystal that tingles when ambushers approach."
+      "description": "A silver band inlaid with salt crystal that tingles when ambushers approach.",
+      "type": "relic"
     },
     {
       "id": "item_al_ring_memory_prism",
@@ -607,7 +657,8 @@
         "spellBonus": 2,
         "investigationBonus": 2
       },
-      "description": "Refracts faint golden echoes around concealed inscriptions and arcane traps."
+      "description": "Refracts faint golden echoes around concealed inscriptions and arcane traps.",
+      "type": "relic"
     },
     {
       "id": "item_al_ring_black_interest",
@@ -621,7 +672,8 @@
         "deceptionBonus": 2,
         "attackBonus": 1
       },
-      "description": "Worn by ruthless toll-brokers; sharpens threats and darkens bargains."
+      "description": "Worn by ruthless toll-brokers; sharpens threats and darkens bargains.",
+      "type": "relic"
     },
     {
       "id": "item_al_lantern_reformer_pin",
@@ -635,7 +687,8 @@
         "persuasionBonus": 1,
         "investigationBonus": 1
       },
-      "description": "An understated brass lantern clasp worn by clerks seeking humane reform."
+      "description": "An understated brass lantern clasp worn by clerks seeking humane reform.",
+      "type": "relic"
     },
     {
       "id": "item_al_frontier_charm_1",
@@ -648,7 +701,8 @@
       "stats": {
         "perceptionBonus": 1
       },
-      "description": "First of three ancient Pale Reach charms tied by pre-Chancery travelers."
+      "description": "First of three ancient Pale Reach charms tied by pre-Chancery travelers.",
+      "type": "relic"
     },
     {
       "id": "item_al_frontier_charm_2",
@@ -661,7 +715,8 @@
       "stats": {
         "spellBonus": 1
       },
-      "description": "Second of three ancient Pale Reach charms humming with salt-wind resonance."
+      "description": "Second of three ancient Pale Reach charms humming with salt-wind resonance.",
+      "type": "relic"
     },
     {
       "id": "item_al_frontier_charm_3",
@@ -675,7 +730,8 @@
         "defenseBonus": 1,
         "spellBonus": 1
       },
-      "description": "Third of three ancient Pale Reach charms; completes the forgotten Ferryman's Triad."
+      "description": "Third of three ancient Pale Reach charms; completes the forgotten Ferryman's Triad.",
+      "type": "relic"
     },
     {
       "id": "item_al_relic_quiet_crown",
@@ -691,7 +747,8 @@
         "spellBonus": 3,
         "spellCapacityBonus": 1
       },
-      "description": "A masterwork bronze-and-amber circlet resonating with true rest (+1 Combat Spell Capacity, +3 Spell Power)."
+      "description": "A masterwork bronze-and-amber circlet resonating with true rest (+1 Combat Spell Capacity, +3 Spell Power).",
+      "type": "relic"
     },
     {
       "id": "item_al_salted_biscuit",
@@ -705,7 +762,10 @@
         "restoreStamina": 6,
         "restoreHealth": 3
       },
-      "description": "Dry ferry rations spiced with salt-sage to stave off road exhaustion."
+      "description": "Dry ferry rations spiced with salt-sage to stave off road exhaustion.",
+      "type": "consumable",
+      "restoreHealth": 3,
+      "restoreStamina": 6
     },
     {
       "id": "item_al_barley_broth",
@@ -719,7 +779,10 @@
         "restoreHealth": 6,
         "restoreStamina": 6
       },
-      "description": "Hot barley-and-root flask brewed at the Salt-Wick Boardinghouse."
+      "description": "Hot barley-and-root flask brewed at the Salt-Wick Boardinghouse.",
+      "type": "consumable",
+      "restoreHealth": 6,
+      "restoreStamina": 6
     },
     {
       "id": "item_al_tallow_salve",
@@ -731,7 +794,9 @@
       "stats": {
         "restoreHealth": 10
       },
-      "description": "Cool herbal balm compounded from gray-reed and bittersage; knits cuts quickly."
+      "description": "Cool herbal balm compounded from gray-reed and bittersage; knits cuts quickly.",
+      "type": "consumable",
+      "restoreHealth": 10
     },
     {
       "id": "item_al_bellwright_cordial",
@@ -744,7 +809,10 @@
         "restoreHealth": 16,
         "restoreStamina": 5
       },
-      "description": "Golden monastic tonic infused with weeping resin and clean spring water."
+      "description": "Golden monastic tonic infused with weeping resin and clean spring water.",
+      "type": "consumable",
+      "restoreHealth": 16,
+      "restoreStamina": 5
     },
     {
       "id": "item_al_cinder_stimulant",
@@ -756,7 +824,9 @@
       "stats": {
         "restoreStamina": 14
       },
-      "description": "Bitter amber draught used by kiln-workers to push past exhaustion."
+      "description": "Bitter amber draught used by kiln-workers to push past exhaustion.",
+      "type": "consumable",
+      "restoreStamina": 14
     },
     {
       "id": "item_al_memory_draught",
@@ -769,7 +839,10 @@
         "restoreHealth": 20,
         "restoreStamina": 10
       },
-      "description": "Luminous Collegium elixir that mends body and spirit in moments of crisis."
+      "description": "Luminous Collegium elixir that mends body and spirit in moments of crisis.",
+      "type": "consumable",
+      "restoreHealth": 20,
+      "restoreStamina": 10
     },
     {
       "id": "item_al_smoked_eel",
@@ -783,7 +856,10 @@
         "restoreHealth": 4,
         "restoreStamina": 8
       },
-      "description": "Oily dockside fare sold hot off braziers along Lantern-Row."
+      "description": "Oily dockside fare sold hot off braziers along Lantern-Row.",
+      "type": "consumable",
+      "restoreHealth": 4,
+      "restoreStamina": 8
     },
     {
       "id": "item_al_salt_tea",
@@ -796,7 +872,9 @@
       "stats": {
         "restoreStamina": 10
       },
-      "description": "Steeped gray-reed tea that clears fog-sickness on long marches."
+      "description": "Steeped gray-reed tea that clears fog-sickness on long marches.",
+      "type": "consumable",
+      "restoreStamina": 10
     },
     {
       "id": "item_al_cinder_oil",
@@ -808,7 +886,9 @@
       "stats": {
         "restoreStamina": 2
       },
-      "description": "Flammable foundry distillate; apply to any blade to ignite foes in combat."
+      "description": "Flammable foundry distillate; apply to any blade to ignite foes in combat.",
+      "type": "consumable",
+      "restoreStamina": 2
     },
     {
       "id": "item_al_amber_varnish",
@@ -820,7 +900,9 @@
       "stats": {
         "restoreHealth": 4
       },
-      "description": "Resinous varnish that coats blades with radiant spirit-bane harmonics."
+      "description": "Resinous varnish that coats blades with radiant spirit-bane harmonics.",
+      "type": "consumable",
+      "restoreHealth": 4
     },
     {
       "id": "item_al_ash_antidote",
@@ -832,7 +914,9 @@
       "stats": {
         "restoreHealth": 8
       },
-      "description": "Draws mire-venom and kiln-fumes cleanly from the blood."
+      "description": "Draws mire-venom and kiln-fumes cleanly from the blood.",
+      "type": "consumable",
+      "restoreHealth": 8
     },
     {
       "id": "item_al_patrician_vintage",
@@ -846,7 +930,10 @@
         "restoreHealth": 10,
         "restoreStamina": 10
       },
-      "description": "A rare bottle smuggled from the Velvet Auction Court."
+      "description": "A rare bottle smuggled from the Velvet Auction Court.",
+      "type": "consumable",
+      "restoreHealth": 10,
+      "restoreStamina": 10
     },
     {
       "id": "item_al_strong_salve",
@@ -859,7 +946,10 @@
         "restoreHealth": 26,
         "restoreStamina": 8
       },
-      "description": "Bittersage salve enriched with distilled memory for extraordinary field recovery."
+      "description": "Bittersage salve enriched with distilled memory for extraordinary field recovery.",
+      "type": "consumable",
+      "restoreHealth": 26,
+      "restoreStamina": 8
     },
     {
       "id": "item_al_quiet_incense",
@@ -872,7 +962,10 @@
         "restoreHealth": 8,
         "restoreStamina": 8
       },
-      "description": "Fragrant cedar-and-amber cone that calms dread and restores focus."
+      "description": "Fragrant cedar-and-amber cone that calms dread and restores focus.",
+      "type": "consumable",
+      "restoreHealth": 8,
+      "restoreStamina": 8
     },
     {
       "id": "mat_al_pale_iron",
@@ -1294,7 +1387,15 @@
       "damageType": "slashing",
       "weightKg": 1.6,
       "valueDrachmae": 48,
-      "description": "A harbor cutlass inlaid with serrated Tempered Kiln-Glass along its spine."
+      "description": "A harbor cutlass inlaid with serrated Tempered Kiln-Glass along its spine.",
+      "stats": {
+        "damageMin": 6,
+        "damageMax": 11,
+        "damageType": "slashing",
+        "attackBonus": 2
+      },
+      "type": "weapon",
+      "damage": "1d10+1"
     },
     {
       "id": "item_al_prismatic_lantern",
@@ -1311,7 +1412,17 @@
       },
       "weightKg": 1,
       "valueDrachmae": 68,
-      "description": "A tallow lamp refitted with a Mnemonic Prism-Shard; pierces salt-fog and reveals concealed caches."
+      "description": "A tallow lamp refitted with a Mnemonic Prism-Shard; pierces salt-fog and reveals concealed caches.",
+      "stats": {
+        "defenseBonus": 2,
+        "attributeBonuses": {
+          "wisdom": 1
+        },
+        "skillBonuses": {
+          "investigation": 2
+        }
+      },
+      "type": "armor"
     },
     {
       "id": "item_al_pitch_coated_cloak",
@@ -1323,7 +1434,12 @@
       "damageReduction": 1,
       "weightKg": 2.1,
       "valueDrachmae": 52,
-      "description": "Weir oilskin cured with Cinder-Pitch Resin; shrugs off ash-sparks, blades, and mire-acid."
+      "description": "Weir oilskin cured with Cinder-Pitch Resin; shrugs off ash-sparks, blades, and mire-acid.",
+      "stats": {
+        "defenseBonus": 3,
+        "damageReduction": 1
+      },
+      "type": "armor"
     },
     {
       "id": "item_al_resonant_balm",
@@ -1339,7 +1455,19 @@
       ],
       "weightKg": 0.3,
       "valueDrachmae": 38,
-      "description": "Salve dusted with ancient Muted Bell-Alloy; knits wounds and quiets terror."
+      "description": "Salve dusted with ancient Muted Bell-Alloy; knits wounds and quiets terror.",
+      "stats": {
+        "restoreHealth": 22,
+        "restoreStamina": 10,
+        "curesStatus": [
+          "bleeding",
+          "poisoned",
+          "frightened"
+        ]
+      },
+      "type": "consumable",
+      "restoreHealth": 22,
+      "restoreStamina": 10
     },
     {
       "id": "item_al_masterwork_caliper",
@@ -1356,7 +1484,17 @@
       },
       "weightKg": 0.5,
       "valueDrachmae": 64,
-      "description": "An artificer's precision instrument tuned with fresh brass mainsprings for steady hands and craft mastery."
+      "description": "An artificer's precision instrument tuned with fresh brass mainsprings for steady hands and craft mastery.",
+      "stats": {
+        "attributeBonuses": {
+          "intelligence": 1
+        },
+        "skillBonuses": {
+          "sleight_of_hand": 2,
+          "investigation": 1
+        }
+      },
+      "type": "relic"
     },
     {
       "id": "item_al_orla_guild_stamp",
@@ -1392,7 +1530,19 @@
       },
       "weightKg": 1.7,
       "valueDrachmae": 195,
-      "description": "Forged alongside Master Orla from Fulgurite-Silver and Muted Bell-Alloy; rings cleanly through Chancery wards."
+      "description": "Forged alongside Master Orla from Fulgurite-Silver and Muted Bell-Alloy; rings cleanly through Chancery wards.",
+      "stats": {
+        "damageMin": 10,
+        "damageMax": 16,
+        "damageType": "slashing",
+        "attackBonus": 3,
+        "attributeBonuses": {
+          "strength": 1,
+          "agility": 1
+        }
+      },
+      "type": "weapon",
+      "damage": "2d6+2"
     },
     {
       "id": "item_al_crucible_aegis_lantern",
@@ -1408,7 +1558,16 @@
       },
       "weightKg": 1.3,
       "valueDrachmae": 195,
-      "description": "An unquenchable Fulgurite-Silver and Bell-Bronze lantern-buckler forged at the Crucible Wharf."
+      "description": "An unquenchable Fulgurite-Silver and Bell-Bronze lantern-buckler forged at the Crucible Wharf.",
+      "stats": {
+        "defenseBonus": 4,
+        "damageReduction": 2,
+        "attributeBonuses": {
+          "intelligence": 1,
+          "wisdom": 2
+        }
+      },
+      "type": "armor"
     },
     {
       "id": "item_al_resonance_tuning_fork",
@@ -1443,7 +1602,17 @@
       },
       "weightKg": 0.4,
       "valueDrachmae": 110,
-      "description": "Gift of Bell-Scribe Cassian; hums softly whenever deceptive toll-magic approaches."
+      "description": "Gift of Bell-Scribe Cassian; hums softly whenever deceptive toll-magic approaches.",
+      "stats": {
+        "defenseBonus": 1,
+        "attributeBonuses": {
+          "wisdom": 2
+        },
+        "skillBonuses": {
+          "mythology_lore": 2
+        }
+      },
+      "type": "relic"
     },
     {
       "id": "item_al_starlight_astrolabe",
@@ -1460,7 +1629,17 @@
       },
       "weightKg": 0.5,
       "valueDrachmae": 115,
-      "description": "A pocket star-finder calibrated to the pre-Chancery sky; guides travelers cleanly across the Pale Reach."
+      "description": "A pocket star-finder calibrated to the pre-Chancery sky; guides travelers cleanly across the Pale Reach.",
+      "stats": {
+        "attributeBonuses": {
+          "intelligence": 2
+        },
+        "skillBonuses": {
+          "survival": 2,
+          "investigation": 2
+        }
+      },
+      "type": "relic"
     },
     {
       "id": "item_al_slag_cleaver",
@@ -1474,7 +1653,15 @@
       "damageType": "slashing",
       "weightKg": 2.3,
       "valueDrachmae": 44,
-      "description": "A heavy quarry-splitter notched for prying kiln-glass seams and cracking beetle carapaces."
+      "description": "A heavy quarry-splitter notched for prying kiln-glass seams and cracking beetle carapaces.",
+      "stats": {
+        "damageMin": 6,
+        "damageMax": 10,
+        "damageType": "slashing",
+        "attackBonus": 1
+      },
+      "type": "weapon",
+      "damage": "1d8"
     },
     {
       "id": "item_al_artificer_goggles",
@@ -1489,7 +1676,15 @@
       },
       "weightKg": 0.4,
       "valueDrachmae": 46,
-      "description": "Amber-lensed brass goggles protecting the eyes from forge glare and salt-storms."
+      "description": "Amber-lensed brass goggles protecting the eyes from forge glare and salt-storms.",
+      "stats": {
+        "defenseBonus": 1,
+        "skillBonuses": {
+          "investigation": 2,
+          "sleight_of_hand": 1
+        }
+      },
+      "type": "armor"
     },
     {
       "id": "item_al_cinder_flash_tonic",
@@ -1500,7 +1695,14 @@
       "healStamina": 14,
       "weightKg": 0.3,
       "valueDrachmae": 22,
-      "description": "A sharp ginger-and-amber tonic favored by night-shift smiths to fight exhaustion."
+      "description": "A sharp ginger-and-amber tonic favored by night-shift smiths to fight exhaustion.",
+      "stats": {
+        "restoreHealth": 12,
+        "restoreStamina": 14
+      },
+      "type": "consumable",
+      "restoreHealth": 12,
+      "restoreStamina": 14
     }
   ]
 }

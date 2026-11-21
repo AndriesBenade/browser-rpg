@@ -3,15 +3,21 @@
     {
       "id": "al_lantern_warden",
       "name": "Lantern-Wall Warden",
-      "description": "Hardened frontier vanguard trained to hold the line against salt-horrors with steel, shield, and grim resolve.",
-      "bonuses": {
-        "strength": 2,
-        "endurance": 2
-      },
-      "skills": {
-        "melee_combat": 2,
-        "athletics": 2,
-        "perception": 1
+      "subtitle": "Shield of the Ash-Frontier",
+      "archetype": "Combat",
+      "primaryAttributes": [
+        "strength",
+        "endurance"
+      ],
+      "description": "Hardened frontier vanguard trained to hold the viaduct against salt-horrors with steel, shield, and grim resolve.",
+      "proficiencies": [
+        "melee_combat",
+        "athletics",
+        "perception"
+      ],
+      "statBonuses": {
+        "strength": 1,
+        "endurance": 1
       },
       "startingEquipment": [
         "item_al_dock_cutlass",
@@ -23,20 +29,21 @@
       "classFeatures": [
         {
           "id": "feat_al_bastion_brace",
-          "name": "Bastion Brace",
           "level": 1,
-          "desc": "Hold the Lantern-Wall line: +1 Armor Class in battle.",
-          "passive": {
-            "ac": 1
+          "name": "Bastion Brace",
+          "type": "passive",
+          "desc": "+2 Armor Class while carrying a shield in your off-hand.",
+          "effect": {
+            "acWithShield": 2
           }
         },
         {
           "id": "feat_al_lantern_flare",
+          "level": 1,
           "name": "Lantern Flare",
-          "level": 2,
-          "desc": "Blaze ash-light into up to 2 foes (1d6+2 dmg & Weakened 2r).",
+          "type": "active",
+          "desc": "Blaze ash-light into up to 2 foes: 1d6+2 damage and Weakened for 2 rounds (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
             "damage": "1d6+2",
             "enemyStatus": {
               "id": "weakened",
@@ -44,7 +51,21 @@
             },
             "targetType": "all_enemies",
             "maxTargets": 2,
-            "aoe": true
+            "aoe": true,
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_warden_resolve",
+          "level": 3,
+          "name": "Warden's Second Breath",
+          "type": "active",
+          "desc": "Steel yourself against frontier dread: restore 2d6+2 Health (once per combat, 2 Stamina).",
+          "combat": {
+            "heal": "2d6+2",
+            "uses": 1,
+            "staminaCost": 2
           }
         }
       ]
@@ -52,15 +73,21 @@
     {
       "id": "al_mnemonic_arcanist",
       "name": "Mnemonic Arcanist",
-      "description": "Scholar of distilled memory and threshold seals who unlocks broad spell repertoires quickly through Arcane Knowledge Points.",
-      "bonuses": {
-        "intelligence": 2,
-        "wisdom": 2
-      },
-      "skills": {
-        "mythology_lore": 3,
-        "investigation": 2,
-        "perception": 1
+      "subtitle": "Weaver of Bottled Memory",
+      "archetype": "Magic",
+      "primaryAttributes": [
+        "intelligence",
+        "wisdom"
+      ],
+      "description": "Scholar of distilled memory and threshold seals who excels at expanding spell repertoires via Arcane Knowledge Points and Spell Shaping.",
+      "proficiencies": [
+        "mythology_lore",
+        "investigation",
+        "perception"
+      ],
+      "statBonuses": {
+        "intelligence": 1,
+        "wisdom": 1
       },
       "startingEquipment": [
         "item_al_mnemonic_staff",
@@ -72,28 +99,43 @@
       "classFeatures": [
         {
           "id": "feat_al_mnemonic_echo",
-          "name": "Mnemonic Echo",
           "level": 1,
-          "desc": "Deep memory mastery: +1 bonus on Mythology & Lore and Investigation checks.",
-          "passive": {
+          "name": "Mnemonic Echo",
+          "type": "passive",
+          "desc": "+2 bonus on Mythology & Lore and Investigation checks.",
+          "effect": {
             "skillBonus": {
-              "mythology_lore": 1,
-              "investigation": 1
+              "mythology_lore": 2,
+              "investigation": 2
             }
           }
         },
         {
           "id": "feat_al_glass_pulse",
+          "level": 1,
           "name": "Prism Pulse",
-          "level": 2,
-          "desc": "Shatter bottled essence across up to 3 foes for 1d6+INT damage.",
+          "type": "active",
+          "desc": "Shatter bottled essence across up to 2 foes for 1d8+2 damage (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
-            "damage": "1d6",
-            "addIntelligence": true,
+            "damage": "1d8+2",
             "targetType": "all_enemies",
-            "maxTargets": 3,
-            "aoe": true
+            "maxTargets": 2,
+            "aoe": true,
+            "bypassFrontline": true,
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_memory_ward",
+          "level": 3,
+          "name": "Lucid Recall",
+          "type": "active",
+          "desc": "Reclaim clarity amidst battle: restore 1d8+3 Health and steady morale (once per combat, 2 Stamina).",
+          "combat": {
+            "heal": "1d8+3",
+            "uses": 1,
+            "staminaCost": 2
           }
         }
       ]
@@ -101,15 +143,22 @@
     {
       "id": "al_weir_smuggler",
       "name": "Freebooter Runner",
-      "description": "Nimble contraband runner and frontier sharpshooter skilled in locks, alleys, and lethal opening strikes.",
-      "bonuses": {
-        "agility": 2,
-        "charisma": 2
-      },
-      "skills": {
-        "ranged_combat": 2,
-        "stealth": 2,
-        "deception": 2
+      "subtitle": "Shadow of the Drowned Piers",
+      "archetype": "Stealth & Ranged",
+      "primaryAttributes": [
+        "agility",
+        "charisma"
+      ],
+      "description": "Nimble contraband runner and frontier sharpshooter skilled in locks, misty alleys, and lethal cover-bypassing shots.",
+      "proficiencies": [
+        "ranged_combat",
+        "stealth",
+        "sleight_of_hand",
+        "deception"
+      ],
+      "statBonuses": {
+        "agility": 1,
+        "charisma": 1
       },
       "startingEquipment": [
         "item_al_salt_longbow",
@@ -121,30 +170,50 @@
       "classFeatures": [
         {
           "id": "feat_al_alley_step",
-          "name": "Fog-Runner's Step",
           "level": 1,
-          "desc": "+1 ranged attack and +1 Stealth in murky borders.",
-          "passive": {
-            "attackRanged": 1,
+          "name": "Fog-Runner's Step",
+          "type": "passive",
+          "desc": "+1 Ranged Attack and +2 Stealth checks in misty borders.",
+          "effect": {
+            "rangedAttack": 1,
             "skillBonus": {
-              "stealth": 1
+              "stealth": 2
             }
           }
         },
         {
           "id": "feat_al_brine_flash",
-          "name": "Brine-Flash Volley",
-          "level": 2,
-          "desc": "Blind and rake a target from cover (1d8+2 dmg & Confused 2r).",
+          "level": 1,
+          "name": "Brine-Flash Shot",
+          "type": "active",
+          "desc": "Blind and strike any target from cover: 1d8+2 damage and Confused for 2 rounds (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
             "damage": "1d8+2",
             "enemyStatus": {
               "id": "confused",
               "rounds": 2
             },
             "range": "ranged",
-            "bypassFrontline": true
+            "bypassFrontline": true,
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_smuggler_feint",
+          "level": 3,
+          "name": "Pier-Runner's Sever",
+          "type": "active",
+          "desc": "Vicious crippling strike dealing 2d6+2 damage and Bleeding for 2 rounds (once per combat, 2 Stamina).",
+          "combat": {
+            "damage": "2d6+2",
+            "enemyStatus": {
+              "id": "bleeding",
+              "rounds": 2,
+              "value": 2
+            },
+            "uses": 1,
+            "staminaCost": 2
           }
         }
       ]
@@ -152,15 +221,21 @@
     {
       "id": "al_bell_cantor",
       "name": "Bellwright Cantor",
-      "description": "Devoted caster of consecrated bronze who blends sturdy mace-craft with cleansing restorations.",
-      "bonuses": {
-        "wisdom": 2,
-        "endurance": 2
-      },
-      "skills": {
-        "mythology_lore": 2,
-        "medicine": 2,
-        "melee_combat": 1
+      "subtitle": "Voice of the Last Bell",
+      "archetype": "Support & Magic",
+      "primaryAttributes": [
+        "wisdom",
+        "endurance"
+      ],
+      "description": "Devoted caster of consecrated bronze who blends sturdy mace-craft with restorative chants and spirit-calming wards.",
+      "proficiencies": [
+        "mythology_lore",
+        "medicine",
+        "melee_combat"
+      ],
+      "statBonuses": {
+        "wisdom": 1,
+        "endurance": 1
       },
       "startingEquipment": [
         "item_al_auditor_baton",
@@ -172,24 +247,42 @@
       "classFeatures": [
         {
           "id": "feat_al_calm_chime",
-          "name": "Resonant Calm",
           "level": 1,
-          "desc": "+1 healing and resistance against fear.",
-          "passive": {
+          "name": "Resonant Calm",
+          "type": "passive",
+          "desc": "+2 Medicine checks and steadier healing rites.",
+          "effect": {
             "skillBonus": {
-              "medicine": 1
+              "medicine": 2
             }
           }
         },
         {
           "id": "feat_al_tolling_mend",
+          "level": 1,
           "name": "Chime of Quiet",
-          "level": 2,
-          "desc": "Restore 2d4+3 Health and fortify +4 Ward.",
+          "type": "active",
+          "desc": "Ring a restorative cadence: heal 2d6+2 Health (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
-            "heal": "2d4+3",
-            "ward": 4
+            "heal": "2d6+2",
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_bronze_knell",
+          "level": 3,
+          "name": "Toll of Breaking",
+          "type": "active",
+          "desc": "Shattering bell-wave dealing 1d10+3 damage and Frightening the target for 2 rounds (once per combat, 2 Stamina).",
+          "combat": {
+            "damage": "1d10+3",
+            "enemyStatus": {
+              "id": "frightened",
+              "rounds": 2
+            },
+            "uses": 1,
+            "staminaCost": 2
           }
         }
       ]
@@ -197,44 +290,52 @@
     {
       "id": "al_cinder_alchemist",
       "name": "Crucible Alchemist",
-      "description": "Resourceful distiller of furnace slag and marsh herbs who excels at concealed crafting, coatings, and volatile concoctions.",
-      "bonuses": {
-        "intelligence": 2,
-        "endurance": 2
-      },
-      "skills": {
-        "medicine": 2,
-        "survival": 2,
-        "investigation": 2
+      "subtitle": "Master of Ash & Artifice",
+      "archetype": "Craft & Alchemy",
+      "primaryAttributes": [
+        "intelligence",
+        "endurance"
+      ],
+      "description": "Ingenious distiller and forge-tinkerer turning Aether-Ash, kiln-glass, and cinder-pitch into lethal flasks and superior crafted gear.",
+      "proficiencies": [
+        "medicine",
+        "investigation",
+        "survival",
+        "sleight_of_hand"
+      ],
+      "statBonuses": {
+        "intelligence": 1,
+        "endurance": 1
       },
       "startingEquipment": [
-        "item_al_weir_harpoon",
+        "item_al_dock_cutlass",
         "item_al_weir_oilskin",
         "item_al_kit_alchemy",
-        "item_al_cinder_oil",
+        "item_al_cinder_flash_tonic",
         "item_al_tallow_salve"
       ],
       "classFeatures": [
         {
-          "id": "feat_al_crucible_hands",
-          "name": "Crucible Hands",
+          "id": "feat_al_crucible_hand",
           "level": 1,
-          "desc": "+1 survival and +1 medicine from relentless workshop practice.",
-          "passive": {
+          "name": "Crucible Hand",
+          "type": "passive",
+          "desc": "+2 Investigation and Medicine checks when appraising reagents and crafting.",
+          "effect": {
             "skillBonus": {
-              "survival": 1,
-              "medicine": 1
+              "investigation": 2,
+              "medicine": 2
             }
           }
         },
         {
-          "id": "feat_al_cinder_flask",
-          "name": "Cinder-Slag Flask",
-          "level": 2,
-          "desc": "Hurl an unstable crucible bomb hitting up to 2 foes (1d6+3 & Bleeding 2r).",
+          "id": "feat_al_pitch_bomb",
+          "level": 1,
+          "name": "Cinder-Pitch Flask",
+          "type": "active",
+          "desc": "Hurl volatile slag-pitch across up to 2 foes: 1d8+2 damage and Bleeding for 2 rounds (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
-            "damage": "1d6+3",
+            "damage": "1d8+2",
             "enemyStatus": {
               "id": "bleeding",
               "rounds": 2,
@@ -242,7 +343,21 @@
             },
             "targetType": "all_enemies",
             "maxTargets": 2,
-            "aoe": true
+            "aoe": true,
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_ash_draught",
+          "level": 3,
+          "name": "Emergency Quench-Draught",
+          "type": "active",
+          "desc": "Drink an instant alchemical tonic: restore 2d6+3 Health (once per combat, 1 Stamina).",
+          "combat": {
+            "heal": "2d6+3",
+            "uses": 1,
+            "staminaCost": 1
           }
         }
       ]
@@ -250,15 +365,21 @@
     {
       "id": "al_debt_inquisitor",
       "name": "Chancery Inquisitor",
-      "description": "Sharp-eyed investigator and silver-tongued negotiator versed in Ledger-Law, interrogation, and merciless steel.",
-      "bonuses": {
-        "charisma": 2,
-        "strength": 2
-      },
-      "skills": {
-        "persuasion": 2,
-        "investigation": 2,
-        "melee_combat": 2
+      "subtitle": "Blade of the Ledger-Law",
+      "archetype": "Social & Martial",
+      "primaryAttributes": [
+        "charisma",
+        "strength"
+      ],
+      "description": "Sharp-tongued investigator and heavy enforcer versed in Chancery law, interrogation, and crushing shock-strikes.",
+      "proficiencies": [
+        "persuasion",
+        "investigation",
+        "melee_combat"
+      ],
+      "statBonuses": {
+        "charisma": 1,
+        "strength": 1
       },
       "startingEquipment": [
         "item_al_auditor_baton",
@@ -270,10 +391,11 @@
       "classFeatures": [
         {
           "id": "feat_al_ledger_eye",
-          "name": "Auditor's Scrutiny",
           "level": 1,
-          "desc": "+2 on Persuasion and Investigation when probing secrets.",
-          "passive": {
+          "name": "Auditor's Scrutiny",
+          "type": "passive",
+          "desc": "+2 Persuasion and +1 Investigation checks when uncovering secrets.",
+          "effect": {
             "skillBonus": {
               "persuasion": 2,
               "investigation": 1
@@ -282,16 +404,34 @@
         },
         {
           "id": "feat_al_verdict_strike",
+          "level": 1,
           "name": "Final Verdict",
-          "level": 2,
-          "desc": "Punishing strike dealing 2d6+2 damage and lowering foe morale.",
+          "type": "active",
+          "desc": "Punishing strike dealing 1d10+3 damage and Weakening your target for 2 rounds (once per combat, 1 Stamina).",
           "combat": {
-            "stamina": 2,
-            "damage": "2d6+2",
+            "damage": "1d10+3",
             "enemyStatus": {
               "id": "weakened",
               "rounds": 2
-            }
+            },
+            "uses": 1,
+            "staminaCost": 1
+          }
+        },
+        {
+          "id": "feat_al_subpoena_stare",
+          "level": 3,
+          "name": "Writ of Forfeiture",
+          "type": "active",
+          "desc": "Commanding condemnation dealing 2d6+2 damage and Frightening the target for 2 rounds (once per combat, 2 Stamina).",
+          "combat": {
+            "damage": "2d6+2",
+            "enemyStatus": {
+              "id": "frightened",
+              "rounds": 2
+            },
+            "uses": 1,
+            "staminaCost": 2
           }
         }
       ]

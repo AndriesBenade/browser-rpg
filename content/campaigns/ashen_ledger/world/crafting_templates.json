@@ -20,7 +20,8 @@
           "metal",
           "wood"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Sabre driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_greataxe",
@@ -43,7 +44,8 @@
           "mineral",
           "bone"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Crucible Cleaver driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_spear",
@@ -64,7 +66,8 @@
           "wood",
           "metal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Frontier Pike driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_cuirass",
@@ -83,7 +86,8 @@
           "metal",
           "bone"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Foundry Cuirass driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_gauntlets",
@@ -102,7 +106,8 @@
           "metal",
           "leather"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Riveted Gauntlets driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_warhammer",
@@ -123,7 +128,8 @@
           "metal",
           "crystal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Bell-Bronze Hammer driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_crossbow",
@@ -144,7 +150,8 @@
           "wood",
           "metal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Clockwork Crossbow driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_shield",
@@ -163,7 +170,8 @@
           "metal",
           "bone"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Resonant Tower Shield driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_chime_amulet",
@@ -182,7 +190,8 @@
           "crystal",
           "essence"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Brass Chime-Talisman driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_lantern_tool",
@@ -199,7 +208,8 @@
           "metal",
           "mineral"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Signal Lantern driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_coat",
@@ -218,7 +228,8 @@
           "leather",
           "textile"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Frontier Brigandine driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_cloak",
@@ -236,7 +247,8 @@
         "preferredCategories": [
           "textile"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Salt-Mist Cloak driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_boots",
@@ -254,7 +266,8 @@
         "preferredCategories": [
           "leather"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Wayfarer Boots driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_longbow",
@@ -274,7 +287,8 @@
           "wood",
           "leather"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Sinew-Backed Bow driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_salve",
@@ -293,7 +307,8 @@
           "herb",
           "resin"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Restorative Salve driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_tonic",
@@ -311,7 +326,8 @@
           "mineral",
           "herb"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Cinder Vigor Tonic driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_elixir",
@@ -330,7 +346,8 @@
           "essence",
           "resin"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Mnemonic Grand Elixir driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_ward_charm",
@@ -351,7 +368,8 @@
           "essence",
           "resin"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Alchemical Salt-Amulet driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_staff",
@@ -373,7 +391,8 @@
           "essence",
           "bone"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Threshold Focus Staff driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_ring",
@@ -392,7 +411,8 @@
           "resin",
           "essence"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Inscribed Seal-Ring driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_circlet",
@@ -413,7 +433,8 @@
           "crystal",
           "essence"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Mnemonic Circlet driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_scroll_charm",
@@ -430,7 +451,8 @@
           "textile",
           "herb"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Warded Scroll-Case driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_halberd",
@@ -453,7 +475,8 @@
           "wood",
           "crystal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Quarryman's Halberd driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_helm",
@@ -473,7 +496,8 @@
           "metal",
           "mineral"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Furnace-Mask Greathelm driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_flail",
@@ -495,7 +519,8 @@
           "metal",
           "crystal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Censer-Bell Flail driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_pauldrons",
@@ -515,7 +540,8 @@
           "metal",
           "leather"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Resonant Bell-Pauldrons driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_greaves",
@@ -536,7 +562,8 @@
           "resin",
           "textile"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Salt-Strider Greaves driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_bandolier",
@@ -557,7 +584,8 @@
           "resin",
           "metal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Smuggler's Rigging Belt driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_bomb_flask",
@@ -566,8 +594,6 @@
       "category": "consumable",
       "slot": "consumable",
       "baseDC": 12,
-      "baseHealHp": 0,
-      "baseHealStamina": 10,
       "baseWeightKg": 0.4,
       "baseValueDrachmae": 30,
       "materialAffinity": {
@@ -578,7 +604,10 @@
           "crystal",
           "mineral"
         ]
-      }
+      },
+      "restoreHealth": 0,
+      "restoreStamina": 10,
+      "description": "Threshold artisan pattern for crafting a bespoke Cinder-Pitch Flash Flask driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_memory_draught",
@@ -587,8 +616,6 @@
       "category": "consumable",
       "slot": "consumable",
       "baseDC": 13,
-      "baseHealHp": 14,
-      "baseHealStamina": 12,
       "baseWeightKg": 0.3,
       "baseValueDrachmae": 42,
       "materialAffinity": {
@@ -599,7 +626,10 @@
           "crystal",
           "herb"
         ]
-      }
+      },
+      "restoreHealth": 14,
+      "restoreStamina": 12,
+      "description": "Threshold artisan pattern for crafting a bespoke Lucid Memory Draught driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_focus_orb",
@@ -620,7 +650,8 @@
           "metal",
           "essence"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Mnemonic Prism Focus driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_repeater",
@@ -643,7 +674,8 @@
           "wood",
           "crystal"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Clockwork Tally-Repeater driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_chronometer",
@@ -664,7 +696,8 @@
           "crystal",
           "resin"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Brass Threshold Chronometer driven by the properties of your chosen materials."
     },
     {
       "id": "tpl_al_lantern_rig",
@@ -685,7 +718,8 @@
           "metal",
           "resin"
         ]
-      }
+      },
+      "description": "Threshold artisan pattern for crafting a bespoke Artificer's Aether-Lantern driven by the properties of your chosen materials."
     }
   ]
 }

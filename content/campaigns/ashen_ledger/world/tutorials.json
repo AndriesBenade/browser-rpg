@@ -2,8 +2,9 @@
   "tutorials": [
     {
       "id": "tut_al_arrival",
-      "title": "Welcome to Vesper-Threshold",
-      "text": "Explore Weir-Port, speak with Oar-Keeper Corvus and Clerk Maren, open your Character Grimoire to spend Arcane Knowledge Points on global and dark-fantasy spells, and shape the fate of the First Seal through your moral choices."
+      "title": "Arrival at Vesper-Threshold",
+      "locationId": "loc_al_ferry_quay",
+      "summary": "Speak with Oar-Keeper Corvus on the Weir-Port Ferry Quay, report to Clerk Maren in the Hall of First Tallies, visit Master Orla at Crucible Wharf to begin the Artisan crafting quest line, and open your Character Grimoire to unlock global and dark-fantasy spells with Arcane Knowledge Points."
     }
   ]
 }

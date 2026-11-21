@@ -463,5 +463,71 @@
         "awardXP": 165
       }
     }
+  ],
+  "randomEncounters": [
+    {
+      "id": "renc_al_gutter_hounds",
+      "type": "combat",
+      "creatureId": "creature_al_gutter_hound",
+      "regions": [
+        "Weir-Port & Customs Quays",
+        "The Chancery Brass-Works"
+      ],
+      "terrain": "urban",
+      "weight": 30
+    },
+    {
+      "id": "renc_al_debt_bailiffs",
+      "type": "combat",
+      "creatureId": "creature_al_debt_bailiff",
+      "regions": [
+        "The Chancery Brass-Works",
+        "The Gilded Terraces"
+      ],
+      "terrain": "urban",
+      "weight": 25
+    },
+    {
+      "id": "renc_al_cinder_beetles",
+      "type": "combat",
+      "creatureId": "creature_al_cinder_beetle",
+      "regions": [
+        "The Ash-Fields & Debt-Quarries"
+      ],
+      "terrain": "quarry",
+      "weight": 30
+    },
+    {
+      "id": "renc_al_salt_stalkers",
+      "type": "combat",
+      "creatureId": "creature_al_salt_stalker",
+      "regions": [
+        "The Pale Reach"
+      ],
+      "terrain": "salt_flats",
+      "weight": 30
+    },
+    {
+      "id": "renc_al_mire_wraiths",
+      "type": "combat",
+      "creatureId": "creature_al_mire_wraith",
+      "regions": [
+        "The Pale Reach",
+        "The Ossuary Bastions"
+      ],
+      "terrain": "mire",
+      "weight": 25
+    },
+    {
+      "id": "renc_al_unwritten_knights",
+      "type": "combat",
+      "creatureId": "creature_al_unwritten_knight",
+      "regions": [
+        "The Ossuary Bastions",
+        "The Threshold Abyss"
+      ],
+      "terrain": "ruins",
+      "weight": 25
+    }
   ]
 }

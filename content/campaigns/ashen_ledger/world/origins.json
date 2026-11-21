@@ -3,33 +3,91 @@
     {
       "id": "origin_al_weir_born",
       "name": "Weir-Port Arrival",
-      "description": "Awoke on the misty docks with an unbroken will and sharp eyes (+1 Perception).",
-      "bonuses": {
+      "description": "You woke on the rain-slick timbers of Ferry-Weir Quay with a fractured tally and an instinct for reading murky water.",
+      "perks": "+1 Wisdom, +1 Perception skill, +5 reputation with The Oar-Keepers' Union.",
+      "attributes": {
+        "wisdom": 1
+      },
+      "skills": {
         "perception": 1
+      },
+      "reputation": {
+        "faction_al_weir_ferrymen": 5
       }
     },
     {
       "id": "origin_al_lower_city",
       "name": "Brass-Works Debtor",
-      "description": "Forged under chimney-smoke and clanging presses (+1 Endurance).",
-      "bonuses": {
+      "description": "Forged beneath roaring chimney-stacks and clanging coinage presses in the lower Chancery terraces.",
+      "perks": "+1 Endurance, +1 Athletics skill, +5 reputation with The Quiet Reformers.",
+      "attributes": {
         "endurance": 1
+      },
+      "skills": {
+        "athletics": 1
+      },
+      "reputation": {
+        "faction_al_lantern_reformers": 5
       }
     },
     {
       "id": "origin_al_glass_ward",
       "name": "Conservatory Ward",
-      "description": "Touched by bottled memories from forgotten lives (+1 Intelligence).",
-      "bonuses": {
+      "description": "Raised among bottled memories and whispering lens-grinders of the Mnemonic Collegium.",
+      "perks": "+1 Intelligence, +1 Mythology & Lore skill, +5 reputation with The Mnemonic Collegium.",
+      "attributes": {
         "intelligence": 1
+      },
+      "skills": {
+        "mythology_lore": 1
+      },
+      "reputation": {
+        "faction_al_glass_scholars": 5
       }
     },
     {
       "id": "origin_al_salt_reach",
       "name": "Pale Reach Wanderer",
-      "description": "Walked the salt-flats and returned with your name intact (+1 Wisdom).",
-      "bonuses": {
-        "wisdom": 1
+      "description": "You walked beyond the Lantern-Wall across the salt-flats and came back with your true name intact.",
+      "perks": "+1 Agility, +1 Survival skill, +5 reputation with The Pale Frontier Wardens.",
+      "attributes": {
+        "agility": 1
+      },
+      "skills": {
+        "survival": 1
+      },
+      "reputation": {
+        "faction_al_pale_wardens": 5
+      }
+    },
+    {
+      "id": "origin_al_crucible_heir",
+      "name": "Crucible-Wharf Apprentice",
+      "description": "You spent your first Threshold seasons pumping bellows beside untaxed independent smiths.",
+      "perks": "+1 Strength, +1 Investigation skill, +5 reputation with The Oar-Keepers' Union.",
+      "attributes": {
+        "strength": 1
+      },
+      "skills": {
+        "investigation": 1
+      },
+      "reputation": {
+        "faction_al_weir_ferrymen": 5
+      }
+    },
+    {
+      "id": "origin_al_velvet_exile",
+      "name": "Velvet-Court Exile",
+      "description": "Once privy to high-society ledger auctions until you saw the human cost behind the brass scales.",
+      "perks": "+1 Charisma, +1 Persuasion skill, +5 reputation with The Unstamped Freebooters.",
+      "attributes": {
+        "charisma": 1
+      },
+      "skills": {
+        "persuasion": 1
+      },
+      "reputation": {
+        "faction_al_salt_smugglers": 5
       }
     }
   ]

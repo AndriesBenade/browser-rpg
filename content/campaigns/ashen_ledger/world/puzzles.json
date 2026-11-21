@@ -27,7 +27,17 @@
         },
         "giveItem": "item_al_archive_brass_key",
         "awardXP": 45
-      }
+      },
+      "deductionDc": 12,
+      "distractors": [
+        "The Iron Anvil",
+        "The Broken Hourglass",
+        "The Sunken Anchor"
+      ],
+      "customAnswerLabel": "Speak another emblem...",
+      "knownAnswerLabel": "Align the dial to \"The Brass Scale\"",
+      "deductionFailText": "The archival ciphers blur in the dim tallow light; the iron tumblers refuse to shift.",
+      "wrongAnswerText": "You turn the dial to that sigil, but the vault bolts clack shut with a hollow metallic snap."
     },
     {
       "id": "puzzle_al_belfry_chimes",
@@ -55,7 +65,17 @@
           "al_thirteenth_chime_rung": true
         },
         "awardXP": 60
-      }
+      },
+      "deductionDc": 13,
+      "distractors": [
+        "Eternal Interest",
+        "The Iron Furnace",
+        "The Velvet Crown"
+      ],
+      "customAnswerLabel": "Ring another word into the belfry...",
+      "knownAnswerLabel": "Inscribe the vow of \"True Quiet\"",
+      "deductionFailText": "The overlapping clockwork overtones drown out your reasoning for now.",
+      "wrongAnswerText": "A sour, discordant clang shakes dust from the rafters; the thirteenth chime stays silent."
     },
     {
       "id": "puzzle_al_library_tablet",
@@ -84,7 +104,17 @@
         },
         "giveItem": "item_al_seal_fragment_passage",
         "awardXP": 70
-      }
+      },
+      "deductionDc": 13,
+      "distractors": [
+        "The Gilded Quill",
+        "The Soot-Furnace",
+        "The Salt Crown"
+      ],
+      "customAnswerLabel": "Trace another pre-Chancery symbol...",
+      "knownAnswerLabel": "Name \"The Quiet Oar\" of the Crossing",
+      "deductionFailText": "Salt-stains obscure the oldest strokes of the tablet; you need time to clear your thoughts.",
+      "wrongAnswerText": "The slate remains cold and unyielding beneath your fingers."
     },
     {
       "id": "puzzle_al_scale_sanctum_trial",
@@ -112,7 +142,17 @@
           "al_sanctum_gate_unsealed": true
         },
         "awardXP": 80
-      }
+      },
+      "deductionDc": 14,
+      "distractors": [
+        "Compounded Debt",
+        "Tarnished Gold",
+        "The Cinder Throne"
+      ],
+      "customAnswerLabel": "Declare another truth before the Seal...",
+      "knownAnswerLabel": "Answer \"Unbroken Memory & Vow\"",
+      "deductionFailText": "The humming silver arcs momentarily scatter your focus across echoing voices.",
+      "wrongAnswerText": "The First Scale tips sharply toward ash and rings with a stern warning tone."
     },
     {
       "id": "puzzle_al_observatory_orrery",
@@ -142,7 +182,17 @@
         },
         "giveItem": "mat_al_fulgurite_silver",
         "awardXP": 60
-      }
+      },
+      "deductionDc": 13,
+      "distractors": [
+        "The Chancery Chimney",
+        "The Brass Ledger",
+        "The Salt Tide"
+      ],
+      "customAnswerLabel": "Align the silver rings to another guide...",
+      "knownAnswerLabel": "Align the silver rings to \"The Pre-Toll Stars\"",
+      "deductionFailText": "Static arcs jump across the tarnished rings, forcing you to step back and rethink.",
+      "wrongAnswerText": "The brass rings grind out of alignment and spark harmlessly into the salt wind."
     }
   ]
 }

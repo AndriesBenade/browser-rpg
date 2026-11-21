@@ -36,13 +36,37 @@
           "id": "spot_al_quay_tag",
           "name": "Shattered Brass Tally",
           "dc": 10,
-          "itemId": "item_al_shattered_tally",
-          "text": "Wedged between wet quay planks you pry loose a stamped brass tally bearing half a forgotten seal."
+          "text": "Wedged between wet quay planks you pry loose a stamped brass tally bearing half a forgotten seal.",
+          "outcome": {
+            "giveItem": "item_al_shattered_tally"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor",
+      "actions": [
+        {
+          "id": "act_al_watch_ferries",
+          "label": "Study the Mist-Weir Barge Schedules",
+          "category": "explore",
+          "description": "Watch arriving barges unload through the twilight fog and listen for whispers from the Oar-Keepers.",
+          "skillCheck": {
+            "skill": "perception",
+            "attribute": "wisdom",
+            "dc": 10
+          },
+          "successOutcome": {
+            "text": "You catch an Oar-Keeper humming an older crossing-rhyme and notice an unguarded pier lane toward the Crucible Wharf.",
+            "awardXP": 10,
+            "discoverLocation": "loc_al_crucible_wharf"
+          },
+          "failOutcome": {
+            "text": "The river-fog thickens until only swaying tallow lamps remain visible."
+          }
+        }
+      ]
     },
     {
       "id": "loc_al_customs_hall",
@@ -90,13 +114,16 @@
           "id": "spot_al_customs_slip",
           "name": "Misfiled Debt Slip",
           "dc": 11,
-          "itemId": "item_al_audit_cipher",
-          "text": "Behind an overturned inkwell lies a folded audit slip showing phantom border requisitions."
+          "text": "Behind an overturned inkwell lies a folded audit slip showing phantom border requisitions.",
+          "outcome": {
+            "giveItem": "item_al_audit_cipher"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor"
     },
     {
       "id": "loc_al_lantern_market",
@@ -139,13 +166,16 @@
           "id": "spot_al_market_coin",
           "name": "Dropped Toll-Purse",
           "dc": 11,
-          "itemId": "item_al_tallow_salve",
-          "text": "Tucked beneath an awning post rests an unclaimed apothecary salve."
+          "text": "Tucked beneath an awning post rests an unclaimed apothecary salve.",
+          "outcome": {
+            "giveItem": "item_al_tallow_salve"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor"
     },
     {
       "id": "loc_al_salt_boardinghouse",
@@ -181,7 +211,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor"
     },
     {
       "id": "loc_al_drowned_piers",
@@ -224,13 +255,16 @@
           "id": "spot_al_pier_charter",
           "name": "Waterlogged Charter Tube",
           "dc": 12,
-          "itemId": "item_al_drowned_charter_piece",
-          "text": "Inside a barnacled brass cylinder you find a pre-Chancery river charter sealed in wax."
+          "text": "Inside a barnacled brass cylinder you find a pre-Chancery river charter sealed in wax.",
+          "outcome": {
+            "giveItem": "item_al_drowned_charter_piece"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor"
     },
     {
       "id": "loc_al_cinder_foundries",
@@ -278,13 +312,16 @@
           "id": "spot_al_foundry_slag",
           "name": "Pure Crucible Slag",
           "dc": 12,
-          "itemId": "mat_al_cinder_slag",
-          "text": "Beneath a cooling chute you salvage a shard of dense, ember-veined crucible slag."
+          "text": "Beneath a cooling chute you salvage a shard of dense, ember-veined crucible slag.",
+          "outcome": {
+            "giveItem": "mat_al_cinder_slag"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_audit_archives",
@@ -327,13 +364,16 @@
           "id": "spot_al_archive_manifest",
           "name": "Altered Conscription Roll",
           "dc": 13,
-          "itemId": "item_al_forged_roll",
-          "text": "Between duplicate binders you discover proof that Frontier casualty tallies were deliberately inflated."
+          "text": "Between duplicate binders you discover proof that Frontier casualty tallies were deliberately inflated.",
+          "outcome": {
+            "giveItem": "item_al_forged_roll"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_bone_mint",
@@ -374,7 +414,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_bellwright_square",
@@ -417,13 +458,31 @@
           "id": "spot_al_bell_shard",
           "name": "Consecrated Bell-Bronze",
           "dc": 11,
-          "itemId": "mat_al_bell_bronze",
-          "text": "Near the quenching trough sits an ingot of resonant consecrated bell-bronze."
+          "text": "Near the quenching trough sits an ingot of resonant consecrated bell-bronze.",
+          "outcome": {
+            "giveItem": "mat_al_bell_bronze"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban",
+      "actions": [
+        {
+          "id": "act_al_pray_quiet_oar",
+          "label": "Ring a Quiet Prayer at the Seventh Bell",
+          "category": "shrine",
+          "description": "Offer a moment of stillness beneath the consecrated bronze chimes to steady your nerve.",
+          "outcome": {
+            "text": "A low, warm bronze tone rolls across your shoulders, easing road-weariness and centering your resolve.",
+            "restoreStamina": 4,
+            "piety": {
+              "vesper_oar": 1
+            }
+          }
+        }
+      ]
     },
     {
       "id": "loc_al_sewer_sluice",
@@ -461,13 +520,16 @@
           "id": "spot_al_sluice_cache",
           "name": "Cutpurse Grate Cache",
           "dc": 12,
-          "itemId": "item_al_lockpick_set",
-          "text": "Wired behind a rusted sluice valve sits a waxed roll of fine locksmith picks."
+          "text": "Wired behind a rusted sluice valve sits a waxed roll of fine locksmith picks.",
+          "outcome": {
+            "giveItem": "item_al_lockpick_set"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_high_chancery",
@@ -503,7 +565,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_glass_conservatory",
@@ -541,13 +604,16 @@
           "id": "spot_al_glass_phial",
           "name": "Unlabelled Amber Phial",
           "dc": 12,
-          "itemId": "mat_al_distilled_memory",
-          "text": "Behind a cracked cabinet pane glows a sealed vial of pure distilled memory."
+          "text": "Behind a cracked cabinet pane glows a sealed vial of pure distilled memory.",
+          "outcome": {
+            "giveItem": "mat_al_distilled_memory"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_velvet_court",
@@ -573,7 +639,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_clockwork_belfry",
@@ -611,13 +678,16 @@
           "id": "spot_al_belfry_cipher",
           "name": "Thirteenth Chime Plate",
           "dc": 14,
-          "itemId": "item_al_belfry_gear_key",
-          "text": "Clipped behind the thirteenth gear tooth lies a tarnished brass relay key."
+          "text": "Clipped behind the thirteenth gear tooth lies a tarnished brass relay key.",
+          "outcome": {
+            "giveItem": "item_al_belfry_gear_key"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "urban"
     },
     {
       "id": "loc_al_quarry_pit",
@@ -660,13 +730,16 @@
           "id": "spot_al_quarry_ore",
           "name": "Exposed Pale-Iron Vein",
           "dc": 12,
-          "itemId": "mat_al_pale_iron",
-          "text": "In a collapsed quarry gallery you pry loose raw pale-iron ore."
+          "text": "In a collapsed quarry gallery you pry loose raw pale-iron ore.",
+          "outcome": {
+            "giveItem": "mat_al_pale_iron"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_cinder_kilns",
@@ -703,14 +776,17 @@
         {
           "id": "spot_al_kilns_pitch_tap",
           "name": "Overflow Cinder-Pitch Sump",
-          "difficulty": 11,
-          "rewardItemId": "mat_al_soul_pitch",
-          "description": "Beneath a forgotten cooling grate, thick black-gold Cinder-Pitch Resin has pooled in sealed clay jars."
+          "dc": 11,
+          "text": "Beneath a forgotten cooling grate, thick black-gold Cinder-Pitch Resin has pooled in sealed clay jars.",
+          "outcome": {
+            "giveItem": "mat_al_soul_pitch"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_penitent_camp",
@@ -756,7 +832,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_rusted_viaduct",
@@ -804,13 +881,16 @@
           "id": "spot_al_viaduct_charm",
           "name": "First Frontier Salt-Charm",
           "dc": 13,
-          "itemId": "item_al_frontier_charm_1",
-          "text": "Tied to a fallen iron stanchion hangs a weathered bone salt-charm."
+          "text": "Tied to a fallen iron stanchion hangs a weathered bone salt-charm.",
+          "outcome": {
+            "giveItem": "item_al_frontier_charm_1"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_smuggler_cistern",
@@ -846,7 +926,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_lantern_wall_gate",
@@ -892,7 +973,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_salt_flats",
@@ -940,13 +1022,16 @@
           "id": "spot_al_salt_charm2",
           "name": "Second Frontier Salt-Charm",
           "dc": 13,
-          "itemId": "item_al_frontier_charm_2",
-          "text": "Half-fused into a salt pillar gleams a carved glass frontier charm."
+          "text": "Half-fused into a salt pillar gleams a carved glass frontier charm.",
+          "outcome": {
+            "giveItem": "item_al_frontier_charm_2"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_drifting_cairns",
@@ -987,7 +1072,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_glass_steppe",
@@ -1030,13 +1116,16 @@
           "id": "spot_al_steppe_quartz",
           "name": "Fulgurite Ash-Quartz",
           "dc": 14,
-          "itemId": "mat_al_ash_quartz",
-          "text": "From a smoking fulgurite spire you snap free a crystal of humming ash-quartz."
+          "text": "From a smoking fulgurite spire you snap free a crystal of humming ash-quartz.",
+          "outcome": {
+            "giveItem": "mat_al_ash_quartz"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_whispering_mire",
@@ -1079,13 +1168,16 @@
           "id": "spot_al_mire_charm3",
           "name": "Third Frontier Salt-Charm",
           "dc": 14,
-          "itemId": "item_al_frontier_charm_3",
-          "text": "Resting atop a sunken skiff prow lies an unbroken silver-wire frontier charm."
+          "text": "Resting atop a sunken skiff prow lies an unbroken silver-wire frontier charm.",
+          "outcome": {
+            "giveItem": "item_al_frontier_charm_3"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_hollow_cathedral",
@@ -1126,7 +1218,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_marrow_bridge",
@@ -1172,7 +1265,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_silent_library",
@@ -1210,13 +1304,16 @@
           "id": "spot_al_library_tablet",
           "name": "Architect's Uncut Tablet",
           "dc": 14,
-          "itemId": "item_al_architect_tablet",
-          "text": "Inside a hollow lectern rests the Silent Architect's original design of the First Seal."
+          "text": "Inside a hollow lectern rests the Silent Architect's original design of the First Seal.",
+          "outcome": {
+            "giveItem": "item_al_architect_tablet"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_weeping_orchard",
@@ -1254,13 +1351,16 @@
           "id": "spot_al_orchard_resin",
           "name": "Weeping Amber Tears",
           "dc": 13,
-          "itemId": "mat_al_weeping_amber",
-          "text": "You gather glowing drops of weeping amber from the oldest glass-trunk."
+          "text": "You gather glowing drops of weeping amber from the oldest glass-trunk.",
+          "outcome": {
+            "giveItem": "mat_al_weeping_amber"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_broken_ferry_arch",
@@ -1301,7 +1401,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_echo_vault",
@@ -1342,7 +1443,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_scale_sanctum",
@@ -1378,7 +1480,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_first_seal_chamber",
@@ -1404,7 +1507,8 @@
       "hiddenSpots": [],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     },
     {
       "id": "loc_al_crucible_wharf",
@@ -1441,14 +1545,38 @@
         {
           "id": "spot_al_crucible_scrap_bin",
           "name": "Tarnished Quench-Trough Cache",
-          "difficulty": 10,
-          "rewardItemId": "mat_al_clockwork_springs",
-          "description": "Beneath a pile of rusted tongs lies a tin of oiled brass mainsprings salvaged before Baron Vane's embargo."
+          "dc": 10,
+          "text": "Beneath a pile of rusted tongs lies a tin of oiled brass mainsprings salvaged before Baron Vane's embargo.",
+          "outcome": {
+            "giveItem": "mat_al_clockwork_springs"
+          }
         }
       ],
       "presentCharacters": [],
       "presentCreatures": [],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "harbor",
+      "actions": [
+        {
+          "id": "act_al_stoked_bellows",
+          "label": "Pump the Crucible Bellows & Test Scrap",
+          "category": "explore",
+          "description": "Help Master Orla stoke the untaxed hearth and sift the quench-trough for salvageable shards.",
+          "skillCheck": {
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "dc": 11
+          },
+          "successOutcome": {
+            "text": "The coals roar bright violet-orange; you spot a clean billet of Pale-Iron half-buried in the cooling slag.",
+            "awardXP": 12,
+            "giveItem": "mat_al_pale_iron"
+          },
+          "failOutcome": {
+            "text": "Hot sparks dance across your sleeves, leaving only spent cinders in the grate."
+          }
+        }
+      ]
     },
     {
       "id": "loc_al_amber_catacombs",
@@ -1485,9 +1613,11 @@
         {
           "id": "spot_al_catacomb_kiln_vein",
           "name": "Vitrified Kiln-Glass Seam",
-          "difficulty": 12,
-          "rewardItemId": "mat_al_kiln_glass",
-          "description": "A glassy blue-orange seam sheared clean by ancient furnace heat yields razor-pure Tempered Kiln-Glass."
+          "dc": 12,
+          "text": "A glassy blue-orange seam sheared clean by ancient furnace heat yields razor-pure Tempered Kiln-Glass.",
+          "outcome": {
+            "giveItem": "mat_al_kiln_glass"
+          }
         }
       ],
       "presentCharacters": [],
@@ -1495,7 +1625,8 @@
         "creature_al_cinder_beetle",
         "creature_al_slag_golem"
       ],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "quarry"
     },
     {
       "id": "loc_al_salt_observatory",
@@ -1532,9 +1663,11 @@
         {
           "id": "spot_al_observatory_prism",
           "name": "Cracked Astrolabe Drawer",
-          "difficulty": 14,
-          "rewardItemId": "mat_al_prism_lens",
-          "description": "Inside a velvet-lined brass drawer rests an unblemished Mnemonic Prism-Shard ground to refract lantern light."
+          "dc": 14,
+          "text": "Inside a velvet-lined brass drawer rests an unblemished Mnemonic Prism-Shard ground to refract lantern light.",
+          "outcome": {
+            "giveItem": "mat_al_prism_lens"
+          }
         }
       ],
       "presentCharacters": [],
@@ -1542,7 +1675,8 @@
         "creature_al_glass_harpy",
         "creature_al_mire_wraith"
       ],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "salt_flats"
     },
     {
       "id": "loc_al_bell_crypt",
@@ -1579,9 +1713,11 @@
         {
           "id": "spot_al_muted_bell_alcove",
           "name": "Chained Choir Alcove",
-          "difficulty": 14,
-          "rewardItemId": "mat_al_muted_bell_shard",
-          "description": "A fractured pre-Chancery bell lip hums faintly in your palm, shedding dust of ancient Muted Bell-Alloy."
+          "dc": 14,
+          "text": "A fractured pre-Chancery bell lip hums faintly in your palm, shedding dust of ancient Muted Bell-Alloy.",
+          "outcome": {
+            "giveItem": "mat_al_muted_bell_shard"
+          }
         }
       ],
       "presentCharacters": [],
@@ -1589,7 +1725,8 @@
         "creature_al_boss_bell_mender",
         "creature_al_soot_automaton"
       ],
-      "presentItems": []
+      "presentItems": [],
+      "terrain": "ruins"
     }
   ]
 }
