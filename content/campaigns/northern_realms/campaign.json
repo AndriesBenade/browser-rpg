@@ -5,6 +5,25 @@
   "engineVersion": ">=1.0.0",
   "author": "Antigravity & Ancient Systems Designer",
   "description": "A rich, Nordic-inspired open-world fantasy RPG campaign spanning five regions, 25 interconnected locations, 17 reactive NPCs, 10 northern creatures, 16 material-driven crafting forms, 8 multi-path quests, and 3 secret hidden missions. Uncover the three Star-Keys of High King Valen, master runic spellcasting, and shape the destiny of the North.",
+  "worldIntro": {
+    "eyebrow": "Prologue: The Frostbound North",
+    "headline": "Iron Oaths Beneath a Cracking Glacial Sky",
+    "text": "Far north of the warm southern seas, jagged granite peaks and blue glacial rivers carve a hard country where jarldoms survive by timber palisades, hearth-fire, and sworn oaths. Around the mountain stronghold of Valenfrost, warriors, skald-scholars, and runic smiths still bargain with the Old Gods of the Hearth, drawing fragile spellcraft from carved runes and forging weapons from rare highland ores whose secrets reveal themselves only at the anvil. Beyond the keep's banners stretch iron-veined crags, mist-choked fens, barrow-haunted pine woods, and frozen passes prowled by frost-wolves, draugr, and ancient kin of winter. Deep beneath Mount Wyrmfang, something sealed away in the days of High King Valen has begun to stir the stone, and the North is running out of time to remember its forgotten covenants.",
+    "pillars": [
+      {
+        "label": "How the World Works",
+        "detail": "Sworn jarldom oaths, Old God piety, harsh highland weather, and shifting northern alliances."
+      },
+      {
+        "label": "What Exists Here",
+        "detail": "Runic spellcasting, material-driven smithing and alchemy, ancient barrows, and hidden sagas."
+      },
+      {
+        "label": "What Waits Beyond",
+        "detail": "Glacial passes, iron crags, drowned fens, undead guardians, and the awakening beneath Wyrmfang."
+      }
+    ]
+  },
   "genre": "nordic_fantasy",
   "isDefault": false,
   "isTestCampaign": false,

@@ -5,6 +5,25 @@
   "engineVersion": ">=1.0.0",
   "author": "Antigravity & Original Dark Fantasy Designer",
   "description": "An expansive original dark fantasy RPG spanning 7 regions, 36 interconnected locations, 27 reactive NPCs, 10 competing factions, 23 quests (a 4-arc main story, a 3-part Artisan Crafting quest line, 8 exploration side quests, 4 morality-exclusive branches, and 4 hidden missions), 19 creatures, 118 items, 20 materials, 6 professions, 34 concealed crafting forms, 12 field combinations, and 10 campaign spells integrated into the global magic engine.",
+  "worldIntro": {
+    "eyebrow": "Prologue: Vesper-Threshold",
+    "headline": "An Afterlife Built of Brass, Smoke, and Unpaid Debt",
+    "text": "Death here is neither rest nor silence, but an intake desk beneath an iron sky. Along the black Mist-Weir River stands Vesper-Threshold, a sprawling industrial afterlife where the Chancery of Scales stamps every arriving soul with a brass tally, taxes memory as currency, and burns spiritual ash to keep its brass-works, gilded terraces, and towering Lantern-Wall alight. Inside the walls, auditors, ash-miners, clockwork artificers, smugglers, and dissident wardens vie for leverage over souls, forbidden crucible-craft, and toll-bound arcana paid in blood or resolve. Beyond the Lantern-Wall stretches the Pale Reach, an eternal frontier of cracked salt-flats, shattered glass steppes, bone-stone ossuaries, and hunger-driven horrors pressing in from the Threshold Abyss. You wash ashore at Weir-Port with a fractured tally and an unstamped name, free to serve the machine, break its chains, or carve your own reckoning across the frontier.",
+    "pillars": [
+      {
+        "label": "How the World Works",
+        "detail": "A bureaucratic afterlife governed by brass soul-tallies, debt, competing syndicates, and moral reckoning."
+      },
+      {
+        "label": "What Exists Here",
+        "detail": "Six artisan crafts, concealed crucible forging, clockwork artifice, soul-bound magic, and whispered relics."
+      },
+      {
+        "label": "What Waits Beyond",
+        "detail": "Salt wastes, ossuary bastions, void-touched horrors, and ancient seals holding back the Threshold Abyss."
+      }
+    ]
+  },
   "genre": "dark_fantasy",
   "isDefault": false,
   "isTestCampaign": false,

@@ -8,6 +8,20 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 38 - 2026-11-22 (Cinematic Pre-Creation World Prologue Across All Campaigns)
+* **Collaborator / Model**: User & Antigravity
+* **Per-Campaign Cinematic World Introductions (`content/campaigns/*/campaign.json`)**:
+  * Added `"worldIntro": { "eyebrow", "headline", "text", "pillars" }` to all four built-in campaign manifests (*Hellas: Mythos of the Heroic Age*, *Lanternfall: The Brindle Ford Trials*, *The Northern Realms*, and *The Ashen Ledger: Frontier of the Toll*).
+  * Each prologue delivers a concise, cinematic paragraph plus three scannable World Pillar cards (`How the World Works`, `What Exists Here`, `What Waits Beyond`) giving players a grounded feel for the world's rules, institutions, magic, craft, and perils before forging their character.
+* **Engine World Prologue Step (`index.html`)**:
+  * Added Step 0 (`✦ Prologue`, `#wizard-pane-0`, `#step-node-0`) at the start of the Character Creation Wizard with theme-matched `.wizard-prologue-card` styling, stylized drop-cap prose, optional pillar grid, `Begin Character Creation ->` CTA, and a `<- World Prologue` button on Step 1 so players can re-read the briefing anytime.
+  * Added `getCampaignWorldIntro()` (supporting `{ eyebrow, headline, text, pillars }`, plain `worldIntro`/`prologue` strings, graceful fallback from `description`/`startingJournalNotes` for custom campaigns, and strict HTML escaping) and `renderWizardStep0()`.
+  * Updated `openCharacterCreationWizard()`, `renderWizardStep()`, `saveCreationDraft()`, and draft resume logic to open cleanly on Step 0 (while pre-seeding valid default origin/name for direct step jumps and preserving Step 0 across page reloads) and reset `pane.scrollTop = 0` on step changes.
+  * Extended `validateCampaign()` to check optional `manifest.worldIntro` and re-synced `EMBEDDED_CONTENT` (`99` files).
+* **Verification**:
+  * Added automated test `Part 5c` in `tests/phase2_systems_tests.js` covering all 4 built-in prologues, Step 0/1 round-trip navigation, Step 0 draft persistence, custom fallback, HTML escaping, and validator warnings.
+  * Visually verified the rendered World Prologue screens in a live browser across *The Northern Realms* and *The Ashen Ledger* (`0` console errors) and confirmed full `npm test` passes.
+
 ### Session 37 - 2026-11-22 (Zoom-Responsive World Map Typography, Exact-Fit Pills & Proportional Markers)
 * **Collaborator / Model**: User & Antigravity
 * **Root Cause & Fix (`index.html`)**:

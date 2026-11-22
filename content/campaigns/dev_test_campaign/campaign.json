@@ -5,6 +5,25 @@
   "engineVersion": ">=1.0.0",
   "author": "Browser-RPG Developers",
   "description": "The developer campaign. Sit the Wayfarers' Guild trials in the river town of Brindle Ford, then relight the dark lighthouse on Gull Rock before the sea fog swallows the coast. Short, varied and built to touch every system in the engine: combat, confrontations, crafting, minigames, riddles, trade, companions, the law, timed quests, moral choices and more.",
+  "worldIntro": {
+    "eyebrow": "Prologue: The Brindle Vale",
+    "headline": "A Lantern Gone Dark at the Edge of the Salt Sea",
+    "text": "Where the Brindle Brook winds out of mossy hills to meet the grey swell of Saltreed Bay, the riverside town of Brindle Ford keeps its peace by ferry tolls, watchmen's bells, and the old customs of the Wayfarers' Guild. This is a living frontier of modest magic, honest iron, and sharp local law, where shopkeepers remember favours, shrines answer small offerings, and a single choice can turn the town watch into either ally or obstacle. In the surrounding vale lie drowned chapels in the Old Moss, rocky scrambles along Thornback Ridge, and coastal coves stalked by marsh beasts and desperate brigands. Now the great beacon on Gull Rock Lighthouse has fallen dark as sea-fog rolls inland, and you have arrived to sit the Guild trials and prove what kind of wayfarer this coast can count on.",
+    "pillars": [
+      {
+        "label": "How the World Works",
+        "detail": "Town watch law, Guild trials, reactive townsfolk, shrines, and timed consequences."
+      },
+      {
+        "label": "What Exists Here",
+        "detail": "Workbenches, field herb-craft, local factions, companions, riddles, and modest folk magic."
+      },
+      {
+        "label": "What Waits Beyond",
+        "detail": "Sunken marshes, rocky ridges, sea-fog coves, coastal monsters, and a darkened lighthouse."
+      }
+    ]
+  },
   "genre": "fantasy_sandbox",
   "isDefault": false,
   "isTestCampaign": true,

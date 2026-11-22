@@ -373,6 +373,74 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   });
 
   // ---------------------------------------------------------------------------
+  // 4c. Part 5c: Cinematic World Prologue (Pre-Creation World Briefing)
+  // ---------------------------------------------------------------------------
+  await test('Part 5c Cinematic World Prologue: every built-in campaign opens on Step 0 prologue before hero creation with navigation, draft persistence & safe fallback', async () => {
+    const campaignIds = [
+      'campaign_greek_mythology',
+      'campaign_dev_test',
+      'campaign_northern_realms',
+      'campaign_ashen_ledger'
+    ];
+    const seenTexts = new Set();
+
+    for (const cid of campaignIds) {
+      const env = createSandbox();
+      const engine = await bootEngine(env);
+      engine.skipWalkthrough();
+      engine.selectCampaign(cid);
+      await engine.confirmCampaignSelection();
+
+      // Opens on Step 0 (World Prologue) BEFORE Step 1
+      assert.strictEqual(engine._currentCreationStep, 0, `${cid} opens character creation on Step 0 (World Prologue)`);
+      assert.strictEqual(env.el('wizard-pane-0').classList.contains('active-pane'), true, `${cid} wizard-pane-0 is active`);
+      assert.strictEqual(env.el('wizard-pane-1').classList.contains('active-pane'), false, `${cid} wizard-pane-1 stays hidden until player advances`);
+      assert.strictEqual(env.el('step-node-0').classList.contains('active-step'), true, `${cid} step-node-0 highlighted`);
+
+      const intro = engine.getCampaignWorldIntro();
+      assert.ok(intro.text.length >= 200, `${cid} provides a substantive cinematic world prologue (${intro.text.length} chars)`);
+      assert.ok(!intro.text.includes('\u2014'), `${cid} prologue contains zero forbidden em dashes`);
+      assert.ok(!seenTexts.has(intro.text), `${cid} prologue text is unique`);
+      seenTexts.add(intro.text);
+      assert.strictEqual(intro.pillars.length, 3, `${cid} renders 3 concise world pillars`);
+      assert.strictEqual(env.el('wiz-intro-text').textContent, intro.text, `${cid} prologue text populated into DOM`);
+      assert.strictEqual(env.el('wiz-intro-title').textContent, engine.activeCampaign.name, `${cid} prologue title matches campaign name`);
+      assert.ok(env.el('wiz-intro-pillars').innerHTML.includes(intro.pillars[0].label), `${cid} pillars rendered cleanly`);
+
+      // Draft preserves Step 0 (does not coerce 0 to 1)
+      const draft = JSON.parse(env.sandbox.localStorage.getItem('gm_creation_draft'));
+      assert.strictEqual(draft.step, 0, `${cid} creation draft preserves Step 0 cleanly`);
+
+      // Advancing from Step 0 enters Step 1, and Back from Step 1 returns to Step 0
+      engine.wizardNext(0);
+      assert.strictEqual(engine._currentCreationStep, 1, `${cid} wizardNext(0) advances to Step 1`);
+      assert.strictEqual(env.el('wizard-pane-1').classList.contains('active-pane'), true, `${cid} wizard-pane-1 becomes active`);
+      engine.wizardBack(1);
+      assert.strictEqual(engine._currentCreationStep, 0, `${cid} wizardBack(1) returns cleanly to World Prologue`);
+      assert.strictEqual(env.el('wizard-pane-0').classList.contains('active-pane'), true, `${cid} wizard-pane-0 re-activates`);
+    }
+
+    // Fallback & XSS escaping for custom campaigns without explicit worldIntro or with untrusted pillar text
+    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    const fallbackIntro = engine.getCampaignWorldIntro({
+      id: 'custom_world',
+      name: 'Shattered Isles',
+      description: 'A sea of floating stone archipelagos ruled by wind-guild navigators.'
+    });
+    assert.ok(fallbackIntro.text.includes('floating stone archipelagos'), 'custom campaign falls back cleanly to description');
+    const escapedIntro = engine.getCampaignWorldIntro({
+      id: 'xss_world',
+      name: 'Test',
+      worldIntro: { text: 'A grim realm.', pillars: [{ label: '<script>x</script>', detail: 'Safe <b>detail</b>' }] }
+    });
+    engine.activeCampaign = { id: 'xss_world', name: 'Test', worldIntro: { text: 'A grim realm.', pillars: escapedIntro.pillars } };
+    engine.renderWizardStep0();
+    assert.ok(!env.el('wiz-intro-pillars').innerHTML.includes('<script>'), 'pillar HTML is safely escaped');
+    const badIntroVal = env.Engine.validateCampaign({ id: 'empty_intro', name: 'Empty Intro', worldIntro: { text: '   ' } }, {});
+    assert.ok(badIntroVal.warnings.some(w => /worldIntro/i.test(w)), 'validator warns when worldIntro is empty');
+  });
+
+  // ---------------------------------------------------------------------------
   // 5. Part 6: Campaign-Specific UI Customisation (Full, Partial Fallback & Sanitization)
   // ---------------------------------------------------------------------------
   await test('Part 6 Campaign UI Customisation: full theme switching, partial per-property fallback & CSS injection sanitization', async () => {

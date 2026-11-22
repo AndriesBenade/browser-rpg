@@ -5,6 +5,25 @@
   "engineVersion": ">=1.0.0",
   "author": "Classical Mythos Design Guild",
   "description": "Experience authentic classical Greece in the Heroic Age. Journey across Boeotia, Phocis, Argolis, and Arcadia, confronting mythical beasts and seeking divine favour.",
+  "worldIntro": {
+    "eyebrow": "Prologue: The Heroic Age of Hellas",
+    "headline": "Where Bronze Meets Myth and the Gods Watch Every Road",
+    "text": "Sunlight strikes the limestone ridges of Boeotia and the wine-dark waters of the Aegean, illuminating a world where the border between mortal history and living myth is paper-thin. Independent city-states like Thebes, Athens, and Sparta rule by spear, civic oath, and sacrifice, while the Olympian gods genuinely answer libations, judge hubris, and tilt the fate of those who dare call their names. Beyond the olive groves and temple precincts, mountain passes harbour lions, harpies, gorgons, and half-remembered monsters left over from older wars, alongside sacred shrines, bronze-smith forges, and ancient relics waiting to be claimed. You stand at the crossroads beneath Mount Cithaeron with only your wits, steel, and untested renown; whether bards sing of your arete or warn of your ruin begins with the hero you forge today.",
+    "pillars": [
+      {
+        "label": "How the World Works",
+        "detail": "Rival city-states, civic law, and living Olympian gods who reward piety and punish hubris."
+      },
+      {
+        "label": "What Exists Here",
+        "detail": "Bronze-age warriors, seers, travelling merchants, sacred shrines, alchemy, and mythic relics."
+      },
+      {
+        "label": "What Waits Beyond",
+        "detail": "Wild mountain passes, riddles of the Sphinx, sunken ruins, and beasts drawn from ancient legend."
+      }
+    ]
+  },
   "genre": "classical_mythology",
   "isDefault": true,
   "startingLocationId": "loc_cithaeron_crossroads",
