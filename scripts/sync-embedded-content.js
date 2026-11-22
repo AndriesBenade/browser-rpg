@@ -65,7 +65,7 @@ function buildFiles() {
 
 /** ASCII-only JSON (the engine's decoder maps bytes straight to characters). */
 const asciiJson = (obj) => JSON.stringify(obj).replace(/[\u0080-￿]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
-const pack = (files) => zlib.deflateRawSync(Buffer.from(asciiJson(files), 'latin1'), { level: 9 }).toString('base64');
+const pack = (files) => zlib.deflateRawSync(Buffer.from(asciiJson(files), 'latin1'), { level: 9, memLevel: 9 }).toString('base64');
 const unpack = (b64) => JSON.parse(zlib.inflateRawSync(Buffer.from(b64, 'base64')).toString('latin1'));
 
 function locate(html) {

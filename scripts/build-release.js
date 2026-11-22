@@ -71,6 +71,13 @@ function copyContent(dir, rel = 'content') {
       fs.mkdirSync(path.join(dir, rel), { recursive: true });
       fs.writeFileSync(path.join(dir, r), min);
       before += raw.length; after += min.length; count++;
+    } else if (entry.name.endsWith('.svg')) {
+      const raw = fs.readFileSync(path.join(ROOT, r));
+      const minStr = raw.toString('utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').replace(/\s{2,}/g, ' ').trim();
+      const min = Buffer.from(minStr, 'utf8');
+      fs.mkdirSync(path.join(dir, rel), { recursive: true });
+      fs.writeFileSync(path.join(dir, r), min);
+      before += raw.length; after += min.length; count++;
     }
   }
   return { before, after, count };
@@ -90,11 +97,19 @@ function main() {
   console.log(`  content/   : ${content.count} JSON files, ${kb(content.before)} -> ${kb(content.after)}`);
 
   if (process.argv.includes('--check')) {
-    // Run the behaviour and Dev campaign suites against the built engine (the harness reads ENGINE_HTML).
+    // Run campaign & systems suites against the built engine (the harness reads ENGINE_HTML).
     const { spawnSync } = require('child_process');
-    for (const suite of ['tests/behaviour_tests.js', 'tests/dev_campaign_tests.js']) {
+    const suites = [
+      'tests/behaviour_tests.js',
+      'tests/dev_campaign_tests.js',
+      'tests/northern_realms_tests.js',
+      'tests/phase2_systems_tests.js',
+      'tests/global_magic_morality_tests.js',
+      'tests/ashen_ledger_tests.js'
+    ];
+    for (const suite of suites) {
       const r = spawnSync(process.execPath, [path.join(ROOT, suite)], { cwd: ROOT, env: Object.assign({}, process.env, { ENGINE_HTML: 'dist/index.html' }), encoding: 'utf8' });
-      const summary = ((r.stdout || '').match(/SUMMARY: .*/) || ['no summary'])[0];
+      const summary = ((r.stdout || '').match(/(SUMMARY|RESULTS|ALL .* PASSED):? .*/) || ['ok'])[0];
       console.log(`  check      : ${suite} on dist/index.html -> ${summary}`);
       if (r.status !== 0) { process.stdout.write(r.stdout || ''); process.stderr.write(r.stderr || ''); process.exit(1); }
     }
