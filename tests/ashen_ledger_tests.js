@@ -642,6 +642,62 @@ async function bootAshenLedger(opts = {}) {
     engine.rollD20 = origRoll;
   });
 
+  // 11. Regression Guard: Non-arrival objectives with map-pin locationId never auto-check on travel,
+  //     explicit completeOnArrive objectives still work, and legacy saves self-heal falsely checked objectives.
+  await test('Ashen Ledger 11: Map-pin locationId never auto-checks combat/fetch/turn-in objectives on travel & existing saves self-heal cleanly', async () => {
+    const { engine } = await bootAshenLedger();
+
+    // Start the 3 side quests shown in player bug report
+    engine.openDialogue('dlg_al_captain_voss', 'start_viaduct');
+    engine.openDialogue('dlg_al_astronomer_vael', 'start_charts');
+    engine.openDialogue('dlg_al_ferryman_corvus', 'start_oar');
+
+    // Simulate walking through every location referenced by those quests' objectives
+    ['loc_al_rusted_viaduct', 'loc_al_lantern_wall_gate', 'loc_al_salt_observatory', 'loc_al_glass_conservatory', 'loc_al_drowned_piers', 'loc_al_ferry_quay'].forEach(locId => {
+      engine.completeArrivalObjectives(locId);
+    });
+
+    const qV = engine.state.worldState.quests['quest_al_side_warden_beacon'];
+    const qS = engine.state.worldState.quests['quest_al_side_observatory_charts'];
+    const qO = engine.state.worldState.quests['quest_al_side_missing_oar'];
+
+    assert.strictEqual(qV.objectives.obj_defend_viaduct.completed, false, 'Walking onto Rusted Viaduct must NOT auto-check combat objective');
+    assert.strictEqual(qV.objectives.obj_report_voss.completed, false, 'Walking to Lantern-Wall Bastion must NOT auto-check turn-in objective');
+    assert.strictEqual(qS.objectives.obj_recover_star_chart.completed, false, 'Walking into Salt-Observatory must NOT auto-check fetch objective');
+    assert.strictEqual(qS.objectives.obj_return_star_chart.completed, false, 'Walking into Glass Conservatory must NOT auto-check delivery objective');
+    assert.strictEqual(qO.objectives.obj_clear_piers.completed, false, 'Walking onto Drowned Piers must NOT auto-check ambush objective');
+    assert.strictEqual(qO.objectives.obj_resolve_oar.completed, false, 'Walking onto Ferry Quay must NOT auto-check Corvus turn-in objective');
+
+    // Now simulate a legacy save where ALL 6 objectives were falsely checked off by the old bug,
+    // while ONLY the viaduct raid was actually defeated (al_viaduct_beacons_defended: true)
+    engine.state.worldState.flags.al_viaduct_beacons_defended = true;
+    [qV, qS, qO].forEach(q => {
+      Object.values(q.objectives).forEach(o => { o.completed = true; });
+    });
+    const repaired = engine.reconcileActiveQuestObjectives();
+    assert.strictEqual(repaired, 5, 'Should repair exactly the 5 falsely checked objectives while keeping the genuinely defeated viaduct raid');
+    assert.strictEqual(qV.objectives.obj_defend_viaduct.completed, true, 'Truly defeated viaduct raid remains checked');
+    assert.strictEqual(qV.objectives.obj_report_voss.completed, false, 'Uncompleted Voss turn-in resets to incomplete');
+    assert.strictEqual(qS.objectives.obj_recover_star_chart.completed, false, 'Unpicked star-chart resets to incomplete');
+    assert.strictEqual(qS.objectives.obj_return_star_chart.completed, false, 'Uncompleted Vael delivery resets to incomplete');
+    assert.strictEqual(qO.objectives.obj_clear_piers.completed, false, 'Undefeated pier ambush resets to incomplete');
+    assert.strictEqual(qO.objectives.obj_resolve_oar.completed, false, 'Uncompleted Corvus turn-in resets to incomplete');
+
+    // Genuine turn-in still completes cleanly and marks all objectives done
+    engine.openDialogue('dlg_al_captain_voss', 'finish_viaduct');
+    assert.strictEqual(qV.completed, true, 'Talking to Captain Voss after clearing raid completes the quest');
+    assert.strictEqual(qV.objectives.obj_report_voss.completed, true, 'Turn-in objective marks complete on quest completion');
+
+    // Verify genuine completeOnArrive: true objectives (Dev Test Gull Rock) STILL auto-complete on arrival
+    const envDev = createSandbox();
+    const eDev = await bootEngine(envDev);
+    await startCampaign(envDev, eDev, 'campaign_dev_test');
+    eDev.startQuest('quest_dev_lantern');
+    eDev.setQuestStage('quest_dev_lantern', 'reach_rock');
+    eDev.completeArrivalObjectives('loc_dev_gull_rock');
+    assert.strictEqual(eDev.state.worldState.quests['quest_dev_lantern'].objectives.obj_arrive_rock.completed, true, 'Explicit completeOnArrive: true objective still completes on arrival');
+  });
+
   console.log('\n=================================================================');
   const passed = results.filter(r => r.ok).length;
   console.log(`ASHEN LEDGER RESULTS: ${passed} / ${results.length} PASSED`);

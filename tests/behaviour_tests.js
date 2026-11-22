@@ -3013,7 +3013,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.strictEqual(env.el('rest-modal').style.display, 'flex', 'rest modal opens cleanly');
   });
 
-  await test('Inventory Layout & Card Structure Guard: non-collapsing grid rows, long names, rarity badges, all 6 filters & paper doll empty/equipped states', async () => {
+  await test('Inventory Layout & Card Structure Guard: non-collapsing grid rows, long names, rarity badges, all 7 filters (incl. Rings & Jewelry, Consumables, Tools & Materials) & paper doll states', async () => {
     const htmlSource = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
     const styleBlock = htmlSource.slice(htmlSource.indexOf('<style>'), htmlSource.indexOf('</style>'));
 
@@ -3023,6 +3023,9 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(/\.item-card-body\s*\{[^}]*flex:\s*1\s+0\s+auto/s.test(styleBlock), '.item-card-body uses flex: 1 0 auto (never flex-basis: 0%)');
     assert.ok(/\.equip-slot\s*\{[^}]*flex:\s*0\s+0\s+auto/s.test(styleBlock), '.equip-slot uses flex: 0 0 auto so slots never squash vertically');
     assert.ok(!/\.equipment-paper-doll\s*\{\s*display:\s*none\s*!important/s.test(styleBlock), 'obsolete display:none paper doll rule is removed');
+    assert.ok(htmlSource.includes('data-filter="jewelry"'), 'inventory filter bar includes Rings & Jewelry tab');
+    assert.ok(htmlSource.includes('data-filter="crafting"'), 'inventory filter bar includes Tools & Materials tab');
+    assert.ok(htmlSource.includes('data-filter="consumable"'), 'inventory filter bar includes Consumables tab');
 
     const env = createSandbox();
     const engine = await bootEngine(env);
@@ -3032,6 +3035,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     const longItems = [
       { id: 'it_long_cloak', name: 'Superior White Wolf Winter Pelt Mantle of the Frostmarch', category: 'armor', slot: 'back', rarity: 'uncommon', weightKg: 2.4, stats: { armorBonus: 2 } },
       { id: 'it_long_blade', name: 'Dwarven Tension-Reinforced Star-Iron Frostblade', category: 'weapon', slot: 'main_hand', rarity: 'rare', weightKg: 3.1, stats: { damageMin: 5, damageMax: 11 } },
+      { id: 'it_long_ring', name: 'Runebound Silver Signet of the Frost-Hearth', category: 'accessory', slot: 'ring_1', rarity: 'rare', weightKg: 0.1, stats: { wisdom: 1 } },
+      { id: 'it_long_amulet', name: 'Amber Pendant of the Northern Star', category: 'accessory', slot: 'neck', type: 'jewelry', rarity: 'epic', weightKg: 0.2, stats: { charisma: 1 } },
       { id: 'it_long_elixir', name: 'Valenfrost Spiced Hearthfire Restorative Elixir', category: 'consumable', slot: 'inventory', rarity: 'epic', weightKg: 0.4, stats: { restoreHealth: 14, restoreStamina: 6 } },
       { id: 'it_long_relic', name: 'Consecrated Star-Key Signet of High King Valen', category: 'relic', slot: 'inventory', rarity: 'legendary', weightKg: 0.2 },
       { id: 'it_long_tool', name: 'Master Alchemist Portable Copper Distillation Kit', category: 'tool', slot: 'inventory', rarity: 'common', weightKg: 2.0 }
@@ -3039,6 +3044,10 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     longItems.forEach(it => engine.world.items.push(it));
     engine.buildContentMaps();
     longItems.forEach(it => engine.addItem(it.id, 1));
+    // Also add a real campaign material from materials.json (whose category is e.g. 'metal' or 'herb', not 'material')
+    const sampleMat = engine.getCampaignMaterials()[0];
+    assert.ok(sampleMat && sampleMat.id, 'campaign provides crafting materials');
+    engine.addItem(sampleMat.id, 2);
     engine.equipItem('it_long_cloak', { targetSlot: 'back' });
     engine.equipItem('it_long_blade', { targetSlot: 'main_hand' });
 
@@ -3050,18 +3059,25 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(allHtml.includes('Superior White Wolf Winter Pelt Mantle of the Frostmarch'), 'renders long item names cleanly');
     assert.ok(allHtml.includes('rarity-frame-uncommon') && allHtml.includes('rarity-frame-rare') && allHtml.includes('rarity-frame-epic') && allHtml.includes('rarity-frame-legendary'), 'preserves all rarity frames');
 
-    // Verify all 6 category filters work accurately
-    for (const [cat, expectedName] of [
-      ['weapon', 'Dwarven Tension-Reinforced Star-Iron Frostblade'],
-      ['armor', 'Superior White Wolf Winter Pelt Mantle of the Frostmarch'],
-      ['consumable', 'Valenfrost Spiced Hearthfire Restorative Elixir'],
-      ['relic', 'Consecrated Star-Key Signet of High King Valen'],
-      ['crafting', 'Master Alchemist Portable Copper Distillation Kit'],
+    // Verify all 7 category filters work accurately
+    for (const [cat, expectedNames] of [
+      ['weapon', ['Dwarven Tension-Reinforced Star-Iron Frostblade']],
+      ['armor', ['Superior White Wolf Winter Pelt Mantle of the Frostmarch']],
+      ['jewelry', ['Runebound Silver Signet of the Frost-Hearth', 'Amber Pendant of the Northern Star']],
+      ['consumable', ['Valenfrost Spiced Hearthfire Restorative Elixir']],
+      ['crafting', ['Master Alchemist Portable Copper Distillation Kit', sampleMat.name]],
+      ['relic', ['Consecrated Star-Key Signet of High King Valen']],
     ]) {
       engine.setInventoryFilter(cat);
       const filtered = String(env.el('inventory-items-container').innerHTML);
-      assert.ok(filtered.includes(expectedName), `category filter '${cat}' displays matching item`);
+      expectedNames.forEach(expectedName => {
+        assert.ok(filtered.includes(expectedName), `category filter '${cat}' displays matching item '${expectedName}'`);
+      });
     }
+    // Non-equippable relic must NOT appear under equippable Rings & Jewelry filter
+    engine.setInventoryFilter('jewelry');
+    const jewelryHtml = String(env.el('inventory-items-container').innerHTML);
+    assert.ok(!jewelryHtml.includes('Consecrated Star-Key Signet of High King Valen'), 'non-equippable inventory relic excluded from Rings & Jewelry');
     engine.setInventoryFilter('all');
 
     // Verify equipped vs empty paper doll slot state & data integrity

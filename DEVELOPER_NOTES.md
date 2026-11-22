@@ -8,6 +8,29 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 41 - 2026-11-22 (Dedicated Inventory Categories: Rings & Jewelry, Consumables & Tools & Materials)
+* **Collaborator / Model**: User & Antigravity
+* **Inventory Category Filter Overhaul (`index.html`)**:
+  * Added a dedicated **Rings & Jewelry** (`data-filter="jewelry"`) filter tab in `#inv-category-filters`, alongside **Consumables** (`data-filter="consumable"`), **Tools & Materials** (`data-filter="crafting"`), **Weapons**, **Armor & Shields**, **Relics & Quest**, and **All**.
+  * Added `isEquippableJewelry()`, `isCraftingMaterial()`, `isConsumableItem()`, and `matchesInventoryFilter()` helpers:
+    * **Rings & Jewelry**: Displays all equippable rings (`ring`, `ring_1`, `ring_2`), neck pieces (`neck`), accessories (`accessory`), and jewelry/accessory items (including crafted rings/amulets and equippable charms/talismans) while excluding non-equippable inventory relics.
+    * **Tools & Materials**: Fixed a bug where campaign `materials.json` items (whose `category` is a material subtype such as `metal`, `resin`, `crystal`, `herb`, `wood`, `leather`, etc.) failed `itemData.category === "material"` and disappeared from the crafting filter. All tools, toolkits, and crafting materials across all campaigns now appear cleanly together with clear `MATERIAL (<SUBTYPE>)` card tags.
+    * **Consumables**: Covers all `consumable` items, rations, and healing/stamina restoratives cleanly.
+    * Also ensured `Armor & Shields` includes `category: "boots"` (`type: "armor"`) and `Relics & Quest` includes `key`, `document`, and `treasure` items, with friendly category names in empty-state messages.
+* **Verification**:
+  * Expanded the Inventory Layout & Card Structure Guard in `tests/behaviour_tests.js` to verify all 7 filters (`all`, `weapon`, `armor`, `jewelry`, `consumable`, `crafting` with real `materials.json` items + tools, and `relic`), non-equippable relic exclusion from `jewelry`, and full `npm test` pass across all 8 suites.
+
+### Session 40 - 2026-11-22 (Fix Premature Arrival Auto-Check on Quest Objectives & Existing-Save Self-Healing)
+* **Collaborator / Model**: User & Antigravity
+* **Root Cause Identified**:
+  * `completeArrivalObjectives(locationId)` previously marked ANY active quest objective with a matching `locationId` as `completed: true` upon travelling there. Across *The Ashen Ledger* and *The Northern Realms*, `locationId` is authored on combat, fetch, crafting, and NPC turn-in objectives as a World Map `!` pin and difficulty target, causing walking through those locations to check off every objective (`✓`) before the encounter, item pickup, or NPC turn-in actually occurred - leaving active quests looking "100% checked off" while still unfinished.
+* **Fix (`index.html`, `content/adventures/tutorial.json`, `content/campaigns/dev_test_campaign/world/quests.json`)**:
+  * Separated map-pin `locationId` from travel-arrival completion by requiring explicit `"completeOnArrive": true` on genuine arrival objectives (`obj_reach_fissure`, `obj_arrive_rock`, `obj_bring_pip_home`), preserved inside `buildStageObjectives()` and enforced in `completeArrivalObjectives()`.
+  * Added `reconcileActiveQuestObjectives()` invoked on `init()` auto-resume and `applyLoadedState()` load/import so existing player saves automatically self-heal: genuinely completed sub-objectives stay checked (`✓`), while uncompleted turn-in steps and unmet event-gated combat/fetch objectives reset cleanly to `○` (`completed: false`).
+  * Re-synced offline `EMBEDDED_CONTENT` (`99` files).
+* **Verification**:
+  * Added Test 11 in `tests/ashen_ledger_tests.js` verifying non-arrival objectives never auto-check on travel, `completeOnArrive: true` objectives still work, and existing saves reconcile cleanly. Full `npm test` passes across all 8 suites + `sync-embedded-content.js --check`.
+
 ### Session 39 - 2026-11-22 (Repository Organization, Asset Compression & Git Storage Optimization)
 * **Collaborator / Model**: User & Antigravity
 * **Folder Organization & Junk Cleanup**:
