@@ -273,18 +273,103 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     engine.resetMapView();
     assert.strictEqual(engine.mapView.zoom, 1.0, 'resetMapView restores 100% zoom');
 
-    // Label readability check: current location label always visible, zoomed-in shows >= zoomed-out labels
+    // Label readability & dynamic zoom-resizing check: font-size, pill width & marker radius adapt cleanly on zoom
     engine.zoomMap(0.55);
     const visibleOut = (engine._mapLabelEntries || []).filter(e => e.labelVisible).length;
     const curEntry = (engine._mapLabelEntries || []).find(e => e.isCurrent);
     assert.ok(curEntry && curEntry.labelVisible, 'current location label is always visible even when zoomed out');
+    const fontOut = Number(curEntry.labelEl.getAttribute('font-size'));
+    const styleFontOut = parseFloat(curEntry.labelEl.style.fontSize);
+    const bgWOut = Number(curEntry.bgEl.getAttribute('width'));
+    const radiusOut = Number(curEntry.circle.getAttribute('r'));
+    assert.ok(fontOut > 0 && Math.abs(fontOut - styleFontOut) < 0.01, 'inline style.fontSize matches font-size attribute so CSS cannot lock label size');
 
     engine.zoomMap(4.0);
     const visibleIn = (engine._mapLabelEntries || []).filter(e => e.labelVisible).length;
     assert.ok(visibleIn >= visibleOut, `zooming in reveals more or equal labels (${visibleIn} >= ${visibleOut})`);
+    const fontIn = Number(curEntry.labelEl.getAttribute('font-size'));
+    const styleFontIn = parseFloat(curEntry.labelEl.style.fontSize);
+    const bgWIn = Number(curEntry.bgEl.getAttribute('width'));
+    const radiusIn = Number(curEntry.circle.getAttribute('r'));
+    assert.ok(fontIn > 0 && fontIn < fontOut, `label SVG font-size scales down smoothly on zoom-in (${fontIn} < ${fontOut}) so on-screen text stays crisp`);
+    assert.ok(Math.abs(fontIn - styleFontIn) < 0.01, 'inline style.fontSize stays synchronized with font-size attribute when zoomed in');
+    assert.ok(bgWIn < bgWOut, `label pill background shrinks proportionally with resized text (${bgWIn} < ${bgWOut})`);
+    assert.ok(radiusIn < radiusOut, `node circle radius scales proportionally with zoom (${radiusIn} < ${radiusOut})`);
 
     const zoomBadge = env.el('map-zoom-label');
     assert.ok(zoomBadge && zoomBadge.textContent.includes('%'), 'zoom badge displays live percentage');
+  });
+
+  // ---------------------------------------------------------------------------
+  // 4b. Part 5b: Unique Campaign Map Artwork (Offline Embedded SVGs & Coordinate Alignment)
+  // ---------------------------------------------------------------------------
+  await test('Part 5b Unique Campaign Map Artwork: every built-in campaign renders distinct drawn SVG artwork aligned to locations with URL sanitization', async () => {
+    const campaignIds = [
+      'campaign_greek_mythology',
+      'campaign_dev_test',
+      'campaign_northern_realms',
+      'campaign_ashen_ledger'
+    ];
+    const seenSrcs = new Set();
+    const seenHrefs = new Set();
+
+    for (const cid of campaignIds) {
+      const { env, engine } = await bootCampaign(cid);
+      const cfg = engine.getCampaignMapImageConfig();
+      assert.ok(cfg && cfg.src, `${cid} defines mapImage.src`);
+      assert.ok(!seenSrcs.has(cfg.src), `${cid} mapImage.src is unique (${cfg.src})`);
+      seenSrcs.add(cfg.src);
+
+      const href = engine.resolveCampaignMapImageHref(cfg.src);
+      assert.ok(href.startsWith('data:image/svg+xml;base64,'), `${cid} resolves embedded SVG data URI for offline file:// playback`);
+      assert.ok(!seenHrefs.has(href), `${cid} resolved SVG artwork payload is distinct`);
+      seenHrefs.add(href);
+
+      const svgText = Buffer.from(href.slice('data:image/svg+xml;base64,'.length), 'base64').toString('utf8');
+      assert.ok(svgText.includes('<svg') && svgText.includes('</svg>'), `${cid} embedded artwork decodes to valid SVG markup`);
+      assert.ok(!svgText.includes('\u2014'), `${cid} map SVG contains zero forbidden em dashes`);
+
+      // Verify all campaign locations sit inside the drawn artwork rectangle
+      const locs = (engine.world && engine.world.locations) || [];
+      assert.ok(locs.length > 0, `${cid} has locations loaded`);
+      locs.forEach(loc => {
+        const { x, y } = loc.coordinates || {};
+        assert.ok(
+          Number.isFinite(x) && Number.isFinite(y) &&
+          x >= cfg.x && x <= cfg.x + cfg.width &&
+          y >= cfg.y && y <= cfg.y + cfg.height,
+          `${cid} location '${loc.id}' (${x},${y}) sits inside mapImage bounds (${cfg.x}..${cfg.x + cfg.width}, ${cfg.y}..${cfg.y + cfg.height})`
+        );
+      });
+
+      // Render map and verify <image id="map-bg-image"> is attached with matching dimensions
+      engine.renderMap();
+      const artLayer = env.el('svg-map-artwork-layer');
+      const imgEl = artLayer.children.filter(c => c.tagName === 'IMAGE').pop();
+      assert.ok(imgEl, `${cid} renders <image> inside #svg-map-artwork-layer`);
+      assert.strictEqual(imgEl.getAttribute('id'), 'map-bg-image', `${cid} artwork element id is map-bg-image`);
+      assert.strictEqual(imgEl.getAttribute('href'), href, `${cid} artwork href matches embedded data URI`);
+      assert.strictEqual(Number(imgEl.getAttribute('width')), cfg.width, `${cid} artwork width matches manifest`);
+      assert.strictEqual(Number(imgEl.getAttribute('height')), cfg.height, `${cid} artwork height matches manifest`);
+
+      const bounds = engine.computeMapBounds();
+      assert.strictEqual(bounds.w, cfg.width, `${cid} computeMapBounds matches artwork width`);
+      assert.strictEqual(bounds.h, cfg.height, `${cid} computeMapBounds matches artwork height`);
+
+      // Validator accepts valid mapImage cleanly
+      const valRes = env.Engine.validateCampaign(engine.activeCampaign, {
+        locations: engine.world.locations,
+        items: engine.world.items
+      });
+      assert.ok(!valRes.errors.some(e => /mapImage/i.test(e)), `${cid} passes mapImage validation with 0 errors`);
+    }
+
+    // Security & edge cases: reject unsafe URL schemes in config, resolver, and validator
+    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    assert.strictEqual(engine.getCampaignMapImageConfig({ mapImage: { src: 'javascript:alert(1)' } }), null, 'unsafe javascript: mapImage rejected');
+    assert.strictEqual(engine.resolveCampaignMapImageHref('data:text/html,<script>alert(1)</script>'), '', 'unsafe data:text/html mapImage rejected');
+    const badVal = env.Engine.validateCampaign({ id: 'bad_map', name: 'Bad Map', mapImage: { src: 'javascript:alert(1)' } }, {});
+    assert.ok(badVal.errors.some(e => /unsafe URL scheme/i.test(e)), 'validator flags unsafe mapImage URL scheme as error');
   });
 
   // ---------------------------------------------------------------------------

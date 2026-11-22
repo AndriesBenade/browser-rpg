@@ -407,5 +407,13 @@
       "title": "Arrival at Vesper-Threshold",
       "summary": "Speak with Oar-Keeper Corvus on the Weir-Port Ferry Quay, report to Clerk Maren at the Customs Hall, visit Master Orla at Crucible Wharf for artisan crafting, and open your Character Grimoire to unlock global and dark-fantasy spells with Arcane Knowledge Points."
     }
-  ]
+  ],
+  "mapImage": {
+    "src": "content/campaigns/ashen_ledger/map.svg",
+    "x": 0,
+    "y": 0,
+    "width": 1440,
+    "height": 860,
+    "opacity": 0.94
+  }
 }

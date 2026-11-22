@@ -330,5 +330,13 @@
       "title": "Arrival at Valenfrost",
       "summary": "Speak with Captain Tor at the Gates, seek Jarl Sigurd in the High Mead-Hall, experiment with concealed material crafting at Bjorn's forge, and grow your Mythology & Lore and Intelligence to expand your combat spellcasting."
     }
-  ]
+  ],
+  "mapImage": {
+    "src": "content/campaigns/northern_realms/map.svg",
+    "x": 0,
+    "y": 0,
+    "width": 700,
+    "height": 660,
+    "opacity": 0.94
+  }
 }

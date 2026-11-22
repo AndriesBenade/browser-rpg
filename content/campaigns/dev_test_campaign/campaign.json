@@ -478,5 +478,13 @@
     "lockpickingEnabled": true,
     "randomEncountersEnabled": true,
     "livingWorldSimulation": true
+  },
+  "mapImage": {
+    "src": "content/campaigns/dev_test_campaign/map.svg",
+    "x": 0,
+    "y": 0,
+    "width": 680,
+    "height": 560,
+    "opacity": 0.94
   }
 }

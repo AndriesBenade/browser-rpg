@@ -8,6 +8,34 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 37 - 2026-11-22 (Zoom-Responsive World Map Typography, Exact-Fit Pills & Proportional Markers)
+* **Collaborator / Model**: User & Antigravity
+* **Root Cause & Fix (`index.html`)**:
+  * Removed the hardcoded `font-size: 12px` rule from `.map-node-label`, which previously had higher CSS specificity than SVG `font-size` presentation attributes and prevented map text from resizing during zoom while background pills resized around it.
+  * Upgraded `updateMapLabelVisibility()` to compute actual rendered SVG user-units per screen pixel (`svg.getBoundingClientRect()` with clean headless fallback) and dynamically scale label `font-size` (both SVG attribute and inline `style.fontSize`), exact-fit pill backgrounds (`getComputedTextLength()`), horizontal map-edge clamping, node marker radii/strokes, `?` rumour glyphs, and `!` quest pips across all zoom levels (`55%` to `350%`).
+  * Added `vector-effect: non-scaling-stroke` to `.map-edge` / `.map-edge.connected-active`, a debounced `window` `resize` listener in `setupMapInteractions()`, and a post-layout `requestAnimationFrame` pass in `renderMap()`.
+* **Verification**:
+  * Expanded `Part 5` in `tests/phase2_systems_tests.js` to assert zoom-responsive `font-size` / `style.fontSize`, pill width, and marker radius scaling.
+  * Visually verified in a live browser at `55%`, `100%`, `219%`, and `273%` zoom (`0` console errors, exact pill fit, zero text overflow or left-edge clipping) and confirmed full `npm test` passes.
+
+### Session 36 - 2026-11-22 (Unique Simplified Drawn World Map Artwork for Every Campaign)
+* **Collaborator / Model**: User & Antigravity
+* **Per-Campaign Simplified Drawn SVG World Maps (`content/campaigns/*/map.svg` & `campaign.json`)**:
+  * Designed and wired a unique, simplified cartographic SVG map image for every built-in campaign, geographically aligned to each campaign's exact location coordinates:
+    * **Hellas: Mythos of the Heroic Age** (`content/campaigns/greek_mythology/map.svg`, `720x690`): Mount Parnassus & Phocis NW, Lake Copais reeds, Boeotia/Thebes/Cithaeron, Gulf of Corinth & Aegean Sea, Isthmus, Peloponnese Argolis/Lerna/Epidaurus/Arcadia/Cape Taenarum, and classical compass rose.
+    * **Lanternfall: The Brindle Ford Trials** (`content/campaigns/dev_test_campaign/map.svg`, `680x560`): Western Old Moss & Sunken Chapel arch, winding Brindle Brook through Willowmere & Brindle Ford to Saltreed Cove's sandy beach, Thornback Ridge peaks NE, and Gull Rock Lighthouse headland with light rays SE.
+    * **The Northern Realms** (`content/campaigns/northern_realms/map.svg`, `700x660`): Frostpeak Glaciers, Mount Wyrmfang & Frostmere Spire north, Grimstone Crags & Blackforge glow NW, central Valenfrost Keep plateau, Mistglen Fens river delta SW, and Whispering Woods Nordic pines & Barrow Stones SE.
+    * **The Ashen Ledger: Frontier of the Toll** (`content/campaigns/ashen_ledger/map.svg`, `1440x860`): Mist-Weir River & timber docks far west, Gilded Terraces escarpment north, Chancery Brass-Works & Under-Sluice canal center, terraced Ash-Fields & Quarry pits + glowing Amber-Vein fissures south, Rusted Viaduct & monumental vertical Lantern-Wall (`x=800`) with teal watch-beacons, Pale Reach cracked salt-flats & Shattered Glass Steppe east, Whispering Mire SE, Ossuary Bastions & Marrow-Stone Bridge chasm, and glowing First Seal Sanctum protruding into the Threshold Abyss.
+  * Configured `"mapImage": { "src", "x", "y", "width", "height", "opacity" }` in all four `campaign.json` manifests (the engine also supports shorthand string paths and `.png`/`.jpg`/`.webp` images for custom campaigns).
+* **Engine Map Artwork Rendering, Offline Embedding & Responsive Layout (`index.html`, `scripts/sync-embedded-content.js`)**:
+  * Added `<g id="svg-map-artwork-layer"></g>` inside `#world-map-svg`, `getCampaignMapImageConfig()`, and `resolveCampaignMapImageHref()` with strict URL sanitization (`javascript:`/`vbscript:`/`data:text/html` rejected) and offline `data:image/*` lookup via `getEmbeddedFile()`.
+  * Updated `computeMapBounds()` and `renderMap()` so each campaign's drawn map frames cleanly inside the SVG viewport, hides legacy hardcoded Greek map paths/labels and duplicate inner frame borders when `mapImage` is active, and improves road/node contrast over drawn terrain.
+  * Updated `.map-container`, `.map-header-bar`, and `.map-canvas-wrapper` to use active campaign CSS theme variables and a spacious minimum height (`min-height: 490px`) so wide maps remain large and crisp even on shorter browser viewports.
+  * Extended `validateCampaign()` to check `manifest.mapImage` and updated `scripts/sync-embedded-content.js` to pack each built-in campaign's `mapImage` as a base64 data URI inside `EMBEDDED_CONTENT` (99 embedded files total) for seamless offline `file://` play.
+* **Verification**:
+  * Added automated test `Part 5b` in `tests/phase2_systems_tests.js` verifying unique `mapImage.src`, valid offline SVG data URIs, 100% location coordinate containment across all 4 built-in campaigns, SVG `<image id="map-bg-image">` rendering, and unsafe URL sanitization.
+  * Visually verified all 4 rendered campaign maps in a live browser (`0` console errors, full zoom/pan/reset tested, spacious full-width map canvas confirmed via screenshots).
+
 ### Session 35 - 2026-11-22 (Campaign-Themed Dropdowns, Level-First Combat Loot Scaling & Complete 23-Quest *Ashen Ledger* Hardening)
 * **Collaborator / Model**: User & Antigravity
 * **Campaign-Themed Dropdown Menus (`index.html`)**:

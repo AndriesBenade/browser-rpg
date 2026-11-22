@@ -37,7 +37,14 @@
     "origins": "content/campaigns/greek_mythology/origins.json",
     "traits": "content/campaigns/greek_mythology/traits.json"
   },
-  "law": { "guardFactions": ["faction_theban_guard"], "fineBase": 30, "finePerOffence": 20, "jailHours": 24 },
+  "law": {
+    "guardFactions": [
+      "faction_theban_guard"
+    ],
+    "fineBase": 30,
+    "finePerOffence": 20,
+    "jailHours": 24
+  },
   "activityDurations": {
     "travel": "connection",
     "combat": 15,
@@ -158,5 +165,13 @@
     "lockpickingEnabled": true,
     "randomEncountersEnabled": true,
     "livingWorldSimulation": true
+  },
+  "mapImage": {
+    "src": "content/campaigns/greek_mythology/map.svg",
+    "x": 0,
+    "y": 0,
+    "width": 720,
+    "height": 690,
+    "opacity": 0.94
   }
 }

@@ -27,7 +27,15 @@ const MANIFESTS = [
 const MARK = '// @embedded-content';
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 
-/** { path: json } for every file the built-in campaigns use. */
+const MAP_IMAGE_MIMES = {
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp'
+};
+
+/** { path: json } for every file the built-in campaigns use (including map artwork). */
 function buildFiles() {
   const files = {};
   for (const manifestPath of MANIFESTS) {
@@ -39,6 +47,17 @@ function buildFiles() {
         if (!fs.existsSync(path.join(ROOT, rel))) throw new Error(`${manifestPath} lists a module that does not exist: ${rel}`);
         files[rel] = readJson(rel);
       });
+    }
+    const mapSrc = typeof manifest.mapImage === 'string'
+      ? manifest.mapImage
+      : (manifest.mapImage && typeof manifest.mapImage.src === 'string' ? manifest.mapImage.src : null);
+    if (mapSrc && !/^https?:|^data:/i.test(mapSrc)) {
+      const absMap = path.join(ROOT, mapSrc);
+      if (!fs.existsSync(absMap)) throw new Error(`${manifestPath} references a mapImage that does not exist: ${mapSrc}`);
+      const ext = path.extname(mapSrc).toLowerCase();
+      const mime = MAP_IMAGE_MIMES[ext] || 'image/svg+xml';
+      const b64 = fs.readFileSync(absMap).toString('base64');
+      files[mapSrc] = { dataUri: `data:${mime};base64,${b64}` };
     }
   }
   return files;
@@ -67,7 +86,8 @@ function readEmbedded(html = fs.readFileSync(HTML, 'utf8')) {
 
 function build(html, files = buildFiles()) {
   const { lineStart, lineEnd } = locate(html);
-  return html.slice(0, lineStart) + `        return "${pack(files)}";` + html.slice(lineEnd);
+  const cr = html[lineEnd - 1] === '\r' ? '\r' : '';
+  return html.slice(0, lineStart) + `        return "${pack(files)}";` + cr + html.slice(lineEnd);
 }
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
