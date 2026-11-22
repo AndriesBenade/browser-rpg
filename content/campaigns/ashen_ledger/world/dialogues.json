@@ -528,6 +528,18 @@
               "target": "finish_arc2"
             },
             {
+              "label": "Show Magistrate Lyra all three recovered fragments of the First Seal.",
+              "condition": {
+                "questActive": "quest_al_main_03_frontier_keys",
+                "flagsAll": [
+                  "al_got_frag_passage",
+                  "al_got_frag_memory",
+                  "al_got_frag_quiet"
+                ]
+              },
+              "target": "finish_arc3_backup"
+            },
+            {
               "label": "Present the Pre-Chancery River Charter from the Drowned Piers.",
               "condition": {
                 "questActive": "quest_al_hidden_01_drowned_charter",
@@ -562,6 +574,17 @@
           "choices": [
             {
               "label": "Use it wisely, Magistrate.",
+              "target": "exit"
+            }
+          ]
+        },
+        "finish_arc3_backup": {
+          "text": "\"All three silver arcs of the First Seal! Take them swiftly into the Threshold Abyss and confront High Auditor Crassus in the Scale Sanctum.\"",
+          "completeQuest": "quest_al_main_03_frontier_keys",
+          "startQuest": "quest_al_main_04_first_seal",
+          "choices": [
+            {
+              "label": "I will face the First Seal.",
               "target": "exit"
             }
           ]
@@ -714,10 +737,17 @@
               "target": "start_strike"
             },
             {
-              "label": "Tell Dara the Strikebreakers are broken and the quarry shift is free.",
+              "label": "Tell Dara the Strikebreakers are broken or the Foundry flue is vented.",
               "condition": {
                 "questActive": "quest_al_side_foundry_strike",
-                "flag": "al_quarry_strikebreakers_defeated"
+                "anyOf": [
+                  {
+                    "flag": "al_quarry_strikebreakers_defeated"
+                  },
+                  {
+                    "flag": "al_vented_foundry_flue"
+                  }
+                ]
               },
               "target": "finish_strike_good"
             },

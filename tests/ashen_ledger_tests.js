@@ -80,7 +80,7 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(w.professions.length, 6, 'Must have 6 professions');
     assert.strictEqual(w.combinations.length, 12, 'Must have 12 combinations');
     assert.strictEqual(w.interactiveObjects.length, 13, 'Must have 13 interactive objects');
-    assert.strictEqual(w.events.length, 28, 'Must have 28 events');
+    assert.strictEqual(w.events.length, 42, 'Must have 42 events');
     assert.strictEqual(w.mythology.length, 19, 'Must have 19 codex lore entries');
     assert.strictEqual(w.spells.length, 10, 'Must have 10 campaign spells');
 
@@ -562,6 +562,83 @@ async function bootAshenLedger(opts = {}) {
       assert.strictEqual(res && res.success, true, `Spell cast failed: ${sp.id}`);
       engine.combatSession = null;
     }
+    engine.rollD20 = origRoll;
+  });
+
+  // 10. All 23 Quests Live Completion Chain, Early-Pickup Anti-Softlock, Level-First Combat Loot & Themed Dropdown CSS
+  await test('Ashen Ledger 10: All 23 quests complete cleanly via real triggers (incl. Arc 2->3->4 & early-pickup), level-first combat loot scaling & themed dropdowns', async () => {
+    const chooseDialogue = (eng, treeId, fromNode, targetNode) => {
+      const tree = eng.currentAdventure.dialogues[treeId];
+      const ch = (tree.nodes[fromNode].choices || []).find(c => c.target === targetNode);
+      assert.ok(ch, `Missing choice ${treeId}.${fromNode} -> ${targetNode}`);
+      if (ch.condition) assert.strictEqual(eng.checkDialogueCondition(ch.condition), true, `Condition failed: ${treeId}.${fromNode} -> ${targetNode}`);
+      eng.openDialogue(treeId, targetNode);
+    };
+
+    const { engine } = await bootAshenLedger({ classId: 'al_lantern_warden', backgroundId: 'bg_al_quarry_survivor' });
+    const p = engine.state.player;
+    ['strength', 'intelligence', 'wisdom', 'agility', 'charisma', 'endurance'].forEach(k => p.attributes[k] = 18);
+    Object.keys(p.skills).forEach(k => p.skills[k] = 6);
+    const origRoll = engine.rollD20;
+    engine.rollD20 = () => 18;
+
+    // Complete Arc 1 -> Arc 2 -> Arc 3 -> Arc 4 through real dialogue/event prerequisite chains
+    engine.openDialogue('dlg_al_ferryman_corvus', 'root');
+    engine.openDialogue('dlg_al_clerk_maren', 'root');
+    engine.openDialogue('dlg_al_archivist_solene', 'root');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_main_01_unstamped'].completed, true);
+    chooseDialogue(engine, 'dlg_al_archivist_solene', 'root', 'start_arc2');
+    engine.setWorldFlags({ al_read_secret_ledger: true, al_kiln_warden_defeated: true });
+    chooseDialogue(engine, 'dlg_al_magistrate_lyra', 'root', 'finish_arc2');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_main_02_furnace_tithe'].completed, true);
+    assert.ok(engine.state.worldState.quests['quest_al_main_03_frontier_keys'], 'Arc 3 must start immediately after Arc 2 completes on same node');
+
+    // Acquire all 3 fragments -> Arc 3 completes & launches Arc 4
+    engine.openPuzzle('puzzle_al_library_tablet'); engine.resolveRiddleChoice('solved');
+    chooseDialogue(engine, 'dlg_al_regent_malcor_envoy', 'root', 'start_truce');
+    chooseDialogue(engine, 'dlg_al_regent_malcor_envoy', 'root', 'grant_truce');
+    engine.addItem('item_al_seal_fragment_quiet', 1);
+    assert.strictEqual(engine.state.worldState.quests['quest_al_main_03_frontier_keys'].completed, true);
+    assert.ok(engine.state.worldState.quests['quest_al_main_04_first_seal'], 'Arc 4 must start immediately after Arc 3 completes');
+    engine.setWorldFlags({ al_high_auditor_defeated: true });
+    chooseDialogue(engine, 'dlg_al_silent_architect_echo', 'root', 'ending_reform');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_main_04_first_seal'].completed, true);
+
+    // Dara Foundry Strike dual-path: venting the Foundry valve completes Ashes in the Flue cleanly
+    chooseDialogue(engine, 'dlg_al_strike_leader_dara', 'root', 'start_strike');
+    engine.state.worldState.currentLocationId = 'loc_al_cinder_foundries';
+    engine.heaveObstacle('obj_al_foundry_pressure_valve');
+    chooseDialogue(engine, 'dlg_al_strike_leader_dara', 'root', 'finish_strike_good');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_side_foundry_strike'].completed, true);
+
+    // Early-pickup Arc 3 anti-softlock in fresh run
+    const { engine: e2 } = await bootAshenLedger();
+    e2.addItem('item_al_seal_fragment_passage', 1);
+    e2.addItem('item_al_seal_fragment_memory', 1);
+    e2.addItem('item_al_seal_fragment_quiet', 1);
+    e2.openDialogue('dlg_al_archivist_solene', 'root');
+    e2.openDialogue('dlg_al_archivist_solene', 'start_arc2');
+    e2.setWorldFlags({ al_read_secret_ledger: true });
+    e2.openDialogue('dlg_al_magistrate_lyra', 'finish_arc2');
+    assert.strictEqual(e2.state.worldState.quests['quest_al_main_03_frontier_keys'].completed, true, 'Early-picked fragments auto-complete Arc 3');
+    assert.ok(e2.state.worldState.quests['quest_al_main_04_first_seal'], 'Arc 4 starts after early-picked Arc 3');
+
+    // Level-first combat loot scaling: Level 2 hero in Epic gear vs Level 4 enemy keeps >= Challenging loot rank
+    e2.state.player.level = 2;
+    e2.addItem('item_al_ossuary_plate', 1); e2.equipItem('item_al_ossuary_plate');
+    e2.addItem('item_al_vowblade_mercy', 1); e2.equipItem('item_al_vowblade_mercy');
+    e2.addItem('item_al_relic_quiet_crown', 1); e2.equipItem('item_al_relic_quiet_crown');
+    const lvl4Foe = e2.getCreature('creature_al_cinder_beetle');
+    const lootGeared = e2.evaluateCombatLootScaling(lvl4Foe, e2.evaluateIndividualEnemyDifficulty(lvl4Foe));
+    assert.ok(lootGeared.rank >= 3, `Expected >= Challenging (3) loot rank for Lvl 2 Epic-geared hero vs Lvl 4 foe, got ${lootGeared.rank}`);
+    e2.state.player.level = 10;
+    const lvl1Foe = e2.getCreature('creature_al_gutter_hound');
+    assert.strictEqual(e2.evaluateCombatLootScaling(lvl1Foe, e2.evaluateIndividualEnemyDifficulty(lvl1Foe)).rank, 0, 'Over-leveled hero vs Lvl 1 foe stays Trivial (0)');
+
+    // Themed dropdown CSS check (no broken var(--bg-dark) on crafting selects)
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    assert.strictEqual(html.includes('background: var(--bg-dark)'), false, 'Crafting selects must not use undefined var(--bg-dark)');
+    assert.ok(html.includes('.classical-select option'), 'Themed select option CSS must exist');
     engine.rollD20 = origRoll;
   });
 

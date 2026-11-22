@@ -185,9 +185,6 @@
       "conditions": {
         "itemId": "item_al_seal_fragment_passage"
       },
-      "worldConditions": {
-        "questActive": "quest_al_main_03_frontier_keys"
-      },
       "outcomes": {
         "updateQuest": {
           "questId": "quest_al_main_03_frontier_keys",
@@ -204,9 +201,6 @@
       "conditions": {
         "itemId": "item_al_seal_fragment_memory"
       },
-      "worldConditions": {
-        "questActive": "quest_al_main_03_frontier_keys"
-      },
       "outcomes": {
         "updateQuest": {
           "questId": "quest_al_main_03_frontier_keys",
@@ -222,9 +216,6 @@
       "trigger": "ITEM_ACQUIRED",
       "conditions": {
         "itemId": "item_al_seal_fragment_quiet"
-      },
-      "worldConditions": {
-        "questActive": "quest_al_main_03_frontier_keys"
       },
       "outcomes": {
         "updateQuest": {
@@ -440,6 +431,233 @@
       },
       "worldConditions": {
         "questActive": "quest_al_side_observatory_charts"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_observatory_charts",
+          "objectiveId": "obj_recover_star_chart"
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc3_complete_on_start",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_main_03_frontier_keys"
+      },
+      "worldConditions": {
+        "flagsAll": [
+          "al_got_frag_passage",
+          "al_got_frag_memory",
+          "al_got_frag_quiet"
+        ]
+      },
+      "outcomes": {
+        "completeQuest": "quest_al_main_03_frontier_keys",
+        "startQuest": "quest_al_main_04_first_seal",
+        "transcript": "All three silver arcs of the First Seal resonate in your pack! The Sanctum of the First Scale awaits."
+      }
+    },
+    {
+      "id": "evt_al_arc2_sync_ledger",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_main_02_furnace_tithe"
+      },
+      "worldConditions": {
+        "flag": "al_read_secret_ledger"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_02_furnace_tithe",
+          "objectiveId": "obj_ledger_safe"
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc2_sync_krag",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_main_02_furnace_tithe"
+      },
+      "worldConditions": {
+        "flag": "al_kiln_warden_defeated"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_02_furnace_tithe",
+          "objectiveId": "obj_confront_krag"
+        }
+      }
+    },
+    {
+      "id": "evt_al_arc4_sync_crassus",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_main_04_first_seal"
+      },
+      "worldConditions": {
+        "flag": "al_high_auditor_defeated"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_main_04_first_seal",
+          "objectiveId": "obj_unseal_sanctum"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_foundry_valve_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_vented_foundry_flue"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_foundry_strike"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_foundry_strike",
+          "objectiveId": "obj_vent_flue"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_amber_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "mat_al_weeping_amber"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_glass_memory"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_glass_memory",
+          "objectiveId": "obj_gather_amber"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_amber_sync",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_side_glass_memory"
+      },
+      "worldConditions": {
+        "hasItem": "mat_al_weeping_amber"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_glass_memory",
+          "objectiveId": "obj_gather_amber"
+        }
+      }
+    },
+    {
+      "id": "evt_al_side_bell_bronze_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "mat_al_bell_bronze"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_side_bell_bronze"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_bell_bronze",
+          "objectiveId": "obj_bring_bronze_quartz"
+        }
+      }
+    },
+    {
+      "id": "evt_al_moral_foreclosure_obj",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "al_foreclosed_salt_wick"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_moral_neg_foreclosure"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_moral_neg_foreclosure",
+          "objectiveId": "obj_collect_foreclosure"
+        }
+      }
+    },
+    {
+      "id": "evt_al_moral_cinder_core_obj",
+      "trigger": "ITEM_ACQUIRED",
+      "conditions": {
+        "itemId": "item_al_condensed_ash_core"
+      },
+      "worldConditions": {
+        "questActive": "quest_al_moral_neg_cinder_crown"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_moral_neg_cinder_crown",
+          "objectiveId": "obj_deliver_ash_core"
+        }
+      }
+    },
+    {
+      "id": "evt_al_craft3_sync_fulgurite",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_craft_03_masterwork_seal"
+      },
+      "worldConditions": {
+        "hasItem": "mat_al_fulgurite_silver"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_craft_03_masterwork_seal",
+          "objectiveId": "obj_get_fulgurite"
+        }
+      }
+    },
+    {
+      "id": "evt_al_craft3_sync_bronze",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_craft_03_masterwork_seal"
+      },
+      "worldConditions": {
+        "hasItem": "mat_al_muted_bell_shard"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_craft_03_masterwork_seal",
+          "objectiveId": "obj_get_muted_bronze"
+        }
+      }
+    },
+    {
+      "id": "evt_al_muted_belfry_sync",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_side_muted_belfry"
+      },
+      "worldConditions": {
+        "flag": "al_bell_mender_defeated"
+      },
+      "outcomes": {
+        "updateQuest": {
+          "questId": "quest_al_side_muted_belfry",
+          "objectiveId": "obj_defeat_bell_mender"
+        }
+      }
+    },
+    {
+      "id": "evt_al_observatory_sync",
+      "trigger": "QUEST_STARTED",
+      "conditions": {
+        "questId": "quest_al_side_observatory_charts"
+      },
+      "worldConditions": {
+        "hasItem": "item_al_astral_star_chart"
       },
       "outcomes": {
         "updateQuest": {

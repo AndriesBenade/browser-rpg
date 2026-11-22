@@ -8,6 +8,20 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 35 - 2026-11-22 (Campaign-Themed Dropdowns, Level-First Combat Loot Scaling & Complete 23-Quest *Ashen Ledger* Hardening)
+* **Collaborator / Model**: User & Antigravity
+* **Campaign-Themed Dropdown Menus (`index.html`)**:
+  * Wired unified campaign-themed CSS for `select`, `.form-select`, `.classical-select`, and `option` / `option:checked` using `var(--bg-surface)`, `var(--bg-card)`, `var(--border-meander)`, `var(--parchment)`, `var(--bronze)`, `var(--bronze-bright)`, `var(--bronze-dark)`, `var(--theme-glow)`, and `color-scheme: dark`.
+  * Removed undefined `background: var(--bg-dark); color: #fff;` inline overrides on the Crafting material & supplementary catalyst `<select>` dropdowns so all dropdowns across Crafting, Workbench, Character Creation, and Settings dynamically match the active campaign theme.
+* **Level-First Combat Loot Calculation (`index.html`)**:
+  * Added `evaluateCombatLootScaling(enemyOrList, combatDiff)` and wired it into both Layer 1 (`resolveEntityLoot()`) and Layer 2 (`resolveEncounterCompletionLoot()`).
+  * Weights **Character Level vs. Enemy Level** as the primary driver (**75%**) and gear-inclusive combat difficulty as a secondary modifier (**25%**), so equipping high-rarity gear never collapses combat loot against level-appropriate or higher-level foes while over-leveled heroes farming low-level mobs remain capped.
+* **Full 23-Quest Scan & Quest-Chain Fixes (`index.html`, `content/campaigns/ashen_ledger/world/events.json`, `dialogues.json`)**:
+  * **Engine Root-Cause Fix (`openDialogue()` & `applyActionOutcome()`)**: Executed `completeQuest` **before** `startQuest` when both appear on the same dialogue node or event outcome, fixing a prerequisite-ordering bug that prevented sequel quests (such as Arc 2 -> Arc 3 on `dlg_al_magistrate_lyra.finish_arc2` and Arc 3 -> Arc 4 on `evt_al_arc3_complete_to_arc4`) from launching. Also marked all remaining quest objectives `completed = true` inside `completeQuest()`.
+  * **All 23 *Ashen Ledger* Quests Hardened & Simulated End-to-End**: Removed early-pickup soft-lock on Arc 3 Seal Fragments (`evt_al_arc3_*_obj` + `evt_al_arc3_complete_on_start` + backup Magistrate Lyra turn-in), added `QUEST_STARTED` objective-sync events across Arc 2, Arc 4, Side Quests, Moral Quests, and Crafting Arc (`42` total world events), and fixed *Ashes in the Flue* (`dlg_al_strike_leader_dara`) so venting the Foundry pressure wheel OR defeating the Quarry Strikebreakers both cleanly complete the quest.
+* **Verification**:
+  * Added Test 10 in [ashen_ledger_tests.js](file:///c:/Users/Liza/Documents/browser-rpg/tests/ashen_ledger_tests.js) (**10 / 10 passed**), re-synced embedded content (`npm run sync:embedded`, 95 files in sync), verified uniform CRLF in `index.html`, and confirmed full `npm test` passes **251 / 251** across all 8 test suites.
+
 ### Session 34 - 2026-11-21 (*The Ashen Ledger* Final Forensic End-to-End Interconnectedness Audit & Repairs)
 * **Collaborator / Model**: User & Antigravity
 * **Critical Interconnectedness Gaps Found & Repaired (`content/campaigns/ashen_ledger/world/`)**:
