@@ -1,0 +1,84 @@
+{
+  "loreEntries": [
+    {
+      "id": "lore_vb_the_space",
+      "title": "The Architecture of the Loop",
+      "category": "Phenomenology",
+      "summary": "A shifting geometric construct that traps consciousness within recursive loops of memory and guilt.",
+      "text": "The rooms do not conform to Euclidean geometry. A door opened to the left leads to a room that exits into the room where the journey began. Light bulbs pop loudly, extinguishing all illumination before restoring altered layouts. It is a psychological labyrinth that reflects the inner mind of its sole occupant.",
+      "significance": "Explains why hallways reset and why doors disappear when turned away from."
+    },
+    {
+      "id": "lore_vb_the_countdown",
+      "title": "The Descending Numerals",
+      "category": "Phenomenology",
+      "summary": "Roman numerals freshly daubed in blood marking the approach to final accounting.",
+      "text": "Upon the central wall of the two-door antechamber, crimson numerals tick down from IX toward zero. Each numeral corresponds to an unacknowledged atrocity: the butchering of pets, the deception of vulnerable patients, the dismemberment of bodies, and the severance of familial bonds.",
+      "significance": "The structural driver of the campaign's progression."
+    },
+    {
+      "id": "lore_vb_the_rag_history",
+      "title": "The Shroud without Substance",
+      "category": "Entities",
+      "summary": "A coarse cloth suspended in mid-air that emits toxic psychic disorientation.",
+      "text": "The entity known simply as The Rag appears as levitating coarse fabric with nobody standing beneath it. It moves without wind and exudes an aura that causes blurred vision and a sinking feeling in the feet. It represents the hollow, faceless void behind Vermin's clinical detachment.",
+      "significance": "The primary recurring paranormal threat throughout the shifting corridors."
+    },
+    {
+      "id": "lore_vb_vermin_history",
+      "title": "The Record of Vermin Black",
+      "category": "Biography",
+      "summary": "A clinical practitioner who viewed living creatures solely as toys for amusement and dissection.",
+      "text": "From early childhood, Vermin Black recognized his total inability to experience empathy or affection. He viewed animals and human beings alike as mechanical playthings. His psychiatric clinic was established not to heal, but to provide a steady influx of confused, desperate individuals who could be committed, studied, and dismantled.",
+      "significance": "Contextualizes Vermin's inner monologue and remorseless worldview."
+    },
+    {
+      "id": "lore_vb_the_clinic",
+      "title": "The Intake Clinic",
+      "category": "Institutions",
+      "summary": "A private mental facility deliberately positioned next to a transit depot to trap confused travelers.",
+      "text": "The clinic's signage was intentionally mounted in an ambiguous fashion adjacent to a local transport service. When travelers entered seeking to file complaints about delayed drivers or missed pickups, Dr. Black would greet them personally, present a self-admission contract under the guise of an official complaint, and summon orderlies upon their signature.",
+      "significance": "The origin of the distressed father and clinic orderly apparitions."
+    },
+    {
+      "id": "lore_vb_the_dogs",
+      "title": "Bella and Braxton",
+      "category": "Memories",
+      "summary": "Two family dogs killed in an upstairs bathtub to send a message to parents.",
+      "text": "When his parents refused to give away the family pets, the young Vermin took his father's shaving blade and brought Bella into the upstairs bathroom. He pinned her down in the tub, slicing her throat in a deliberate curve until she ceased making noise. He repeated the procedure with Braxton, leaving both corpses in the porcelain tub as a definitive message.",
+      "significance": "Explains the presence of the clawfoot tub and shaving blade."
+    },
+    {
+      "id": "lore_vb_the_father_case",
+      "title": "The Delayed Father",
+      "category": "Case Files",
+      "summary": "A man who missed the birth of his daughter and spent twenty years in confinement.",
+      "text": "The father arrived at the clinic seeking a complaint form after his booked cab failed to arrive during his wife's labor. Tricked into signing away his freedom, he spent decades in the quiet wards calling for his daughter Clara, unaware that Dr. Black kept his intake form framed as a personal trophy.",
+      "significance": "The emotional core of the moral choice in the clinic lobby."
+    },
+    {
+      "id": "lore_vb_the_echoes",
+      "title": "Manifestations of the Done",
+      "category": "Entities",
+      "summary": "Entities formed from memory, guilt, and organic residue.",
+      "text": "The entities inhabiting the corridors are not foreign spirits; they are physical projections of Vermin's own actions. The Sprinter embodies his abrupt, panicked victims; The Drip embodies visceral clean-up methods; and The Verdict is the culmination of all nine counts.",
+      "significance": "Explains why every monster matches a specific journal entry."
+    },
+    {
+      "id": "lore_vb_the_verdict",
+      "title": "The Final Audit",
+      "category": "Phenomenology",
+      "summary": "The inevitable reckoning that awaits in the green fabric armchair.",
+      "text": "When the countdown reaches zero, the green armchair summons the full weight of what was done. It is not an executioner, but an auditor: it forces Vermin Black to sit in judgment of his own creation.",
+      "significance": "The final encounter of the campaign."
+    },
+    {
+      "id": "lore_vb_the_exit",
+      "title": "The First Door, Again",
+      "category": "Phenomenology",
+      "summary": "The nature of escape from a recursive purgatory.",
+      "text": "There is no physical exit to the outside world. To defeat the Verdict is simply to unlock the final door, which opens back into the empty room where Vermin first awoke. The cycle is complete, yet the mind that walks it has been irrevocably tallied.",
+      "significance": "The thematic closure of the psychological horror loop."
+    }
+  ]
+}

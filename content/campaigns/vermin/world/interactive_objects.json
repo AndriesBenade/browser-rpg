@@ -1,0 +1,236 @@
+{
+  "interactiveObjects": [
+    {
+      "id": "obj_vb_identity_on_floor",
+      "locationId": "loc_vb_waking_room",
+      "name": "Identity Document on Floor",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "A folded card bearing your photograph and the printed name Vermin Black.",
+      "unlockOutcome": {
+        "giveItem": "item_vb_identity_document",
+        "setFlags": {
+          "identity_found": true
+        },
+        "awardXP": 20,
+        "transcript": {
+          "speaker": "Identity",
+          "text": "You retrieve the document. The face staring back is unequivocally your own.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "obj_vb_projector",
+      "locationId": "loc_vb_projector_chamber",
+      "name": "Silent 35mm Projector",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "A whirring projector mounted on a heavy metal tripod.",
+      "unlockOutcome": {
+        "setFlags": {
+          "projector_inspected": true
+        },
+        "awardXP": 15,
+        "transcript": {
+          "speaker": "Projector",
+          "text": "The shutter clicks at regular intervals, projecting empty white illumination upon the far wall.",
+          "style": "entry-prose"
+        }
+      }
+    },
+    {
+      "id": "obj_vb_music_box_obj",
+      "locationId": "loc_vb_music_box_alcove",
+      "name": "Lacquered Music Box",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 10,
+      "description": "A brass-filigreed music box resting in the corner where the ember cloud collapsed.",
+      "contents": {
+        "items": [
+          "item_vb_music_box",
+          "mat_vb_ash_dust"
+        ]
+      },
+      "unlockOutcome": {
+        "setFlags": {
+          "music_box_opened": true
+        },
+        "awardXP": 25
+      }
+    },
+    {
+      "id": "obj_vb_kitchen_door",
+      "locationId": "loc_vb_kitchen",
+      "name": "Reinforced Kitchen Cupboard",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 11,
+      "requiredKeyId": "item_vb_iron_key_c",
+      "description": "A locked metal storage cupboard built beneath the countertop.",
+      "contents": {
+        "items": [
+          "item_vb_med_bottle_full",
+          "item_vb_glass_vial"
+        ]
+      },
+      "unlockOutcome": {
+        "setFlags": {
+          "kitchen_cupboard_opened": true
+        },
+        "awardXP": 25
+      }
+    },
+    {
+      "id": "obj_vb_maze_door",
+      "locationId": "loc_vb_maze_entry",
+      "name": "Paneled Labyrinth Door",
+      "type": "door",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 12,
+      "requiredKeyId": "item_vb_iron_key_a",
+      "description": "A heavy cedar door blending seamlessly with the wall paneling.",
+      "unlockOutcome": {
+        "setFlags": {
+          "maze_door_unlocked": true
+        },
+        "awardXP": 30
+      }
+    },
+    {
+      "id": "obj_vb_filing_cabinet",
+      "locationId": "loc_vb_filing_room",
+      "name": "Iron Case File Cabinet",
+      "type": "container",
+      "locked": true,
+      "isPickable": true,
+      "lockDifficulty": 12,
+      "requiredKeyId": "item_vb_iron_key_b",
+      "description": "A locked four-drawer olive filing cabinet marked 'CONFIDENTIAL ADMISSIONS'.",
+      "contents": {
+        "items": [
+          "item_vb_case_file_001",
+          "item_vb_case_file_father"
+        ]
+      },
+      "unlockOutcome": {
+        "setFlags": {
+          "filing_cabinet_opened": true
+        },
+        "awardXP": 30
+      }
+    },
+    {
+      "id": "obj_vb_bathtub",
+      "locationId": "loc_vb_bathtub_room",
+      "name": "Porcelain Clawfoot Bathtub",
+      "type": "obstacle",
+      "locked": false,
+      "isPickable": false,
+      "description": "A white porcelain bathtub stained with dark crimson rings.",
+      "unlockOutcome": {
+        "setFlags": {
+          "tub_inspected": true
+        },
+        "awardXP": 25,
+        "transcript": {
+          "speaker": "Memory",
+          "text": "You look down into the empty tub. The memories of Bella and Braxton are clear and tidy.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "obj_vb_judgment_door",
+      "locationId": "loc_vb_judgment_hall",
+      "name": "Double Gilded Doors of the Verdict",
+      "type": "door",
+      "locked": true,
+      "isPickable": false,
+      "requiredKeyId": "item_vb_the_verdict_key",
+      "description": "Monumental double doors bound in cold alloy, barring the exit back to reality.",
+      "unlockOutcome": {
+        "setFlags": {
+          "judgment_door_opened": true
+        },
+        "awardXP": 50,
+        "transcript": {
+          "speaker": "The Threshold",
+          "text": "The key turns with the sound of a closing cell. The door opens back into the empty room where you first awoke.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "obj_vb_mirror_a",
+      "locationId": "loc_vb_dining_room",
+      "name": "First Gilded Mirror",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "A tall silvered mirror reflecting an empty white bathtub.",
+      "unlockOutcome": {
+        "setFlags": {
+          "mirror_a_examined": true
+        },
+        "awardXP": 15
+      }
+    },
+    {
+      "id": "obj_vb_mirror_b",
+      "locationId": "loc_vb_dining_room",
+      "name": "Second Gilded Mirror",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "A tall silvered mirror reflecting a clinic reception desk.",
+      "unlockOutcome": {
+        "setFlags": {
+          "mirror_b_examined": true
+        },
+        "awardXP": 15
+      }
+    },
+    {
+      "id": "obj_vb_mirror_c",
+      "locationId": "loc_vb_dining_room",
+      "name": "Third Gilded Mirror",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "A tall silvered mirror reflecting a closed door.",
+      "unlockOutcome": {
+        "setFlags": {
+          "mirror_c_examined": true
+        },
+        "awardXP": 15
+      }
+    },
+    {
+      "id": "obj_vb_the_green_chair",
+      "locationId": "loc_vb_green_chair_room",
+      "name": "The Gilded Green Armchair",
+      "type": "mechanism",
+      "locked": false,
+      "isPickable": false,
+      "description": "An armchair upholstered in green fabric with an ornate gold frame.",
+      "unlockOutcome": {
+        "setFlags": {
+          "green_chair_touched": true
+        },
+        "awardXP": 25,
+        "transcript": {
+          "speaker": "The Chair",
+          "text": "The fabric is cool to the touch. It waits for the countdown to conclude.",
+          "style": "entry-prose"
+        }
+      }
+    }
+  ]
+}

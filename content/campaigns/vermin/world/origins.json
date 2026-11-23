@@ -1,0 +1,57 @@
+{
+  "origins": [
+    {
+      "id": "origin_vb_condemned",
+      "name": "The Condemned",
+      "description": "Sealed within an impossible shifting maze from which no physical exit has ever been discovered.",
+      "perks": "+1 Endurance • +1 Athletics • Hardened against fatigue",
+      "attributes": {
+        "endurance": 1
+      },
+      "skills": {
+        "athletics": 1
+      },
+      "reputation": {
+        "faction_vb_the_architecture": 5
+      },
+      "piety": {},
+      "maxMorale": 0
+    },
+    {
+      "id": "origin_vb_observer",
+      "name": "The Observer",
+      "description": "Treating the waking nightmare as an intriguing puzzle rather than a horrifying reality.",
+      "perks": "+1 Wisdom • +1 Perception • +1 Investigation",
+      "attributes": {
+        "wisdom": 1
+      },
+      "skills": {
+        "perception": 1,
+        "investigation": 1
+      },
+      "reputation": {
+        "faction_vb_the_self": 5
+      },
+      "piety": {},
+      "maxMorale": 0
+    },
+    {
+      "id": "origin_vb_hollow_born",
+      "name": "The Hollow-Born",
+      "description": "Untouched by human warmth since infancy, unburdened by conscience or sentimental hesitation.",
+      "perks": "+2 Strength • -1 Charisma • +1 Intimidation",
+      "attributes": {
+        "strength": 2,
+        "charisma": -1
+      },
+      "skills": {
+        "intimidation": 1
+      },
+      "reputation": {
+        "faction_vb_the_remembered": -10
+      },
+      "piety": {},
+      "maxMorale": 0
+    }
+  ]
+}

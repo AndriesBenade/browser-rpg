@@ -1,0 +1,40 @@
+{
+  "traits": [
+    {
+      "id": "trait_vb_void_sight",
+      "name": "Void Sight",
+      "description": "You detect anomalies and apparitions before they materialize into the physical corridor.",
+      "perks": "+2 on Perception checks against entities.",
+      "checkBonus": {
+        "perception": 2
+      }
+    },
+    {
+      "id": "trait_vb_clinical_mind",
+      "name": "Clinical Mind",
+      "description": "You dismiss supernatural manifestations as sensory glitches or amusing parlor tricks.",
+      "perks": "+2 on Wisdom saving throws against mental panic.",
+      "checkBonus": {
+        "endurance": 1
+      }
+    },
+    {
+      "id": "trait_vb_fractured",
+      "name": "Already Fractured",
+      "description": "A mind shattered long before entering this corridor, resilient through sheer internal fragmentation.",
+      "perks": "+10 Maximum Stamina • +1 Endurance Checks.",
+      "checkBonus": {
+        "endurance": 1
+      }
+    },
+    {
+      "id": "trait_vb_lucid",
+      "name": "Lucid Walker",
+      "description": "You perceive spatial distortions, trick doors, and hidden passages with piercing clarity.",
+      "perks": "+2 on Investigation and Puzzle deduction checks.",
+      "checkBonus": {
+        "investigation": 2
+      }
+    }
+  ]
+}

@@ -22,7 +22,8 @@ const MANIFESTS = [
   'content/campaigns/greek_mythology/campaign.json',
   'content/campaigns/dev_test_campaign/campaign.json',
   'content/campaigns/northern_realms/campaign.json',
-  'content/campaigns/ashen_ledger/campaign.json'
+  'content/campaigns/ashen_ledger/campaign.json',
+  'content/campaigns/vermin/campaign.json'
 ];
 const MARK = '// @embedded-content';
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));

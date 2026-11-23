@@ -1,0 +1,60 @@
+{
+  "templates": [
+    {
+      "id": "template_vb_clarity_tonic",
+      "name": "Synthesized Clarity Tonic",
+      "professionId": "vb_entity_alchemy",
+      "slot": "inventory",
+      "category": "consumable",
+      "baseDC": 10,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "stats": {
+        "restoreHealth": 15,
+        "restoreStamina": 20
+      },
+      "description": "A refined chemical brew that clears hallucinations and restores vitality."
+    },
+    {
+      "id": "template_vb_void_blade",
+      "name": "Tempered Void Scalpel",
+      "professionId": "vb_void_crafting",
+      "slot": "main_hand",
+      "category": "weapon",
+      "baseDamageMin": 6,
+      "baseDamageMax": 12,
+      "baseWeightKg": 1,
+      "baseValueDrachmae": 40,
+      "baseDC": 13,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A heavy surgeon's blade forged with blood-tempered iron, keen enough to slice through spectral entities."
+    },
+    {
+      "id": "template_vb_entity_ward_charm",
+      "name": "Entity Ward Talisman",
+      "professionId": "vb_entity_alchemy",
+      "slot": "neck",
+      "category": "accessory",
+      "baseWeightKg": 0.2,
+      "baseValueDrachmae": 50,
+      "baseDC": 11,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "A charm woven from entity cloth and crystal, repelling toxic spectral emanations."
+    },
+    {
+      "id": "template_vb_void_lantern_upgrade",
+      "name": "Refracted Void Lantern",
+      "professionId": "vb_void_crafting",
+      "slot": "back",
+      "category": "accessory",
+      "baseWeightKg": 1.5,
+      "baseValueDrachmae": 65,
+      "baseDC": 12,
+      "primaryMaterialSlots": 2,
+      "allowedSupplementarySlots": 1,
+      "description": "The field lantern fitted with crystalline lenses to cast piercing white light through illusory walls."
+    }
+  ]
+}

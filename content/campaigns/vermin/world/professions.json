@@ -1,0 +1,33 @@
+{
+  "professions": [
+    {
+      "id": "vb_void_crafting",
+      "name": "Void Crafting",
+      "governingAttribute": "intelligence",
+      "secondaryAttribute": "wisdom",
+      "requiredToolkitId": "item_vb_lantern",
+      "workstation": "void_focus",
+      "description": "Using the focused lantern beam to forge blades, reinforce armaments, and shape physical tools from spatial residue.",
+      "itemCategories": [
+        "weapon",
+        "accessory",
+        "armor"
+      ],
+      "icon": "🔦"
+    },
+    {
+      "id": "vb_entity_alchemy",
+      "name": "Entity Alchemy",
+      "governingAttribute": "wisdom",
+      "secondaryAttribute": "intelligence",
+      "requiredToolkitId": "item_vb_void_lantern",
+      "workstation": "void_focus",
+      "description": "Distilling entity cloth, chemical residues, and medicinal elixirs into protective wards and mental stimulants.",
+      "itemCategories": [
+        "accessory",
+        "consumable"
+      ],
+      "icon": "⚗️"
+    }
+  ]
+}

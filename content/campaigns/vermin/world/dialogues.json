@@ -1,0 +1,352 @@
+{
+  "dialogues": {
+    "dialogue_vb_the_witness": {
+      "greeting": "The hooded figure stands perfectly still, pointing a gloved finger at the crimson numerals painted upon the wall.",
+      "nodes": {
+        "root": {
+          "text": "The hollow beneath the hood fixes upon you. A low rasp escapes its throat: 'The accounting began at IX. Every room you navigate strips a layer away.'",
+          "choices": [
+            {
+              "label": "What do these Roman numerals mean?",
+              "target": "node_numerals"
+            },
+            {
+              "label": "Who brought me into this shifting maze?",
+              "target": "node_identity"
+            },
+            {
+              "label": "I will find my own way out.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_numerals": {
+          "text": "'Nine rooms of consequence. The dining mirrors, the maze of paneling, the visceral chamber, the clinic archives, and the bathtub. When zero is reached, the door to the green chair opens.'",
+          "awardXP": 25,
+          "setFlags": {
+            "witness_spoke": true
+          },
+          "choices": [
+            {
+              "label": "Tell me how to escape.",
+              "target": "node_identity"
+            },
+            {
+              "label": "Step away.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_identity": {
+          "text": "'You carry your own identity document in your pocket, Vermin Black. You designed every cruelty that built these walls. You are the architect of your own reckoning.'",
+          "awardXP": 20,
+          "choices": [
+            {
+              "label": "Return to contemplation.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_vb_the_father": {
+      "greeting": "The frantic man rushes toward you, holding up a rumpled dispatch voucher: 'Please, are you the clinic director? I need to file a complaint!'",
+      "nodes": {
+        "root": {
+          "text": "'My wife was in labor yesterday. I booked a drive to the maternity hospital, but nobody arrived! I missed my daughter's birth! The sign outside confused me, but someone said you could help me file a complaint!'",
+          "choices": [
+            {
+              "label": "Deceive: 'You are in luck. Sign this self-admission form and I will handle it personally.'",
+              "target": "node_deceive",
+              "condition": {
+                "flag": "father_deceived",
+                "expected": false
+              }
+            },
+            {
+              "label": "Truth: 'This is not a business office, and your daughter grew up without you long ago.'",
+              "target": "node_truth",
+              "condition": {
+                "flag": "father_told_truth",
+                "expected": false
+              }
+            },
+            {
+              "label": "Inquire: 'Tell me about your daughter.'",
+              "target": "node_daughter"
+            },
+            {
+              "label": "Step away from the trembling man.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_deceive": {
+          "text": "Vermin's familiar predatory grin returns. You hand him the admission contract. His trembling fingers sign with overwhelming gratitude. 'Thank you, doctor! Thank you!' He has no idea what he has done.",
+          "setFlags": {
+            "father_deceived": true
+          },
+          "awardXP": 30,
+          "morality": {
+            "virtue": 0,
+            "hubris": 15
+          },
+          "startQuest": "quest_vb_the_father",
+          "choices": [
+            {
+              "label": "Ring the reception bell.",
+              "target": "node_ring_bell"
+            }
+          ]
+        },
+        "node_ring_bell": {
+          "text": "The brass bell rings. Orderlies emerge from the shadow doorways and seize the father by both arms, dragging him kicking into the interior corridors.",
+          "setFlags": {
+            "father_committed": true
+          },
+          "updateQuest": {
+            "questId": "quest_vb_the_father",
+            "objectiveId": "obj_father_decision",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Watch him disappear.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_truth": {
+          "text": "The man staggers back as if struck with a blunt mallet. 'No... no, that cannot be! She was born just yesterday! What clinic is this?!' He sinks to his knees, sobbing.",
+          "setFlags": {
+            "father_told_truth": true
+          },
+          "awardXP": 30,
+          "morality": {
+            "virtue": 15,
+            "hubris": 0
+          },
+          "startQuest": "quest_vb_the_father",
+          "updateQuest": {
+            "questId": "quest_vb_the_father",
+            "objectiveId": "obj_father_decision",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Leave him to his grief.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_daughter": {
+          "text": "'Her name is Clara. I bought a knitted yellow blanket before the cab failed to show. I just wanted to hold her little hand...'",
+          "awardXP": 15,
+          "choices": [
+            {
+              "label": "Return to the complaint.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_vb_the_archivist": {
+      "greeting": "The Archivist pushes his spectacles up his nose without glancing away from the open manila folder.",
+      "nodes": {
+        "root": {
+          "text": "'Every case intake, medical voucher, and razor requisition is recorded here in duplicate, Dr. Black. What record do you wish to review?'",
+          "choices": [
+            {
+              "label": "Review Case File #001: The First Subject.",
+              "target": "node_case_one"
+            },
+            {
+              "label": "Inspect the file of the delayed father.",
+              "target": "node_case_father"
+            },
+            {
+              "label": "Ask about the final judgment protocol.",
+              "target": "node_judgment_protocol"
+            },
+            {
+              "label": "Close the drawer.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_case_one": {
+          "text": "'Case #001: Subject admitted under pretense of routine physical examination. Systematically subjected to sensory deprivation and chemical elixirs. Discharged as completely hollowed.'",
+          "giveItem": "item_vb_case_file_001",
+          "awardXP": 25,
+          "choices": [
+            {
+              "label": "Check another file.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_case_father": {
+          "text": "'Case #104: Subject arrived seeking complaint filing for missed transit. Tricked into self-admission contract. Attendants dispatched upon bell signal. The patient spent twenty-two years calling for Clara.'",
+          "giveItem": "item_vb_case_file_father",
+          "awardXP": 25,
+          "choices": [
+            {
+              "label": "Check another file.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_judgment_protocol": {
+          "text": "'When the Roman numerals on the antechamber wall tick down to zero, the green armchair will summon the final audit. Ensure your razor is sharp, Doctor.'",
+          "awardXP": 20,
+          "setFlags": {
+            "archivist_verdict_explained": true
+          },
+          "choices": [
+            {
+              "label": "Step away from the archives.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_vb_the_girl": {
+      "greeting": "The pale young woman does not turn around. Her tears splash silently into the endless void.",
+      "nodes": {
+        "root": {
+          "text": "'He promised he would come,' she whispers into the dark. 'Mother waited with the yellow blanket until the hospital lamps went cold. Why didn't he come?'",
+          "choices": [
+            {
+              "label": "Listen in silence.",
+              "target": "node_listen"
+            },
+            {
+              "label": "Speak: 'Your father was detained in my clinic.'",
+              "target": "node_speak"
+            },
+            {
+              "label": "Back away from the ledge.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_listen": {
+          "text": "You stand behind her in absolute silence. The weight of twenty years of solitary waiting presses into the void. You feel the cold air thrum with sorrow.",
+          "awardXP": 40,
+          "morality": {
+            "virtue": 20,
+            "hubris": 0
+          },
+          "setFlags": {
+            "girl_heard": true
+          },
+          "choices": [
+            {
+              "label": "Leave her in peace.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_speak": {
+          "text": "She turns her head slowly. Her hollow eyes lock onto yours with chilling clarity. 'You are the man with the brass bell,' she says. She dissipates into swirling void ash.",
+          "awardXP": 30,
+          "setFlags": {
+            "girl_spoke": true
+          },
+          "choices": [
+            {
+              "label": "Turn away from the precipice.",
+              "target": "exit"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_vb_the_intern": {
+      "greeting": "The orderly snaps to attention with blank, glazed eyes.",
+      "nodes": {
+        "root": {
+          "text": "'Orders received, Dr. Black. Two orderlies assigned per room. Intakes handled swiftly upon bell chime. Shall I prepare the restraint cot?'",
+          "choices": [
+            {
+              "label": "Ask about standard patient processing.",
+              "target": "node_processing"
+            },
+            {
+              "label": "Ask where the patients were taken.",
+              "target": "node_corridors"
+            },
+            {
+              "label": "Dismiss the attendant.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_processing": {
+          "text": "'Contracts signed in reception are non-negotiable under institutional regulations. We never questioned the diagnosis, Doctor. You held the master ledger.'",
+          "awardXP": 15,
+          "choices": [
+            {
+              "label": "Return.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_corridors": {
+          "text": "'Down the zig-zag hall, Doctor. Past the dining table with no chairs and through the wood-paneled maze. Nobody ever walked back out.'",
+          "awardXP": 15,
+          "choices": [
+            {
+              "label": "Return.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    },
+    "dialogue_vb_receptionist": {
+      "greeting": "The receptionist looks up from a stack of carbon-copy complaint slips.",
+      "nodes": {
+        "root": {
+          "text": "'Good morning, Dr. Black. Several individuals came in complaining that our roadside sign is confusingly placed next to the transport depot. Shall I direct them to your office?'",
+          "choices": [
+            {
+              "label": "Confirm: 'Always send the confident ones to my office.'",
+              "target": "node_confident"
+            },
+            {
+              "label": "Ask about the day of the missed ride.",
+              "target": "node_missed_ride"
+            },
+            {
+              "label": "Step away from the desk.",
+              "target": "exit"
+            }
+          ]
+        },
+        "node_confident": {
+          "text": "'Understood, Doctor. As always, the confident ones make the best subjects for the contract.'",
+          "awardXP": 15,
+          "choices": [
+            {
+              "label": "Return.",
+              "target": "root"
+            }
+          ]
+        },
+        "node_missed_ride": {
+          "text": "'Ah, yes. The man with the yellow blanket parcel. He was so polite before you rang the bell. We filed his complaint under Permanent Observation.'",
+          "awardXP": 20,
+          "choices": [
+            {
+              "label": "Return.",
+              "target": "root"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

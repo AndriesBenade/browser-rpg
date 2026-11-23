@@ -1,0 +1,48 @@
+{
+  "combinations": [
+    {
+      "id": "comb_vb_reinforce_lantern",
+      "name": "Mount Crystal Lens onto Lantern",
+      "apply": "item_vb_void_crystal",
+      "onto": "item_vb_lantern",
+      "result": "item_vb_void_lantern",
+      "consumeApplied": 1,
+      "minutes": 15,
+      "xp": 25,
+      "text": "You mount the void crystal inside the lantern housing. The flame turns brilliant spectral blue, cutting through deep shadows."
+    },
+    {
+      "id": "comb_vb_brew_tonic",
+      "name": "Combine Ash Dust with Empty Vial",
+      "apply": "item_vb_ash_dust",
+      "onto": "item_vb_glass_vial",
+      "result": "item_vb_clarity_tonic",
+      "consumeApplied": 1,
+      "minutes": 10,
+      "xp": 20,
+      "text": "You combine the fine grey ash with liquid residue inside the glass vial, producing an invigorating clarity elixir."
+    },
+    {
+      "id": "comb_vb_sharpen_razor",
+      "name": "Hone Razor Edge with Glass Shard",
+      "apply": "mat_vb_glass_shard",
+      "onto": "item_vb_clinical_razor",
+      "result": "item_vb_shaving_blade",
+      "consumeApplied": 0,
+      "minutes": 10,
+      "xp": 15,
+      "text": "You scrape the razor against the razor-sharp bevel of the glass shard, giving it a vicious cutting edge."
+    },
+    {
+      "id": "comb_vb_ward_charm",
+      "name": "Bind Entity Cloth to Void Crystal",
+      "apply": "mat_vb_entity_cloth",
+      "onto": "item_vb_void_crystal",
+      "result": "item_vb_entity_ward",
+      "consumeApplied": 1,
+      "minutes": 20,
+      "xp": 30,
+      "text": "You bind the floating entity cloth around the crystal core, fashioning a talisman that wards off creeping dread."
+    }
+  ]
+}

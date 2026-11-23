@@ -1,0 +1,100 @@
+{
+  "events": [
+    {
+      "id": "event_vb_countdown_viii",
+      "name": "Countdown Reaches VIII",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "kitchen_lights_restored",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "countdown_viii_reached": true
+        },
+        "transcript": {
+          "speaker": "Architectural Shift",
+          "text": "A distant rumble echoes through the plaster. In the antechamber, the IX on the wall dissolves into VIII.",
+          "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_vb_countdown_vii",
+      "name": "Countdown Reaches VII",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "maze_logic_solved",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "countdown_vii_reached": true
+        },
+        "transcript": {
+          "speaker": "Architectural Shift",
+          "text": "The wood paneling grinds shut behind you. The numeral VIII on the antechamber wall is replaced by VII.",
+          "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_vb_countdown_vi",
+      "name": "Countdown Reaches VI",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "gut_lights_restored",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "countdown_vi_reached": true
+        },
+        "transcript": {
+          "speaker": "Architectural Shift",
+          "text": "The dripping overhead slows to a halt. The numeral on the wall shifts to VI, and the quiet corridor to the green armchair opens.",
+          "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_vb_countdown_zero",
+      "name": "Countdown Reaches Zero",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "bathtub_explored",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "countdown_zero_reached": true
+        },
+        "transcript": {
+          "speaker": "The Final Toll",
+          "text": "All Roman numerals on the antechamber wall extinguish at once. The massive doors to the Judgment Hall grind open.",
+          "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_vb_father_committed",
+      "name": "Father Committed to Archives",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "father_committed",
+        "expected": true
+      },
+      "outcomes": {
+        "modifyReputation": {
+          "faction_vb_the_remembered": -20,
+          "faction_vb_the_self": 10
+        },
+        "transcript": {
+          "speaker": "Clinical Intake",
+          "text": "Orderlies file the father's papers into iron drawers. His cries fade behind soundproof doors.",
+          "style": "entry-consequence"
+        }
+      }
+    }
+  ]
+}

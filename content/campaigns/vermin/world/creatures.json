@@ -1,0 +1,282 @@
+{
+  "creatures": [
+    {
+      "id": "creature_vb_the_rag",
+      "name": "The Rag",
+      "tier": 2,
+      "level": 2,
+      "xpReward": 80,
+      "vitals": {
+        "health": 35,
+        "maxHealth": 35,
+        "morale": 8
+      },
+      "armorClass": 11,
+      "immune": [
+        "frightened"
+      ],
+      "fearless": true,
+      "alertness": 12,
+      "description": "Coarse stained cloth suspended in mid-air at human height with nobody standing beneath it. It exudes a toxic emission that causes blurred vision and a sinking feeling underfoot.",
+      "actions": [
+        {
+          "name": "Toxic Emanation",
+          "style": "heavy",
+          "attackBonus": 3,
+          "damage": "1d4+1",
+          "damageType": "psychic",
+          "telegraph": "The air thickens into a sickly miasma as the suspended cloth drifts forward.",
+          "inflicts": {
+            "status": "poisoned",
+            "chance": 0.6,
+            "rounds": 3,
+            "value": 2
+          }
+        },
+        {
+          "name": "Enveloping Shroud",
+          "style": "normal",
+          "attackBonus": 2,
+          "damage": "1d6",
+          "damageType": "bludgeoning",
+          "inflicts": {
+            "status": "entangled",
+            "chance": 0.4,
+            "rounds": 2,
+            "value": 1
+          }
+        }
+      ],
+      "loot": [
+        {
+          "itemId": "mat_vb_entity_cloth",
+          "chance": 1
+        },
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "creature_vb_sprinter",
+      "name": "The Sprinter",
+      "tier": 1,
+      "level": 1,
+      "xpReward": 50,
+      "vitals": {
+        "health": 20,
+        "maxHealth": 20,
+        "morale": 4
+      },
+      "armorClass": 14,
+      "alertness": 14,
+      "description": "A dark humanoid silhouette that sprints from behind doorways at breakneck speed, colliding violently before vanishing into unlit corners.",
+      "actions": [
+        {
+          "name": "Sudden Lunge",
+          "style": "quick",
+          "attackBonus": 5,
+          "damage": "1d8+2",
+          "damageType": "slashing",
+          "telegraph": "A blurred shadow bursts around the doorframe."
+        },
+        {
+          "name": "Disorienting Dash",
+          "style": "quick",
+          "attackBonus": 3,
+          "damage": "1d4",
+          "damageType": "bludgeoning",
+          "inflicts": {
+            "status": "frightened",
+            "chance": 0.5,
+            "rounds": 2,
+            "value": 1
+          }
+        }
+      ],
+      "loot": [
+        {
+          "itemId": "mat_vb_glass_shard",
+          "chance": 0.8
+        },
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "creature_vb_ember_cloud",
+      "name": "The Ember Cloud",
+      "tier": 1,
+      "level": 1,
+      "xpReward": 40,
+      "vitals": {
+        "health": 25,
+        "maxHealth": 25,
+        "morale": 10
+      },
+      "armorClass": 10,
+      "immune": [
+        "entangled",
+        "poisoned"
+      ],
+      "alertness": 10,
+      "description": "A dense cloud of swirling dust and fire embers hovering in the hallway, accompanied by an eerie tune that refuses to lose tempo.",
+      "actions": [
+        {
+          "name": "Ash Burst",
+          "style": "normal",
+          "attackBonus": 2,
+          "damage": "1d6",
+          "damageType": "fire",
+          "inflicts": {
+            "status": "confused",
+            "chance": 0.35,
+            "rounds": 2,
+            "value": 1
+          }
+        },
+        {
+          "name": "Eerie Resonance",
+          "style": "heavy",
+          "attackBonus": 3,
+          "damage": "1d4+2",
+          "damageType": "psychic",
+          "telegraph": "A shrill metallic chime builds to an unbearable pitch.",
+          "inflicts": {
+            "status": "frightened",
+            "chance": 0.4,
+            "rounds": 2,
+            "value": 1
+          }
+        }
+      ],
+      "loot": [
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.8
+        },
+        {
+          "itemId": "mat_vb_void_ash",
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "creature_vb_the_drip",
+      "name": "The Drip",
+      "tier": 2,
+      "level": 2,
+      "xpReward": 70,
+      "vitals": {
+        "health": 30,
+        "maxHealth": 30,
+        "morale": 12
+      },
+      "armorClass": 9,
+      "alertness": 8,
+      "description": "Coagulated organic matter hanging from plaster ceiling cracks, pulsing and dripping dark fluids in synchronized, unnatural rhythm.",
+      "actions": [
+        {
+          "name": "Visceral Cascade",
+          "style": "heavy",
+          "attackBonus": 2,
+          "damage": "2d6",
+          "damageType": "bludgeoning",
+          "telegraph": "Ceiling plaster buckles as heavy crimson fluid gathers overhead."
+        },
+        {
+          "name": "Contaminating Splatter",
+          "style": "normal",
+          "attackBonus": 3,
+          "damage": "1d4+1",
+          "damageType": "psychic",
+          "inflicts": {
+            "status": "poisoned",
+            "chance": 0.5,
+            "rounds": 4,
+            "value": 2
+          }
+        }
+      ],
+      "loot": [
+        {
+          "itemId": "mat_vb_blood_iron",
+          "chance": 0.6
+        },
+        {
+          "itemId": "mat_vb_void_ash",
+          "chance": 0.5
+        }
+      ]
+    },
+    {
+      "id": "creature_vb_verdict_form",
+      "name": "The Final Verdict",
+      "isBoss": true,
+      "tier": 5,
+      "level": 5,
+      "xpReward": 350,
+      "vitals": {
+        "health": 120,
+        "maxHealth": 120,
+        "morale": 20
+      },
+      "armorClass": 15,
+      "fearless": true,
+      "immune": [
+        "frightened",
+        "confused",
+        "entangled"
+      ],
+      "alertness": 16,
+      "description": "An amalgamation of all Vermin Black's atrocities made manifest: razor blades, cold bathtubs, whined complaints, weeping infants, and stitched intestines assembled into a towering, relentless judgment.",
+      "actions": [
+        {
+          "name": "Weight of What Was Done",
+          "style": "heavy",
+          "attackBonus": 6,
+          "damage": "2d8+3",
+          "damageType": "psychic",
+          "telegraph": "Voices of forgotten victims rise in a deafening, unified accusation.",
+          "inflicts": {
+            "status": "frightened",
+            "chance": 0.7,
+            "rounds": 3,
+            "value": 2
+          }
+        },
+        {
+          "name": "The Final Tally",
+          "style": "normal",
+          "attackBonus": 5,
+          "damage": "2d6+2",
+          "damageType": "psychic"
+        },
+        {
+          "name": "Surgical Recompense",
+          "style": "quick",
+          "attackBonus": 6,
+          "damage": "1d10+2",
+          "damageType": "slashing",
+          "inflicts": {
+            "status": "bleeding",
+            "chance": 0.5,
+            "rounds": 3,
+            "value": 3
+          }
+        }
+      ],
+      "loot": [
+        {
+          "itemId": "item_vb_the_verdict_key",
+          "chance": 1,
+          "guaranteed": true,
+          "isUnique": true
+        }
+      ]
+    }
+  ]
+}

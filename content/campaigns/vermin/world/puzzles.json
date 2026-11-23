@@ -1,0 +1,124 @@
+{
+  "puzzles": [
+    {
+      "id": "puzzle_vb_music_box_sequence",
+      "locationId": "loc_vb_music_box_alcove",
+      "title": "The Winding Mechanism",
+      "prompt": "The brass lid of the music box vibrates violently. Etched upon the winding plate are four musical notes intertwined with ash embers: C, E, G, B. A tiny engraving reads: 'Name the fourth harmonic resonance that stills the flame.'",
+      "clueJournalIds": [
+        "lore_vb_the_rag_history"
+      ],
+      "acceptedKeywords": [
+        "b",
+        "note b",
+        "b natural",
+        "seventh",
+        "fourth"
+      ],
+      "successOutcome": {
+        "text": "You turn the winding key to B. The lid clicks shut with a resonant snap. The fire embers fade into harmless ash dust.",
+        "setFlags": {
+          "music_box_solved": true
+        },
+        "giveItem": "mat_vb_ash_dust",
+        "awardXP": 40,
+        "addJournalChronicle": {
+          "title": "The Silenced Box",
+          "text": "Aligned the harmonic pins of the rattling music box, bringing calm to the hallway."
+        }
+      },
+      "hint": "Read the fourth note in the engraved sequence."
+    },
+    {
+      "id": "puzzle_vb_maze_logic",
+      "locationId": "loc_vb_maze_entry",
+      "title": "The Architectural Turn",
+      "prompt": "Carved into the cedar panel above the doorframe are directional runes: 'When facing three paths, which turn leads neither to the looping wall nor the dead end niche?'",
+      "clueJournalIds": [
+        "lore_vb_the_space"
+      ],
+      "acceptedKeywords": [
+        "zig-zag",
+        "zigzag",
+        "zig zag",
+        "second right",
+        "right",
+        "second path"
+      ],
+      "successOutcome": {
+        "text": "You recall the navigation sequence: the second path to the right following the zig-zag bends! The panel shifts slightly, opening the way forward.",
+        "setFlags": {
+          "maze_logic_solved": true,
+          "countdown_viii_reached": true
+        },
+        "awardXP": 50,
+        "addJournalChronicle": {
+          "title": "Labyrinth Geometry Decoded",
+          "text": "Navigated the wood-paneled maze by following the zig-zag turns."
+        }
+      },
+      "hint": "Recall the path Vermin took after reliving the memory of the clinic."
+    },
+    {
+      "id": "puzzle_vb_the_mirrors",
+      "locationId": "loc_vb_dining_room",
+      "title": "The Triad of Reflections",
+      "prompt": "Three silvered mirrors hang above the chairless table. The first mirror shows an empty bathroom; the second shows a reception desk; the third shows an open door. An inscription upon the frame asks: 'Which reflection belongs to the beginning?'",
+      "clueJournalIds": [
+        "lore_vb_the_clinic"
+      ],
+      "acceptedKeywords": [
+        "first",
+        "bathroom",
+        "one",
+        "tub",
+        "the first mirror",
+        "first mirror"
+      ],
+      "successOutcome": {
+        "text": "You touch the glass of the first mirror. The reflection ripples like water and reveals the path connecting back to the antechamber. The numeral IX ticks down to VIII upon the distant wall.",
+        "setFlags": {
+          "mirrors_solved": true,
+          "countdown_viii_reached": true
+        },
+        "awardXP": 45,
+        "addJournalChronicle": {
+          "title": "Reflections of the Origin",
+          "text": "Selected the bathroom mirror, advancing the countdown on the antechamber wall."
+        }
+      },
+      "hint": "Consider where Vermin's earliest childhood act of violence took place."
+    },
+    {
+      "id": "puzzle_vb_the_verdict_cipher",
+      "locationId": "loc_vb_judgment_hall",
+      "title": "The Tally Inscription",
+      "prompt": "Inscribed upon the pedestal of the green armchair are the Roman numerals IX through I. A hollow slot awaits a single word of confirmation: 'What remains when every count has fallen?'",
+      "clueJournalIds": [
+        "lore_vb_the_countdown"
+      ],
+      "acceptedKeywords": [
+        "zero",
+        "verdict",
+        "judgment",
+        "nothing",
+        "vermin",
+        "vermin black",
+        "the verdict"
+      ],
+      "successOutcome": {
+        "text": "You speak the word: 'Zero.' The golden pedestal clicks into place and the final confrontation begins.",
+        "setFlags": {
+          "verdict_cipher_solved": true,
+          "countdown_zero_reached": true
+        },
+        "awardXP": 60,
+        "addJournalChronicle": {
+          "title": "The Zero Point",
+          "text": "Spoke the final numeral, unlocking the door to the ultimate verdict."
+        }
+      },
+      "hint": "What follows numeral I in a descending countdown?"
+    }
+  ]
+}

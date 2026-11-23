@@ -1,0 +1,36 @@
+{
+  "deities": [
+    {
+      "id": "deity_vb_the_void",
+      "name": "The Consuming Void",
+      "domain": "Oblivion and Silent Darkness",
+      "epithets": [
+        "The Dark Between",
+        "The Silence That Remains",
+        "The Unlit Room"
+      ],
+      "symbols": [
+        "Popped Light Bulb",
+        "Empty Table",
+        "Snuffed Lantern"
+      ],
+      "description": "The suffocating emptiness between the shifting walls. It swallows rooms, projects shadows, and extinguishes lanterns without warning."
+    },
+    {
+      "id": "deity_vb_the_verdict",
+      "name": "The Final Verdict",
+      "domain": "Inevitable Reckoning and Accounting",
+      "epithets": [
+        "The Wall of Numerals",
+        "The Final Bell",
+        "The Unavoidable Audit"
+      ],
+      "symbols": [
+        "Roman Numerals in Blood",
+        "The Green Fabric Chair",
+        "The Shaving Blade"
+      ],
+      "description": "The underlying consciousness of the space that counts down from IX toward zero. It demands that every atrocity be looked upon and tallied."
+    }
+  ]
+}

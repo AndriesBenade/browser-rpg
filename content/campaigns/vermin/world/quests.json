@@ -1,0 +1,347 @@
+{
+  "quests": [
+    {
+      "id": "quest_vb_find_exit",
+      "title": "The Search for an Exit",
+      "category": "main",
+      "summary": "Awakened in an unfamiliar room with an identity document bearing your name, explore the shifting corridors and find a way out of the repeating loop.",
+      "currentStage": "explore_loop",
+      "stages": {
+        "explore_loop": {
+          "description": "Follow the cycling doors past the projector and discover the nature of the entity blocking the corridor.",
+          "objectives": [
+            {
+              "id": "obj_find_identity",
+              "text": "Examine your identity document in the waking room.",
+              "completed": false
+            },
+            {
+              "id": "obj_take_medicine",
+              "text": "Overcome the toxic emanation in the corridor by taking pain elixir.",
+              "completed": false
+            }
+          ]
+        },
+        "reach_antechamber": {
+          "description": "Follow the long carpeted hallway past the ember cloud into the central two-door antechamber.",
+          "objectives": [
+            {
+              "id": "obj_reach_antechamber",
+              "text": "Pass through the revealed door and locate the two-door room.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "You have breached the initial loop and entered the deeper antechamber.",
+          "objectives": [
+            {
+              "id": "obj_loop_breached",
+              "text": "Initial loop breached.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 100,
+        "drachmae": 20,
+        "items": [
+          "item_vb_med_bottle_full"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_countdown",
+      "title": "The Crimson Countdown",
+      "category": "main",
+      "summary": "Roman numerals freshly painted in blood on the antechamber wall are descending from IX toward zero as you explore each quadrant of the space.",
+      "currentStage": "tally_numerals",
+      "stages": {
+        "tally_numerals": {
+          "description": "Explore the dark kitchen, the wood-paneled maze, and the visceral room to advance the count.",
+          "objectives": [
+            {
+              "id": "obj_numeral_ix",
+              "text": "Observe numeral IX after navigating the kitchen and dining hall.",
+              "completed": false
+            },
+            {
+              "id": "obj_numeral_viii",
+              "text": "Observe numeral VIII after escaping the paneled labyrinth.",
+              "completed": false
+            },
+            {
+              "id": "obj_numeral_vii",
+              "text": "Observe numeral VII after investigating the visceral room.",
+              "completed": false
+            },
+            {
+              "id": "obj_numeral_zero",
+              "text": "Reach the green armchair room as the countdown strikes zero.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The countdown has reached its conclusion. The final door to judgment stands unlocked.",
+          "objectives": [
+            {
+              "id": "obj_countdown_finished",
+              "text": "Countdown concluded.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 250,
+        "drachmae": 50,
+        "items": [
+          "item_vb_void_lantern"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_rag",
+      "title": "The Shroud without a Body",
+      "category": "side",
+      "summary": "Track and neutralize the levitating coarse rag that projects nausea, blurred vision, and temporal distortion across the corridors.",
+      "currentStage": "hunt_rag",
+      "stages": {
+        "hunt_rag": {
+          "description": "Confront the hovering rag entity in the corridor and kitchen.",
+          "objectives": [
+            {
+              "id": "obj_defeat_first_rag",
+              "text": "Strike down the rag in the initial dark corridor.",
+              "completed": false
+            },
+            {
+              "id": "obj_gather_cloth",
+              "text": "Recover a sample of the floating entity cloth.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The shroud has been proven to be empty fabric, robbed of its toxic grip on your mind.",
+          "objectives": [
+            {
+              "id": "obj_rag_neutralized",
+              "text": "Rag entity neutralized.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 120,
+        "drachmae": 25,
+        "items": [
+          "mat_vb_entity_cloth"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_music_box",
+      "title": "The Fire-Ember Melody",
+      "category": "side",
+      "summary": "Investigate the swirling cloud of dust and embers at the dead end of the carpeted hallway and silence its ceaseless chime.",
+      "currentStage": "silence_melody",
+      "stages": {
+        "silence_melody": {
+          "description": "Approach the music box at the end of the long hallway and examine its mechanism.",
+          "objectives": [
+            {
+              "id": "obj_disperse_embers",
+              "text": "Disperse the ember cloud in the long hallway.",
+              "completed": false
+            },
+            {
+              "id": "obj_claim_music_box",
+              "text": "Retrieve the rattling music box from the alcove.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The music box rests in your pack, silent and motionless at last.",
+          "objectives": [
+            {
+              "id": "obj_music_box_claimed",
+              "text": "Music box secured.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 100,
+        "drachmae": 20,
+        "items": [
+          "item_vb_music_box"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_memories",
+      "title": "Records of the Clinic",
+      "category": "side",
+      "summary": "Recover patient case files, intake vouchers, and diagnostic records from the archive cabinets to piece together your institutional past.",
+      "currentStage": "gather_records",
+      "stages": {
+        "gather_records": {
+          "description": "Search the filing room and speak with the Archivist to assemble the case files.",
+          "objectives": [
+            {
+              "id": "obj_find_case_one",
+              "text": "Retrieve Case File #001 from the filing cabinets.",
+              "completed": false
+            },
+            {
+              "id": "obj_find_contract",
+              "text": "Locate a signed Self-Admission Contract.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The institutional records confirm your methodology. The clinic was your domain of absolute control.",
+          "objectives": [
+            {
+              "id": "obj_records_assembled",
+              "text": "Clinical archive inspected.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 150,
+        "drachmae": 30,
+        "items": [
+          "item_vb_clarity_tonic"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_father",
+      "title": "A Complaint Concerning Transit",
+      "category": "side",
+      "summary": "Deal with the distraught father in the clinic lobby who is desperately seeking to register a complaint regarding his missed transportation.",
+      "currentStage": "resolve_father",
+      "stages": {
+        "resolve_father": {
+          "description": "Decide whether to deceive the father into involuntary commitment or reveal the grim truth of his situation.",
+          "objectives": [
+            {
+              "id": "obj_father_decision",
+              "text": "Confront the distressed father in the clinic lobby.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The father's encounter is concluded, leaving an indelible mark upon your alignment.",
+          "objectives": [
+            {
+              "id": "obj_father_resolved",
+              "text": "The father's fate decided.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 180,
+        "drachmae": 40,
+        "items": [
+          "item_vb_med_bottle_full"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_dogs",
+      "title": "Bella and Braxton",
+      "category": "side",
+      "summary": "Revisit the childhood memory of the upstairs tiled bathroom and the message left in the porcelain tub.",
+      "currentStage": "inspect_tub",
+      "stages": {
+        "inspect_tub": {
+          "description": "Locate the clawfoot tub and recover the father's shaving blade from the mirrored cabinet.",
+          "objectives": [
+            {
+              "id": "obj_inspect_clawfoot",
+              "text": "Examine the stains in the porcelain clawfoot bathtub.",
+              "completed": false
+            },
+            {
+              "id": "obj_retrieve_blade",
+              "text": "Retrieve the father's shaving blade from the cabinet.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The memory is intact. A point had to be made so your parents would listen.",
+          "objectives": [
+            {
+              "id": "obj_message_remembered",
+              "text": "Childhood message recalled.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 160,
+        "drachmae": 35,
+        "items": [
+          "item_vb_shaving_blade"
+        ]
+      }
+    },
+    {
+      "id": "quest_vb_the_verdict",
+      "title": "The Final Accounting",
+      "category": "main",
+      "summary": "Face the ultimate manifestation in the Hall of the Final Verdict and claim the key to the waking room door.",
+      "currentStage": "face_verdict",
+      "stages": {
+        "face_verdict": {
+          "description": "Enter the amphitheater, take your place upon the green fabric armchair, and defeat the collective judgment.",
+          "objectives": [
+            {
+              "id": "obj_sit_in_chair",
+              "text": "Sit upon the green armchair in the Judgment Hall.",
+              "completed": false
+            },
+            {
+              "id": "obj_defeat_verdict_form",
+              "text": "Defeat the physical manifestation of the Verdict.",
+              "completed": false
+            }
+          ]
+        },
+        "completed": {
+          "description": "The Verdict has been dismantled. The final door stands open back to where you first awoke.",
+          "objectives": [
+            {
+              "id": "obj_verdict_concluded",
+              "text": "Judgment completed.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 400,
+        "drachmae": 100,
+        "items": [
+          "item_vb_the_verdict_key"
+        ]
+      }
+    }
+  ]
+}

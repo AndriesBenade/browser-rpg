@@ -1,0 +1,176 @@
+{
+  "lootTables": [
+    {
+      "id": "loot_vb_rag_drop",
+      "name": "The Rag Drops",
+      "currency": {
+        "min": 2,
+        "max": 6
+      },
+      "entries": [
+        {
+          "itemId": "mat_vb_entity_cloth",
+          "chance": 1,
+          "guaranteed": true,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "mat_vb_void_ash",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_vb_sprinter_drop",
+      "name": "The Sprinter Drops",
+      "currency": {
+        "min": 1,
+        "max": 4
+      },
+      "entries": [
+        {
+          "itemId": "mat_vb_glass_shard",
+          "chance": 0.8,
+          "guaranteed": true,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_vb_entity_generic",
+      "name": "Generic Entity Drops",
+      "currency": {
+        "min": 1,
+        "max": 5
+      },
+      "entries": [
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "mat_vb_void_ash",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "mat_vb_glass_shard",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_vb_kitchen_search",
+      "name": "Kitchen Cupboard Search",
+      "currency": {
+        "min": 4,
+        "max": 10
+      },
+      "entries": [
+        {
+          "itemId": "item_vb_iron_key_c",
+          "chance": 1,
+          "guaranteed": true,
+          "isUnique": true,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_vb_glass_vial",
+          "chance": 0.8,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item_vb_bandage_cloth",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ]
+    },
+    {
+      "id": "loot_vb_filing_search",
+      "name": "Filing Cabinet Search",
+      "currency": {
+        "min": 5,
+        "max": 12
+      },
+      "entries": [
+        {
+          "itemId": "item_vb_journal_clinic",
+          "chance": 1,
+          "guaranteed": true,
+          "isUnique": true,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item_vb_admissions_form",
+          "chance": 1,
+          "guaranteed": true,
+          "isUnique": true,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "mat_vb_ash_dust",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ]
+    },
+    {
+      "id": "loot_vb_gut_search",
+      "name": "Anatomical Residue Search",
+      "currency": {
+        "min": 6,
+        "max": 15
+      },
+      "entries": [
+        {
+          "itemId": "item_vb_iron_key_b",
+          "chance": 1,
+          "guaranteed": true,
+          "isUnique": true,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "mat_vb_blood_iron",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "mat_vb_void_ash",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ]
+    }
+  ]
+}

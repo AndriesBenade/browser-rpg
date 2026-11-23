@@ -1,0 +1,148 @@
+{
+  "materials": [
+    {
+      "id": "mat_vb_void_ash",
+      "name": "Void Ash",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 0.2,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 2,
+        "durability": 3,
+        "flexibility": 8,
+        "heatResistance": 5,
+        "magicalAffinity": 7,
+        "purity": 60
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting",
+        "vb_entity_alchemy"
+      ],
+      "description": "Fine, weightless grey powder gathered where popped lights and fading apparitions collapse."
+    },
+    {
+      "id": "mat_vb_glass_shard",
+      "name": "Glass Shard",
+      "category": "mineral",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 6,
+      "properties": {
+        "hardness": 7,
+        "durability": 4,
+        "flexibility": 1,
+        "heatResistance": 3,
+        "magicalAffinity": 3,
+        "purity": 90
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting"
+      ],
+      "description": "Jagged shards of popped incandescent bulbs and shattered medicine vials."
+    },
+    {
+      "id": "mat_vb_void_resin",
+      "name": "Void Resin",
+      "category": "organic",
+      "rarity": "uncommon",
+      "weightKg": 0.5,
+      "valueDrachmae": 18,
+      "properties": {
+        "hardness": 4,
+        "durability": 6,
+        "flexibility": 7,
+        "heatResistance": 4,
+        "magicalAffinity": 8,
+        "purity": 55
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting",
+        "vb_entity_alchemy"
+      ],
+      "description": "Congealed dark sap scraped from doorframes that refuse to open."
+    },
+    {
+      "id": "mat_vb_entity_cloth",
+      "name": "Entity Cloth",
+      "category": "textile",
+      "rarity": "uncommon",
+      "weightKg": 0.3,
+      "valueDrachmae": 22,
+      "properties": {
+        "hardness": 1,
+        "durability": 5,
+        "flexibility": 10,
+        "heatResistance": 2,
+        "magicalAffinity": 9,
+        "purity": 40
+      },
+      "compatibleProfessions": [
+        "vb_entity_alchemy"
+      ],
+      "description": "A tattered scrap of coarse fabric that retains residual levitation and a toxic chill."
+    },
+    {
+      "id": "mat_vb_blood_iron",
+      "name": "Blood-Tempered Iron",
+      "category": "metal",
+      "rarity": "rare",
+      "weightKg": 1.2,
+      "valueDrachmae": 35,
+      "properties": {
+        "hardness": 8,
+        "durability": 9,
+        "flexibility": 3,
+        "heatResistance": 7,
+        "magicalAffinity": 5,
+        "purity": 75
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting"
+      ],
+      "description": "Dense iron recovered from surgical tables and bathtub drainage pipes, dark with dried hemoglobin."
+    },
+    {
+      "id": "mat_vb_clarity_crystal",
+      "name": "Clarity Crystal",
+      "category": "mineral",
+      "rarity": "rare",
+      "weightKg": 0.4,
+      "valueDrachmae": 45,
+      "properties": {
+        "hardness": 6,
+        "durability": 7,
+        "flexibility": 2,
+        "heatResistance": 4,
+        "magicalAffinity": 10,
+        "purity": 95
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting",
+        "vb_entity_alchemy"
+      ],
+      "description": "A crystalline prism formed by intense focal thought amidst overwhelming sensory distortion."
+    },
+    {
+      "id": "mat_vb_ash_dust",
+      "name": "Entity Ash Dust",
+      "category": "metal",
+      "rarity": "common",
+      "weightKg": 0.1,
+      "valueDrachmae": 8,
+      "properties": {
+        "hardness": 1,
+        "durability": 2,
+        "flexibility": 9,
+        "heatResistance": 5,
+        "magicalAffinity": 6,
+        "purity": 70
+      },
+      "compatibleProfessions": [
+        "vb_void_crafting",
+        "vb_entity_alchemy"
+      ],
+      "description": "Fine grey particulate residue left behind by dissolved apparitions."
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "characters": [
+    {
+      "id": "npc_vb_the_witness",
+      "name": "The Witness",
+      "title": "Watcher of the Numerals",
+      "locationId": "loc_vb_antechamber",
+      "disposition": -10,
+      "faction": "faction_vb_the_echoes",
+      "dialogueTreeId": "dialogue_vb_the_witness",
+      "description": "A hooded figure standing motionlessly in the corner of the two-door antechamber, pointing toward the blood-red Roman numerals on the wall.",
+      "attributes": {
+        "strength": 8,
+        "agility": 10,
+        "endurance": 12,
+        "intelligence": 14,
+        "wisdom": 16,
+        "charisma": 6
+      },
+      "isEssential": true
+    },
+    {
+      "id": "npc_vb_the_father",
+      "name": "The Distressed Father",
+      "title": "Echo of the Deceived",
+      "locationId": "loc_vb_clinic_lobby",
+      "disposition": -40,
+      "faction": "faction_vb_the_remembered",
+      "dialogueTreeId": "dialogue_vb_the_father",
+      "description": "A disheveled man clutching a crumpled dispatch notice. He pacing restlessly in the clinic lobby, desperately repeating that his booked ride never arrived.",
+      "attributes": {
+        "strength": 11,
+        "agility": 10,
+        "endurance": 12,
+        "intelligence": 10,
+        "wisdom": 9,
+        "charisma": 11
+      },
+      "inventory": [
+        {
+          "itemId": "item_vb_case_file_father",
+          "quantity": 1
+        }
+      ],
+      "isEssential": false,
+      "onDeath": {
+        "setFlags": {
+          "father_echo_dismissed": true
+        },
+        "addJournalChronicle": {
+          "title": "The Father's Dissolution",
+          "text": "The distressed father vanished into cold mist, still clutching the phantom dispatch notice."
+        }
+      }
+    },
+    {
+      "id": "npc_vb_the_archivist",
+      "name": "The Clinic Archivist",
+      "title": "Keeper of Case Records",
+      "locationId": "loc_vb_filing_room",
+      "disposition": 0,
+      "faction": "faction_vb_the_architecture",
+      "dialogueTreeId": "dialogue_vb_the_archivist",
+      "description": "A seated bureaucratic silhouette whose spectacles reflect shifting fluorescent lights. It methodically files patient commitments into iron drawers.",
+      "attributes": {
+        "strength": 10,
+        "agility": 10,
+        "endurance": 10,
+        "intelligence": 18,
+        "wisdom": 16,
+        "charisma": 10
+      },
+      "isEssential": true
+    },
+    {
+      "id": "npc_vb_the_girl",
+      "name": "The Unmet Daughter",
+      "title": "Phantom of the Newborn",
+      "locationId": "loc_vb_the_void",
+      "disposition": -20,
+      "faction": "faction_vb_the_remembered",
+      "dialogueTreeId": "dialogue_vb_the_girl",
+      "description": "A pale, translucent young woman standing at the edge of the abyss, weeping softly into her hands.",
+      "attributes": {
+        "strength": 6,
+        "agility": 10,
+        "endurance": 8,
+        "intelligence": 12,
+        "wisdom": 14,
+        "charisma": 12
+      },
+      "isEssential": true
+    },
+    {
+      "id": "npc_vb_the_intern",
+      "name": "The Orderly",
+      "title": "Silent Attendant",
+      "locationId": "loc_vb_clinic_lobby",
+      "disposition": -15,
+      "faction": "faction_vb_the_remembered",
+      "dialogueTreeId": "dialogue_vb_the_intern",
+      "description": "A young clinical orderly standing rigidly at attention beside the examination doors, awaiting Vermin's bell chime with blank obedience.",
+      "attributes": {
+        "strength": 14,
+        "agility": 11,
+        "endurance": 14,
+        "intelligence": 9,
+        "wisdom": 10,
+        "charisma": 8
+      },
+      "isEssential": false
+    },
+    {
+      "id": "npc_vb_receptionist",
+      "name": "The Clinic Receptionist",
+      "title": "Intake Clerk",
+      "locationId": "loc_vb_clinic_lobby",
+      "disposition": -5,
+      "faction": "faction_vb_the_remembered",
+      "dialogueTreeId": "dialogue_vb_receptionist",
+      "description": "A weary receptionist seated behind a glass intake partition, sorting complaints about confusing business signs and missed appointments.",
+      "attributes": {
+        "strength": 9,
+        "agility": 10,
+        "endurance": 11,
+        "intelligence": 12,
+        "wisdom": 11,
+        "charisma": 10
+      },
+      "isEssential": false
+    }
+  ]
+}
