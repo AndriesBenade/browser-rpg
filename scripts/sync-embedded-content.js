@@ -19,8 +19,7 @@ const zlib = require('zlib');
 const ROOT = path.join(__dirname, '..');
 const HTML = path.join(ROOT, 'index.html');
 const MANIFESTS = [
-  'content/campaigns/greek_mythology/campaign.json',
-  'content/campaigns/dev_test_campaign/campaign.json',
+  'content/campaigns/tutorial/campaign.json',
   'content/campaigns/northern_realms/campaign.json',
   'content/campaigns/ashen_ledger/campaign.json',
   'content/campaigns/vermin/campaign.json'

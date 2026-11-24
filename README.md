@@ -1,10 +1,10 @@
 # Browser-RPG
 
 Offline-capable, browser-based modular tabletop RPG engine with four built-in campaigns:
-* **Hellas: Mythos of the Heroic Age** (Classical Greek mythology)
-* **Lanternfall: The Brindle Ford Trials** (Coastal frontier sandbox & engine showcase)
+* **The Wayfarer's Proving: First Steps** (Compact guided tutorial adventure & engine introduction)
 * **The Northern Realms** (Nordic open-world highland fantasy)
 * **The Ashen Ledger: Frontier of the Toll** (Expansive original dark fantasy)
+* **What Remains of Vermin Black** (Atmospheric psychological horror & mystery)
 
 ## Quick Start
 * **Play Offline**: Open `index.html` directly in any modern browser (all built-in campaign data and drawn maps are embedded).
@@ -12,6 +12,7 @@ Offline-capable, browser-based modular tabletop RPG engine with four built-in ca
 * **Run Automated Tests**: `npm test` (runs all 8 test suites and verifies embedded offline content sync).
 * **Sync Offline Bundle**: `npm run sync:embedded` after editing files under `content/`.
 * **Build Minified Release**: `npm install` (once), then `npm run build` to produce a compressed standalone copy in `dist/`.
+* **Deploy to Cloudflare**: `npm run deploy` (builds `dist/` and deploys static assets to Cloudflare Workers via `cf deploy ./dist`).
 
 ## Folder Organization
 * `index.html` - Complete playable engine (UI, rules, combat, crafting, magic, world maps, and embedded offline campaign bundle).

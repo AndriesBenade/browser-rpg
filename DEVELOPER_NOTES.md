@@ -8,6 +8,30 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 42 - 2026-11-24 (Compact Tutorial Campaign, Final 4-Campaign Lineup & Legacy Cleanup)
+* **Collaborator / Model**: User & Antigravity
+* **Repository Sync & Teammate Update Review**:
+  * Flattened the zip-extracted nested workspace back to repo root (`c:\Users\Liza\Documents\browser-rpg\`) and cleaned macOS zip artifacts (`__MACOSX/`, `.DS_Store`).
+  * Audited teammate's new psychological horror campaign (`content/campaigns/vermin/`, **"What Remains of Vermin Black"**, 22 locations, 8 quests, 6 NPCs, 5 creatures, 34 items, 4 spells, custom crimson/void theme, `map.svg`, `worldIntro`) - verified 100% clean static + functional validation (`0` errors, `0` warnings).
+* **New Default Compact Tutorial Campaign (`content/campaigns/tutorial/`, `campaign_tutorial`)**:
+  * Created **"The Wayfarer's Proving: First Steps"** (`isDefault: true`), a compact 25-module hands-on coastal tutorial island designed to teach every core engine system before tackling the larger campaigns:
+    * **5 Strongly Connected Locations** (`Proving Courtyard`, `Ember Forge Terrace`, `Whispering Grove`, `Old Watchtower Ruins`, `Proving Beacon Cliff`) with a custom simplified drawn coastal island `map.svg` (`680x540`) and Step 0 cinematic `worldIntro` prologue.
+    * **Warm Slate, Lantern-Gold & Emerald Theme** (`#0c1012` void, `#d4a24c` accent, `#3d8b6e` secondary).
+    * **Character Creation**: 3 origins, 3 classes (`Proving Vanguard`, `Wayfarer Scout`, `Runic Scholar`, each with real passive/active class features and starter gear/consumables), 3 backgrounds, 3 traits.
+    * **Systems Coverage**: 28 items spanning all 7 Inventory Categories (including equippable Rings & Jewelry), 3 crafting professions + 6 numeric-property materials + 6 concealed crafting templates, 4 field combinations (`combo_tut_hone_spear`, `combo_tut_ember_coat`, `combo_tut_quick_salve`, `combo_tut_socket_amulet`), 3 campaign spells integrated into Global Magic, lockpicking chest + heaveable obstacle, Rune Archway riddle puzzle, 4 NPCs (merchant + recruitable companion `Scout Pippin`), 4 creatures across 3 encounters (solo wolf, frontline/backline raider duo, mini-boss Cinder-Horn Sentinel), and 4 quests (main quest with explicit `completeOnArrive: true`, crafting trial, grove combat trial, and a hidden mission triggered via `Search Area`).
+* **Removed Outgoing Campaigns & Left Target 3 Campaigns 100% Untouched**:
+  * Cleanly removed `content/campaigns/greek_mythology/`, `content/campaigns/dev_test_campaign/`, legacy `content/world/`, `content/adventures/`, `content/packs/`, and empty legacy directories (`content/encounters/`, `content/factions/`, `content/loot_tables/`), plus obsolete `tests/dev_campaign_tests.js`.
+  * Verified **zero bytes modified** in `content/campaigns/northern_realms/`, `content/campaigns/ashen_ledger/`, and `content/campaigns/vermin/`.
+* **Engine, Embedded Bundle & Test Suite Modernization**:
+  * Updated `index.html` (`BUILT_IN_CAMPAIGN_MANIFESTS`, default `activeCampaignId`, `getInitialState()`, `migrateState()`, `getGreekModulePaths()`/`applyGreekContent()`, `openCharacterCreationWizard()` trait pre-seeding, scoped `usesDefaultContentFallbacks()` strictly to `campaign_greek_mythology`, defensive `rollWeather()` label/icon fallback, and `unique`/`relic` parity in `getRarityRank()`).
+  * Updated `scripts/sync-embedded-content.js` to bundle the exact 4 shipped campaigns (`109` files in sync, `261,840` base64 chars), updated `package.json`, `scripts/build-release.js`, and `README.md`.
+  * Added dedicated `tests/tutorial_campaign_tests.js` (`5/5`) and modernized all existing suites (`engine_tests.js` `82/82`, `behaviour_tests.js` `113/113`, `northern_realms_tests.js` `12/12`, `multi_enemy_combat_tests.js` `6/6`, `phase2_systems_tests.js` `11/11`, `global_magic_morality_tests.js` `5/5`, `ashen_ledger_tests.js` `11/11` -> **245/245 passing** + `sync-embedded-content.js --check`).
+  * Live browser visual verification confirmed the exact 4-campaign lineup, Step 0 Prologue, Character Creation, Proving Courtyard Story view, 7-tab Inventory, and Proving Isle custom `map.svg` with `0` console/page errors.
+* **Cloudflare Workers Static Assets Deployment**:
+  * Registered `workers.dev` subdomain `forfriends-abrm` and deployed the minified `dist/` release (`110` static assets, excluding `server.py` via `dist/.assetsignore`) via `cf deploy ./dist`.
+  * Live URL: `https://browser-rpg.forfriends-abrm.workers.dev` (redeploy anytime via `npm run deploy`).
+  * Added `.cloudflare/` to `.gitignore`, auto-generation of `dist/.assetsignore` to `scripts/build-release.js`, and `"deploy"` script to `package.json`.
+
 ### Session 41 - 2026-11-22 (Dedicated Inventory Categories: Rings & Jewelry, Consumables & Tools & Materials)
 * **Collaborator / Model**: User & Antigravity
 * **Inventory Category Filter Overhaul (`index.html`)**:

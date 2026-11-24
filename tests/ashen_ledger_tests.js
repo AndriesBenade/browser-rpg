@@ -367,9 +367,9 @@ async function bootAshenLedger(opts = {}) {
     engine.startQuest('quest_al_moral_pos_sanctuary');
     await engine.saveGame(5);
 
-    // Switch away to Greek Mythology to verify campaign switching & theme swap, then reload slot 5
-    await startCampaign(env, engine, 'campaign_greek_mythology');
-    assert.strictEqual(engine.activeCampaignId, 'campaign_greek_mythology', 'Must switch away cleanly to Greek Mythology');
+    // Switch away to Tutorial campaign to verify campaign switching & theme swap, then reload slot 5
+    await startCampaign(env, engine, 'campaign_tutorial');
+    assert.strictEqual(engine.activeCampaignId, 'campaign_tutorial', 'Must switch away cleanly to Tutorial campaign');
 
     await engine.loadGame(5);
     assert.strictEqual(engine.activeCampaignId, 'campaign_ashen_ledger', 'Loaded save must restore Ashen Ledger campaign');
@@ -688,14 +688,13 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(qV.completed, true, 'Talking to Captain Voss after clearing raid completes the quest');
     assert.strictEqual(qV.objectives.obj_report_voss.completed, true, 'Turn-in objective marks complete on quest completion');
 
-    // Verify genuine completeOnArrive: true objectives (Dev Test Gull Rock) STILL auto-complete on arrival
-    const envDev = createSandbox();
-    const eDev = await bootEngine(envDev);
-    await startCampaign(envDev, eDev, 'campaign_dev_test');
-    eDev.startQuest('quest_dev_lantern');
-    eDev.setQuestStage('quest_dev_lantern', 'reach_rock');
-    eDev.completeArrivalObjectives('loc_dev_gull_rock');
-    assert.strictEqual(eDev.state.worldState.quests['quest_dev_lantern'].objectives.obj_arrive_rock.completed, true, 'Explicit completeOnArrive: true objective still completes on arrival');
+    // Verify genuine completeOnArrive: true objectives (Tutorial Beacon Cliff) STILL auto-complete on arrival
+    const envTut = createSandbox();
+    const eTut = await bootEngine(envTut);
+    await startCampaign(envTut, eTut, 'campaign_tutorial');
+    eTut.setQuestStage('quest_tut_proving', 'stage_03_beacon');
+    eTut.completeArrivalObjectives('loc_tut_beacon_cliff');
+    assert.strictEqual(eTut.state.worldState.quests['quest_tut_proving'].objectives.obj_reach_cliff.completed, true, 'Explicit completeOnArrive: true objective still completes on arrival');
   });
 
   console.log('\n=================================================================');

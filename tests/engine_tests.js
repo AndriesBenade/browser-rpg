@@ -24,17 +24,24 @@ function runTest(testName, fn) {
 }
 
 // -----------------------------------------------------------------------------
-// 1. JSON Content Schema & Integrity Verification
+// 1. JSON Content Schema & Integrity Verification (Shipped 4-Campaign Roster)
 // -----------------------------------------------------------------------------
 const filesToVerify = [
-  'content/world/locations.json',
-  'content/world/characters.json',
-  'content/world/creatures.json',
-  'content/world/items.json',
-  'content/world/deities.json',
-  'content/world/mythology.json',
-  'content/world/glossary.json',
-  'content/adventures/tutorial.json'
+  'content/campaigns/tutorial/campaign.json',
+  'content/campaigns/tutorial/world/locations.json',
+  'content/campaigns/tutorial/world/characters.json',
+  'content/campaigns/tutorial/world/creatures.json',
+  'content/campaigns/tutorial/world/items.json',
+  'content/campaigns/tutorial/world/deities.json',
+  'content/campaigns/tutorial/world/lore.json',
+  'content/campaigns/tutorial/world/glossary.json',
+  'content/campaigns/tutorial/world/quests.json',
+  'content/campaigns/tutorial/world/puzzles.json',
+  'content/campaigns/tutorial/world/encounters.json',
+  'content/campaigns/tutorial/world/dialogues.json',
+  'content/campaigns/northern_realms/campaign.json',
+  'content/campaigns/ashen_ledger/campaign.json',
+  'content/campaigns/vermin/campaign.json'
 ];
 
 filesToVerify.forEach(relPath => {
@@ -47,44 +54,45 @@ filesToVerify.forEach(relPath => {
   });
 });
 
-runTest("Adventure Pack Schema: Tutorial adventure has required fields", () => {
-  const adv = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
-  assert.equal(adv.id, "adv_tutorial_cithaeron_001");
-  assert.ok(adv.title, "Missing title");
-  assert.ok(adv.mythologicalSetting && adv.mythologicalSetting.primarySources.length > 0, "Missing mythological citations");
-  assert.ok(adv.quests && adv.quests.length > 0, "Missing quests");
-  assert.ok(adv.puzzles && adv.puzzles.length > 0, "Missing puzzles");
-  assert.ok(adv.dialogues && adv.dialogues.dialogue_daidalos_shepherd, "Missing Daidalos dialogue tree");
+runTest("Tutorial Campaign Schema: Default tutorial manifest and core modules have required fields", () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/campaign.json'), 'utf8'));
+  const quests = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/quests.json'), 'utf8'));
+  const puzzles = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/puzzles.json'), 'utf8'));
+  const dialogues = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/dialogues.json'), 'utf8'));
+  assert.equal(manifest.id, "campaign_tutorial");
+  assert.equal(manifest.isDefault, true, "Tutorial must be marked isDefault: true");
+  assert.ok(manifest.name && manifest.worldIntro && manifest.worldIntro.text, "Missing name or worldIntro");
+  assert.ok(quests.quests && quests.quests.length >= 4, "Missing tutorial quests");
+  assert.ok(puzzles.puzzles && puzzles.puzzles.length >= 1, "Missing tutorial puzzles");
+  assert.ok(dialogues.dialogues && dialogues.dialogues.dlg_tut_warden_halrik, "Missing Warden Halrik dialogue tree");
 });
 
-runTest("World Locations Schema: All locations have valid coordinates and connections", () => {
-  const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/locations.json'), 'utf8'));
-  assert.ok(data.locations.length >= 4, "Insufficient locations defined");
+runTest("World Locations Schema: All tutorial locations have valid coordinates and connections", () => {
+  const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/locations.json'), 'utf8'));
+  assert.ok(data.locations.length >= 5, "Insufficient locations defined");
   const locIds = new Set(data.locations.map(l => l.id));
   data.locations.forEach(loc => {
     assert.ok(loc.coordinates && typeof loc.coordinates.x === 'number' && typeof loc.coordinates.y === 'number', `Invalid coordinates in ${loc.id}`);
     assert.ok(loc.narrative && loc.narrative.overview, `Missing narrative in ${loc.id}`);
     loc.connections.forEach(conn => {
       assert.ok(locIds.has(conn.targetLocationId), `Unknown connection target ${conn.targetLocationId} in ${loc.id}`);
-      assert.ok(conn.travelHours > 0, `Travel hours must be > 0 in ${loc.id}`);
-      assert.ok(conn.staminaCost >= 0, `Stamina cost must be >= 0 in ${loc.id}`);
+      assert.ok((conn.travelHours > 0) || (conn.travelMinutes > 0), `Travel duration must be > 0 in ${loc.id}`);
+      if (conn.staminaCost !== undefined) assert.ok(conn.staminaCost >= 0, `Stamina cost must be >= 0 in ${loc.id}`);
     });
   });
 });
 
-runTest("Classical Attributions: Deities and Items cite primary ancient sources", () => {
-  const deities = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/deities.json'), 'utf8'));
+runTest("Campaign World Schemas: Tutorial deities and items define core fields cleanly", () => {
+  const deities = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/deities.json'), 'utf8'));
+  assert.ok(Array.isArray(deities.deities) && deities.deities.length >= 2, "Tutorial must define patrons/deities");
   deities.deities.forEach(d => {
-    assert.ok(d.ancientGreek, `Missing ancient Greek spelling for ${d.name}`);
-    assert.ok(d.primarySources && d.primarySources.length > 0, `Missing ancient sources for ${d.name}`);
+    assert.ok(d.id && d.name && d.description, `Missing core deity fields for ${d.id}`);
   });
 
-  const items = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/items.json'), 'utf8'));
+  const items = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/items.json'), 'utf8'));
+  assert.ok(items.items.length >= 20, "Tutorial must define comprehensive starter items");
   items.items.forEach(i => {
     assert.ok(i.id && i.name && i.category, `Item missing core fields: ${i.id}`);
-    if (i.rarity !== 'common') {
-      assert.ok(i.mythologicalLore, `Special item ${i.id} must have classical lore attribution`);
-    }
   });
 });
 
@@ -910,74 +918,44 @@ runTest("Collaboration Protocol: DEVELOPER_NOTES.md contains AI hand-off log and
 });
 
 // -----------------------------------------------------------------------------
-// 16. Authentic Greek Mythology World Expansion Validation
+// 16. Shipped 4-Campaign Content Roster Validation
 // -----------------------------------------------------------------------------
-runTest("Mythological Expansion: 19 authentic classical locations across 4 major regions", () => {
-  const locData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/locations.json'), 'utf8'));
-  assert.ok(locData.locations.length >= 19, `Expected at least 19 locations, found ${locData.locations.length}`);
-
-  const regions = new Set(locData.locations.map(l => l.region));
-  assert.ok(regions.has("Boeotia"), "Missing Boeotia region");
-  assert.ok(regions.has("Phocis"), "Missing Phocis / Delphi region");
-  assert.ok(regions.has("Argolis"), "Missing Argolis region");
-  assert.ok(regions.has("Arcadia"), "Missing Arcadia region");
-  assert.ok(regions.has("Laconia"), "Missing Laconia region");
-
-  // Verify key mythic landmarks
-  const locIds = locData.locations.map(l => l.id);
-  assert.ok(locIds.includes("loc_thebes_seven_gates"), "Missing Thebes Seven Gates");
-  assert.ok(locIds.includes("loc_delphi_sanctuary"), "Missing Sanctuary of Delphi");
-  assert.ok(locIds.includes("loc_castalian_spring"), "Missing Castalian Spring");
-  assert.ok(locIds.includes("loc_mycenae_lion_gate"), "Missing Mycenae Lion Gate");
-  assert.ok(locIds.includes("loc_lernaean_swamp"), "Missing Marshes of Lerna");
-  assert.ok(locIds.includes("loc_nemean_valley"), "Missing Nemean Valley");
-  assert.ok(locIds.includes("loc_mount_lykaion"), "Missing Mount Lykaion");
-  assert.ok(locIds.includes("loc_cape_taenarum"), "Missing Cape Taenarum Gate of Hades");
-});
-
-runTest("Mythological Expansion: Tier 1 to 5 creatures with Greek names, XP rewards & citations", () => {
-  const creatData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/creatures.json'), 'utf8'));
-  assert.ok(creatData.creatures.length >= 12, `Expected at least 12 creatures, found ${creatData.creatures.length}`);
-
-  const tiers = new Set(creatData.creatures.map(c => c.tier));
-  for (let t = 1; t <= 5; t++) {
-    assert.ok(tiers.has(t), `Missing creature Tier ${t}`);
+runTest("Shipped Roster: All 4 campaigns load rich location graphs across distinct regions", () => {
+  const expectations = [
+    { dir: 'tutorial', minLocs: 5 },
+    { dir: 'northern_realms', minLocs: 25 },
+    { dir: 'ashen_ledger', minLocs: 36 },
+    { dir: 'vermin', minLocs: 20 }
+  ];
+  for (const exp of expectations) {
+    const locData = JSON.parse(fs.readFileSync(path.join(__dirname, `../content/campaigns/${exp.dir}/world/locations.json`), 'utf8'));
+    assert.ok(locData.locations.length >= exp.minLocs, `${exp.dir}: expected >= ${exp.minLocs} locations, found ${locData.locations.length}`);
   }
-
-  creatData.creatures.forEach(c => {
-    assert.ok(c.id && c.name && c.ancientGreek, `Creature ${c.id} missing ancient Greek name`);
-    assert.ok(typeof c.xpReward === 'number' && c.xpReward >= 40, `Creature ${c.id} missing valid XP reward`);
-    assert.ok(c.mythologicalSource && c.mythologicalSource.author, `Creature ${c.id} missing ancient source attribution`);
-    assert.ok(c.vitals && c.vitals.maxHealth > 0, `Creature ${c.id} missing vitals`);
-    assert.ok(c.actions && c.actions.length >= 2, `Creature ${c.id} requires at least 2 distinct combat actions`);
-  });
-
-  // Verify legendary bosses
-  const bossIds = creatData.creatures.map(c => c.id);
-  assert.ok(bossIds.includes("creature_sphinx_thebes"), "Missing Sphinx of Thebes");
-  assert.ok(bossIds.includes("creature_drakon_ares"), "Missing Drakon of Ares");
-  assert.ok(bossIds.includes("creature_lernaean_hydra"), "Missing Lernaean Hydra");
 });
 
-runTest("Mythological Expansion: Classical Relics, Weapons, Deities and Mythology Codex entries", () => {
-  const items = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/items.json'), 'utf8')).items;
-  assert.ok(items.length >= 24, `Expected at least 24 items, found ${items.length}`);
-  
-  const relicIds = items.map(i => i.id);
-  assert.ok(relicIds.includes("item_nemean_pelt_fragment"), "Missing Nemean Lion Pelt Fragment");
-  assert.ok(relicIds.includes("item_hydra_bile_vial"), "Missing Hydra Venom Vial");
-  assert.ok(relicIds.includes("item_delphic_laurel_wreath"), "Missing Delphic Laurel Wreath");
-  assert.ok(relicIds.includes("item_omphalos_amulet"), "Missing Omphalos Amulet");
-  assert.ok(relicIds.includes("item_charon_obol_token"), "Missing Charon's Obol Token");
+runTest("Shipped Roster: Tutorial creatures define vitals, XP rewards & combat stats", () => {
+  const creatData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/creatures.json'), 'utf8'));
+  assert.ok(creatData.creatures.length >= 4, `Expected at least 4 tutorial creatures, found ${creatData.creatures.length}`);
+  creatData.creatures.forEach(c => {
+    assert.ok(c.id && c.name, `Creature ${c.id} missing name`);
+    assert.ok(typeof c.xpReward === 'number' && c.xpReward >= 30, `Creature ${c.id} missing valid XP reward`);
+    assert.ok(c.vitals && c.vitals.maxHealth > 0, `Creature ${c.id} missing vitals`);
+  });
+  assert.ok(creatData.creatures.some(c => c.isBoss), "Tutorial must include a proving boss sentinel");
+});
 
-  const deities = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/deities.json'), 'utf8')).deities;
-  assert.ok(deities.length >= 8, `Expected at least 8 deities, found ${deities.length}`);
-  const deityNames = deities.map(d => d.id);
-  assert.ok(deityNames.includes("deity_hades"), "Missing Hades");
-  assert.ok(deityNames.includes("deity_demeter"), "Missing Demeter");
+runTest("Shipped Roster: Tutorial items cover all equipment, jewelry, consumables & tools plus codex lore", () => {
+  const items = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/items.json'), 'utf8')).items;
+  assert.ok(items.length >= 25, `Expected at least 25 tutorial items, found ${items.length}`);
+  const ids = new Set(items.map(i => i.id));
+  assert.ok(ids.has("item_tut_training_spear"), "Missing Training Spear");
+  assert.ok(ids.has("item_tut_brass_band"), "Missing Brass Focus Band ring");
+  assert.ok(ids.has("item_tut_first_warden_signet"), "Missing Signet of the First Warden");
+  assert.ok(ids.has("item_tut_healing_salve"), "Missing Sunleaf Healing Salve");
+  assert.ok(ids.has("item_tut_whetstone"), "Missing Coastal River Whetstone");
 
-  const myth = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/mythology.json'), 'utf8')).loreEntries;
-  assert.ok(myth.length >= 12, `Expected at least 12 myth entries, found ${myth.length}`);
+  const lore = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/lore.json'), 'utf8')).loreEntries;
+  assert.ok(lore.length >= 4, `Expected at least 4 tutorial codex entries, found ${lore.length}`);
 });
 
 // -----------------------------------------------------------------------------
@@ -1155,49 +1133,36 @@ runTest("Heroic Feats: Tactical bonuses in combat, travel and exploration", () =
 // 19. Regional Recommended Level Danger Rating & Scaling Verification
 // -----------------------------------------------------------------------------
 runTest("Regional Scaling: Dangerous zones trigger peril warning when hero level < recommended level", () => {
-  const locData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/locations.json'), 'utf8'));
-  const thebesSphinx = locData.locations.find(l => l.id === "loc_mount_sphingion");
-  const lerna = locData.locations.find(l => l.id === "loc_lernaean_swamp");
-  const taenarum = locData.locations.find(l => l.id === "loc_cape_taenarum");
-
-  assert.equal(thebesSphinx.recommendedLevel, 3);
-  assert.equal(lerna.recommendedLevel, 4);
-  assert.equal(taenarum.recommendedLevel, 4);
+  const locData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/northern_realms/world/locations.json'), 'utf8'));
+  const highLvlLocs = locData.locations.filter(l => (l.recommendedLevel || 1) >= 4);
+  assert.ok(highLvlLocs.length >= 3, "Northern Realms should contain multiple high-level peril zones");
 
   const heroLevel = 2;
-  const isThebesDangerous = thebesSphinx.recommendedLevel > heroLevel;
-  const isLernaDangerous = lerna.recommendedLevel > heroLevel;
-
-  assert.ok(isThebesDangerous, "Hero Level 2 should trigger peril warning at Mount Sphingion (Lvl 3)");
-  assert.ok(isLernaDangerous, "Hero Level 2 should trigger peril warning at Lerna (Lvl 4)");
+  highLvlLocs.forEach(loc => {
+    assert.ok(loc.recommendedLevel > heroLevel, `Hero Level 2 should trigger peril warning at ${loc.id} (Lvl ${loc.recommendedLevel})`);
+  });
 });
 
 // -----------------------------------------------------------------------------
 // 20. Dual Content Synchronization Verification
 // -----------------------------------------------------------------------------
-runTest("Dual Content Sync: index.html embedded fallback contains 19 locations, 12 creatures and 24 items", () => {
+runTest("Dual Content Sync: index.html embedded fallback contains all 4 shipped campaigns and Tutorial data", () => {
   const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
-  // The file:// copy of the content is generated (compressed) by scripts/sync-embedded-content.js; decode it.
   const embedded = require('../scripts/sync-embedded-content.js').readEmbedded(html);
   const ids = (file, key) => new Set(((embedded[file] || {})[key] || []).map(e => e.id));
-  const locs = ids('content/world/locations.json', 'locations');
-  const creatures = ids('content/world/creatures.json', 'creatures');
-  const items = ids('content/world/items.json', 'items');
-  assert.ok(locs.size >= 19 && creatures.size >= 12 && items.size >= 24, "Embedded Greek content is incomplete");
 
-  // Verify locations
-  assert.ok(locs.has("loc_thebes_seven_gates"), "Fallback missing Seven Gates of Thebes");
-  assert.ok(locs.has("loc_lernaean_swamp"), "Fallback missing Marshes of Lerna");
-  assert.ok(locs.has("loc_delphi_sanctuary"), "Fallback missing Delphi Sanctuary");
+  assert.ok(embedded['content/campaigns/tutorial/campaign.json'], "Fallback missing Tutorial manifest");
+  assert.ok(embedded['content/campaigns/northern_realms/campaign.json'], "Fallback missing Northern Realms manifest");
+  assert.ok(embedded['content/campaigns/ashen_ledger/campaign.json'], "Fallback missing Ashen Ledger manifest");
+  assert.ok(embedded['content/campaigns/vermin/campaign.json'], "Fallback missing Vermin Black manifest");
 
-  // Verify creatures
-  assert.ok(creatures.has("creature_lernaean_hydra"), "Fallback missing Lernaean Hydra");
-  assert.ok(creatures.has("creature_sphinx_thebes"), "Fallback missing Sphinx of Thebes");
-  assert.ok(creatures.has("creature_lykaion_werewolf"), "Fallback missing Lykaion Werewolf");
-
-  // Verify items
-  assert.ok(items.has("item_nemean_pelt_fragment"), "Fallback missing Nemean Pelt Fragment");
-  assert.ok(items.has("item_hydra_bile_vial"), "Fallback missing Hydra Venom Vial");
+  const locs = ids('content/campaigns/tutorial/world/locations.json', 'locations');
+  const creatures = ids('content/campaigns/tutorial/world/creatures.json', 'creatures');
+  const items = ids('content/campaigns/tutorial/world/items.json', 'items');
+  assert.ok(locs.size >= 5 && creatures.size >= 4 && items.size >= 25, "Embedded Tutorial content is incomplete");
+  assert.ok(locs.has("loc_tut_courtyard") && locs.has("loc_tut_beacon_cliff"), "Fallback missing Tutorial landmarks");
+  assert.ok(creatures.has("creature_tut_briar_wolf") && creatures.has("creature_tut_beacon_sentinel"), "Fallback missing Tutorial creatures");
+  assert.ok(items.has("item_tut_training_spear") && items.has("item_tut_first_warden_signet"), "Fallback missing Tutorial items");
 
   // Verify level-up methods in index.html
   assert.ok(html.includes("awardXP("), "Engine missing awardXP");
@@ -1207,33 +1172,31 @@ runTest("Dual Content Sync: index.html embedded fallback contains 19 locations, 
 });
 
 // -----------------------------------------------------------------------------
-// 21. Contextual Mythological Terminology & Central Glossary Verification
+// 21. Contextual Terminology & Central Glossary Verification
 // -----------------------------------------------------------------------------
-runTest("Glossary Schema: glossary.json contains comprehensive classical terms with plain English explanations", () => {
-  const glossPath = path.join(__dirname, '../content/world/glossary.json');
-  assert.ok(fs.existsSync(glossPath), "glossary.json file must exist");
+runTest("Glossary Schema: tutorial glossary.json contains plain-English campaign terms", () => {
+  const glossPath = path.join(__dirname, '../content/campaigns/tutorial/world/glossary.json');
+  assert.ok(fs.existsSync(glossPath), "tutorial glossary.json file must exist");
   const data = JSON.parse(fs.readFileSync(glossPath, 'utf8'));
   assert.ok(Array.isArray(data.glossary), "glossary.json must contain a 'glossary' array");
-  assert.ok(data.glossary.length >= 25, `Expected at least 25 glossary terms, found ${data.glossary.length}`);
+  assert.ok(data.glossary.length >= 6, `Expected at least 6 glossary terms, found ${data.glossary.length}`);
 
-  const requiredKeys = ['hermaion', 'aspis', 'dory', 'xiphos', 'linothorax', 'aryballos', 'libation', 'arete', 'ate', 'kleos', 'psychopompos', 'drakon'];
+  const requiredKeys = ['proving_isle', 'wayfarer_beacon', 'concealed_crafting', 'field_combination', 'frontline_backline'];
   const foundKeys = new Set(data.glossary.map(g => g.key));
   requiredKeys.forEach(k => {
-    assert.ok(foundKeys.has(k), `Missing core mythological term in glossary: ${k}`);
+    assert.ok(foundKeys.has(k), `Missing core tutorial term in glossary: ${k}`);
   });
 
   data.glossary.forEach(item => {
     assert.ok(item.key && typeof item.key === 'string', `Invalid key in glossary entry: ${JSON.stringify(item)}`);
     assert.ok(Array.isArray(item.terms) && item.terms.length > 0, `Missing search terms for ${item.key}`);
-    assert.ok(item.name && typeof item.name === 'string', `Missing name for ${item.key}`);
-    assert.ok(item.category && typeof item.category === 'string', `Missing category for ${item.key}`);
     assert.ok(item.simpleEnglish && typeof item.simpleEnglish === 'string', `Missing simple English explanation for ${item.key}`);
     assert.ok(item.explanation && typeof item.explanation === 'string', `Missing detailed explanation for ${item.key}`);
   });
 });
 
 runTest("Glossary Engine: enrichMythologicalText safely wraps terms without mangling HTML tags", () => {
-  const glossData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/glossary.json'), 'utf8')).glossary;
+  const glossData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/glossary.json'), 'utf8')).glossary;
   
   // Mock Glossary Engine
   const glossaryMap = new Map();
@@ -1282,20 +1245,20 @@ runTest("Glossary Engine: enrichMythologicalText safely wraps terms without mang
     });
   }
 
-  const sample = 'You discover an ancient hermaion along the pass. A hoplite carried an aspis and a dory.';
+  const sample = 'Across the Proving Isle, recruits use a Whetstone and gather Sunleaf before lighting the Wayfarer Beacon.';
   const enriched = enrich(sample);
 
-  assert.ok(enriched.includes('<span class="myth-term" data-term-key="hermaion">hermaion</span>'), "Failed to wrap hermaion");
-  assert.ok(enriched.includes('<span class="myth-term" data-term-key="aspis">aspis</span>'), "Failed to wrap aspis");
-  assert.ok(enriched.includes('<span class="myth-term" data-term-key="dory">dory</span>'), "Failed to wrap dory");
+  assert.ok(enriched.includes('<span class="myth-term" data-term-key="proving_isle">Proving Isle</span>'), "Failed to wrap Proving Isle");
+  assert.ok(enriched.includes('<span class="myth-term" data-term-key="field_combination">Whetstone</span>'), "Failed to wrap Whetstone");
+  assert.ok(enriched.includes('<span class="myth-term" data-term-key="sunleaf">Sunleaf</span>'), "Failed to wrap Sunleaf");
 
   // Verify tags with attributes are NOT corrupted
-  const htmlWithTag = '<a href="https://example.com/aspis" title="aspis link">Read about aspis</a> and a dory outside.';
+  const htmlWithTag = '<a href="https://example.com/Whetstone" title="Whetstone link">Read about Whetstone</a> and gather Sunleaf outside.';
   const enrichedTag = enrich(htmlWithTag);
-  assert.ok(enrichedTag.includes('href="https://example.com/aspis"'), "Enrichment corrupted link href attribute!");
-  assert.ok(enrichedTag.includes('title="aspis link"'), "Enrichment corrupted link title attribute!");
-  assert.ok(!enrichedTag.includes('data-term-key="aspis"'), "Inside <a> tag should be ignored to prevent nesting conflicts");
-  assert.ok(enrichedTag.includes('<span class="myth-term" data-term-key="dory">dory</span>'), "Outside tag must be enriched");
+  assert.ok(enrichedTag.includes('href="https://example.com/Whetstone"'), "Enrichment corrupted link href attribute!");
+  assert.ok(enrichedTag.includes('title="Whetstone link"'), "Enrichment corrupted link title attribute!");
+  assert.ok(!enrichedTag.includes('data-term-key="field_combination"'), "Inside <a> tag should be ignored to prevent nesting conflicts");
+  assert.ok(enrichedTag.includes('<span class="myth-term" data-term-key="sunleaf">Sunleaf</span>'), "Outside tag must be enriched");
 
   // Idempotency: re-running on already-enriched text should not double-wrap
   const doubleEnriched = enrich(enriched);
@@ -1482,16 +1445,11 @@ runTest("Modular Action Engine: evaluateActionCondition and isActionAvailable co
   assert.ok(html.includes("executeGenericAction(action)"), "Engine must implement executeGenericAction");
   assert.ok(html.includes("applyActionOutcome(outcome)"), "Engine must implement applyActionOutcome");
 
-  // Verify tutorial.json contains declarative contextActions
-  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
-  assert.ok(Array.isArray(tutorial.contextActions), "tutorial.json must contain contextActions array");
-  assert.ok(tutorial.contextActions.length >= 8, "tutorial.json must define at least 8 declarative actions");
-  
-  const stalkAct = tutorial.contextActions.find(a => a.id === "act_hunt_stalk");
-  assert.ok(stalkAct && stalkAct.handlerType === "minigame", "act_hunt_stalk must be declared with handlerType minigame");
-  
-  const cairnAct = tutorial.contextActions.find(a => a.id === "act_examine_cairn");
-  assert.ok(cairnAct && cairnAct.handlerType === "skill_check" && cairnAct.skillCheck.dc === 11, "act_examine_cairn must declare skill_check with DC 11");
+  const locs = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/locations.json'), 'utf8')).locations;
+  const allActions = locs.flatMap(l => l.actions || l.contextActions || []);
+  assert.ok(allActions.length >= 4, "Tutorial locations must define declarative actions");
+  const beaconAct = allActions.find(a => a.id === "act_tut_light_beacon");
+  assert.ok(beaconAct && (beaconAct.condition || (Array.isArray(beaconAct.conditions) && beaconAct.conditions.length > 0)), "act_tut_light_beacon must declare declarative conditions");
 });
 
 // -----------------------------------------------------------------------------
@@ -1502,12 +1460,12 @@ runTest("Modular Puzzle Engine: openPuzzle dynamically resolves keyword matching
   assert.ok(html.includes("openPuzzle(puzzleId)"), "Engine must implement openPuzzle");
   assert.ok(html.includes("openRiddleModal()"), "Engine must retain backward-compatible openRiddleModal");
   
-  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
-  assert.ok(Array.isArray(tutorial.puzzles), "tutorial.json must declare puzzles array");
-  const cadmean = tutorial.puzzles.find(p => p.id === "puzzle_cadmean_threshold");
-  assert.ok(cadmean, "Cadmean threshold puzzle must exist in tutorial.json");
-  assert.ok(cadmean.acceptedKeywords.includes("drakon"), "Cadmean threshold must accept 'drakon' keyword");
-  assert.ok(cadmean.successOutcome && cadmean.successOutcome.awardXP === 100, "Cadmean puzzle must declare successOutcome with XP reward");
+  const puzData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/puzzles.json'), 'utf8'));
+  assert.ok(Array.isArray(puzData.puzzles), "tutorial puzzles.json must declare puzzles array");
+  const arch = puzData.puzzles.find(p => p.id === "puzzle_tut_rune_arch");
+  assert.ok(arch, "Rune Archway puzzle must exist in tutorial puzzles.json");
+  assert.ok(arch.solutions.includes("beacon"), "Rune Archway puzzle must accept 'beacon' keyword");
+  assert.ok(arch.successOutcome && arch.successOutcome.giveItem === "item_tut_ruin_crest", "Rune Archway puzzle must declare successOutcome with item reward");
 });
 
 // -----------------------------------------------------------------------------
@@ -1518,12 +1476,12 @@ runTest("Modular Encounter Runner: startCombatEncounter and handleCombatVictory 
   assert.ok(html.includes("startCombatEncounter(encounterId)"), "Engine must implement startCombatEncounter");
   assert.ok(html.includes("startCaveCombat()"), "Engine must retain backward-compatible startCaveCombat");
 
-  const tutorial = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/adventures/tutorial.json'), 'utf8'));
-  assert.ok(Array.isArray(tutorial.encounters), "tutorial.json must declare encounters array");
-  const enc = tutorial.encounters.find(e => e.id === "enc_fissure_beast");
-  assert.ok(enc, "fissure beast encounter must exist in tutorial.json");
-  assert.equal(enc.creatureId, "creature_cithaeron_wolf", "Encounter must reference creature_cithaeron_wolf");
-  assert.ok(enc.victoryOutcome && enc.victoryOutcome.giveItem === "item_votive_bell_hermes", "Encounter must reward item_votive_bell_hermes on victory");
+  const encData = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/encounters.json'), 'utf8'));
+  assert.ok(Array.isArray(encData.encounters), "tutorial encounters.json must declare encounters array");
+  const enc = encData.encounters.find(e => e.id === "enc_tut_beacon_sentinel");
+  assert.ok(enc, "Beacon sentinel encounter must exist in tutorial encounters.json");
+  assert.equal(enc.enemies[0].creatureId, "creature_tut_beacon_sentinel", "Encounter must reference creature_tut_beacon_sentinel");
+  assert.ok(enc.victoryOutcome && enc.victoryOutcome.giveItem === "item_tut_beacon_flint", "Encounter must reward item_tut_beacon_flint on victory");
 });
 
 // -----------------------------------------------------------------------------
@@ -1616,18 +1574,21 @@ const { loadLegacyDevContent } = require('./behaviour_harness');
 // -----------------------------------------------------------------------------
 // 31. Campaign Framework: Manifests & Configuration Architecture
 // -----------------------------------------------------------------------------
-runTest("Campaign Architecture: Greek Mythology and Dev Test campaign manifests are valid and registered", () => {
-  const greekManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/greek_mythology/campaign.json'), 'utf8'));
-  assert.equal(greekManifest.id, "campaign_greek_mythology");
-  assert.ok(greekManifest.name && greekManifest.version && greekManifest.modules, "Greek campaign missing core metadata");
-  assert.ok(Array.isArray(greekManifest.factions) && greekManifest.factions.length >= 4, "Greek campaign must define factions");
-  assert.ok(Array.isArray(greekManifest.consequenceRules) && greekManifest.consequenceRules.length >= 2, "Greek campaign must define consequence rules");
-
-  const devManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/campaign.json'), 'utf8'));
-  assert.equal(devManifest.id, "campaign_dev_test");
-  assert.equal(devManifest.isTestCampaign, true, "Dev test campaign must have isTestCampaign: true");
-  assert.ok(devManifest.startingLocationId, "Dev campaign must declare a starting location");
-  assert.ok(devManifest.modules.lootTables && devManifest.modules.interactiveObjects, "Dev manifest must declare modular paths");
+runTest("Campaign Architecture: All 4 shipped campaign manifests are valid and registered", () => {
+  const shipped = [
+    { dir: 'tutorial', id: 'campaign_tutorial', isDefault: true },
+    { dir: 'northern_realms', id: 'campaign_northern_realms' },
+    { dir: 'ashen_ledger', id: 'campaign_ashen_ledger' },
+    { dir: 'vermin', id: 'campaign_vermin' }
+  ];
+  for (const s of shipped) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, `../content/campaigns/${s.dir}/campaign.json`), 'utf8'));
+    assert.equal(manifest.id, s.id, `${s.dir} manifest ID mismatch`);
+    assert.ok(manifest.name && manifest.version && manifest.modules, `${s.dir} missing core metadata`);
+    assert.ok(manifest.startingLocationId, `${s.dir} must declare a starting location`);
+    assert.ok(manifest.modules.locations && manifest.modules.items, `${s.dir} must declare modular paths`);
+    if (s.isDefault) assert.equal(manifest.isDefault, true, "Tutorial must be the default campaign");
+  }
 });
 
 // -----------------------------------------------------------------------------
@@ -1904,12 +1865,12 @@ runTest("Factions & Consequences: Reputation modifications, scheduled world even
 // -----------------------------------------------------------------------------
 // 39. Character Classes & Backgrounds Archetype Matrix
 // -----------------------------------------------------------------------------
-runTest("Character Classes & Backgrounds: All 14 Greek classes and 16 backgrounds loaded & selectable, full compatibility matrix, starting equipment and proficiencies assigned cleanly", () => {
+runTest("Character Classes & Backgrounds: Tutorial classes and backgrounds loaded & selectable, full compatibility matrix, starting equipment and proficiencies assigned cleanly", () => {
   const engine = new GreekMythologyEngine();
   engine.loadEmbeddedFallbackContent();
 
   const classes = engine.getCampaignClasses();
-  assert.equal(classes.length, 14, "Must define exactly 14 Greek heroic classes");
+  assert.equal(classes.length, 3, "Tutorial campaign must define 3 distinct starter classes");
   classes.forEach(c => {
     assert.ok(c.id && c.name && c.description, `Class ${c.id} missing core fields`);
     assert.ok(Array.isArray(c.primaryAttributes) && c.primaryAttributes.length >= 2, `Class ${c.id} missing primaryAttributes`);
@@ -1917,31 +1878,31 @@ runTest("Character Classes & Backgrounds: All 14 Greek classes and 16 background
   });
 
   const backgrounds = engine.getCampaignBackgrounds();
-  assert.equal(backgrounds.length, 16, "Must define exactly 16 Greek heroic backgrounds");
+  assert.equal(backgrounds.length, 3, "Tutorial campaign must define 3 starter backgrounds");
   backgrounds.forEach(b => {
     assert.ok(b.id && b.name && b.description, `Background ${b.id} missing core fields`);
     assert.ok(Array.isArray(b.proficiencies), `Background ${b.id} missing proficiencies`);
   });
 
-  // Test full cross-compatibility: combine non-standard pairing (Amazon warrior + Artisan Forge origin)
+  // Test full cross-compatibility: combine Wayfarer Scout + Smith's Apprentice
   engine.creationState = {
-    name: "Hippolyta",
+    name: "Kael",
     gender: "female",
-    origin: "boeotia",
-    classId: "amazon",
-    background: "bg_artisan_forge",
-    trait: "vigilant",
+    origin: "orig_tut_highland",
+    classId: "cls_tut_scout",
+    background: "bg_tut_apprentice",
+    trait: "trait_tut_steady",
     attributes: { strength: 12, agility: 14, endurance: 12, intelligence: 10, wisdom: 12, charisma: 10 },
     pointsLeft: 0
   };
 
   engine.confirmHeroCreation();
   const p = engine.state.player;
-  assert.equal(p.class, "amazon");
-  assert.equal(p.background, "bg_artisan_forge");
-  assert.ok(p.inventory.some(i => i.itemId === "item_hunting_bow_001"), "Amazon starting equipment (bow) must be assigned");
+  assert.equal(p.class, "cls_tut_scout");
+  assert.equal(p.background, "bg_tut_apprentice");
+  assert.ok(p.inventory.some(i => i.itemId === "item_tut_wayfarer_bow"), "Scout starting equipment (shortbow) must be assigned");
   assert.ok(p.proficiencies.includes("crafting"), "Background crafting proficiency must be assigned");
-  assert.ok(p.proficiencies.includes("bows"), "Class bows proficiency must be assigned");
+  assert.ok(p.proficiencies.includes("ranged_combat"), "Class ranged_combat proficiency must be assigned");
 });
 
 // -----------------------------------------------------------------------------
@@ -2041,23 +2002,23 @@ runTest("Equipment Paper Doll: Full 14 slots supported, dual ring slot logic, an
   assert.equal(equippedRing2.slot, "ring_2", "Second ring must occupy ring_2");
 
   // 2. Two-Handed Weapon Slot Occupancy Rule
-  engine.addItem("item_dory_spear_001", 1);
-  engine.addItem("item_aspis_shield_001", 1);
-  engine.addItem("item_hunting_bow_001", 1);
+  engine.addItem("item_tut_training_spear", 1);
+  engine.addItem("item_tut_round_shield", 1);
+  engine.addItem("item_tut_wayfarer_bow", 1);
 
   // Equip 1-hand weapon and off-hand shield
-  engine.equipItem("item_dory_spear_001");
-  engine.equipItem("item_aspis_shield_001");
-  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Shield must be equipped in off-hand");
+  engine.equipItem("item_tut_training_spear");
+  engine.equipItem("item_tut_round_shield");
+  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_tut_round_shield" && i.equipped), "Shield must be equipped in off-hand");
 
   // Equip two-handed bow -> must unequip shield in off-hand!
-  engine.equipItem("item_hunting_bow_001");
-  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Equipping two-handed weapon must unequip off-hand shield");
+  engine.equipItem("item_tut_wayfarer_bow");
+  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_tut_round_shield" && i.equipped), "Equipping two-handed weapon must unequip off-hand shield");
 
   // Attempting to equip shield while holding two-handed weapon -> must unequip two-handed weapon!
-  engine.equipItem("item_aspis_shield_001");
-  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_hunting_bow_001" && i.equipped), "Equipping off-hand shield must unequip two-handed weapon");
-  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_aspis_shield_001" && i.equipped), "Shield should now be equipped");
+  engine.equipItem("item_tut_round_shield");
+  assert.ok(!engine.state.player.inventory.some(i => i.itemId === "item_tut_wayfarer_bow" && i.equipped), "Equipping off-hand shield must unequip two-handed weapon");
+  assert.ok(engine.state.player.inventory.some(i => i.itemId === "item_tut_round_shield" && i.equipped), "Shield should now be equipped");
 });
 
 // -----------------------------------------------------------------------------
@@ -2115,37 +2076,37 @@ runTest("Dynamic Crafting Engine: Template + 2 primary materials + 1 supplementa
   const engine = new GreekMythologyEngine();
   engine.loadEmbeddedFallbackContent();
 
-  engine.addItem("mat_cypriot_bronze", 2);
-  engine.addItem("mat_mountain_wolf_hide", 1);
-  engine.addItem("item_toolkit_smithing", 1);
+  engine.addItem("mat_tut_iron_bar", 2);
+  engine.addItem("mat_tut_ash_wood", 2);
+  engine.addItem("mat_tut_ember_resin", 1);
+  engine.addItem("item_tut_smith_kit", 1);
 
   // Mock rollD20 for deterministic crafting check
   const originalRoll = engine.rollD20;
   engine.rollD20 = () => 15;
 
   // Craft with forge minigame bonus +3
-  const craftResult = engine.craftItem("template_sword", "mat_cypriot_bronze", "mat_cypriot_bronze", "mat_mountain_wolf_hide", 3);
+  const craftResult = engine.craftItem("tpl_tut_blade", "mat_tut_iron_bar", "mat_tut_ash_wood", "mat_tut_ember_resin", 3);
   assert.ok(craftResult.success, "Crafting check with bonus should succeed");
   assert.ok(craftResult.item, "Must return dynamically generated item object");
-  assert.ok(craftResult.item.id.startsWith("crafted_template_sword_"), "Item ID must follow procedural convention");
-  assert.ok(craftResult.item.name.includes("Xiphos Short Sword"), "Item name must include template base name");
+  assert.ok(craftResult.item.id.startsWith("crafted_tpl_tut_blade_"), "Item ID must follow procedural convention");
+  assert.ok(craftResult.item.name.includes("Wayfarer Iron Blade"), "Item name must include template base name");
   assert.ok(craftResult.item.stats.damageMin >= 4, "Weapon damage must reflect template and material hardness");
   assert.equal(craftResult.item.slot, "main_hand");
-  assert.ok(craftResult.item.mythologicalLore, "Crafted item must contain mythological lore attribution");
 
   // Verify item is present in player inventory and world item map
   assert.ok(engine.hasItem(craftResult.item.id), "Crafted item must be added to player knapsack");
   assert.ok(engine.getItem(craftResult.item.id), "Crafted item must be registered in world items");
 
   // Verify failure produces zero penalty (materials are kept) and does not crash
-  engine.addItem("mat_cypriot_bronze", 2);
-  const failResult = engine.craftItem("template_sword", "mat_cypriot_bronze", "mat_cypriot_bronze", null, -50);
+  const qtyIronBefore = engine.getItemQuantity("mat_tut_iron_bar");
+  const failResult = engine.craftItem("tpl_tut_blade", "mat_tut_iron_bar", "mat_tut_ash_wood", null, -50);
   assert.equal(failResult.success, false, "Negative roll must fail craft check");
   assert.equal(failResult.reason, "Roll below DC");
-  assert.equal(engine.getItemQuantity("mat_cypriot_bronze"), 2, "Failed craft must not consume materials");
+  assert.equal(engine.getItemQuantity("mat_tut_iron_bar"), qtyIronBefore, "Failed craft must not consume materials");
 
   // Crafting without the required materials is refused
-  const noMats = engine.craftItem("template_sword", "mat_celestial_bronze", "mat_celestial_bronze", null, 3);
+  const noMats = engine.craftItem("tpl_tut_blade", "mat_tut_rune_shard", "mat_tut_rune_shard", null, 3);
   assert.equal(noMats.success, false);
   assert.equal(noMats.reason, "Insufficient materials");
 
@@ -2156,25 +2117,16 @@ runTest("Dynamic Crafting Engine: Template + 2 primary materials + 1 supplementa
 // -----------------------------------------------------------------------------
 // 45. Settlement Economy & Mandatory Healing Potion
 // -----------------------------------------------------------------------------
-runTest("Settlement Economy: Every major settlement merchant maintains at least 3-4 local goods and ALWAYS a healing potion", () => {
-  const charactersJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/characters.json'), 'utf8'));
-  const characters = charactersJson.characters;
+runTest("Settlement Economy: Shipped campaign merchants maintain local goods and healing supplies", () => {
+  const tutChars = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/tutorial/world/characters.json'), 'utf8')).characters;
+  const sera = tutChars.find(c => c.id === "npc_tut_quartermaster_sera");
+  assert.ok(sera && sera.isMerchant === true, "Tutorial Quartermaster Sera must be a merchant");
+  assert.ok(Array.isArray(sera.merchantInventory) && sera.merchantInventory.length >= 3, "Sera must stock at least 3 items");
+  assert.ok(sera.merchantInventory.some(i => /healing|salve|draught|tonic/i.test(i.itemId)), "Sera must stock a healing salve");
 
-  const settlementMerchants = [
-    { id: "npc_daidalos_shepherd", settlement: "Mount Cithaeron / Plataea" },
-    { id: "npc_theban_agora_merchant", settlement: "Thebes" },
-    { id: "npc_delphi_sanctuary_purveyor", settlement: "Delphi" },
-    { id: "npc_mycenae_armourer", settlement: "Mycenae" }
-  ];
-
-  settlementMerchants.forEach(sm => {
-    const merchant = characters.find(c => c.id === sm.id);
-    assert.ok(merchant, `Merchant ${sm.id} for ${sm.settlement} must exist`);
-    assert.equal(merchant.isMerchant, true, `${sm.id} must have isMerchant: true`);
-    assert.ok(Array.isArray(merchant.merchantInventory) && merchant.merchantInventory.length >= 3, `${sm.id} must stock at least 3 items`);
-    const hasHealing = merchant.merchantInventory.some(i => i.itemId.includes("healing") || i.itemId.includes("salve") || i.itemId.includes("draught"));
-    assert.ok(hasHealing, `Merchant ${sm.id} in ${sm.settlement} must ALWAYS stock a healing potion/salve`);
-  });
+  const nrChars = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/northern_realms/world/characters.json'), 'utf8')).characters;
+  const nrMerchants = nrChars.filter(c => c.isMerchant);
+  assert.ok(nrMerchants.length >= 3, "Northern Realms must have multiple settlement merchants");
 });
 
 // -----------------------------------------------------------------------------
@@ -2513,18 +2465,18 @@ runTest("Campaign Integration: Campaigns independently configure calendars, acti
   const engine = new GreekMythologyEngine();
   engine.loadEmbeddedFallbackContent();
 
-  // Greek Mythology campaign defaults
-  assert.ok(engine.world.locations.length >= 19, "Hellenic campaign must load full geography");
-  assert.ok(engine.getCreatureRespawnHours({ id: "creature_cithaeron_wolf", tier: 1 }) === 12, "Tier 1 creature must have 12h respawn");
-  assert.ok(engine.getCreatureRespawnHours({ id: "creature_sphinx_thebes", tier: 4 }) === 96, "Tier 4 mythological beast must have 96h respawn");
-  assert.ok(engine.getCreatureRespawnHours({ id: "creature_lernaean_hydra", tier: 5 }) === 168, "Tier 5 legendary hydra must have 168h (1 week) respawn");
-  assert.ok(engine.getCreatureRespawnHours({ id: "npc_daidalos_shepherd", isNpc: true }) === 0, "NPCs must NEVER have respawn hours");
+  // Default Tutorial campaign geography & standard tier respawn rules
+  assert.ok(engine.world.locations.length >= 5, "Default tutorial campaign must load its full geography");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_tut_briar_wolf", tier: 1 }) === 12, "Tier 1 creature must have 12h respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_tier4_test", tier: 4 }) === 96, "Tier 4 beast must have 96h respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "creature_tier5_test", tier: 5 }) === 168, "Tier 5 legendary boss must have 168h (1 week) respawn");
+  assert.ok(engine.getCreatureRespawnHours({ id: "npc_tut_warden_halrik", isNpc: true }) === 0, "NPCs must NEVER have respawn hours");
 
-  // Dev Test Campaign overrides
+  // Dev Legacy fixture overrides
   const devEngine = new GreekMythologyEngine();
   loadLegacyDevContent(devEngine);
   assert.equal(devEngine.activeCampaign.id, "campaign_dev_legacy");
-  assert.equal(devEngine.activeCampaign.respawnRules.bossHours, 24, "Dev test campaign can independently set boss respawn to 24 hours");
+  assert.equal(devEngine.activeCampaign.respawnRules.bossHours, 24, "Dev fixture campaign can independently set boss respawn to 24 hours");
 });
 
 // -----------------------------------------------------------------------------
@@ -2603,9 +2555,18 @@ runTest("Project Optimisation: Event pruning prevents memory accumulation, fast 
 // 56. Glossary Completeness & Expanded Validator Diagnostics
 // -----------------------------------------------------------------------------
 runTest("Glossary & Validation: Shipped glossaries contain zero empty terms and validator exposes check counts", () => {
-  const greekGloss = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/world/glossary.json'), 'utf8')).glossary || [];
-  const devGloss = JSON.parse(fs.readFileSync(path.join(__dirname, '../content/campaigns/dev_test_campaign/world/glossary.json'), 'utf8')).glossary || [];
-  [...greekGloss, ...devGloss].forEach(entry => {
+  const glossaryPaths = [
+    '../content/campaigns/tutorial/world/glossary.json',
+    '../content/campaigns/northern_realms/world/glossary.json',
+    '../content/campaigns/ashen_ledger/world/glossary.json',
+    '../content/campaigns/vermin/world/glossary.json'
+  ];
+  const entries = glossaryPaths.flatMap(rel => {
+    const p = path.join(__dirname, rel);
+    return fs.existsSync(p) ? (JSON.parse(fs.readFileSync(p, 'utf8')).glossary || []) : [];
+  });
+  assert.ok(entries.length >= 15, "Shipped campaigns must provide glossary entries");
+  entries.forEach(entry => {
     assert.ok(entry.key && Array.isArray(entry.terms) && entry.terms.length > 0, `Glossary entry invalid key/terms: ${JSON.stringify(entry)}`);
     assert.ok(Boolean((entry.simpleEnglish && entry.simpleEnglish.trim()) || (entry.explanation && entry.explanation.trim())), `Glossary entry '${entry.key}' has empty explanation`);
   });

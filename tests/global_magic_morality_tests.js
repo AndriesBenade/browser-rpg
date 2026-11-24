@@ -35,7 +35,7 @@ async function bootCampaign(id) {
 
   // 1. Arcane Knowledge Points, Milestones, Anti-Farming & Strict Separation from Casting Capacity
   await test('Global Magic 1: Arcane Knowledge Points earn strictly from non-repeatable skill milestones (never cast spam) & stay separate from casting capacity', async () => {
-    const { engine } = await bootCampaign('campaign_greek_mythology');
+    const { engine } = await bootCampaign('campaign_tutorial');
     const p = engine.state.player;
     p.skills.mythology_lore = 0;
     p.skills.investigation = 0;
@@ -60,7 +60,7 @@ async function bootCampaign(id) {
     assert.strictEqual(engine.getArcaneKnowledgeSummary().available, 2);
 
     // Casting a spell in combat does NOT directly grant AKP
-    engine.startCombat(engine.getCreature('creature_cithaeron_wolf'));
+    engine.startCombat(engine.getCreature('creature_tut_briar_wolf'));
     engine.castCombatSpell('bolt', 'standard');
     assert.strictEqual(engine.getArcaneKnowledgeSummary().totalEarned, 2, 'casting spells never directly farms AKP');
     engine.combatSession = null;
@@ -175,9 +175,9 @@ async function bootCampaign(id) {
     engine.combatSession = null;
   });
 
-  // 4. Cross-Campaign Compatibility (Greek + Dev + Northern Realms)
-  await test('Global Magic 4: shared spell acquisition works across Greek Mythology, Dev Campaign & Northern Realms', async () => {
-    for (const cid of ['campaign_greek_mythology', 'campaign_dev_legacy', 'campaign_northern_realms']) {
+  // 4. Cross-Campaign Compatibility (All 4 Shipped Campaigns + Dev Legacy Fixture)
+  await test('Global Magic 4: shared spell acquisition works across Tutorial, Northern Realms, Ashen Ledger & Vermin Black', async () => {
+    for (const cid of ['campaign_tutorial', 'campaign_northern_realms', 'campaign_ashen_ledger', 'campaign_vermin', 'campaign_dev_legacy']) {
       const { engine } = await bootCampaign(cid);
       engine.state.player.skills.mythology_lore = 2;
       const sum = engine.getArcaneKnowledgeSummary();

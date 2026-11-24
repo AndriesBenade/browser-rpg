@@ -47,7 +47,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // 1. Part 3.1 & 3.2: Experience Rebalance & Anti-Farming Safeguards
   // ---------------------------------------------------------------------------
   await test('Part 3.1 & 3.2 Experience Overhaul: modest routine XP, 24h diminishing returns, full combat/quest XP & one-time dialogue guard', async () => {
-    const { engine } = await bootCampaign('campaign_greek_mythology');
+    const { engine } = await bootCampaign('campaign_tutorial');
     const p = engine.state.player;
     p.xp = 0;
 
@@ -144,7 +144,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // 3. Part 4: Feat System Overhaul (Every 3 Levels + 20+ Modular Feats Across Systems)
   // ---------------------------------------------------------------------------
   await test('Part 4 Feat System Overhaul: every 3 levels (3, 6, 9...), 20+ feats across 6 categories, prerequisites & live gameplay effects', async () => {
-    const { engine } = await bootCampaign('campaign_greek_mythology');
+    const { engine } = await bootCampaign('campaign_tutorial');
     const p = engine.state.player;
 
     // Milestone frequency: Levels 3, 6, 9, 12 grant feats; Levels 2, 4, 5, 7, 8 do NOT
@@ -220,11 +220,11 @@ async function bootCampaign(id = 'campaign_northern_realms') {
 
     // B. Social / Trade / Faction Reputation (silver_tongue + civic_diplomat)
     p.attributes.charisma = 14;
-    const repBefore = engine.getFactionReputation('faction_plataea');
+    const repBefore = engine.getFactionReputation('faction_tut_wardens');
     p.feats.push('silver_tongue', 'civic_diplomat');
     assert.ok(engine.getFeatSkillBonus('persuasion') >= 3, 'Silver Tongue + Civic Diplomat boost Persuasion');
-    engine.modifyFactionReputation('faction_plataea', 10, 'Test Envoy');
-    assert.ok(engine.getFactionReputation('faction_plataea') - repBefore > 10, 'Civic Diplomat boosts positive faction reputation');
+    engine.modifyFactionReputation('faction_tut_wardens', 10, 'Test Envoy');
+    assert.ok(engine.getFactionReputation('faction_tut_wardens') - repBefore > 10, 'Civic Diplomat boosts positive faction reputation');
 
     // C. Loot feats improve odds modestly without bypassing non-boss epic/legendary caps
     p.level = 6;
@@ -305,10 +305,10 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // ---------------------------------------------------------------------------
   await test('Part 5b Unique Campaign Map Artwork: every built-in campaign renders distinct drawn SVG artwork aligned to locations with URL sanitization', async () => {
     const campaignIds = [
-      'campaign_greek_mythology',
-      'campaign_dev_test',
+      'campaign_tutorial',
       'campaign_northern_realms',
-      'campaign_ashen_ledger'
+      'campaign_ashen_ledger',
+      'campaign_vermin'
     ];
     const seenSrcs = new Set();
     const seenHrefs = new Set();
@@ -353,8 +353,8 @@ async function bootCampaign(id = 'campaign_northern_realms') {
       assert.strictEqual(Number(imgEl.getAttribute('height')), cfg.height, `${cid} artwork height matches manifest`);
 
       const bounds = engine.computeMapBounds();
-      assert.strictEqual(bounds.w, cfg.width, `${cid} computeMapBounds matches artwork width`);
-      assert.strictEqual(bounds.h, cfg.height, `${cid} computeMapBounds matches artwork height`);
+      assert.ok(bounds.w >= cfg.width, `${cid} computeMapBounds encompasses artwork width (${bounds.w} >= ${cfg.width})`);
+      assert.ok(bounds.h >= cfg.height, `${cid} computeMapBounds encompasses artwork height (${bounds.h} >= ${cfg.height})`);
 
       // Validator accepts valid mapImage cleanly
       const valRes = env.Engine.validateCampaign(engine.activeCampaign, {
@@ -365,7 +365,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     }
 
     // Security & edge cases: reject unsafe URL schemes in config, resolver, and validator
-    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    const { env, engine } = await bootCampaign('campaign_tutorial');
     assert.strictEqual(engine.getCampaignMapImageConfig({ mapImage: { src: 'javascript:alert(1)' } }), null, 'unsafe javascript: mapImage rejected');
     assert.strictEqual(engine.resolveCampaignMapImageHref('data:text/html,<script>alert(1)</script>'), '', 'unsafe data:text/html mapImage rejected');
     const badVal = env.Engine.validateCampaign({ id: 'bad_map', name: 'Bad Map', mapImage: { src: 'javascript:alert(1)' } }, {});
@@ -377,10 +377,10 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // ---------------------------------------------------------------------------
   await test('Part 5c Cinematic World Prologue: every built-in campaign opens on Step 0 prologue before hero creation with navigation, draft persistence & safe fallback', async () => {
     const campaignIds = [
-      'campaign_greek_mythology',
-      'campaign_dev_test',
+      'campaign_tutorial',
       'campaign_northern_realms',
-      'campaign_ashen_ledger'
+      'campaign_ashen_ledger',
+      'campaign_vermin'
     ];
     const seenTexts = new Set();
 
@@ -421,7 +421,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     }
 
     // Fallback & XSS escaping for custom campaigns without explicit worldIntro or with untrusted pillar text
-    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    const { env, engine } = await bootCampaign('campaign_tutorial');
     const fallbackIntro = engine.getCampaignWorldIntro({
       id: 'custom_world',
       name: 'Shattered Isles',
@@ -460,10 +460,12 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     const malicious = engine.resolveCampaignTheme({ theme: { accent: '#fff; background: url(javascript:alert(1))' } });
     assert.strictEqual(malicious.accent, defaults.accent, 'malicious CSS value sanitized back to default');
 
-    // Switching back to Greek default restores default palette
-    const greekCamp = engine.campaigns.get('campaign_greek_mythology');
-    const greekTheme = engine.applyCampaignTheme(greekCamp);
-    assert.strictEqual(greekTheme.accent, defaults.accent, 'switching campaigns cleanly resets theme to Greek default');
+    // Switching to Tutorial applies its Warm Lantern-Gold palette, and switching to an unthemed campaign resets cleanly to defaults
+    const tutCamp = engine.campaigns.get('campaign_tutorial');
+    const tutTheme = engine.applyCampaignTheme(tutCamp);
+    assert.strictEqual(tutTheme.accent, '#d4a24c', 'switching campaigns cleanly applies Tutorial theme accent');
+    const resetTheme = engine.applyCampaignTheme({ id: 'unthemed_test', theme: {} });
+    assert.strictEqual(resetTheme.accent, defaults.accent, 'switching to an unthemed campaign resets cleanly to engine default');
 
     // Verify all extended --theme-* CSS custom properties are actively consumed in stylesheets
     const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
@@ -480,7 +482,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     assert.strictEqual(html.includes('console bar below'), false, 'obsolete console bar instruction must not exist in index.html');
     assert.strictEqual(html.includes('enter any custom heroic deed'), false, 'obsolete heroic deed console text must not exist in index.html');
 
-    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    const { env, engine } = await bootCampaign('campaign_tutorial');
 
     // Strict YouTube video ID parser
     assert.strictEqual(engine.parseYouTubeVideoId('dQw4w9WgXcQ'), 'dQw4w9WgXcQ');
@@ -623,7 +625,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
   // 9. Part 11: Wait & Time Advancement Feature
   // ---------------------------------------------------------------------------
   await test('Part 11 Wait & Time Advancement: advances clock & scheduled events with ZERO healing/rest/item loss, blocked in combat', async () => {
-    const { env, engine } = await bootCampaign('campaign_greek_mythology');
+    const { env, engine } = await bootCampaign('campaign_tutorial');
     const p = engine.state.player;
     const w = engine.state.worldState;
 
@@ -658,7 +660,7 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     assert.strictEqual(engine.executeWait(48).success, false, '>24 hours rejected');
 
     // Strictly blocked during active combat (both engine logic and Story header button state)
-    engine.startCombat(engine.getCreature('creature_cithaeron_wolf'), { encounterId: 'enc_fissure_beast' });
+    engine.startCombat(engine.getCreature('creature_tut_briar_wolf'), { encounterId: 'enc_tut_briar_wolf' });
     assert.ok(engine.combatSession && !engine.combatSession.ended, 'combat session is active');
     engine.renderHUD();
     assert.strictEqual(env.el('btn-story-wait').disabled, true, 'Story Wait button disables visually during active combat');

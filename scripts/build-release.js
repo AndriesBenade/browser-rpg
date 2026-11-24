@@ -9,7 +9,7 @@
  *
  *   npm install          # once: installs esbuild (devDependency)
  *   npm run build        # writes dist/ and prints the sizes
- *                        (and runs the behaviour + Dev campaign test suites against dist/index.html)
+ *                        (and runs the behaviour + campaign test suites against dist/index.html)
  *
  * index.html stays the source: edit it, never dist/ (dist/ is not committed).
  */
@@ -91,6 +91,7 @@ function main() {
   fs.writeFileSync(path.join(DIST, 'index.html'), out);
   const content = copyContent(DIST);
   fs.copyFileSync(path.join(ROOT, 'server.py'), path.join(DIST, 'server.py'));
+  fs.writeFileSync(path.join(DIST, '.assetsignore'), 'server.py\n');
 
   console.log('Release build written to dist/');
   console.log(`  index.html : ${kb(srcBuf.length)} -> ${kb(out.length)} (${Math.round(100 - out.length / srcBuf.length * 100)}% smaller); gzipped ${kb(gz(srcBuf))} -> ${kb(gz(out))}`);
@@ -101,7 +102,7 @@ function main() {
     const { spawnSync } = require('child_process');
     const suites = [
       'tests/behaviour_tests.js',
-      'tests/dev_campaign_tests.js',
+      'tests/tutorial_campaign_tests.js',
       'tests/northern_realms_tests.js',
       'tests/phase2_systems_tests.js',
       'tests/global_magic_morality_tests.js',
