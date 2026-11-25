@@ -205,6 +205,9 @@ async function bootNR() {
   // ---------------------------------------------------------------------------
   await test('12.4 & 12.6 Target Selection & Melee Obstruction: frontline blocks melee to backline, zero cost on blocked attempt, ranged bypasses, clearing frontline exposes backline', async () => {
     const { env, engine } = await bootNR();
+    // Keep hero alive through multi-turn enemy counterattacks during targeting verification
+    engine.state.player.vitals.maxHp = 120;
+    engine.state.player.vitals.hp = 120;
 
     // Equip a melee weapon
     engine.addItem('item_nr_iron_longsword', 1);

@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23141b1e'/%3E%3Cpath d='M16 4l9 4v7c0 6.2-3.9 11.4-9 13-5.1-1.6-9-6.8-9-13V8l9-4z' fill='%23d4a24c'/%3E%3Cpath d='M16 7.5l5.8 2.6v4.7c0 4.2-2.5 7.8-5.8 9.1-3.3-1.3-5.8-4.9-5.8-9.1v-4.7L16 7.5z' fill='%231b2428'/%3E%3Ccircle cx='16' cy='15' r='2.8' fill='%2363c49e'/%3E%3C/svg%3E">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0d0f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Browser-RPG: Offline-capable, modular tabletop RPG campaign engine playable on desktop and mobile.">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -84,9 +89,12 @@
 
     html, body {
       height: 100vh;
+      height: 100dvh;
       max-height: 100vh;
-      width: 100vw;
+      max-height: 100dvh;
+      width: 100%;
       overflow: hidden; /* Zero page-level scrolling! */
+      overscroll-behavior: none;
       background-color: var(--bg-void);
       color: var(--marble-light);
       font-family: var(--font-body);
@@ -97,6 +105,15 @@
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(179, 139, 60, 0.08) 0%, transparent 60%),
         radial-gradient(circle at 10% 90%, rgba(32, 78, 120, 0.05) 0%, transparent 40%);
+    }
+
+    button, a, select, input, summary, .item-card, .campaign-card, .choice-card, .entity-chip, .action-card-btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #map-canvas-wrapper {
+      touch-action: none;
     }
 
     /* Classical Meander Greek Fret Border */
@@ -3943,10 +3960,160 @@
     .workbench-panel {
       max-height: 58% !important;
     }
-    @media (max-width: 720px) {
+    /* =========================================================================
+       MOBILE & TABLET RESPONSIVE OPTIMIZATIONS (ZERO HORIZONTAL OVERFLOW)
+       ========================================================================= */
+    .mobile-sidebar-toggle,
+    .mobile-sidebar-header,
+    .mobile-sidebar-backdrop {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-sidebar-toggle {
+        display: inline-flex !important;
+      }
+      body.mobile-sidebar-open .mobile-sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.62);
+        z-index: 390;
+      }
+      body.mobile-sidebar-open .story-sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(350px, 88vw);
+        max-height: 100dvh;
+        background: var(--bg-surface);
+        border-left: 2px solid var(--bronze-dark);
+        padding: calc(0.7rem + env(safe-area-inset-top)) 0.85rem calc(0.85rem + env(safe-area-inset-bottom));
+        z-index: 400;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: -8px 0 28px rgba(0, 0, 0, 0.78);
+      }
+      body.mobile-sidebar-open .mobile-sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
+        border-bottom: 1px solid var(--border-meander);
+        flex-shrink: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: calc(0.38rem + env(safe-area-inset-top)) calc(0.65rem + env(safe-area-inset-right)) 0.35rem calc(0.65rem + env(safe-area-inset-left));
+        gap: 0.35rem;
+      }
+      .brand-title {
+        font-size: 1.02rem;
+        letter-spacing: 0.1em;
+      }
+      .brand-subtitle {
+        font-size: 0.72rem;
+        padding-left: 0.5rem;
+      }
+      nav.main-nav {
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        scroll-snap-type: x proximity;
+        gap: 0.25rem;
+        padding-bottom: 2px;
+      }
+      nav.main-nav::-webkit-scrollbar,
+      #top-status-bar::-webkit-scrollbar,
+      .wizard-steps-indicator::-webkit-scrollbar {
+        display: none;
+      }
+      .nav-btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 0.72rem;
+        padding: 0.36rem 0.62rem;
+        min-height: 36px;
+        scroll-snap-align: start;
+      }
       #top-status-bar {
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0.28rem 0.65rem;
+        gap: 0.65rem;
+        font-size: 0.74rem;
+        white-space: nowrap;
+      }
+      #top-status-bar .status-group {
+        flex-wrap: nowrap !important;
+        flex-shrink: 0;
+        gap: 0.65rem;
+      }
+      .bar-track {
+        width: 48px;
+      }
+      main.engine-container {
+        padding: 0.35rem calc(0.45rem + env(safe-area-inset-right)) calc(0.4rem + env(safe-area-inset-bottom)) calc(0.45rem + env(safe-area-inset-left));
+        gap: 0.35rem;
+      }
+      .view-card-wrapper {
+        padding: 0.75rem;
+      }
+      .view-card-header {
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.6rem;
+      }
+      .view-card-title {
+        font-size: 1.05rem;
+      }
+      .location-header-banner {
+        padding: 0.5rem 0.75rem;
         flex-wrap: wrap;
         gap: 0.4rem;
+      }
+      .location-title {
+        font-size: 1rem;
+      }
+      .narrative-transcript {
+        padding: 0.65rem 0.75rem;
+        font-size: 0.94rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .resize-handle.horizontal {
+        display: none !important;
+      }
+      .action-control-deck {
+        max-height: 44dvh;
+        min-height: 145px;
+        padding: 0.5rem 0.65rem;
+      }
+      .action-card-btn, .entity-chip {
+        min-height: 38px;
+      }
+      .wizard-steps-indicator {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+        gap: 0.35rem;
+      }
+      .wizard-step-node {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 0.74rem;
+        padding: 0.3rem 0.55rem;
       }
       .journal-layout {
         grid-template-columns: 1fr !important;
@@ -3954,6 +4121,90 @@
       .journal-nav {
         flex-direction: row !important;
         flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand-subtitle,
+      .status-pill-origin {
+        display: none;
+      }
+      .map-controls-bar {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .map-ctrl-btn {
+        min-height: 36px;
+        padding: 0.3rem 0.52rem;
+        font-size: 0.72rem;
+      }
+      .wizard-prologue-card {
+        padding: 0.95rem;
+      }
+      .wizard-prologue-title {
+        font-size: 1.25rem;
+      }
+      .wizard-prologue-pillars {
+        grid-template-columns: 1fr !important;
+      }
+      .wizard-prologue-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+      }
+      .wizard-nav-btns {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .cards-selection-grid,
+      .campaign-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .form-input, .form-select, .classical-select {
+        font-size: 16px !important;
+      }
+      .inpage-modal-overlay {
+        padding: 0.4rem;
+      }
+      .inpage-dialogue-box,
+      .victory-modal-card,
+      .trade-box,
+      .confront-box,
+      .minigame-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 0.8rem) !important;
+        border-radius: 6px;
+      }
+      .inpage-dialogue-body {
+        padding: 0.8rem 0.9rem;
+      }
+      .dialogue-choice-btn {
+        min-height: 44px;
+        padding: 0.65rem 0.8rem;
+      }
+      .combat-body.multi-enemy-hero-bar #combat-player-box {
+        grid-template-columns: 1fr !important;
+      }
+      .trade-columns {
+        grid-template-columns: 1fr !important;
+      }
+      .trade-col {
+        max-height: 33dvh;
+      }
+      .levelup-skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      .item-floating-tooltip,
+      .glossary-popover {
+        max-width: calc(100vw - 16px) !important;
+        max-height: 70dvh;
+      }
+      .toast-notification-container {
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: calc(0.5rem + env(safe-area-inset-bottom));
+        max-width: none;
       }
     }
   </style>
@@ -3993,19 +4244,19 @@
         <span>Hero:</span> <strong id="hud-hero-name">Hero</strong>
       </div>
       <div class="status-pill">
-        <span>Rank:</span> <strong id="hud-hero-level" style="color: #ffe680;">Lvl 1</strong> <span id="hud-hero-title" style="color: var(--marble-dim); font-size: 0.72rem;">(Ephebos)</span>
+        <span>Rank:</span> <strong id="hud-hero-level" style="color: #ffe680;">Lvl 1</strong> <span id="hud-hero-title" style="color: var(--marble-dim); font-size: 0.72rem;">(Initiate)</span>
       </div>
-      <div class="status-pill" data-tooltip="Heroic Renown / Kleos XP">
-        <span id="hud-xp-label">Kleos XP:</span> <strong id="hud-hero-xp" style="color: var(--bronze-bright);">0 / 100</strong>
+      <div class="status-pill status-pill-xp" data-tooltip="Campaign Experience Points">
+        <span id="hud-xp-label">XP:</span> <strong id="hud-hero-xp" style="color: var(--bronze-bright);">0 / 100</strong>
       </div>
-      <div class="status-pill">
-        <span>Origin:</span> <strong id="hud-hero-origin" style="color: var(--marble-dim);">Boeotian</strong>
-      </div>
-      <div class="status-pill">
-        <span>Location:</span> <strong id="hud-location-name">Crossroads of Cithaeron</strong>
+      <div class="status-pill status-pill-origin">
+        <span>Origin:</span> <strong id="hud-hero-origin" style="color: var(--marble-dim);">Wayfarer</strong>
       </div>
       <div class="status-pill">
-        <span>Time:</span> <strong id="hud-time-display">Day 12, 08:30 (Morning)</strong>
+        <span>Location:</span> <strong id="hud-location-name">Proving Courtyard</strong>
+      </div>
+      <div class="status-pill">
+        <span>Time:</span> <strong id="hud-time-display">Day 1, 09:00 (Morning)</strong>
       </div>
     </div>
     <div class="status-group">
@@ -4044,7 +4295,7 @@
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
             <h3 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 1.1rem; margin: 0;">Available Campaigns</h3>
-            <span style="font-size: 0.8rem; color: var(--marble-dark);" id="campaign-count-indicator">2 Campaigns Installed</span>
+            <span style="font-size: 0.8rem; color: var(--marble-dark);" id="campaign-count-indicator">4 Campaigns Installed</span>
           </div>
           <div class="campaign-grid user-resizable" id="campaign-cards-grid">
             <!-- Dynamic campaign cards rendered here -->
@@ -4092,7 +4343,7 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
             <div>
               <label class="form-label">Hero's Name</label>
-              <input type="text" id="wiz-name-input" class="form-input" value="Alkaios" placeholder="Enter hero name..." oninput="window.engine.syncCreationIdentityInputs && window.engine.syncCreationIdentityInputs()">
+              <input type="text" id="wiz-name-input" class="form-input" value="Alden" placeholder="Enter hero name..." oninput="window.engine.syncCreationIdentityInputs && window.engine.syncCreationIdentityInputs()">
             </div>
             <div>
               <label class="form-label">Gender</label>
@@ -4182,13 +4433,16 @@
         <div class="narrative-panel" id="narrative-panel">
           <div class="location-header-banner">
             <div>
-              <div class="location-title" id="story-location-title">Crossroads of Mount Cithaeron</div>
-              <div class="location-region" id="story-location-region">Boeotia / Attica Borderlands</div>
+              <div class="location-title" id="story-location-title">Proving Courtyard</div>
+              <div class="location-region" id="story-location-region">Proving Isle</div>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; justify-content: flex-end;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
               <div id="story-location-weather" style="font-size: 0.8rem; color: var(--bronze-bright); font-style: italic;">
-                Fair Sky &bull; Sharp Pine Breeze
+                Clear Coastal Breeze
               </div>
+              <button type="button" class="nav-btn mobile-sidebar-toggle" id="btn-mobile-sidebar" style="font-size: 0.74rem; padding: 0.25rem 0.6rem;" onclick="window.engine.toggleMobileSidebar()" aria-label="Open travel, quests and companions panel">
+                🧭 Info
+              </button>
               <button type="button" class="nav-btn" id="btn-story-wait" style="font-size: 0.74rem; padding: 0.25rem 0.6rem;" onclick="window.engine.openWaitModal()" data-tooltip="Pass in-game time without resting, healing, or travelling">
                 ⏳ Wait
               </button>
@@ -4212,9 +4466,14 @@
           </div>
         </div>
 
-        <!-- Story Viewport Sidebar (Internally Scrollable) -->
+        <!-- Story Viewport Sidebar (Internally Scrollable; Drawer on Mobile) -->
+        <div class="mobile-sidebar-backdrop" id="mobile-sidebar-backdrop" onclick="window.engine.toggleMobileSidebar(false)"></div>
         <div class="resize-handle vertical" data-resize="sidebar" data-tooltip="Drag to resize the sidebar"></div>
         <div class="story-sidebar">
+          <div class="mobile-sidebar-header">
+            <span style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.92rem; letter-spacing: 0.06em;">Travel, Quests &amp; Party</span>
+            <button type="button" class="nav-btn" style="padding: 0.2rem 0.55rem; font-size: 0.76rem;" onclick="window.engine.toggleMobileSidebar(false)">✕ Close</button>
+          </div>
           <div class="side-widget" id="side-widget-quest">
             <div class="widget-title">
               <span id="side-quest-label">Active Objective</span>
@@ -7180,10 +7439,14 @@
          CAMPAIGN ARCHITECTURE & DYNAMIC MODULE LOADER
          ========================================================================= */
       async loadCampaignManifests() {
-        // Both built-in campaigns are described by their campaign.json. Under file:// (fetch blocked)
-        // fetchJson() returns the copies embedded in this file, so the campaign list is the same.
-        for (const manifestPath of GreekMythologyEngine.BUILT_IN_CAMPAIGN_MANIFESTS) {
-          const manifest = await this.fetchJson(manifestPath);
+        // Fetch all built-in campaign.json manifests in parallel while preserving registration order.
+        const loaded = await Promise.all(
+          GreekMythologyEngine.BUILT_IN_CAMPAIGN_MANIFESTS.map(async manifestPath => ({
+            manifestPath,
+            manifest: await this.fetchJson(manifestPath)
+          }))
+        );
+        for (const { manifestPath, manifest } of loaded) {
           if (manifest && manifest.id) this.registerCampaign(Object.assign({ manifestPath }, manifest));
         }
 
@@ -7214,6 +7477,8 @@
           const embedded = this.getEmbeddedFile(path);
           if (embedded) return embedded;
         }
+        if (!this._jsonCache) this._jsonCache = new Map();
+        if (this._jsonCache.has(path)) return GreekMythologyEngine.cloneJson(this._jsonCache.get(path));
         let res;
         try {
           res = await fetch(path);
@@ -7221,7 +7486,11 @@
           return this.getEmbeddedFile(path);
         }
         if (!res || (typeof res.status === "number" && res.status >= 400)) return null;
-        try { return await res.json(); } catch (e) { return null; }
+        try {
+          const data = await res.json();
+          if (data && typeof data === "object") this._jsonCache.set(path, data);
+          return GreekMythologyEngine.cloneJson(data);
+        } catch (e) { return null; }
       }
 
       registerCampaign(manifest) {
@@ -7236,8 +7505,7 @@
        */
       async fetchCatalog(paths, key) {
         const list = (Array.isArray(paths) ? paths : [paths]).filter(Boolean);
-        const jsons = [];
-        for (const path of list) jsons.push(await this.fetchJson(path));
+        const jsons = await Promise.all(list.map(path => this.fetchJson(path)));
         return this.mergeCatalog(jsons, key);
       }
 
@@ -7459,6 +7727,10 @@
           root.style.setProperty("--slider-track", resolved.sliderTrack);
           root.style.setProperty("--slider-border", resolved.sliderBorder);
           root.style.setProperty("--slider-glow", resolved.sliderGlow);
+        }
+        const themeMeta = document.querySelector && document.querySelector('meta[name="theme-color"]');
+        if (themeMeta && typeof themeMeta.setAttribute === "function") {
+          themeMeta.setAttribute("content", resolved.bgVoid);
         }
         return resolved;
       }
@@ -10182,12 +10454,12 @@
           const modEntries = Object.entries(mods);
 
           configPanel.innerHTML = `
-            <div style="border-bottom: 1px solid var(--border-meander); padding-bottom: 0.75rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
-              <div>
+            <div class="campaign-config-header" style="border-bottom: 1px solid var(--border-meander); padding-bottom: 0.75rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.65rem;">
+              <div style="min-width: 0; flex: 1 1 220px;">
                 <h2 style="font-family: var(--font-heading); color: #ffe680; font-size: 1.25rem; margin: 0;">${activeCamp.name} Configuration</h2>
                 <div style="font-size: 0.8rem; color: var(--bronze-bright);">Engine: ${activeCamp.engineVersion || '>=1.0.0'} &bull; Starting: ${activeCamp.startingLocationId}</div>
               </div>
-              <div style="display: flex; gap: 0.45rem;">
+              <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
                 <button class="nav-btn" onclick="window.engine.runComprehensiveCampaignValidation('${activeCamp.id}')" data-tooltip="Validate campaign integrity">
                   🔍 Validate Campaign
                 </button>
@@ -10212,27 +10484,27 @@
             </div>
 
             <h4 style="font-family: var(--font-heading); color: var(--bronze-bright); font-size: 0.95rem; margin-bottom: 0.4rem;">Included Campaign Modules</h4>
-            <div class="campaign-modules-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.45rem; margin-bottom: 1rem;">
+            <div class="campaign-modules-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 0.45rem; margin-bottom: 1rem;">
               ${modEntries.map(([modKey, modPath]) => {
                 const pathStr = Array.isArray(modPath) ? modPath.join(', ') : modPath;
                 return `
                   <div class="module-item-checkbox">
                     <input type="checkbox" id="mod-chk-${modKey}" checked onchange="window.engine.toggleCampaignModule('${modKey}', this.checked)">
-                    <label for="mod-chk-${modKey}">
+                    <label for="mod-chk-${modKey}" style="min-width: 0; overflow: hidden;">
                       <strong>${modKey.toUpperCase()}</strong>
-                      <div style="font-size: 0.72rem; color: var(--marble-dim); text-overflow: ellipsis; overflow: hidden;">${pathStr}</div>
+                      <div style="font-size: 0.72rem; color: var(--marble-dim); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${pathStr}</div>
                     </label>
                   </div>
                 `;
               }).join("")}
             </div>
 
-            <div style="background: #15141c; border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
-              <div>
+            <div style="background: #15141c; border: 1px solid var(--border-meander); border-radius: 4px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem;">
+              <div style="min-width: 0; flex: 1 1 200px;">
                 <strong style="color: #ded7c6; font-size: 0.85rem;">Custom Campaign Profiles:</strong>
                 <div style="font-size: 0.75rem; color: var(--marble-dim);">Save customized module selections for quick reloading.</div>
               </div>
-              <div style="display: flex; gap: 0.45rem; align-items: center;">
+              <div style="display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;">
                 <input type="text" id="profile-name-input" class="form-input" placeholder="Profile name..." style="width: 140px; padding: 0.25rem 0.45rem; font-size: 0.8rem;">
                 <button class="nav-btn" style="font-size: 0.75rem;" onclick="window.engine.saveCustomCampaignProfile(document.getElementById('profile-name-input').value)">Save Profile</button>
                 <button class="nav-btn" style="font-size: 0.75rem;" onclick="window.engine.loadCustomCampaignProfile(document.getElementById('profile-name-input').value)">Load Profile</button>
@@ -15627,10 +15899,14 @@
           const target = this.getLocation(conn.targetLocationId);
           if (!target || target.id !== conn.targetLocationId || !this.isConnectionOpen(conn)) return;
           const known = this.state.worldState.discoveredLocations.includes(target.id);
+          const travelCost = this.getTravelCost(conn);
+          const routeLead = conn.name ? `Travel along ${conn.name}` : (conn.label || `Travel to ${target.name}`);
+          const distPrefix = conn.distanceKm != null ? `${conn.distanceKm} km • ` : "";
+          const timeLabel = travelCost.minutes < 60 ? `${travelCost.minutes} min` : `${Math.round(travelCost.minutes / 6) / 10} hrs`;
           travelActions.push({
             id: `act_travel_${target.id}`,
             title: known ? `Journey to ${target.name}` : `Explore toward ${target.name} (unexplored)`,
-            desc: `Travel along ${conn.name} (${conn.distanceKm} km • ${conn.travelHours} hrs • Costs ${conn.staminaCost} Stamina).`,
+            desc: `${routeLead} (${distPrefix}${timeLabel} • Costs ${travelCost.stamina} Stamina).`,
             badge: known ? "Travel" : "Explore",
             type: "primary-quest-action",
             quests: this.getLocationQuestRefs(target.id),
@@ -21374,6 +21650,72 @@
           }
         });
 
+        // Native touch pan (1 finger) & pinch-to-zoom (2 fingers) for mobile/tablet
+        let touchMode = null;
+        let touchStartX = 0, touchStartY = 0, touchStartViewX = 0, touchStartViewY = 0, touchMovedPx = 0;
+        let pinchDist = 0;
+        const getTouchDist = (t1, t2) => Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+
+        wrap.addEventListener("touchstart", (e) => {
+          if (!e.touches || e.touches.length === 0) return;
+          if (e.touches.length === 1) {
+            touchMode = "pan";
+            touchMovedPx = 0;
+            this._mapDragJustHappened = false;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            const mv = this.ensureMapViewState();
+            touchStartViewX = mv.x;
+            touchStartViewY = mv.y;
+          } else if (e.touches.length >= 2) {
+            touchMode = "pinch";
+            this._mapDragJustHappened = true;
+            pinchDist = getTouchDist(e.touches[0], e.touches[1]);
+          }
+        }, { passive: true });
+
+        wrap.addEventListener("touchmove", (e) => {
+          if (!touchMode || !e.touches || e.touches.length === 0) return;
+          if (touchMode === "pan" && e.touches.length === 1) {
+            const dxPx = e.touches[0].clientX - touchStartX;
+            const dyPx = e.touches[0].clientY - touchStartY;
+            touchMovedPx = Math.hypot(dxPx, dyPx);
+            if (touchMovedPx > 8) {
+              this._mapDragJustHappened = true;
+              e.preventDefault();
+              const rect = svg.getBoundingClientRect ? svg.getBoundingClientRect() : { width: 800, height: 650 };
+              const mv = this.ensureMapViewState();
+              const scaleX = rect.width > 0 ? mv.w / rect.width : 1;
+              const scaleY = rect.height > 0 ? mv.h / rect.height : 1;
+              mv.x = touchStartViewX - dxPx * scaleX;
+              mv.y = touchStartViewY - dyPx * scaleY;
+              this.applyMapViewBox();
+            }
+          } else if (e.touches.length >= 2) {
+            e.preventDefault();
+            const newDist = getTouchDist(e.touches[0], e.touches[1]);
+            if (pinchDist > 10 && newDist > 10) {
+              const factor = newDist / pinchDist;
+              const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+              const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+              const pt = clientToSvg(midX, midY);
+              this.zoomMap(factor, pt.x, pt.y);
+            }
+            pinchDist = newDist;
+            touchMode = "pinch";
+          }
+        }, { passive: false });
+
+        const endTouch = () => {
+          touchMode = null;
+          pinchDist = 0;
+          if (this._mapDragJustHappened) {
+            setTimeout(() => { this._mapDragJustHappened = false; }, 100);
+          }
+        };
+        wrap.addEventListener("touchend", endTouch, { passive: true });
+        wrap.addEventListener("touchcancel", endTouch, { passive: true });
+
         let resizeTimer = null;
         window.addEventListener("resize", () => {
           const mapView = document.getElementById("view-map");
@@ -21794,6 +22136,7 @@
       }
 
       showTravelModal(targetLoc) {
+        if (this.toggleMobileSidebar) this.toggleMobileSidebar(false);
         const modal = document.getElementById("map-travel-modal");
         const currentLoc = this.getLocation(this.state.worldState.currentLocationId);
 
@@ -21836,8 +22179,10 @@
         document.getElementById("modal-dest-name").innerHTML = `<span>${targetLoc.name}</span> ${this.renderDifficultyBadge(locDiff, { compact: true })}`;
         document.getElementById("modal-dest-desc").innerText = targetLoc.narrative.shortDescription || targetLoc.narrative.overview;
         
+        const distStatHtml = conn.distanceKm != null ? `Distance: <strong>${conn.distanceKm} km</strong> &bull; ` : "";
+        const durStatHtml = cost.minutes < 60 ? `${cost.minutes} min` : `${Math.round(cost.minutes / 6) / 10} hrs`;
         let statsHtml = `
-          <div>Distance: <strong>${conn.distanceKm} km</strong> &bull; Travel Time: <strong>${Math.round(cost.minutes / 6) / 10} hrs</strong> (${this.getTravelPace().icon} ${this.getTravelPace().label} pace, ${this.describeEnvironment().text})</div>
+          <div>${distStatHtml}Travel Time: <strong>${durStatHtml}</strong> (${this.getTravelPace().icon} ${this.getTravelPace().label} pace, ${this.describeEnvironment().text})</div>
           <div>Stamina Cost: <strong>${staminaCost} pts</strong>${player.feats && player.feats.includes("hermes_swift_stride") ? " <em style='color:#ffe680;'>(Stride of Hermes: -1)</em>" : ""} (Your Stamina: <strong>${currentStamina}/${player.vitals.maxStamina}</strong>) &bull; Danger: <strong>Level ${conn.dangerRating || 1}</strong> &bull; Rec. Level: <strong>Lvl ${recLevel}</strong></div>
         `;
 
@@ -21929,11 +22274,14 @@
         }
         this.completeArrivalObjectives(targetLoc.id);
 
+        const routeName = conn.name || conn.label || "the road";
+        const travelDurLabel = cost.minutes < 60 ? `${cost.minutes} min` : `${Math.round(cost.minutes / 6) / 10} h`;
         if (healthLoss > 0) {
-          this.logTranscript("Forced March", `Through agonizing exertion with zero stamina, you forced yourself along ${conn.name} to ${targetLoc.name}, taking ${healthLoss} health damage from exhaustion!`, "entry-consequence");
+          this.logTranscript("Forced March", `Through agonizing exertion with zero stamina, you forced yourself along ${routeName} to ${targetLoc.name}, taking ${healthLoss} health damage from exhaustion!`, "entry-consequence");
         } else {
           const pace = this.getTravelPace();
-          this.logTranscript("Travel", `You traveled ${conn.distanceKm} km along ${conn.name} to arrive at ${targetLoc.name} (${pace.icon} ${pace.label.toLowerCase()} pace, ${Math.round(cost.minutes / 6) / 10} h, -${staminaCost} Stamina).`, "entry-consequence");
+          const distLogPart = conn.distanceKm != null ? `${conn.distanceKm} km ` : "";
+          this.logTranscript("Travel", `You traveled ${distLogPart}along ${routeName} to arrive at ${targetLoc.name} (${pace.icon} ${pace.label.toLowerCase()} pace, ${travelDurLabel}, -${staminaCost} Stamina).`, "entry-consequence");
         }
         this.logTranscript("Narrator", targetLoc.narrative.overview, "entry-prose");
 
@@ -21964,7 +22312,7 @@
             } else {
               this.logTranscript("Hazard", ambush.isGreekWolf
                 ? "While ascending the steep scree of the mountain path, the pine brush rattles violently! A mountain wolf lunges from cover!"
-                : `Along ${conn.name}, a ${ambush.name} lunges from cover!`, "entry-discovery");
+                : `Along ${conn.name || conn.label || "the trail"}, a ${ambush.name} lunges from cover!`, "entry-discovery");
               setTimeout(() => {
                 const msg = ambush.isGreekWolf
                   ? "A wild mountain wolf ambushes you on the steep mountain path scree!"
@@ -24776,7 +25124,15 @@
         });
       }
 
+      toggleMobileSidebar(force) {
+        if (typeof document === "undefined" || !document.body || !document.body.classList) return false;
+        const open = typeof force === "boolean" ? force : !document.body.classList.contains("mobile-sidebar-open");
+        document.body.classList.toggle("mobile-sidebar-open", open);
+        return open;
+      }
+
       switchView(viewId) {
+        this.toggleMobileSidebar(false);
         if (this.isCreationLocked() && !this.isViewAllowedDuringCreation(viewId)) {
           const check = this.validateCharacterCreation();
           const msg = check.reason ? `Finish character creation first: ${check.reason}` : "Finish character creation before leaving this screen.";
@@ -24793,7 +25149,11 @@
         if (travelCard) travelCard.style.display = "none";
         document.querySelectorAll(".viewport").forEach(vp => vp.classList.remove("active-view"));
         document.querySelectorAll(".nav-btn[data-view]").forEach(btn => {
-          btn.classList.toggle("active", btn.dataset.view === viewId);
+          const isActive = btn.dataset.view === viewId;
+          btn.classList.toggle("active", isActive);
+          if (isActive && typeof btn.scrollIntoView === "function" && typeof window !== "undefined" && window.innerWidth <= 768) {
+            try { btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); } catch (e) {}
+          }
         });
         const targetView = document.getElementById(viewId);
         if (targetView) targetView.classList.add("active-view");

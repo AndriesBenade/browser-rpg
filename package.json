@@ -16,7 +16,8 @@
     "test:ashen": "node tests/ashen_ledger_tests.js",
     "test:browser": "node tests/browser_smoke.js",
     "build": "node scripts/build-release.js --check",
-    "deploy": "node scripts/build-release.js && cf deploy ./dist"
+    "build:web": "node scripts/build-release.js --web",
+    "deploy": "node scripts/build-release.js --web && cf deploy ./dist"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"

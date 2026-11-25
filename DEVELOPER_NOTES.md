@@ -8,6 +8,25 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 43 - 2026-11-25 (Mobile UX Optimization, Notable Bug Fixes & Maximum Web Compression)
+* **Collaborator / Model**: User & Antigravity
+* **Mobile-First Responsive & Touch Upgrades (`index.html`)**:
+  * Replaced fixed `100vh`/`100vw` layouts with dynamic `100dvh` (`height: 100dvh; max-height: 100dvh; overscroll-behavior: none`) plus `viewport-fit=cover`, safe-area bottom insets, inline SVG shield favicon, mobile web-app meta tags, and dynamic `<meta name="theme-color">` syncing inside `applyCampaignTheme()`.
+  * Reclaimed ~180px+ of vertical screen height on mobile (`<= 900px` / `<= 640px`): converted `nav.main-nav` into a single-row horizontally swipeable bar (`38px` tall, auto-centering active tab via `scrollIntoView`) and `#top-status-bar` into a compact single-row scrollable strip (`27px` tall).
+  * Added a dedicated **Mobile Story Sidebar Drawer** (`#btn-mobile-sidebar` `"Info"` button in `.location-header-banner`, `body.mobile-sidebar-open`, `.mobile-sidebar-backdrop`, `.mobile-sidebar-header`, `toggleMobileSidebar()`) so mobile players can open Quick Travel, Focused Quests, Nearby Presence, Companions, and Soundtrack without losing desktop's permanent right sidebar.
+  * Added native **1-finger touch pan** and **2-finger pinch-to-zoom** (midpoint-anchored) to `setupMapInteractions()` with `touch-action: none` on `#map-canvas-wrapper`.
+  * Made modals, combat hero bar, trade columns, crafting/creation cards, tooltips/popovers, toasts, Campaigns configuration header, and Custom Campaign Profiles row stack/wrap cleanly with zero horizontal overflow at `390x844`, and set `16px` mobile form inputs to prevent iOS Safari auto-zoom.
+* **Notable Engine & Test Fixes (`index.html`, `tests/multi_enemy_combat_tests.js`)**:
+  * Fixed `undefined` travel strings (`"Travel along undefined (undefined km ...)"`, modal distance, travel/forced-march logs, and road ambush notices) on campaigns whose location `connections` use `label` + `travelMinutes` instead of `name` + `distanceKm` + `travelHours` + `staminaCost`; all travel displays now compute live costs via `getTravelCost(conn)` with clean fallbacks.
+  * Replaced stale Greek initial HTML placeholders (`(Ephebos)`, `Kleos XP:`, `Boeotian`, `Crossroads of Cithaeron`, `Alkaios`, `2 Campaigns Installed`) with neutral/default Tutorial placeholders.
+  * Parallelized `loadCampaignManifests()` and `fetchCatalog()` using `Promise.all` and added an in-session cloned JSON cache (`_jsonCache`) in `fetchJson()` to eliminate redundant network fetches on boot, validation, and campaign switches.
+  * Hardened `tests/multi_enemy_combat_tests.js` test `12.4` (`maxHp = hp = 120`) to eliminate an RNG flake if enemies rolled consecutive crits during targeting verification.
+* **Hosted Web Compression & Cloudflare Deployment (`scripts/build-release.js`, `package.json`)**:
+  * Added `--web` build mode (`npm run build:web` / `npm run deploy`) which strips the `file://`-only `EMBEDDED_CONTENT` base64 blob and legacy no-cache `<meta>` tags strictly for hosted web builds, tightens HTML inter-tag whitespace & SVG `<metadata>`/whitespace minification, omits `server.py`, and generates Cloudflare Workers Static Assets `dist/_headers` (`Cache-Control` `max-age=0, must-revalidate` on HTML, `max-age=300, stale-while-revalidate=86400` on `/content/*`, plus `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`).
+  * Kept repo `index.html` and standalone `npm run build` 100% offline `file://` capable (`EMBEDDED_CONTENT` intact, all 6 verification suites passing directly on `dist/index.html`).
+  * Payload reduction on hosted Cloudflare build: `index.html` `1705.9 KB -> 892.7 KB` (-48% raw), gzip `529.4 KB -> 247.9 KB` (-53%), local Brotli `196.3 KB` (live Cloudflare edge `br` transfer `247.4 KB` vs ~440+ KB previously); `content/` `109` JSON/SVG files minified `776.5 KB -> 726.3 KB` (`1.6-5.6 KB` over Brotli). Also compacted `.git/` via `git gc --aggressive --prune=now`.
+  * **Verification & Live Deploy**: All 8 test suites (`245/245`) + `sync-embedded-content.js --check` passed; standalone `npm run build` (`6/6` suites on `dist/index.html`) passed; live browser verified `dist/` on mobile (`390x844`) and desktop (`1280x800`) with `0` console/page errors and `0` horizontal overflow; zero bytes modified in `northern_realms`, `ashen_ledger`, or `vermin`. Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: cd2a6c0f-03b7-4833-a749-2562bec19711`).
+
 ### Session 42 - 2026-11-24 (Compact Tutorial Campaign, Final 4-Campaign Lineup & Legacy Cleanup)
 * **Collaborator / Model**: User & Antigravity
 * **Repository Sync & Teammate Update Review**:
