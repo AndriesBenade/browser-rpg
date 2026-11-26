@@ -76,12 +76,14 @@
       "significance": "The physical environment of Vermin Black's purgatory."
     },
     {
-      "key": "plain_killing_elixir",
+      "key": "pain_killing_elixir",
       "terms": [
+        "pain-killing elixir",
+        "pain killing elixir",
         "plain-killing elixir",
         "plain killing elixir"
       ],
-      "name": "Plain-Killing Elixir",
+      "name": "Pain-Killing Elixir",
       "category": "Items",
       "simpleEnglish": "An expensive pain medicine Vermin drinks when hurt.",
       "explanation": "A potent chemical analgesic Vermin routinely consumes to numb physical pain and steady blurred vision.",
@@ -98,6 +100,59 @@
       "simpleEnglish": "The final accounting that waits in the green armchair.",
       "explanation": "The ultimate reckoning where the collective crimes of Vermin Black manifest into physical form for accounting.",
       "significance": "The climax and boss encounter of the campaign."
+    },
+    {
+      "key": "the_ember_cloud",
+      "name": "The Ember Cloud",
+      "terms": [
+        "ember cloud",
+        "fire embers",
+        "music box"
+      ],
+      "category": "Entities",
+      "simpleEnglish": "A floating swarm of hot ash and sparks tied to an eerie wind-up tune.",
+      "explanation": "A drifting cloud of grey dust and sparks that haunts the carpeted hallway until its rattling brass music box is silenced.",
+      "significance": "Drops Entity Ash Dust used to compound Clarity Tonics."
+    },
+    {
+      "key": "the_drip",
+      "name": "The Drip",
+      "terms": [
+        "the drip",
+        "visceral room",
+        "organic matter"
+      ],
+      "category": "Entities",
+      "simpleEnglish": "Dark, pulsing organic matter dropping from cracks in the ceiling.",
+      "explanation": "Coagulated anatomical residue clinging to the buckled plaster of the Visceral Room, echoing Vermin's clinical dissection notes.",
+      "significance": "Defeating it restores the overhead bulbs and advances the countdown."
+    },
+    {
+      "key": "green_armchair",
+      "name": "The Gilded Green Armchair",
+      "terms": [
+        "green armchair",
+        "green fabric armchair",
+        "armchair"
+      ],
+      "category": "Phenomenology",
+      "simpleEnglish": "An ornate green-and-gold chair where Vermin's memories converge.",
+      "explanation": "The anchor seat linking the Clinic Lobby, the Upstairs Bathroom, the Hall of Fractured Mirrors, and the final Judgment Hall.",
+      "significance": "Every past memory must be confronted through its threshold before the Verdict begins."
+    },
+    {
+      "key": "the_void",
+      "name": "The Consuming Void",
+      "terms": [
+        "the void",
+        "consuming void",
+        "popped bulb",
+        "popped lights"
+      ],
+      "category": "Phenomenology",
+      "simpleEnglish": "The silent darkness between rooms whenever a light bulb snaps.",
+      "explanation": "The empty non-space surrounding the shifting architecture. When a bulb pops, rooms rearrange or reset Vermin to the bare floorboards.",
+      "significance": "Source of Void Ash, Void Resin, and reality-bending focus."
     }
   ]
 }

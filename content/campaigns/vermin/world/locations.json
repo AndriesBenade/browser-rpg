@@ -10,7 +10,7 @@
         "y": 100
       },
       "terrain": "shifting_room",
-      "restSafety": "settlement",
+      "restSafety": "sanctuary",
       "connections": [
         {
           "targetLocationId": "loc_vb_projector_chamber",
@@ -52,7 +52,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_inspect_identity_doc",
           "category": "Exploration & Investigation",
@@ -77,7 +77,12 @@
                 "identity_examined": true
               },
               "startQuest": "quest_vb_find_exit",
-              "awardXP": 20
+              "awardXP": 20,
+              "updateQuest": {
+                "questId": "quest_vb_find_exit",
+                "objectiveId": "obj_find_identity",
+                "completed": true
+              }
             },
             "failure": {
               "transcript": {
@@ -88,7 +93,106 @@
               "setFlags": {
                 "identity_examined": true
               },
-              "startQuest": "quest_vb_find_exit"
+              "startQuest": "quest_vb_find_exit",
+              "updateQuest": {
+                "questId": "quest_vb_find_exit",
+                "objectiveId": "obj_find_identity",
+                "completed": true
+              }
+            }
+          }
+        },
+        {
+          "id": "act_ending_lucid_awakening",
+          "category": "The Final Threshold",
+          "title": "Ending I: Unlock the Door & Step Into Morning Light",
+          "desc": "Turn the Verdict Key with open eyes, carrying every remembered name out of the Shifting Space (Clarity Ending).",
+          "badge": "Clarity Finale",
+          "type": "primary-quest-action",
+          "requiresFlag": "verdict_given",
+          "requiresNotFlag": "vb_ending_chosen",
+          "requiresItem": "item_vb_the_verdict_key",
+          "handlerType": "item_action",
+          "outcome": {
+            "transcript": {
+              "speaker": "Ending I - Lucid Awakening",
+              "text": "The black alloy key turns without resistance. Beyond the waking door there is no whirring projector, no coarse rag, and no painted numeral - only cold, unforgiving morning daylight and the sound of a distant siren. You step across the threshold knowing exactly who Vermin Black is, and for the first time, the lights do not pop.",
+              "style": "entry-discovery"
+            },
+            "setFlags": {
+              "vb_ending_chosen": true,
+              "vb_ending_lucid": true
+            },
+            "morality": {
+              "virtue": 20,
+              "hubris": 0,
+              "reason": "Stepped into the waking accounting with full lucidity"
+            },
+            "awardXP": 250,
+            "addJournalChronicle": {
+              "title": "Finale: Lucid Awakening",
+              "text": "Unlocked the waking room door with the Verdict Key and stepped into daylight without looking away from the ledger."
+            }
+          }
+        },
+        {
+          "id": "act_ending_eternal_clinician",
+          "category": "The Final Threshold",
+          "title": "Ending II: Snap the Key & Claim the Architecture",
+          "desc": "Break the Verdict Key beneath your heel and assume cold dominion over the Shifting Space (Fracture Ending).",
+          "badge": "Fracture Finale",
+          "type": "primary-quest-action",
+          "requiresFlag": "verdict_given",
+          "requiresNotFlag": "vb_ending_chosen",
+          "requiresItem": "item_vb_the_verdict_key",
+          "handlerType": "item_action",
+          "outcome": {
+            "transcript": {
+              "speaker": "Ending II - The Eternal Clinician",
+              "text": "You place the Verdict Key upon the bare floorboards and snap its bow cleanly with your boot. The corridors beyond the wall stop shifting against you and begin shifting for you. A brass reception bell chimes faintly in the distance. Every ward, mirror, and archive belongs to Dr. Vermin Black forever.",
+              "style": "entry-consequence"
+            },
+            "setFlags": {
+              "vb_ending_chosen": true,
+              "vb_ending_clinician": true
+            },
+            "morality": {
+              "virtue": 0,
+              "hubris": 20,
+              "reason": "Claimed dominion over the Shifting Space"
+            },
+            "awardXP": 250,
+            "addJournalChronicle": {
+              "title": "Finale: The Eternal Clinician",
+              "text": "Rejected release and claimed mastery over the shifting corridors as their detached architect."
+            }
+          }
+        },
+        {
+          "id": "act_ending_popped_bulb",
+          "category": "The Final Threshold",
+          "title": "Ending III: Wait for the Bulb to Pop",
+          "desc": "Set the Verdict Key beside your identity document and let the filament snap into calm repetition (Loop Ending).",
+          "badge": "Loop Finale",
+          "type": "secondary-action",
+          "requiresFlag": "verdict_given",
+          "requiresNotFlag": "vb_ending_chosen",
+          "requiresItem": "item_vb_the_verdict_key",
+          "handlerType": "item_action",
+          "outcome": {
+            "transcript": {
+              "speaker": "Ending III - The Popped Bulb",
+              "text": "You lay the black alloy key neatly beside the folded identity document and sit upon the bare boards. Overhead, the tungsten filament brightens once, pops softly, and plunges the room into familiar dark. When your eyes open again, the pain is gone, the door is shut, and the count stands ready at IX.",
+              "style": "entry-prose"
+            },
+            "setFlags": {
+              "vb_ending_chosen": true,
+              "vb_ending_loop": true
+            },
+            "awardXP": 250,
+            "addJournalChronicle": {
+              "title": "Finale: The Popped Bulb",
+              "text": "Chose the quiet stillness of the repeating room, letting the overhead filament reset the architecture."
             }
           }
         }
@@ -145,7 +249,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_examine_projector",
           "category": "Exploration & Investigation",
@@ -182,6 +286,53 @@
               }
             }
           }
+        },
+        {
+          "id": "act_thread_silent_reel",
+          "category": "Hidden Investigation",
+          "title": "Thread the Unlabelled 35mm Reel",
+          "desc": "Mount the kitchen celluloid canister onto the whirring projector spindle to see what it records.",
+          "badge": "Hidden Truth",
+          "type": "primary-quest-action",
+          "requiresItem": "item_vb_film_reel",
+          "requiresNotFlag": "silent_reel_screened",
+          "handlerType": "item_action",
+          "outcome": {
+            "transcript": {
+              "speaker": "Case File #000",
+              "text": "The celluloid catches with a sharp click. Grainy frames flicker across the plaster: your own gloved hand drafting floorplans of an empty waking room, a chairless table, and a green armchair. Beside the lens rests a cold black alloy ring.",
+              "style": "entry-discovery"
+            },
+            "setFlags": {
+              "silent_reel_screened": true
+            },
+            "startQuest": "quest_vb_hidden_case_zero",
+            "updateQuest": {
+              "questId": "quest_vb_hidden_case_zero",
+              "objectiveId": "obj_thread_silent_reel",
+              "completed": true
+            },
+            "morality": {
+              "virtue": 10,
+              "hubris": 0,
+              "reason": "Confronted the authorship of the Shifting Space"
+            },
+            "addJournalChronicle": {
+              "title": "Case File #000: The Silent Reel",
+              "text": "Threaded the unlabelled 35mm reel into the projector. The footage revealed Vermin Black himself drafting the shifting corridors."
+            },
+            "completeQuest": "quest_vb_hidden_case_zero"
+          }
+        },
+        {
+          "id": "act_vb_mg_glyph",
+          "category": "Clinical Practice & Focus",
+          "title": "Track the Numeral Afterimages",
+          "desc": "Repeat the flashing crimson sequence cast by the whirring projector to salvage Void Ash or Clarity Crystal.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "glyph_memory"
         }
       ]
     },
@@ -227,9 +378,9 @@
         }
       ],
       "narrative": {
-        "firstVisit": "A cold draft carries a sickly sweet, toxic emission. In the center of the passage, a coarse rag hangs suspended in mid-air as if an invisible person stood beneath it. In the corner sits a small bottle of plain-killing elixir.",
+        "firstVisit": "A cold draft carries a sickly sweet, toxic emission. In the center of the passage, a coarse rag hangs suspended in mid-air as if an invisible person stood beneath it. In the corner sits a small bottle of pain-killing elixir.",
         "subsequentVisit": "The air here remains heavy and chilled. The outline of a newly revealed door stands clearly against the wall.",
-        "overview": "A cold draft carries a sickly sweet, toxic emission. In the center of the passage, a coarse rag hangs suspended in mid-air as if an invisible person stood beneath it. In the corner sits a small bottle of plain-killing elixir."
+        "overview": "A cold draft carries a sickly sweet, toxic emission. In the center of the passage, a coarse rag hangs suspended in mid-air as if an invisible person stood beneath it. In the corner sits a small bottle of pain-killing elixir."
       },
       "presentItems": [
         "item_vb_med_bottle",
@@ -247,11 +398,11 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_drink_pain_elixir",
           "category": "Medical & Survival",
-          "title": "Drink Plain-Killing Elixir",
+          "title": "Drink Pain-Killing Elixir",
           "desc": "Consume the expensive pain elixir to numb the toxic nausea and clear your vision.",
           "badge": "Medication",
           "type": "primary-quest-action",
@@ -268,7 +419,13 @@
             },
             "restoreHealth": 15,
             "restoreStamina": 15,
-            "awardXP": 30
+            "awardXP": 30,
+            "startQuest": "quest_vb_find_exit",
+            "updateQuest": {
+              "questId": "quest_vb_find_exit",
+              "objectiveId": "obj_take_medicine",
+              "completed": true
+            }
           }
         }
       ]
@@ -344,7 +501,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_read_pet_journal",
           "category": "Exploration & Investigation",
@@ -424,6 +581,19 @@
             "giveItem": "mat_vb_ash_dust",
             "awardXP": 15
           }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_solve_music_box",
+          "category": "Puzzles & Mechanisms",
+          "title": "Silence the Winding Mechanism",
+          "desc": "Inspect the four etched harmonic notes on the rattling brass music box to still its embers.",
+          "badge": "Puzzle",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "music_box_solved",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_vb_music_box_sequence"
         }
       ]
     },
@@ -518,7 +688,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_inspect_roman_numeral",
           "category": "Exploration & Investigation",
@@ -544,7 +714,8 @@
                 "countdown_active": true
               },
               "startQuest": "quest_vb_the_countdown",
-              "awardXP": 30
+              "awardXP": 30,
+              "completeQuest": "quest_vb_find_exit"
             },
             "failure": {
               "transcript": {
@@ -556,9 +727,69 @@
                 "numeral_examined": true,
                 "countdown_active": true
               },
-              "startQuest": "quest_vb_the_countdown"
+              "startQuest": "quest_vb_the_countdown",
+              "completeQuest": "quest_vb_find_exit"
             }
           }
+        },
+        {
+          "id": "act_commune_verdict_wall",
+          "category": "Powers of the Shifting Space",
+          "title": "Stand Before the Crimson Numerals",
+          "desc": "Hold your breath before the bleeding Roman numerals and measure your pulse against The Final Verdict.",
+          "badge": "Communion",
+          "type": "sacred-action",
+          "requiresNotFlag": "verdict_wall_communed",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "mythology_lore",
+            "attribute": "wisdom",
+            "dc": 10,
+            "name": "Audit the Countdown",
+            "success": {
+              "transcript": {
+                "speaker": "The Final Verdict",
+                "text": "The wet paint smells of iron and antiseptic. You trace the sequence with steady eyes: every numeral corresponds to a room you once sealed away in memory.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "verdict_wall_communed": true
+              },
+              "piety": {
+                "the_verdict": 2
+              },
+              "morality": {
+                "virtue": 8,
+                "hubris": 0,
+                "reason": "Measured the Verdict with lucid composure"
+              },
+              "awardXP": 30
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "The Final Verdict",
+                "text": "A bulb overhead hums louder until your teeth ache. The crimson strokes seem to shift whenever you blink, yet you refuse to step back.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "verdict_wall_communed": true
+              },
+              "piety": {
+                "the_verdict": 1
+              },
+              "awardXP": 15
+            }
+          }
+        },
+        {
+          "id": "act_vb_mg_pendulum",
+          "category": "Clinical Practice & Focus",
+          "title": "Steady the Buzzing Overhead Filament",
+          "desc": "Calibrate three surges before the bulb pops to recover Glass Shards or a Void Crystal.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "pendulum_tune"
         }
       ]
     },
@@ -614,7 +845,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_investigate_kitchen_lights",
           "category": "Exploration & Investigation",
@@ -651,6 +882,16 @@
               }
             }
           }
+        },
+        {
+          "id": "act_mg_mortar_kitchen",
+          "category": "Clinical Practice & Focus",
+          "title": "Clinical Compounding Mortar",
+          "desc": "Grind entity ash and cabinet residue upon the steel counter to distill restorative tonics.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "mortar"
         }
       ]
     },
@@ -701,6 +942,29 @@
             "awardXP": 15
           }
         }
+      ],
+      "actions": [
+        {
+          "id": "act_solve_dining_mirrors",
+          "category": "Puzzles & Mechanisms",
+          "title": "Examine the Triad of Reflections",
+          "desc": "Decipher the inscription spanning the three silvered mirrors above the chairless table.",
+          "badge": "Puzzle",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "mirrors_solved",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_vb_the_mirrors"
+        },
+        {
+          "id": "act_mg_astragaloi_dining",
+          "category": "Clinical Practice & Focus",
+          "title": "Cast the Roman Numerals",
+          "desc": "Roll four stamped ivory tally blocks across the chairless polished table to test the space.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "astragaloi"
+        }
       ]
     },
     {
@@ -749,6 +1013,19 @@
             "giveItem": "mat_vb_void_ash",
             "awardXP": 15
           }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_solve_maze_logic",
+          "category": "Puzzles & Mechanisms",
+          "title": "Decode the Architectural Turn",
+          "desc": "Read the directional runes carved into the cedar doorframe to chart the true path through the labyrinth.",
+          "badge": "Puzzle",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "maze_logic_solved",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_vb_maze_logic"
         }
       ]
     },
@@ -808,7 +1085,8 @@
             "awardXP": 20
           }
         }
-      ]
+      ],
+      "actions": []
     },
     {
       "id": "loc_vb_maze_dead_end",
@@ -846,6 +1124,48 @@
           "outcome": {
             "giveItem": "mat_vb_glass_shard",
             "awardXP": 15
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_test_hollow_cedar",
+          "category": "Exploration & Investigation",
+          "title": "Tap the Hollow Cedar Seams",
+          "desc": "Probe the warped wood paneling where dark resin oozes between the seams.",
+          "badge": "Investigation",
+          "type": "secondary-action",
+          "requiresNotFlag": "dead_end_cedar_tested",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "dc": 10,
+            "name": "Inspect Cedar Seams",
+            "success": {
+              "transcript": {
+                "speaker": "Discovery",
+                "text": "Behind the dead-end panel you scrape free a thick bead of Void Resin and uncover scratched tally marks left by earlier loops.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "dead_end_cedar_tested": true
+              },
+              "giveItem": "mat_vb_void_resin",
+              "awardXP": 25
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Narrator",
+                "text": "The cedar splinters under your knuckles, yielding only a thin smear of dark resin and the distant sound of a door closing elsewhere.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "dead_end_cedar_tested": true
+              },
+              "giveItem": "mat_vb_void_resin",
+              "awardXP": 10
+            }
           }
         }
       ]
@@ -896,6 +1216,18 @@
             "giveItem": "mat_vb_void_resin",
             "awardXP": 20
           }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_mg_stalk_maze",
+          "category": "Clinical Practice & Focus",
+          "title": "Shadow Entity Stalk",
+          "desc": "Match your stride to the rhythm of popping bulbs and unseen footsteps to salvage medicine vials.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "stalk"
         }
       ]
     },
@@ -949,6 +1281,48 @@
             "awardXP": 15
           }
         }
+      ],
+      "actions": [
+        {
+          "id": "act_collect_lens_shard",
+          "category": "Exploration & Investigation",
+          "title": "Salvage the Refracting Shard",
+          "desc": "Inspect the cracked overhead fixture where crystalline light pools across the bare center floor.",
+          "badge": "Investigation",
+          "type": "secondary-action",
+          "requiresNotFlag": "maze_lens_collected",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "perception",
+            "attribute": "wisdom",
+            "dc": 11,
+            "name": "Recover Crystal Facet",
+            "success": {
+              "transcript": {
+                "speaker": "Discovery",
+                "text": "Nestled among shattered bulb filaments lies an intact Void Crystal Shard that hums softly when lifted toward your lantern.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "maze_lens_collected": true
+              },
+              "giveItem": "item_vb_void_crystal",
+              "awardXP": 30
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Discovery",
+                "text": "You sift through the broken bulb glass and recover a small Clarity Crystal facet intact.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "maze_lens_collected": true
+              },
+              "giveItem": "mat_vb_clarity_crystal",
+              "awardXP": 15
+            }
+          }
+        }
       ]
     },
     {
@@ -1000,7 +1374,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_survey_visceral_scene",
           "category": "Exploration & Investigation",
@@ -1025,7 +1399,12 @@
                 "gut_scene_surveyed": true,
                 "gut_lights_restored": true
               },
-              "awardXP": 35
+              "awardXP": 35,
+              "updateQuest": {
+                "questId": "quest_vb_the_countdown",
+                "objectiveId": "obj_numeral_vii",
+                "completed": true
+              }
             },
             "failure": {
               "transcript": {
@@ -1036,6 +1415,11 @@
               "setFlags": {
                 "gut_scene_surveyed": true,
                 "gut_lights_restored": true
+              },
+              "updateQuest": {
+                "questId": "quest_vb_the_countdown",
+                "objectiveId": "obj_numeral_vii",
+                "completed": true
               }
             }
           }
@@ -1102,6 +1486,18 @@
             "awardXP": 25
           }
         }
+      ],
+      "actions": [
+        {
+          "id": "act_mg_forge_dissection",
+          "category": "Clinical Practice & Focus",
+          "title": "Void Crucible Focus",
+          "desc": "Focus lantern light over the dissection bench to temper blood-hardened iron.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "forge"
+        }
       ]
     },
     {
@@ -1114,7 +1510,7 @@
         "y": 395
       },
       "terrain": "memory_space",
-      "restSafety": "forbidden",
+      "restSafety": "restricted",
       "connections": [
         {
           "targetLocationId": "loc_vb_antechamber",
@@ -1173,7 +1569,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_inspect_green_chair",
           "category": "Exploration & Investigation",
@@ -1265,7 +1661,8 @@
             "awardXP": 25
           }
         }
-      ]
+      ],
+      "actions": []
     },
     {
       "id": "loc_vb_filing_room",
@@ -1323,6 +1720,61 @@
             "awardXP": 35
           }
         }
+      ],
+      "actions": [
+        {
+          "id": "act_audit_admission_ledger",
+          "category": "Exploration & Investigation",
+          "title": "Audit the Self-Admission Ledger",
+          "desc": "Review the stamped involuntary commitment contracts stacked beside the Archivist desk.",
+          "badge": "Archive",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "admission_ledger_audited",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "investigation",
+            "attribute": "intelligence",
+            "dc": 10,
+            "name": "Audit Commitment Ledger",
+            "success": {
+              "transcript": {
+                "speaker": "Clinical Archive",
+                "text": "Page after page bears the same deceptive complaint header over binding self-admission clauses. You pocket a signed copy and a clean laboratory vial tucked inside the binder.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "admission_ledger_audited": true
+              },
+              "startQuest": "quest_vb_the_memories",
+              "updateQuest": {
+                "questId": "quest_vb_the_memories",
+                "objectiveId": "obj_find_contract",
+                "completed": true
+              },
+              "giveItem": "item_vb_glass_vial",
+              "awardXP": 30,
+              "completeQuest": "quest_vb_the_memories"
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Clinical Archive",
+                "text": "The ink smudges under the fluorescent hum, yet your own neat signature at the bottom of every intake page is unmistakable.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "admission_ledger_audited": true
+              },
+              "startQuest": "quest_vb_the_memories",
+              "updateQuest": {
+                "questId": "quest_vb_the_memories",
+                "objectiveId": "obj_find_contract",
+                "completed": true
+              },
+              "awardXP": 15,
+              "completeQuest": "quest_vb_the_memories"
+            }
+          }
+        }
       ]
     },
     {
@@ -1368,7 +1820,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_examine_clawfoot_tub",
           "category": "Exploration & Investigation",
@@ -1394,7 +1846,12 @@
                 "bathtub_explored": true
               },
               "startQuest": "quest_vb_the_dogs",
-              "awardXP": 35
+              "awardXP": 35,
+              "updateQuest": {
+                "questId": "quest_vb_the_dogs",
+                "objectiveId": "obj_inspect_clawfoot",
+                "completed": true
+              }
             },
             "failure": {
               "transcript": {
@@ -1406,7 +1863,66 @@
                 "tub_examined": true,
                 "bathtub_explored": true
               },
-              "startQuest": "quest_vb_the_dogs"
+              "startQuest": "quest_vb_the_dogs",
+              "updateQuest": {
+                "questId": "quest_vb_the_dogs",
+                "objectiveId": "obj_inspect_clawfoot",
+                "completed": true
+              }
+            }
+          }
+        },
+        {
+          "id": "act_open_mirrored_cabinet",
+          "category": "Exploration & Investigation",
+          "title": "Open the Mirrored Medicine Cabinet",
+          "desc": "Swing open the rusted bathroom cabinet above the sink where your father kept his shaving gear.",
+          "badge": "Memory",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "shaving_blade_recovered",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "perception",
+            "attribute": "wisdom",
+            "dc": 9,
+            "name": "Inspect Medicine Cabinet",
+            "success": {
+              "transcript": {
+                "speaker": "Childhood Artifact",
+                "text": "Inside the cabinet sits your father's heavy steel shaving blade beside an unopened vial. The steel feels cold, balanced, and terribly familiar.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "shaving_blade_recovered": true
+              },
+              "startQuest": "quest_vb_the_dogs",
+              "updateQuest": {
+                "questId": "quest_vb_the_dogs",
+                "objectiveId": "obj_retrieve_blade",
+                "completed": true
+              },
+              "giveItem": "item_vb_shaving_blade",
+              "awardXP": 30,
+              "completeQuest": "quest_vb_the_dogs"
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Childhood Artifact",
+                "text": "The rusted hinge shrieks as you pull the mirror open and lift the shaving blade from the glass shelf.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "shaving_blade_recovered": true
+              },
+              "startQuest": "quest_vb_the_dogs",
+              "updateQuest": {
+                "questId": "quest_vb_the_dogs",
+                "objectiveId": "obj_retrieve_blade",
+                "completed": true
+              },
+              "giveItem": "item_vb_shaving_blade",
+              "awardXP": 15,
+              "completeQuest": "quest_vb_the_dogs"
             }
           }
         }
@@ -1460,6 +1976,67 @@
           "outcome": {
             "giveItem": "mat_vb_clarity_crystal",
             "awardXP": 30
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "act_mg_shield_mirrors",
+          "category": "Clinical Practice & Focus",
+          "title": "Entity Clashing Brace",
+          "desc": "Steady your stance and brace against lunging reflections behind the fractured silver glass.",
+          "badge": "Minigame",
+          "type": "secondary-action",
+          "handlerType": "minigame",
+          "minigameType": "shield_clash"
+        },
+        {
+          "id": "act_gaze_fractured_glass",
+          "category": "Exploration & Investigation",
+          "title": "Gaze Into the Fractured Mirrors",
+          "desc": "Hold your own stare across a dozen cracked reflections to separate clinical memory from delusion.",
+          "badge": "Introspection",
+          "type": "secondary-action",
+          "requiresNotFlag": "mirror_hall_examined",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "perception",
+            "attribute": "wisdom",
+            "dc": 12,
+            "name": "Hold the Reflection",
+            "success": {
+              "transcript": {
+                "speaker": "Lucid Reflection",
+                "text": "Every shard shows a different room you have walked tonight. One reflection does not blink; beneath its frame you pry loose a gleaming Clarity Crystal.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "mirror_hall_examined": true
+              },
+              "giveItem": "mat_vb_clarity_crystal",
+              "morality": {
+                "virtue": 10,
+                "hubris": 0,
+                "reason": "Refused to look away from the fractured mirrors"
+              },
+              "awardXP": 35
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "Fractured Reflection",
+                "text": "A crack runs suddenly across the silver glass, splitting your smile in two. Cold detachment rushes in to fill the silence.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "mirror_hall_examined": true
+              },
+              "morality": {
+                "virtue": 0,
+                "hubris": 10,
+                "reason": "Embraced cold detachment in the Mirror Hall"
+              },
+              "awardXP": 20
+            }
           }
         }
       ]
@@ -1518,6 +2095,53 @@
             "awardXP": 30
           }
         }
+      ],
+      "actions": [
+        {
+          "id": "act_listen_void_silence",
+          "category": "Powers of the Shifting Space",
+          "title": "Listen to the Silence Between Walls",
+          "desc": "Step to the dark precipice and attune your awareness to The Consuming Void.",
+          "badge": "Communion",
+          "type": "sacred-action",
+          "requiresNotFlag": "void_silence_heard",
+          "handlerType": "skill_check",
+          "skillCheck": {
+            "skill": "mythology_lore",
+            "attribute": "intelligence",
+            "dc": 12,
+            "name": "Measure the Abyss",
+            "success": {
+              "transcript": {
+                "speaker": "The Consuming Void",
+                "text": "Between the distant pops of dying filaments, the Void answers with absolute stillness. Fine Void Ash settles like frost upon your sleeve.",
+                "style": "entry-discovery"
+              },
+              "setFlags": {
+                "void_silence_heard": true
+              },
+              "piety": {
+                "the_void": 2
+              },
+              "giveItem": "mat_vb_void_ash",
+              "awardXP": 35
+            },
+            "failure": {
+              "transcript": {
+                "speaker": "The Consuming Void",
+                "text": "The drop has no bottom, yet your lantern beam reveals faint architectural chalk lines suspended in nothingness.",
+                "style": "entry-prose"
+              },
+              "setFlags": {
+                "void_silence_heard": true
+              },
+              "piety": {
+                "the_void": 1
+              },
+              "awardXP": 15
+            }
+          }
+        }
       ]
     },
     {
@@ -1569,7 +2193,7 @@
           }
         }
       ],
-      "contextActions": [
+      "actions": [
         {
           "id": "act_summon_final_verdict",
           "category": "The Reckoning",
@@ -1594,7 +2218,12 @@
                 "verdict_encounter_ready": true
               },
               "startQuest": "quest_vb_the_verdict",
-              "awardXP": 50
+              "awardXP": 50,
+              "updateQuest": {
+                "questId": "quest_vb_the_verdict",
+                "objectiveId": "obj_sit_in_chair",
+                "completed": true
+              }
             },
             "failure": {
               "transcript": {
@@ -1605,9 +2234,25 @@
               "setFlags": {
                 "verdict_encounter_ready": true
               },
-              "startQuest": "quest_vb_the_verdict"
+              "startQuest": "quest_vb_the_verdict",
+              "updateQuest": {
+                "questId": "quest_vb_the_verdict",
+                "objectiveId": "obj_sit_in_chair",
+                "completed": true
+              }
             }
           }
+        },
+        {
+          "id": "act_solve_verdict_cipher",
+          "category": "Puzzles & Mechanisms",
+          "title": "Speak the Tally Inscription",
+          "desc": "Inspect the pedestal beneath the green armchair where Roman numerals IX through I await the final word.",
+          "badge": "Puzzle",
+          "type": "primary-quest-action",
+          "requiresNotFlag": "verdict_cipher_solved",
+          "handlerType": "puzzle",
+          "puzzleId": "puzzle_vb_the_verdict_cipher"
         }
       ]
     }

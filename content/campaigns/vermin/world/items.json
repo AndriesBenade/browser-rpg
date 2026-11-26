@@ -25,7 +25,7 @@
     },
     {
       "id": "item_vb_med_bottle",
-      "name": "Plain-Killing Elixir",
+      "name": "Pain-Killing Elixir",
       "category": "consumable",
       "rarity": "common",
       "weightKg": 0.3,
@@ -34,7 +34,7 @@
         "restoreHealth": 10,
         "restoreStamina": 10
       },
-      "description": "The expensive plain-killing elixir Vermin routinely drinks when in pain. It deadens bodily ache and numbs sensory shock."
+      "description": "The expensive pain-killing elixir Vermin routinely drinks when in pain. It deadens bodily ache and numbs sensory shock."
     },
     {
       "id": "item_vb_med_bottle_full",
@@ -292,7 +292,7 @@
       "id": "item_vb_clarity_tonic",
       "name": "Compounded Clarity Tonic",
       "category": "consumable",
-      "rarity": "crafted",
+      "rarity": "uncommon",
       "weightKg": 0.3,
       "valueDrachmae": 25,
       "stats": {
@@ -300,6 +300,49 @@
         "restoreStamina": 20
       },
       "description": "An improvised chemical formulation that instantly clears clouded vision and settles unsteady balance."
+    },
+    {
+      "id": "item_vb_clinic_signet",
+      "name": "Director's Brass Signet",
+      "category": "accessory",
+      "slot": "ring",
+      "rarity": "uncommon",
+      "weightKg": 0.1,
+      "valueDrachmae": 35,
+      "stats": {
+        "defenseBonus": 1,
+        "perceptionBonus": 1
+      },
+      "description": "A heavy brass signet ring engraved with the clinic's ambiguous intake seal. Cold and clinical against the knuckle."
+    },
+    {
+      "id": "item_vb_clara_locket",
+      "name": "Clara's Tarnished Locket",
+      "category": "accessory",
+      "slot": "neck",
+      "rarity": "rare",
+      "weightKg": 0.1,
+      "valueDrachmae": 45,
+      "stats": {
+        "perceptionBonus": 2,
+        "defenseBonus": 1
+      },
+      "description": "A tiny tarnished brass locket enclosing a thread of knitted yellow wool. It steadies your breathing when the corridors shift."
+    },
+    {
+      "id": "item_vb_void_band",
+      "name": "Black Alloy Projector Band",
+      "category": "accessory",
+      "slot": "ring",
+      "rarity": "epic",
+      "weightKg": 0.1,
+      "valueDrachmae": 75,
+      "stats": {
+        "defenseBonus": 2,
+        "damageReduction": 1,
+        "perceptionBonus": 2
+      },
+      "description": "A cold, seamless band machined from the same black alloy as the Verdict Key. Lights stop flickering whenever it catches your hand."
     },
     {
       "id": "item_vb_entity_ward",

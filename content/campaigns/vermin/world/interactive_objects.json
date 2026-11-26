@@ -60,7 +60,13 @@
         "setFlags": {
           "music_box_opened": true
         },
-        "awardXP": 25
+        "updateQuest": {
+          "questId": "quest_vb_the_music_box",
+          "objectiveId": "obj_claim_music_box",
+          "completed": true
+        },
+        "awardXP": 25,
+        "completeQuest": "quest_vb_the_music_box"
       }
     },
     {
@@ -116,12 +122,20 @@
       "contents": {
         "items": [
           "item_vb_case_file_001",
-          "item_vb_case_file_father"
+          "item_vb_case_file_father",
+          "item_vb_clinic_signet"
         ]
       },
       "unlockOutcome": {
         "setFlags": {
-          "filing_cabinet_opened": true
+          "filing_cabinet_opened": true,
+          "archivist_father_file_read": true
+        },
+        "startQuest": "quest_vb_the_memories",
+        "updateQuest": {
+          "questId": "quest_vb_the_memories",
+          "objectiveId": "obj_find_case_one",
+          "completed": true
         },
         "awardXP": 30
       }

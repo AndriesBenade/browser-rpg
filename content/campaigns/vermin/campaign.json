@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "engineVersion": ">=1.0.0",
   "author": "Antigravity & Ancient Systems Designer",
-  "description": "A psychological horror campaign set in an impossible shifting architectural purgatory. Vermin Black, a sociopathic clinician who tortured animals and committed sane victims, wakes in looping rooms where lights pop, paranormal shrouds hover, and crimson Roman numerals count down from IX toward an inevitable final verdict.",
+  "description": "You wake on bare floorboards in an empty room with a single closed door and an identity document bearing your own photograph: Vermin Black. As bulbs pop and impossible corridors fold back upon themselves, hovering shrouds stalk the dark while bloody Roman numerals count down from IX toward an inescapable verdict.",
   "worldIntro": {
     "eyebrow": "Prologue: The Shifting Corridor",
     "headline": "An Empty Room, a Stamped Identity, and a Popped Bulb",
@@ -20,7 +20,7 @@
       },
       {
         "label": "Detached Survival",
-        "detail": "Clinical coldness, plain-killing elixirs, straight razors, and void-tempered lanterns."
+        "detail": "Clinical coldness, pain-killing elixirs, straight razors, and void-tempered lanterns."
       }
     ]
   },
@@ -239,7 +239,7 @@
     },
     "mortar": {
       "title": "Clinical Compounding Mortar",
-      "subtitle": "Grind ash dust and chemical residue into plain-killing tonics",
+      "subtitle": "Grind ash dust and chemical residue into pain-killing tonics",
       "perfectItemId": "item_vb_clarity_tonic",
       "perfectText": "A crystal-clear formulation of pure clarity tonic!"
     },
@@ -265,6 +265,46 @@
     "shield_clash": {
       "title": "Entity Clashing Brace",
       "subtitle": "Brace your trenchcoat against toxic spectral charges"
+    },
+    "glyph_memory": {
+      "icon": "🩸",
+      "title": "Roman Numeral Afterimage",
+      "subtitle": "Repeat the flashing crimson numerals burned onto the projector wall",
+      "glyphs": [
+        {
+          "symbol": "IX",
+          "label": "Nine"
+        },
+        {
+          "symbol": "VIII",
+          "label": "Eight"
+        },
+        {
+          "symbol": "VII",
+          "label": "Seven"
+        },
+        {
+          "symbol": "0",
+          "label": "Zero"
+        }
+      ],
+      "rewardItemId": "mat_vb_void_ash",
+      "perfectItemId": "mat_vb_clarity_crystal",
+      "drachmae": 10,
+      "xp": 12,
+      "successText": "Your eyes hold steady through the flicker; Void Ash settles below the lens.",
+      "perfectText": "Total clinical recall! A sharp Clarity Crystal condenses in the cold beam."
+    },
+    "pendulum_tune": {
+      "icon": "💡",
+      "title": "Filament Resonance Calibration",
+      "subtitle": "Steady three humming electrical surges before the overhead bulb pops",
+      "rewardItemId": "mat_vb_glass_shard",
+      "perfectItemId": "item_vb_void_crystal",
+      "drachmae": 10,
+      "xp": 12,
+      "successText": "The filament steadies to a cold buzz, dropping jagged glass from the socket.",
+      "perfectText": "Flawless steadiness! A humming Void Crystal Shard drops cleanly into your palm."
     }
   },
   "consequenceRules": [
@@ -276,7 +316,8 @@
       },
       "outcomes": {
         "setFlags": {
-          "father_dead": true
+          "father_dead": true,
+          "clinic_lobby_explored": true
         },
         "modifyReputation": {
           "faction_vb_the_remembered": -50,
@@ -290,7 +331,8 @@
         "addJournalChronicle": {
           "title": "The Father Erased",
           "text": "Eliminated the father's echo in the clinic lobby. He will never seek his daughter again."
-        }
+        },
+        "completeQuest": "quest_vb_the_father"
       }
     },
     {

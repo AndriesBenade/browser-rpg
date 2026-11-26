@@ -13,24 +13,30 @@
             {
               "id": "obj_find_identity",
               "text": "Examine your identity document in the waking room.",
+              "locationId": "loc_vb_waking_room",
               "completed": false
             },
             {
               "id": "obj_take_medicine",
               "text": "Overcome the toxic emanation in the corridor by taking pain elixir.",
+              "locationId": "loc_vb_rag_corridor",
               "completed": false
             }
-          ]
+          ],
+          "next": "reach_antechamber"
         },
         "reach_antechamber": {
           "description": "Follow the long carpeted hallway past the ember cloud into the central two-door antechamber.",
           "objectives": [
             {
               "id": "obj_reach_antechamber",
-              "text": "Pass through the revealed door and locate the two-door room.",
+              "text": "Pass through the revealed door and locate the two-door antechamber.",
+              "locationId": "loc_vb_antechamber",
+              "completeOnArrive": true,
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "You have breached the initial loop and entered the deeper antechamber.",
@@ -49,7 +55,8 @@
         "items": [
           "item_vb_med_bottle_full"
         ]
-      }
+      },
+      "autoStart": true
     },
     {
       "id": "quest_vb_the_countdown",
@@ -59,29 +66,34 @@
       "currentStage": "tally_numerals",
       "stages": {
         "tally_numerals": {
-          "description": "Explore the dark kitchen, the wood-paneled maze, and the visceral room to advance the count.",
+          "description": "Explore the dark kitchen, the wood-paneled maze, the visceral room, and the memory corridors to advance the count.",
           "objectives": [
             {
               "id": "obj_numeral_ix",
-              "text": "Observe numeral IX after navigating the kitchen and dining hall.",
+              "text": "Advance numeral IX by navigating the dark kitchen or dining hall mirrors.",
+              "locationId": "loc_vb_kitchen",
               "completed": false
             },
             {
               "id": "obj_numeral_viii",
-              "text": "Observe numeral VIII after escaping the paneled labyrinth.",
+              "text": "Advance numeral VIII by solving the wood-paneled labyrinth.",
+              "locationId": "loc_vb_maze_entry",
               "completed": false
             },
             {
               "id": "obj_numeral_vii",
-              "text": "Observe numeral VII after investigating the visceral room.",
+              "text": "Advance numeral VII by clearing or surveying the visceral room.",
+              "locationId": "loc_vb_gut_room",
               "completed": false
             },
             {
               "id": "obj_numeral_zero",
-              "text": "Reach the green armchair room as the countdown strikes zero.",
+              "text": "Unseal the green armchair memories through the clinic and bathroom until the count strikes zero.",
+              "locationId": "loc_vb_bathtub_room",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The countdown has reached its conclusion. The final door to judgment stands unlocked.",
@@ -100,7 +112,8 @@
         "items": [
           "item_vb_void_lantern"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_rag",
@@ -110,19 +123,22 @@
       "currentStage": "hunt_rag",
       "stages": {
         "hunt_rag": {
-          "description": "Confront the hovering rag entity in the corridor and kitchen.",
+          "description": "Confront the hovering rag entity in the corridor and the dark kitchen.",
           "objectives": [
             {
               "id": "obj_defeat_first_rag",
               "text": "Strike down the rag in the initial dark corridor.",
+              "locationId": "loc_vb_rag_corridor",
               "completed": false
             },
             {
               "id": "obj_gather_cloth",
-              "text": "Recover a sample of the floating entity cloth.",
+              "text": "Defeat the kitchen apparition and recover a saturated sample of entity cloth.",
+              "locationId": "loc_vb_kitchen",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The shroud has been proven to be empty fabric, robbed of its toxic grip on your mind.",
@@ -141,7 +157,8 @@
         "items": [
           "mat_vb_entity_cloth"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_music_box",
@@ -151,19 +168,22 @@
       "currentStage": "silence_melody",
       "stages": {
         "silence_melody": {
-          "description": "Approach the music box at the end of the long hallway and examine its mechanism.",
+          "description": "Disperse the ember cloud in the long hallway and silence the rattling music box in the alcove.",
           "objectives": [
             {
               "id": "obj_disperse_embers",
               "text": "Disperse the ember cloud in the long hallway.",
+              "locationId": "loc_vb_first_hallway",
               "completed": false
             },
             {
               "id": "obj_claim_music_box",
-              "text": "Retrieve the rattling music box from the alcove.",
+              "text": "Silence or unlock the rattling music box in the alcove.",
+              "locationId": "loc_vb_music_box_alcove",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The music box rests in your pack, silent and motionless at last.",
@@ -182,7 +202,8 @@
         "items": [
           "item_vb_music_box"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_memories",
@@ -196,15 +217,18 @@
           "objectives": [
             {
               "id": "obj_find_case_one",
-              "text": "Retrieve Case File #001 from the filing cabinets.",
+              "text": "Retrieve Case File #001 from the Archivist or locked filing cabinet.",
+              "locationId": "loc_vb_filing_room",
               "completed": false
             },
             {
               "id": "obj_find_contract",
-              "text": "Locate a signed Self-Admission Contract.",
+              "text": "Audit the Self-Admission Contract ledger in the Records Archive.",
+              "locationId": "loc_vb_filing_room",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The institutional records confirm your methodology. The clinic was your domain of absolute control.",
@@ -223,7 +247,8 @@
         "items": [
           "item_vb_clarity_tonic"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_father",
@@ -231,6 +256,16 @@
       "category": "side",
       "summary": "Deal with the distraught father in the clinic lobby who is desperately seeking to register a complaint regarding his missed transportation.",
       "currentStage": "resolve_father",
+      "alternatePathways": {
+        "onNpcDeath": {
+          "npcId": "npc_vb_the_father",
+          "completeObjective": "obj_father_decision",
+          "setFlags": {
+            "clinic_lobby_explored": true
+          },
+          "narrative": "With the father's echo silenced by violence, the clinic memory closes violently behind you and the door to the upstairs bathroom unseals."
+        }
+      },
       "stages": {
         "resolve_father": {
           "description": "Decide whether to deceive the father into involuntary commitment or reveal the grim truth of his situation.",
@@ -238,9 +273,11 @@
             {
               "id": "obj_father_decision",
               "text": "Confront the distressed father in the clinic lobby.",
+              "locationId": "loc_vb_clinic_lobby",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The father's encounter is concluded, leaving an indelible mark upon your alignment.",
@@ -259,7 +296,8 @@
         "items": [
           "item_vb_med_bottle_full"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_dogs",
@@ -269,19 +307,22 @@
       "currentStage": "inspect_tub",
       "stages": {
         "inspect_tub": {
-          "description": "Locate the clawfoot tub and recover the father's shaving blade from the mirrored cabinet.",
+          "description": "Inspect the clawfoot tub and recover the father's shaving blade from the mirrored cabinet.",
           "objectives": [
             {
               "id": "obj_inspect_clawfoot",
               "text": "Examine the stains in the porcelain clawfoot bathtub.",
+              "locationId": "loc_vb_bathtub_room",
               "completed": false
             },
             {
               "id": "obj_retrieve_blade",
-              "text": "Retrieve the father's shaving blade from the cabinet.",
+              "text": "Open the mirrored medicine cabinet to retrieve the father's shaving blade.",
+              "locationId": "loc_vb_bathtub_room",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
           "description": "The memory is intact. A point had to be made so your parents would listen.",
@@ -300,7 +341,8 @@
         "items": [
           "item_vb_shaving_blade"
         ]
-      }
+      },
+      "autoStart": false
     },
     {
       "id": "quest_vb_the_verdict",
@@ -310,22 +352,25 @@
       "currentStage": "face_verdict",
       "stages": {
         "face_verdict": {
-          "description": "Enter the amphitheater, take your place upon the green fabric armchair, and defeat the collective judgment.",
+          "description": "Enter the Judgment Hall, answer the armchair pedestal or take your seat, and defeat the collective judgment.",
           "objectives": [
             {
               "id": "obj_sit_in_chair",
-              "text": "Sit upon the green armchair in the Judgment Hall.",
+              "text": "Sit upon the green armchair or speak the final tally in the Judgment Hall.",
+              "locationId": "loc_vb_judgment_hall",
               "completed": false
             },
             {
               "id": "obj_defeat_verdict_form",
               "text": "Defeat the physical manifestation of the Verdict.",
+              "locationId": "loc_vb_judgment_hall",
               "completed": false
             }
-          ]
+          ],
+          "next": "completed"
         },
         "completed": {
-          "description": "The Verdict has been dismantled. The final door stands open back to where you first awoke.",
+          "description": "The Verdict has been dismantled. Return to the Waking Room with the Verdict Key to choose what remains of Vermin Black.",
           "objectives": [
             {
               "id": "obj_verdict_concluded",
@@ -341,7 +386,94 @@
         "items": [
           "item_vb_the_verdict_key"
         ]
-      }
+      },
+      "autoStart": false
+    },
+    {
+      "id": "quest_vb_hidden_clara",
+      "title": "The Knitted Yellow Blanket",
+      "category": "hidden",
+      "hidden": true,
+      "summary": "Case #104 revealed that the delayed father called out for his daughter Clara for twenty-two years. Bring that truth to the weeping girl waiting at the edge of the Void.",
+      "currentStage": "find_clara",
+      "stages": {
+        "find_clara": {
+          "description": "Carry the record of Case #104 to the girl weeping at the precipice of the Void.",
+          "objectives": [
+            {
+              "id": "obj_read_father_file",
+              "text": "Review Case #104 with the Clinic Archivist.",
+              "locationId": "loc_vb_filing_room",
+              "completed": false
+            },
+            {
+              "id": "obj_tell_clara",
+              "text": "Speak to the girl at the edge of the Void about Case #104.",
+              "locationId": "loc_vb_the_void",
+              "completed": false
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "description": "The twenty-two-year silence between father and daughter has been named at last.",
+          "objectives": [
+            {
+              "id": "obj_clara_answered",
+              "text": "Clara's question answered.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 220,
+        "drachmae": 45,
+        "items": [
+          "item_vb_clara_locket"
+        ]
+      },
+      "autoStart": false
+    },
+    {
+      "id": "quest_vb_hidden_case_zero",
+      "title": "Case File #000: The Silent Reel",
+      "category": "hidden",
+      "hidden": true,
+      "summary": "The silent 35mm projector in the loop runs empty, while an unlabelled celluloid reel waits in the dark kitchen. Thread the reel into the projector to see who built the Shifting Space.",
+      "currentStage": "thread_reel",
+      "stages": {
+        "thread_reel": {
+          "description": "Return to the Projector Chamber carrying the Unlabelled 35mm Film Reel and thread it onto the empty spindle.",
+          "objectives": [
+            {
+              "id": "obj_thread_silent_reel",
+              "text": "Thread the Unlabelled 35mm Film Reel onto the Silent Projector.",
+              "locationId": "loc_vb_projector_chamber",
+              "completed": false
+            }
+          ],
+          "next": "completed"
+        },
+        "completed": {
+          "description": "The reel played your own clinical handwriting across the plaster wall. The projector was never a trap set by a stranger.",
+          "objectives": [
+            {
+              "id": "obj_reel_screened",
+              "text": "The silent reel screened.",
+              "completed": true
+            }
+          ]
+        }
+      },
+      "rewards": {
+        "experience": 240,
+        "drachmae": 60,
+        "items": [
+          "item_vb_void_band"
+        ]
+      },
+      "autoStart": false
     }
   ]
 }

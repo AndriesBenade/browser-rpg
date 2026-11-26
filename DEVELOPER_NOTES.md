@@ -8,6 +8,73 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 46 - 2026-11-26 (Item Enchanting System, 7 Optional Minigames Across Campaigns, Ashen Ledger 4 Professions + 5 New Materials & Story Descriptions)
+* **Collaborator / Model**: User & Antigravity
+* **Minecraft-Inspired Item Enchanting / Arcane Imbuement Engine (`index.html`)**:
+  * Added a dedicated **`✨ Enchant & Imbue Gear`** tab inside `view-crafting` right beside `🔨 Forge New Item` (`setCraftingMode`, `renderEnchantingView`, `enchantItem`, `getEnchantmentOfferings`, `rerollEnchantmentOfferings`).
+  * Uses existing campaign crafting materials (`materials.json`) as catalysts (1-2 units depending on Tier I Minor / Tier II Resonant / Tier III Masterwork), presents 3 slot- & material-property-shaped resonance aspects per roll (Minecraft enchanting table style), supports up to 2 distinct enchantments per item and Rank I-III upgrades, persists enhanced items cleanly via `worldState.dynamicItems` across Save/Load (preserving equipped state/slot), renders glowing `✨` badges & full enchantment tooltips in Inventory, and emits `ITEM_ENCHANTED` (`flags.has_enchanted_item`).
+  * Integrated Arcane Imbuement directly into Ashen Ledger's 3-part Artisan Crafting Quest Line (`quest_al_craft_03_masterwork_seal` optional mastery objective `obj_imbue_masterwork_gear`, `ev_al_enchant_milestone` event, and Master Orla's dialogue `explain_imbuement`).
+* **Ashen Ledger Profession Compression (6 -> 4) & Material Expansion (20 -> 25)**:
+  * Compressed Ashen Ledger's 6 crafting professions cleanly into **4 cohesive professions** in `content/campaigns/ashen_ledger/world/professions.json`:
+    1. `al_foundry_smithing` (*Foundry Smithing & Bell-Metallurgy*, 11 templates)
+    2. `al_clockwork_artifice` (*Brasswork & Clockwork Artifice*, 6 templates)
+    3. `al_oilskin_leathercraft` (*Oilskin & Salt-Leathercraft*, 6 templates)
+    4. `al_mnemonic_alchemy` (*Mnemonic Alchemy & Runic Sealcraft*, 11 templates)
+  * Preserved all **34 craftable templates** (`0` lost) and added **5 new craftable materials** (`mat_al_verdigris_copper`, `mat_al_ember_velvet`, `mat_al_bone_ivory`, `mat_al_tally_mercury`, `mat_al_starlight_cinder`) across `materials.json`, `items.json`, merchant stock, and minigame rewards.
+* **Expanded Optional Minigame Variety Across All 4 Campaigns (`index.html` + all 4 campaigns)**:
+  * Added **2 brand-new interactive minigame engines** (`glyph_memory` Sigil Sequence Echo and `pendulum_tune` Harmonic Calibration) to `index.html`, and fixed `mortar` (`allowAnywhere`) and `shield_clash` (`practiceMode` out-of-combat sparring drills) so room-wired minigames always open cleanly.
+  * Configured and wired all **7 optional minigame varieties** (`forge`, `mortar`, `stalk`, `astragaloi`, `shield_clash`, `glyph_memory`, `pendulum_tune`) with campaign-native themes and rewards across `tutorial`, `northern_realms`, `ashen_ledger`, and `vermin`.
+* **Story-Focused Campaign Descriptions (Select a Campaign Screen)**:
+  * Rewrote `description` across all 4 `campaign.json` manifests to focus purely on the world and unfolding story instead of raw item/location/quest counts, keeping all smaller metadata cards and boxes untouched.
+* **Tests, Sync & Live Cloudflare Deploy**:
+  * Updated `tests/ashen_ledger_tests.js` to verify the 4 compressed professions, 25 materials, 34 templates, 7 optional minigames, `glyph_memory`/`pendulum_tune` initialization, `ITEM_ENCHANTED` Artisan Arc III tracking, and Enchanting Rank I->II + Save/Load persistence.
+  * Verified all **9 test suites (`251/251`)** + `sync-embedded-content.js --check` (`109` files synced) + standalone `npm run build` (`7/7` suites passing directly on minified `dist/index.html`) + uniform CRLF + zero em dashes.
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: f36cc0cd-6bab-4962-914c-f5d6243895fc`, uploaded 17 updated assets, `index.html` `204.6 KB` brotli).
+
+### Session 45 - 2026-11-26 (Vermin Black Optimization, End-to-End Wiring & Immersion Blueprint)
+* **Collaborator / Model**: User & Antigravity
+* **Engine Safeguards (`index.html`)**:
+  * Updated `getContextualActionGroups()` and `getLocationQuestRefs()` to defensively merge `loc.contextActions` alongside canonical `loc.actions` so future campaigns never silently drop room actions.
+  * Updated `getGlobalSpellCatalog()` to normalize string `targeting` shorthand (`"self"`, `"single"`, `"multi"`/`"aoe"`) into canonical targeting objects instead of spreading characters onto the object.
+* **Critical Gameplay Bugs Fixed in Vermin Black (`content/campaigns/vermin/`)**:
+  * **Migrated all 10 room actions from `contextActions` to canonical `actions` (`world/locations.json`)**: Previously none of the 10 authored room interactions (including `act_inspect_identity_doc` and `act_drink_pain_elixir`) rendered in the Action Deck, soft-locking play in room 3.
+  * **Wired all 4 authored puzzles (`world/puzzles.json` + `world/locations.json`)**: `puzzle_vb_music_box_sequence`, `puzzle_vb_the_mirrors`, `puzzle_vb_maze_logic`, and `puzzle_vb_the_verdict_cipher` now appear as playable room actions and update their matching quests/countdown flags.
+  * **Fixed all 8 original quests + added `autoStart` / `next` / `completeQuest` (`world/quests.json`, `world/events.json`, `world/dialogues.json`, `world/encounters.json`, `world/interactive_objects.json`, `campaign.json`)**: Only `quest_vb_find_exit` auto-starts on turn 1; all objectives have map-pin `locationId`s (with `completeOnArrive: true` on `obj_reach_antechamber`), every quest completes cleanly with full rewards, and killing `npc_vb_the_father` in combat also sets `clinic_lobby_explored: true` and resolves `quest_vb_the_father`.
+  * **Fixed unreachable `enc_vb_rag_kitchen`**: Replaced dead `kitchen_rag_active: true` trigger with `{ flag: "rag_kitchen_defeated", expected: false }`.
+  * **Fixed all 4 campaign spells (`world/spells.json`)**: Converted invalid string `targeting` and non-standard effect keys (`damage`, `cure`, object `selfMods`/`enemyMods`) to canonical engine schema with balanced `1-2` Stamina costs.
+  * **Fixed typos, invalid rarity & combo mismatches (`campaign.json`, `world/items.json`, `world/combinations.json`, `world/tutorials.json`, `world/glossary.json`)**: Corrected `"Plain-Killing"` to `"Pain-Killing"` (keeping `"plain-killing elixir"` as a glossary alias), fixed `item_vb_clarity_tonic` invalid rarity `"crafted"` -> `"uncommon"`, and expanded field combinations from 4 to 7 so actual enemy/puzzle drops (`mat_vb_ash_dust`, `mat_vb_clarity_crystal`, `mat_vb_void_resin`) combine cleanly.
+* **Essence-Preserving Enhancements in Vermin Black**:
+  * **Wired all 5 custom horror minigames** (`stalk`, `mortar`, `astragaloi`, `forge`, `shield_clash`) into atmospheric rooms (`loc_vb_maze_zig_zag`, `loc_vb_kitchen`, `loc_vb_dining_room`, `loc_vb_gut_expanded`, `loc_vb_mirror_hall`).
+  * **Added 2 Morality-Gated Signature Spells**: `vb_spell_lucid_audit` (*Lucid Dissection*, Clarity `+10`) and `vb_spell_hollow_detachment` (*Hollow Detachment*, Fracture `-10`).
+  * **Added 2 Concealed Hidden Missions (`hidden: true`, `autoStart: false`)**: `quest_vb_hidden_clara` (*The Knitted Yellow Blanket*, tying Case #104 to the Girl at the Edge of the Void) and `quest_vb_hidden_case_zero` (*Case File #000: The Silent Reel*, threading the kitchen 35mm reel into the Silent Projector).
+  * **Added a 3-Ending Psychological Climax in `loc_vb_waking_room`** (unlocked after defeating the Verdict & holding `item_vb_the_verdict_key`): *Lucid Awakening* (Clarity), *The Eternal Clinician* (Fracture), and *The Popped Bulb* (Loop).
+  * **Multi-Enemy Tactical Encounters**: Upgraded `enc_vb_rag_maze` (Corridor Rag + Labyrinth Sprinter) and `enc_vb_verdict_final` (Shroud of the Indictment + The Final Verdict).
+  * **Equipment, Atmosphere & Blueprint Map**: Added 3 jewelry/keepsake accessories (`item_vb_clinic_signet`, `item_vb_void_band`, `item_vb_clara_locket`), deity communion actions for `The Final Verdict` and `The Consuming Void`, 4 new glossary terms, `sanctuary`/`restricted` rest tuning on the Waking Room and Green Armchair Room, and an upgraded architectural blueprint `map.svg` with zone enclosures and subtle Roman numeral watermarks (`IX` to `0`).
+* **Immersion Blueprint from Vermin Black (Lessons for Other Campaigns)**:
+  * **100% Diegetic System Reskinning**: Rename every engine concept (`labels.xp`, `crafting`, `codex`, `pantheon`, `moralityConfig`, `difficultyPresets`, `levelTitles`, `minigames`, `defeatNarrative`) so the player never sees generic RPG boilerplate.
+  * **Subtract Non-Fitting Mechanics**: Disabling `survival` and `weather` keeps claustrophobic/interior settings tightly focused instead of breaking mood with unrelated hunger/rain messages.
+  * **Diegetic World-State Anchor**: A single recurring visual/narrative motif (the bleeding Roman numerals counting down `IX -> 0` + popping light bulbs) unifies exploration, puzzles, events, and defeat recovery into one cohesive mystery.
+  * **Psychological Factions & Echoed Motifs**: Turning factions into internal/thematic tensions and echoing small concrete details across rooms (the yellow blanket, Case #104, the 35mm reel, the shaving blade) makes the world feel authored as a single living mind rather than isolated quest hubs.
+  * **Tactile Present-Tense Second-Person Prose**: Short, concrete sensory verbs (popped filaments, squishing floorboards, buzzing fluorescents, cold porcelain) + contrasting `firstVisit` vs. `subsequentVisit` descriptions build immediate dread and presence.
+* **Tests, Sync & Live Cloudflare Deploy**:
+  * Added dedicated 5-part end-to-end suite `tests/vermin_black_tests.js` (`5/5` passing), wired into `package.json` (`npm test`, `npm run test:vermin`) and `scripts/build-release.js` (`--check`).
+  * Verified all **9 test suites (`251/251`)** + `sync-embedded-content.js --check` (`109` files synced) + uniform CRLF + zero em dashes + zero bytes touched in `tutorial`, `northern_realms`, and `ashen_ledger`.
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: 433e057c-6307-4352-9a48-4a7b4fdae059`, uploaded 15 updated assets).
+
+### Session 44 - 2026-11-26 (System-Wide Location Reachability Validation Rule & Vermin Black Soft-Lock Fix)
+* **Collaborator / Model**: User & Antigravity
+* **System-Wide Location Reachability Validation (`index.html`, `GreekMythologyEngine.validateCampaign`)**:
+  * Added automatic location reachability validation directly in the core validator so every built-in and future campaign is verified automatically in the UI ("Validate Campaign"), pre-start checks, and automated test suites:
+    * **Structural Graph Reachability (`error`)**: Directed BFS from `manifest.startingLocationId` across all valid `connections` flags any disconnected or orphaned location as an error.
+    * **Progressive Flag-Gated Reachability (`error`)**: Fixed-point simulation starting from `startingLocationId` collects flags produced by reachable locations (`actions`, `hiddenSpots`), NPCs and their bound `dialogueTreeId` trees, `interactiveObjects`, `puzzles`, `encounters`, `quests`, `events` (only once their `conditions` flags are satisfied), `combinations`, `items`, and `manifest.initialFlags`, flagging any `requiresFlag`-soft-locked or chicken-and-egg self-locked location as an error.
+    * **Returnability / One-Way Trap Detection (`warning`)**: Reverse BFS back to `startingLocationId` warns on reachable dead-end locations with no return path (respecting explicit opt-outs via `allowOneWay: true`, `isEnding: true`, or `oneWay: true`).
+* **Vermin Black Soft-Lock Fix (`content/campaigns/vermin/world/dialogues.json`, with User Approval)**:
+  * The new progressive reachability rule immediately uncovered a real progression soft-lock in `vermin`: `loc_vb_green_chair_room -> loc_vb_bathtub_room` required `clinic_lobby_explored`, which was never set anywhere in the campaign, locking out 4 late-game locations (`loc_vb_bathtub_room`, `loc_vb_mirror_hall`, `loc_vb_the_void`, and `loc_vb_judgment_hall`).
+  * Added `"clinic_lobby_explored": true` to both resolution outcomes (`node_ring_bell` and `node_truth`) of `dialogue_vb_the_father` in `loc_vb_clinic_lobby`, unlocking full `22/22` reachability.
+* **Tests, Sync & Live Cloudflare Deploy**:
+  * Added automated reachability unit tests in `tests/behaviour_tests.js` covering disconnected locations, unset `requiresFlag` cascades, chicken-and-egg self-locks, valid multi-step progressive unlock chains, one-way trap warnings + `allowOneWay: true`, and full validation across all 4 shipped campaigns.
+  * Resynced `index.html` offline embedded bundle (`npm run sync:embedded`, `109` files), verified all 8 suites (`246/246` passing) + `sync-embedded-content.js --check` + uniform CRLF + zero em dashes, and redeployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: a98c229f-7957-4c45-b817-97fb625db4b9`).
+
 ### Session 43 - 2026-11-25 (Mobile UX Optimization, Notable Bug Fixes & Maximum Web Compression)
 * **Collaborator / Model**: User & Antigravity
 * **Mobile-First Responsive & Touch Upgrades (`index.html`)**:

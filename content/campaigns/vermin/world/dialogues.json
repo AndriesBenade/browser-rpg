@@ -102,7 +102,8 @@
         "node_ring_bell": {
           "text": "The brass bell rings. Orderlies emerge from the shadow doorways and seize the father by both arms, dragging him kicking into the interior corridors.",
           "setFlags": {
-            "father_committed": true
+            "father_committed": true,
+            "clinic_lobby_explored": true
           },
           "updateQuest": {
             "questId": "quest_vb_the_father",
@@ -114,12 +115,14 @@
               "label": "Watch him disappear.",
               "target": "exit"
             }
-          ]
+          ],
+          "completeQuest": "quest_vb_the_father"
         },
         "node_truth": {
           "text": "The man staggers back as if struck with a blunt mallet. 'No... no, that cannot be! She was born just yesterday! What clinic is this?!' He sinks to his knees, sobbing.",
           "setFlags": {
-            "father_told_truth": true
+            "father_told_truth": true,
+            "clinic_lobby_explored": true
           },
           "awardXP": 30,
           "morality": {
@@ -137,7 +140,8 @@
               "label": "Leave him to his grief.",
               "target": "exit"
             }
-          ]
+          ],
+          "completeQuest": "quest_vb_the_father"
         },
         "node_daughter": {
           "text": "'Her name is Clara. I bought a knitted yellow blanket before the cab failed to show. I just wanted to hold her little hand...'",
@@ -178,6 +182,12 @@
         "node_case_one": {
           "text": "'Case #001: Subject admitted under pretense of routine physical examination. Systematically subjected to sensory deprivation and chemical elixirs. Discharged as completely hollowed.'",
           "giveItem": "item_vb_case_file_001",
+          "startQuest": "quest_vb_the_memories",
+          "updateQuest": {
+            "questId": "quest_vb_the_memories",
+            "objectiveId": "obj_find_case_one",
+            "completed": true
+          },
           "awardXP": 25,
           "choices": [
             {
@@ -189,6 +199,9 @@
         "node_case_father": {
           "text": "'Case #104: Subject arrived seeking complaint filing for missed transit. Tricked into self-admission contract. Attendants dispatched upon bell signal. The patient spent twenty-two years calling for Clara.'",
           "giveItem": "item_vb_case_file_father",
+          "setFlags": {
+            "archivist_father_file_read": true
+          },
           "awardXP": 25,
           "choices": [
             {
@@ -223,6 +236,14 @@
               "target": "node_listen"
             },
             {
+              "label": "Hold out Case #104: 'He never abandoned you, Clara. He called your name for twenty-two years.'",
+              "target": "node_clara_file",
+              "condition": {
+                "flag": "archivist_father_file_read",
+                "expected": true
+              }
+            },
+            {
               "label": "Speak: 'Your father was detained in my clinic.'",
               "target": "node_speak"
             },
@@ -231,6 +252,29 @@
               "target": "exit"
             }
           ]
+        },
+        "node_clara_file": {
+          "text": "Her shoulders shudder once, then fall still. She lifts a tiny tarnished locket from the edge of the drop and presses it into your palm without turning. 'Then he did try to come,' she breathes, dissolving into quiet silver light.",
+          "morality": {
+            "virtue": 25,
+            "hubris": 0
+          },
+          "setFlags": {
+            "girl_heard": true,
+            "clara_answered": true
+          },
+          "updateQuest": {
+            "questId": "quest_vb_hidden_clara",
+            "objectiveId": "obj_tell_clara",
+            "completed": true
+          },
+          "choices": [
+            {
+              "label": "Close your hand around the locket.",
+              "target": "exit"
+            }
+          ],
+          "completeQuest": "quest_vb_hidden_clara"
         },
         "node_listen": {
           "text": "You stand behind her in absolute silence. The weight of twenty years of solitary waiting presses into the void. You feel the cold air thrum with sorrow.",

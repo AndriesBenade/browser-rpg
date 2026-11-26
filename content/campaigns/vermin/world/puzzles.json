@@ -16,16 +16,22 @@
         "fourth"
       ],
       "successOutcome": {
-        "text": "You turn the winding key to B. The lid clicks shut with a resonant snap. The fire embers fade into harmless ash dust.",
+        "text": "You turn the winding key to B. The lid clicks shut with a resonant snap. The fire embers fade into harmless ash dust as the silenced box cools in your palm.",
         "setFlags": {
           "music_box_solved": true
         },
-        "giveItem": "mat_vb_ash_dust",
+        "updateQuest": {
+          "questId": "quest_vb_the_music_box",
+          "objectiveId": "obj_claim_music_box",
+          "completed": true
+        },
+        "giveItem": "item_vb_music_box",
         "awardXP": 40,
         "addJournalChronicle": {
           "title": "The Silenced Box",
           "text": "Aligned the harmonic pins of the rattling music box, bringing calm to the hallway."
-        }
+        },
+        "completeQuest": "quest_vb_the_music_box"
       },
       "hint": "Read the fourth note in the engraved sequence."
     },
@@ -46,10 +52,15 @@
         "second path"
       ],
       "successOutcome": {
-        "text": "You recall the navigation sequence: the second path to the right following the zig-zag bends! The panel shifts slightly, opening the way forward.",
+        "text": "You recall the navigation sequence: the second path to the right following the zig-zag bends! The panel shifts slightly, opening the way forward as the numeral VIII dissolves into VII.",
         "setFlags": {
           "maze_logic_solved": true,
-          "countdown_viii_reached": true
+          "countdown_vii_reached": true
+        },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_viii",
+          "completed": true
         },
         "awardXP": 50,
         "addJournalChronicle": {
@@ -57,7 +68,7 @@
           "text": "Navigated the wood-paneled maze by following the zig-zag turns."
         }
       },
-      "hint": "Recall the path Vermin took after reliving the memory of the clinic."
+      "hint": "Recall the zig-zag turn through the wood-paneled corridor."
     },
     {
       "id": "puzzle_vb_the_mirrors",
@@ -80,6 +91,11 @@
         "setFlags": {
           "mirrors_solved": true,
           "countdown_viii_reached": true
+        },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_ix",
+          "completed": true
         },
         "awardXP": 45,
         "addJournalChronicle": {
@@ -107,15 +123,22 @@
         "the verdict"
       ],
       "successOutcome": {
-        "text": "You speak the word: 'Zero.' The golden pedestal clicks into place and the final confrontation begins.",
+        "text": "You speak the word: 'Zero.' The golden pedestal clicks into place, the doors seal shut, and the final confrontation manifests.",
         "setFlags": {
           "verdict_cipher_solved": true,
-          "countdown_zero_reached": true
+          "countdown_zero_reached": true,
+          "verdict_encounter_ready": true
+        },
+        "startQuest": "quest_vb_the_verdict",
+        "updateQuest": {
+          "questId": "quest_vb_the_verdict",
+          "objectiveId": "obj_sit_in_chair",
+          "completed": true
         },
         "awardXP": 60,
         "addJournalChronicle": {
           "title": "The Zero Point",
-          "text": "Spoke the final numeral, unlocking the door to the ultimate verdict."
+          "text": "Spoke the final numeral upon the pedestal, summoning the ultimate verdict."
         }
       },
       "hint": "What follows numeral I in a descending countdown?"

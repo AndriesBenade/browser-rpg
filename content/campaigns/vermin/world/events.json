@@ -12,6 +12,11 @@
         "setFlags": {
           "countdown_viii_reached": true
         },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_ix",
+          "completed": true
+        },
         "transcript": {
           "speaker": "Architectural Shift",
           "text": "A distant rumble echoes through the plaster. In the antechamber, the IX on the wall dissolves into VIII.",
@@ -30,6 +35,11 @@
       "outcomes": {
         "setFlags": {
           "countdown_vii_reached": true
+        },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_viii",
+          "completed": true
         },
         "transcript": {
           "speaker": "Architectural Shift",
@@ -50,6 +60,11 @@
         "setFlags": {
           "countdown_vi_reached": true
         },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_vii",
+          "completed": true
+        },
         "transcript": {
           "speaker": "Architectural Shift",
           "text": "The dripping overhead slows to a halt. The numeral on the wall shifts to VI, and the quiet corridor to the green armchair opens.",
@@ -69,11 +84,17 @@
         "setFlags": {
           "countdown_zero_reached": true
         },
+        "updateQuest": {
+          "questId": "quest_vb_the_countdown",
+          "objectiveId": "obj_numeral_zero",
+          "completed": true
+        },
         "transcript": {
           "speaker": "The Final Toll",
           "text": "All Roman numerals on the antechamber wall extinguish at once. The massive doors to the Judgment Hall grind open.",
           "style": "entry-consequence"
-        }
+        },
+        "completeQuest": "quest_vb_the_countdown"
       }
     },
     {
@@ -93,6 +114,65 @@
           "speaker": "Clinical Intake",
           "text": "Orderlies file the father's papers into iron drawers. His cries fade behind soundproof doors.",
           "style": "entry-consequence"
+        }
+      }
+    },
+    {
+      "id": "event_vb_father_erased_quest",
+      "name": "Clinic Memory Closed by Violence",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "father_dead",
+        "expected": true
+      },
+      "outcomes": {
+        "setFlags": {
+          "clinic_lobby_explored": true
+        },
+        "completeQuest": "quest_vb_the_father"
+      }
+    },
+    {
+      "id": "event_vb_hidden_clara_reveal",
+      "name": "Memory Thread: Clara's Yellow Blanket",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "archivist_father_file_read",
+        "expected": true
+      },
+      "outcomes": {
+        "startQuest": "quest_vb_hidden_clara",
+        "updateQuest": {
+          "questId": "quest_vb_hidden_clara",
+          "objectiveId": "obj_read_father_file",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Hidden Memory",
+          "text": "Case #104 names the infant the delayed father never got to hold: Clara. Somewhere deeper in the Shifting Space, a child waits at the edge of the dark.",
+          "style": "entry-discovery"
+        }
+      }
+    },
+    {
+      "id": "event_vb_hidden_case_zero_reveal",
+      "name": "Hidden Footage: Case File #000",
+      "trigger": "FLAG_SET",
+      "conditions": {
+        "flag": "silent_reel_screened",
+        "expected": true
+      },
+      "outcomes": {
+        "startQuest": "quest_vb_hidden_case_zero",
+        "updateQuest": {
+          "questId": "quest_vb_hidden_case_zero",
+          "objectiveId": "obj_thread_silent_reel",
+          "completed": true
+        },
+        "transcript": {
+          "speaker": "Hidden Archive",
+          "text": "The flickering 35mm footage burns itself into your clinical ledger: Case File #000 was authored in your own hand.",
+          "style": "entry-discovery"
         }
       }
     }

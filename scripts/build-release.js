@@ -158,7 +158,8 @@ function main() {
       'tests/northern_realms_tests.js',
       'tests/phase2_systems_tests.js',
       'tests/global_magic_morality_tests.js',
-      'tests/ashen_ledger_tests.js'
+      'tests/ashen_ledger_tests.js',
+      'tests/vermin_black_tests.js'
     ];
     for (const suite of suites) {
       const r = spawnSync(process.execPath, [path.join(ROOT, suite)], { cwd: ROOT, env: Object.assign({}, process.env, { ENGINE_HTML: 'dist/index.html' }), encoding: 'utf8' });

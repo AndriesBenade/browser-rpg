@@ -2,7 +2,7 @@
   "combinations": [
     {
       "id": "comb_vb_reinforce_lantern",
-      "name": "Mount Crystal Lens onto Lantern",
+      "name": "Mount Void Crystal onto Lantern",
       "apply": "item_vb_void_crystal",
       "onto": "item_vb_lantern",
       "result": "item_vb_void_lantern",
@@ -12,15 +12,37 @@
       "text": "You mount the void crystal inside the lantern housing. The flame turns brilliant spectral blue, cutting through deep shadows."
     },
     {
+      "id": "comb_vb_prism_lantern",
+      "name": "Fit Clarity Crystal Prism into Lantern",
+      "apply": "mat_vb_clarity_crystal",
+      "onto": "item_vb_lantern",
+      "result": "item_vb_void_lantern",
+      "consumeApplied": 1,
+      "minutes": 15,
+      "xp": 25,
+      "text": "You seat the clarity crystal prism behind the brass lens. A piercing white beam cuts through the shifting gloom."
+    },
+    {
       "id": "comb_vb_brew_tonic",
-      "name": "Combine Ash Dust with Empty Vial",
+      "name": "Compound Entity Ash in Empty Vial",
+      "apply": "mat_vb_ash_dust",
+      "onto": "item_vb_glass_vial",
+      "result": "item_vb_clarity_tonic",
+      "consumeApplied": 1,
+      "minutes": 10,
+      "xp": 20,
+      "text": "You suspend the fine entity ash inside the laboratory vial, producing a crisp, invigorating clarity tonic."
+    },
+    {
+      "id": "comb_vb_brew_tonic_vial",
+      "name": "Refine Ash Dust Vial into Clarity Tonic",
       "apply": "item_vb_ash_dust",
       "onto": "item_vb_glass_vial",
       "result": "item_vb_clarity_tonic",
       "consumeApplied": 1,
       "minutes": 10,
       "xp": 20,
-      "text": "You combine the fine grey ash with liquid residue inside the glass vial, producing an invigorating clarity elixir."
+      "text": "You decant the ash dust into the stoppered laboratory vial, yielding an invigorating clarity elixir."
     },
     {
       "id": "comb_vb_sharpen_razor",
@@ -31,7 +53,7 @@
       "consumeApplied": 0,
       "minutes": 10,
       "xp": 15,
-      "text": "You scrape the razor against the razor-sharp bevel of the glass shard, giving it a vicious cutting edge."
+      "text": "You draw the razor edge across the beveled glass shard until the steel gleams with surgical lethality."
     },
     {
       "id": "comb_vb_ward_charm",
@@ -43,6 +65,17 @@
       "minutes": 20,
       "xp": 30,
       "text": "You bind the floating entity cloth around the crystal core, fashioning a talisman that wards off creeping dread."
+    },
+    {
+      "id": "comb_vb_resin_salve",
+      "name": "Distill Void Resin into Pain Medication",
+      "apply": "mat_vb_void_resin",
+      "onto": "item_vb_bandage_cloth",
+      "result": "item_vb_med_bottle_full",
+      "consumeApplied": 1,
+      "minutes": 15,
+      "xp": 20,
+      "text": "You filter dark doorframe resin through sterile clinical cloth into a concentrated, full-strength analgesic dose."
     }
   ]
 }

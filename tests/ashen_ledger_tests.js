@@ -71,16 +71,16 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(w.locations.length, 36, 'Must have 36 locations');
     assert.strictEqual(w.characters.length, 27, 'Must have 27 NPCs');
     assert.strictEqual(w.creatures.length, 19, 'Must have 19 creatures');
-    assert.strictEqual(w.items.length, 118, 'Must have 118 items');
+    assert.strictEqual(w.items.length, 123, 'Must have 123 items (incl. 5 new materials)');
     assert.strictEqual(w.factions.length, 10, 'Must have 10 factions');
     assert.strictEqual(w.quests.length, 23, 'Must have 23 quests');
     assert.strictEqual(w.encounters.length, 18, 'Must have 18 encounters');
-    assert.strictEqual(w.materials.length, 20, 'Must have 20 materials');
-    assert.strictEqual(w.craftingTemplates.length, 34, 'Must have 34 crafting templates');
-    assert.strictEqual(w.professions.length, 6, 'Must have 6 professions');
+    assert.strictEqual(w.materials.length, 25, 'Must have 25 materials (20 original + 5 new)');
+    assert.strictEqual(w.craftingTemplates.length, 34, 'Must have all 34 crafting templates preserved');
+    assert.strictEqual(w.professions.length, 4, 'Must have 4 compressed professions');
     assert.strictEqual(w.combinations.length, 12, 'Must have 12 combinations');
     assert.strictEqual(w.interactiveObjects.length, 13, 'Must have 13 interactive objects');
-    assert.strictEqual(w.events.length, 42, 'Must have 42 events');
+    assert.strictEqual(w.events.length, 43, 'Must have 43 events (incl. ITEM_ENCHANTED milestone)');
     assert.strictEqual(w.mythology.length, 19, 'Must have 19 codex lore entries');
     assert.strictEqual(w.spells.length, 10, 'Must have 10 campaign spells');
 
@@ -360,7 +360,7 @@ async function bootAshenLedger(opts = {}) {
     assert.ok(engine.world.backgrounds.every(b => Array.isArray(b.proficiencies) && b.passiveBonus && b.category), 'Every background must define proficiencies, passiveBonus & category');
 
     // Save/Load persistence + campaign switching check (spells, morality, flags, location, campaignId)
-    p.skills.mythology_lore = 3;
+    p.skills.mythology_lore = Math.max(p.skills.mythology_lore || 0, 3);
     engine.syncArcaneKnowledgePoints();
     engine.acquireSpell('al_spell_cinder_writ');
     engine.modifyMorality(18, 0, 'Save Test', { decisionKey: 'test_al_save_moral' });
@@ -427,9 +427,20 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(engine.state.worldState.quests['quest_al_craft_02_amber_vein'].completed, true, 'Crafting Part 2 must complete');
     assert.ok(engine.getMoralitySummary().score >= 8, 'Sharing pitch with quarry families must award positive morality');
 
-    // Part 3: Start 'The Unstamped Masterwork', solve Observatory Orrery puzzle for Fulgurite-Silver + acquire Muted Bell-Alloy -> forge Legendary Sabre!
+    // Part 3: Start 'The Unstamped Masterwork', solve Observatory Orrery puzzle for Fulgurite-Silver, imbue gear via Enchanting Table, + acquire Muted Bell-Alloy -> forge Legendary Sabre!
+    engine.openDialogue('dlg_al_master_orla', 'explain_imbuement');
+    assert.strictEqual(engine.state.worldState.flags.al_orla_taught_imbuement, true, 'Orla teaches Arcane Imbuement');
     engine.openDialogue('dlg_al_master_orla', 'start_craft_3');
     assert.ok(engine.state.worldState.quests['quest_al_craft_03_masterwork_seal'], 'Crafting Part 3 must start');
+    engine.addItem('mat_al_starlight_cinder', 3);
+    if (!engine.hasItem('item_al_dock_cutlass')) engine.addItem('item_al_dock_cutlass', 1);
+    const prevRoll3 = engine.rollD20;
+    engine.rollD20 = () => 18;
+    const enchRes = engine.enchantItem('item_al_dock_cutlass', 'mat_al_starlight_cinder', null, 'minor');
+    engine.rollD20 = prevRoll3;
+    assert.strictEqual(enchRes && enchRes.success, true, `Enchanting existing gear must succeed: ${JSON.stringify(enchRes)}`);
+    assert.strictEqual(engine.state.worldState.flags.al_performed_enchant, true, 'ITEM_ENCHANTED event must set al_performed_enchant');
+    assert.strictEqual(engine.state.worldState.quests['quest_al_craft_03_masterwork_seal'].objectives.obj_imbue_masterwork_gear.completed, true, 'Part 3 optional imbuement objective completes on enchant');
     engine.openPuzzle('puzzle_al_observatory_orrery');
     engine.resolveRiddleChoice('solved');
     assert.strictEqual(engine.state.worldState.flags.al_observatory_orrery_solved, true, 'Astral Orrery puzzle must solve cleanly');
@@ -466,7 +477,7 @@ async function bootAshenLedger(opts = {}) {
   });
 
   // 9. Forensic End-to-End Interconnectedness: Real searchArea hiddenSpots, Interactive Objects, Companion Recruitment, All 6 Professions, All 12 Combinations & All 10 Campaign Spells
-  await test('Ashen Ledger 9: End-to-end interconnectedness (searchArea hiddenSpots, interactive objects, 2 companions, all 6 professions, all 12 combos, all 5 puzzles, all 10 spells)', async () => {
+  await test('Ashen Ledger 9: End-to-end interconnectedness (searchArea hiddenSpots, interactive objects, 2 companions, all 4 professions, enchanting, 7 minigames, all 12 combos, all 5 puzzles, all 10 spells)', async () => {
     const { engine } = await bootAshenLedger({ classId: 'al_lantern_warden', backgroundId: 'bg_al_quarry_survivor' });
     const p = engine.state.player;
     ['strength', 'intelligence', 'wisdom', 'agility', 'charisma', 'endurance'].forEach(k => p.attributes[k] = 18);
@@ -503,24 +514,49 @@ async function bootAshenLedger(opts = {}) {
     const comps = engine.state.player.companions || engine.state.worldState.companions || [];
     assert.ok(comps.length >= 2, 'Both Sluice-Rat Pem and Scout Fenn must be recruitable');
 
-    // All 6 crafting professions
+    // All 4 compressed crafting professions (including new craftable materials)
     for (const prof of engine.world.professions) {
       if (prof.requiredToolkitId) engine.addItem(prof.requiredToolkitId, 1);
     }
     const profMatrix = [
-      ['al_foundry_smithing', 'weapon', 'mat_al_pale_iron', 'mat_al_weir_ashwood'],
-      ['al_bell_brasswork', 'weapon', 'mat_al_bell_bronze', 'mat_al_chancery_brass'],
-      ['al_oilskin_leathercraft', 'armor', 'mat_al_salt_hide', 'mat_al_soul_pitch'],
-      ['al_mnemonic_alchemy', 'consumable', 'mat_al_tallow_herbs', 'mat_al_distilled_memory'],
-      ['al_seal_scribing', 'weapon', 'mat_al_ash_quartz', 'mat_al_prism_lens'],
-      ['al_clockwork_artifice', 'weapon', 'mat_al_clockwork_springs', 'mat_al_fulgurite_silver']
+      ['al_foundry_smithing', 'weapon', 'mat_al_pale_iron', 'mat_al_verdigris_copper'],
+      ['al_clockwork_artifice', 'weapon', 'mat_al_clockwork_springs', 'mat_al_tally_mercury'],
+      ['al_oilskin_leathercraft', 'armor', 'mat_al_salt_hide', 'mat_al_ember_velvet'],
+      ['al_mnemonic_alchemy', 'consumable', 'mat_al_tallow_herbs', 'mat_al_starlight_cinder'],
+      ['al_mnemonic_alchemy', 'weapon', 'mat_al_ash_quartz', 'mat_al_bone_ivory']
     ];
     for (const [pid, cat, m1, m2] of profMatrix) {
       engine.addItem(m1, 3); engine.addItem(m2, 3);
       engine.currentCraftingProfession = pid;
       const r = engine.craftItem(cat, m1, m2);
-      assert.strictEqual(r && r.success, true, `Crafting failed for profession ${pid}`);
+      assert.strictEqual(r && r.success, true, `Crafting failed for profession ${pid} (${cat})`);
     }
+
+    // All 7 optional minigame varieties wired in Ashen Ledger locations
+    const alMgTypes = new Set(engine.world.locations.flatMap(l => (l.actions || []).filter(a => a.handlerType === 'minigame').map(a => a.minigameType)));
+    for (const t of ['forge', 'mortar', 'stalk', 'astragaloi', 'shield_clash', 'glyph_memory', 'pendulum_tune']) {
+      assert.strictEqual(alMgTypes.has(t), true, `Ashen Ledger must wire optional minigame '${t}'`);
+    }
+
+    // Verify new minigames (glyph_memory & pendulum_tune) initialize cleanly + Item Enchanting Rank I->II persistence across Save/Load
+    engine.openMinigame('glyph_memory', { allowAnywhere: true });
+    assert.ok(engine.glyphMemoryState && engine.glyphMemoryState.fullSequence.length === 5, 'glyph_memory initializes cleanly');
+    engine.closeMinigame(false);
+    engine.openMinigame('pendulum_tune', { allowAnywhere: true });
+    assert.ok(engine.pendulumState && engine.pendulumState.totalStages === 3, 'pendulum_tune initializes cleanly');
+    engine.closeMinigame(false);
+
+    p.skills.mythology_lore = Math.max(p.skills.mythology_lore || 0, 3);
+    engine.addItem('mat_al_starlight_cinder', 6);
+    if (!engine.hasItem('item_al_dock_cutlass')) engine.addItem('item_al_dock_cutlass', 1);
+    const e1 = engine.enchantItem('item_al_dock_cutlass', 'mat_al_starlight_cinder', 'keen_edge', 'minor');
+    assert.strictEqual(e1 && e1.success, true, 'Rank I Keen Edge enchant succeeds');
+    const e2 = engine.enchantItem(e1.item.id, 'mat_al_starlight_cinder', 'keen_edge', 'masterwork');
+    assert.strictEqual(e2 && e2.success, true, 'Rank II Masterwork Keen Edge upgrade succeeds');
+    assert.strictEqual(e2.item.enchantments[0].rank, 2, 'Keen Edge upgraded to Rank II');
+    const savedState = JSON.stringify(engine.state);
+    engine.state = engine.migrateState(JSON.parse(savedState));
+    assert.ok(engine.state.worldState.dynamicItems[e2.item.id], 'Enchanted item persists cleanly across Save/Load');
 
     // All 12 combinations
     for (const comb of engine.world.combinations) {

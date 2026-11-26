@@ -2754,6 +2754,115 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(bodyText.includes('empty_g') && bodyText.includes('it_dup'), 'validation modal body displays rendered diagnostics');
   });
 
+  await test('Location Reachability Validation: catches disconnected locations, unset/chicken-and-egg requiresFlag locks, one-way traps, and passes all 4 shipped campaigns', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    const Engine = env.Engine;
+
+    // 1. Disconnected / orphaned location is flagged as an error
+    const disconn = Engine.validateCampaign(
+      { id: 'camp_disconn', name: 'Disconnected Test', version: '1.0.0', startingLocationId: 'loc_a' },
+      {
+        locations: [
+          { id: 'loc_a', name: 'Start', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Start.' }, connections: [{ targetLocationId: 'loc_b', travelHours: 1 }] },
+          { id: 'loc_b', name: 'Town', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Town.' }, connections: [{ targetLocationId: 'loc_a', travelHours: 1 }] },
+          { id: 'loc_island', name: 'Isolated Island', coordinates: { x: 99, y: 99 }, narrative: { overview: 'Cut off.' }, connections: [] }
+        ]
+      }
+    );
+    assert.strictEqual(disconn.valid, false, 'disconnected location fails validation');
+    assert.ok(disconn.errors.some(e => e.includes('loc_island') && /unreachable/i.test(e)), 'names unreachable location loc_island');
+
+    // 2. Unset requiresFlag soft-locks target + downstream locations
+    const unsetGate = Engine.validateCampaign(
+      { id: 'camp_unset_gate', name: 'Unset Gate Test', version: '1.0.0', startingLocationId: 'loc_start' },
+      {
+        locations: [
+          { id: 'loc_start', name: 'Hall', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Hall.' }, connections: [{ targetLocationId: 'loc_vault', requiresFlag: 'missing_key_flag', travelHours: 1 }] },
+          { id: 'loc_vault', name: 'Vault', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Vault.' }, connections: [{ targetLocationId: 'loc_start', travelHours: 1 }, { targetLocationId: 'loc_sanctum', travelHours: 1 }] },
+          { id: 'loc_sanctum', name: 'Inner Sanctum', coordinates: { x: 20, y: 0 }, narrative: { overview: 'Sanctum.' }, connections: [{ targetLocationId: 'loc_vault', travelHours: 1 }] }
+        ]
+      }
+    );
+    assert.strictEqual(unsetGate.valid, false, 'unset requiresFlag gate fails validation');
+    assert.ok(unsetGate.errors.some(e => e.includes('loc_vault') && e.includes('missing_key_flag')), 'identifies blocked location & missing flag');
+    assert.ok(unsetGate.errors.some(e => e.includes('loc_sanctum') && /soft-locked|unreachable/i.test(e)), 'catches downstream soft-locked room');
+
+    // 3. Chicken-and-egg self-lock (flag is ONLY set inside the room locked behind that flag!)
+    const selfLock = Engine.validateCampaign(
+      { id: 'camp_self_lock', name: 'Self Lock Test', version: '1.0.0', startingLocationId: 'loc_start' },
+      {
+        locations: [
+          { id: 'loc_start', name: 'Gate', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Gate.' }, connections: [{ targetLocationId: 'loc_inside', requiresFlag: 'inside_lever', travelHours: 1 }] },
+          {
+            id: 'loc_inside', name: 'Locked Chamber', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Locked.' },
+            connections: [{ targetLocationId: 'loc_start', travelHours: 1 }],
+            actions: [{ id: 'act_lever', title: 'Pull Lever', outcome: { setFlags: { inside_lever: true } } }]
+          }
+        ]
+      }
+    );
+    assert.strictEqual(selfLock.valid, false, 'chicken-and-egg self-locking requiresFlag fails validation');
+    assert.ok(selfLock.errors.some(e => e.includes('loc_inside') && e.includes('inside_lever')), 'catches self-locked flag gate');
+
+    // 4. Valid progressive multi-step unlock chain (start action -> room B NPC dialogue -> event -> room C)
+    const validChain = Engine.validateCampaign(
+      { id: 'camp_chain', name: 'Valid Chain', version: '1.0.0', startingLocationId: 'loc_a' },
+      {
+        locations: [
+          {
+            id: 'loc_a', name: 'Start', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Start.' },
+            connections: [{ targetLocationId: 'loc_b', requiresFlag: 'step_1', travelHours: 1 }],
+            actions: [{ id: 'act_1', title: 'Open Door', outcome: { setFlags: { step_1: true } } }]
+          },
+          {
+            id: 'loc_b', name: 'Mid', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Mid.' },
+            connections: [{ targetLocationId: 'loc_a', travelHours: 1 }, { targetLocationId: 'loc_c', requiresFlag: 'step_3', travelHours: 1 }]
+          },
+          {
+            id: 'loc_c', name: 'End', coordinates: { x: 20, y: 0 }, narrative: { overview: 'End.' },
+            connections: [{ targetLocationId: 'loc_b', travelHours: 1 }]
+          }
+        ],
+        characters: [{ id: 'npc_b', name: 'Guide', locationId: 'loc_b', dialogueTreeId: 'dlg_b' }],
+        dialogues: { dlg_b: { nodes: { root: { text: 'Proceed.', setFlags: { step_2: true } } } } },
+        events: [{ id: 'ev_unlock_c', trigger: 'FLAG_SET', conditions: { flag: 'step_2', expected: true }, outcomes: { setFlags: { step_3: true } } }]
+      }
+    );
+    assert.strictEqual(validChain.valid, true, `valid progressive unlock chain should pass, got: ${validChain.errors.join('; ')}`);
+
+    // 5. One-way dead-end trap raises a warning unless allowOneWay: true is set
+    const trapRes = Engine.validateCampaign(
+      { id: 'camp_trap', name: 'Trap Test', version: '1.0.0', startingLocationId: 'loc_a' },
+      {
+        locations: [
+          { id: 'loc_a', name: 'Start', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Start.' }, connections: [{ targetLocationId: 'loc_pit', travelHours: 1 }] },
+          { id: 'loc_pit', name: 'Pit', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Deep pit.' }, connections: [] }
+        ]
+      }
+    );
+    assert.strictEqual(trapRes.valid, true, 'one-way dead-end is a warning, not a hard error');
+    assert.ok(trapRes.warnings.some(w => w.includes('loc_pit') && /return path/i.test(w)), 'warns on unintended one-way trap');
+
+    const optedOut = Engine.validateCampaign(
+      { id: 'camp_end', name: 'Ending Test', version: '1.0.0', startingLocationId: 'loc_a' },
+      {
+        locations: [
+          { id: 'loc_a', name: 'Start', coordinates: { x: 0, y: 0 }, narrative: { overview: 'Start.' }, connections: [{ targetLocationId: 'loc_fin', travelHours: 1 }] },
+          { id: 'loc_fin', name: 'Finale', coordinates: { x: 10, y: 0 }, narrative: { overview: 'Finale.' }, allowOneWay: true, connections: [] }
+        ]
+      }
+    );
+    assert.strictEqual(optedOut.warnings.some(w => w.includes('loc_fin')), false, 'allowOneWay: true suppresses one-way warning');
+
+    // 6. All 4 shipped campaigns pass full reachability validation cleanly (including Vermin Black's flag-gated rooms!)
+    for (const cid of ['campaign_tutorial', 'campaign_northern_realms', 'campaign_ashen_ledger', 'campaign_vermin']) {
+      const report = await engine.runComprehensiveCampaignValidation(cid, { showModal: false });
+      assert.strictEqual(report.valid, true, `${cid} must pass reachability validation: ${report.errors.join('; ')}`);
+      assert.ok(report.info.some(msg => /Validated location reachability/i.test(msg)), `${cid} logs reachability summary`);
+    }
+  });
+
   // ---------------------------------------------------------------------------
   // UI/UX Overhaul: Item Rarity Frames, Dynamic Relative Difficulty & Arena Layout
   // ---------------------------------------------------------------------------
