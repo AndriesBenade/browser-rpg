@@ -286,9 +286,9 @@ Critical outcomes are evaluated strictly on the **natural raw die roll**, never 
 * Two-handed weapon mutual exclusion (equipping a two-handed weapon automatically unequips off-hand shields or weapons).
 
 ### 8.2 Centralized Loot Engine & Rarity Caps
-* Hard probability caps enforce authentic balance:
-  * Normal creatures: Epic $\le 0.02\%$, Legendary $0.00\%$, Mythic $0.00\%$.
-  * Boss creatures: Mythic capped at $\le 0.02\%$.
+* Hard probability caps (never bypassed by feats) enforce authentic balance:
+  * Normal creatures: Rare $\le 65\%$, Epic $\le 2\%$ (`0.02`), Legendary $0\%$ (blocked), Mythic $0\%$ (blocked).
+  * Boss creatures: Mythic capped at $\le 2\%$ (`0.02`); Common/Uncommon/Rare/Epic/Legendary follow table odds up to $95\%$ (or $100\%$ if guaranteed).
 * Independent level-scaled currency: Normal creature victories award silver drachmae scaled dynamically to level ($\ge \text{level} \times 3$).
 
 ### 8.3 Recipe-Free Procedural Crafting
@@ -400,7 +400,7 @@ The engine includes 5 interactive minigames rendered in dynamic DOM modals with 
 | **Core Skills** | 12 specialized skills | Primary + Secondary attribute dependency; non-combat skills support Reliable Talent ($\ge 8$) |
 | **Time System** | Discrete minutes, hours, days, months, years | Zero continuous polling loops; activity-driven |
 | **Scheduler Insertion** | Binary Search ($O(\log n)$) | Chronologically sorted; memory pruned on execution |
-| **Loot Hard Caps** | Normal Epic $\le 0.02\%$; Boss Mythic $\le 0.02\%$ | Anti-exploit unique relic duplication lock |
+| **Loot Hard Caps** | Normal Rare $\le 65\%$, Epic $\le 2\%$, Leg/Myth $0\%$; Boss Mythic $\le 2\%$ | Anti-exploit unique relic duplication lock |
 | **Save Storage** | IndexedDB primary, LocalStorage fallback | Save v1.9.0 automated schema migration pipeline |
 | **Automated Tests** | Passing suite (`npm test`: engine, behaviour & Dev play-throughs) | Complete regression, campaign validation & behaviour coverage |
 

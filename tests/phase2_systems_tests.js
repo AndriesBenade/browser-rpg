@@ -226,12 +226,18 @@ async function bootCampaign(id = 'campaign_northern_realms') {
     engine.modifyFactionReputation('faction_tut_wardens', 10, 'Test Envoy');
     assert.ok(engine.getFactionReputation('faction_tut_wardens') - repBefore > 10, 'Civic Diplomat boosts positive faction reputation');
 
-    // C. Loot feats improve odds modestly without bypassing non-boss epic/legendary caps
+    // C. Loot feats improve odds modestly without bypassing non-boss/boss hard rarity caps
     p.level = 6;
     p.skills.perception = 3;
     p.feats.push('fortune_seeker', 'relic_hunter');
-    assert.ok(engine.getFeatEffectSum('lootChanceMult') > 0, 'loot feats provide active lootChanceMult');
+    const lootMult = 1 + engine.getFeatEffectSum('lootChanceMult');
+    const rareWeight = 1 + engine.getFeatEffectSum('rareDropWeightMult');
+    assert.ok(lootMult > 1, 'loot feats provide active lootChanceMult');
     assert.ok(engine.getFeatEffectSum('lootCoinMult') > 0, 'Fortune Seeker boosts coin spoils');
+    assert.strictEqual(engine.clampLootChance(0.9, { rarity: 'epic' }, { isBoss: false, featLootMult: lootMult, featRareWeight: rareWeight }), 0.02, 'loot feats cannot bypass non-boss 2% epic cap');
+    assert.strictEqual(engine.clampLootChance(0.9, { rarity: 'rare' }, { isBoss: false, featLootMult: lootMult, featRareWeight: rareWeight }), 0.65, 'loot feats cannot bypass non-boss 65% rare cap');
+    assert.strictEqual(engine.clampLootChance(0.9, { rarity: 'legendary' }, { isBoss: false, featLootMult: lootMult, featRareWeight: rareWeight }), 0, 'loot feats cannot bypass non-boss 0% legendary block');
+    assert.strictEqual(engine.clampLootChance(0.9, { rarity: 'mythic' }, { isBoss: true, featLootMult: lootMult, featRareWeight: rareWeight }), 0.02, 'loot feats cannot bypass boss 2% mythic cap');
   });
 
   // ---------------------------------------------------------------------------

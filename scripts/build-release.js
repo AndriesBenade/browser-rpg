@@ -34,18 +34,177 @@ const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
 const gz = (buf) => zlib.gzipSync(buf, { level: 9 }).length;
 const br = (buf) => zlib.brotliCompressSync(buf, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 } }).length;
 
+function minifyInlineStyles(html) {
+  return html.replace(/style="([^"]*)"/g, (_, st) =>
+    `style="${st.replace(/\s*:\s*/g, ':').replace(/\s*;\s*/g, ';').replace(/;+$/, '').replace(/\s{2,}/g, ' ').trim()}"`
+  );
+}
+
 function minifyMarkup(html, { stripNoCacheMeta = false } = {}) {
   let out = html.replace(/<!--[\s\S]*?-->/g, '');
   if (stripNoCacheMeta) {
     out = out
       .replace(/<meta\s+http-equiv="(?:Cache-Control|Pragma|Expires)"[^>]*>/gi, '');
   }
-  return out
+  out = out
     .split('\n')
     .map(l => l.trim())
     .filter(Boolean)
     .join('\n')
     .replace(/>\n</g, '><');
+  return minifyInlineStyles(out);
+}
+
+/**
+ * Safely collapses redundant indentation, inter-tag whitespace, and inline style spacing
+ * inside multi-line HTML template literals in JS while preserving regex literals, quoted
+ * strings, comments, nested ${...} expressions, and <pre>/<textarea> whitespace.
+ */
+function minifyHtmlTemplatesInJs(code) {
+  const len = code.length;
+  let i = 0;
+  let out = '';
+  let lastNonWs = '';
+  let lastWord = '';
+
+  const regexPrevTokens = new Set(['', '(', '[', '{', ',', ';', ':', '=', '!', '?', '&', '|', '^', '~', '+', '-', '*', '%', '<', '>']);
+  const regexPrevWords = new Set(['return', 'case', 'throw', 'in', 'of', 'typeof', 'void', 'delete', 'new', 'await', 'yield', 'else', 'do']);
+  const isIdentChar = (c) => /[a-zA-Z0-9_$]/.test(c);
+
+  const readQuote = (q) => {
+    let s = q; i++;
+    while (i < len) {
+      const c = code[i];
+      if (c === '\\') { s += code.slice(i, i + 2); i += 2; continue; }
+      s += c; i++;
+      if (c === q) break;
+    }
+    return s;
+  };
+
+  const readRegex = () => {
+    let s = '/'; i++;
+    let inClass = false;
+    while (i < len) {
+      const c = code[i];
+      if (c === '\\') { s += code.slice(i, i + 2); i += 2; continue; }
+      if (c === '[') inClass = true;
+      else if (c === ']') inClass = false;
+      s += c; i++;
+      if (c === '/' && !inClass) {
+        while (i < len && /[a-z]/i.test(code[i])) { s += code[i]; i++; }
+        break;
+      }
+    }
+    return s;
+  };
+
+  const collapseHtmlChunk = (chunk, isFirst, isLast) => {
+    let v = chunk
+      .replace(/\r?\n[ \t]+/g, ' ')
+      .replace(/\r?\n/g, ' ')
+      .replace(/>\s+</g, '><')
+      .replace(/\s{2,}/g, ' ');
+    v = minifyInlineStyles(v);
+    if (isFirst) v = v.replace(/^\s+(?=<)/, '');
+    if (isLast) v = v.replace(/>\s+$/, '>');
+    return v;
+  };
+
+  const readTemplate = () => {
+    const parts = [];
+    let buf = '';
+    while (i < len) {
+      const c = code[i];
+      if (c === '\\') { buf += code.slice(i, i + 2); i += 2; continue; }
+      if (c === '`') { i++; break; }
+      if (c === '$' && code[i + 1] === '{') {
+        parts.push({ t: 's', v: buf });
+        buf = '';
+        i += 2;
+        parts.push({ t: 'e', v: readExprUntilCloseBrace() });
+        continue;
+      }
+      buf += c; i++;
+    }
+    parts.push({ t: 's', v: buf });
+
+    const joinedStatic = parts.filter(p => p.t === 's').map(p => p.v).join('');
+    const hasHtml = /<(?:div|span|button|option|select|table|tr|td|th|h[1-6]|p|ul|li|strong|em|small|label|input|textarea|section|article|header|footer|nav|details|summary|svg|g|path|circle|rect|text|line|br|hr|a)\b/i.test(joinedStatic);
+    const hasPre = /<pre\b|<textarea\b|white-space\s*:\s*pre/i.test(joinedStatic);
+    const doCollapse = hasHtml && !hasPre && joinedStatic.includes('\n');
+
+    return parts.map((p, idx) => {
+      if (p.t === 'e') return '${' + p.v + '}';
+      return doCollapse ? collapseHtmlChunk(p.v, idx === 0, idx === parts.length - 1) : p.v;
+    }).join('');
+  };
+
+  const readExprUntilCloseBrace = () => {
+    let depth = 1;
+    let res = '';
+    let prevTok = '{';
+    let prevWord = '';
+    while (i < len && depth > 0) {
+      const c = code[i];
+      if (c === '"' || c === "'") { res += readQuote(c); prevTok = '"'; prevWord = ''; continue; }
+      if (c === '`') { i++; res += '`' + readTemplate() + '`'; prevTok = '`'; prevWord = ''; continue; }
+      if (c === '/' && code[i + 1] === '/') {
+        while (i < len && code[i] !== '\n') { res += code[i]; i++; }
+        continue;
+      }
+      if (c === '/' && code[i + 1] === '*') {
+        res += '/*'; i += 2;
+        while (i < len && !(code[i] === '*' && code[i + 1] === '/')) { res += code[i]; i++; }
+        if (i < len) { res += '*/'; i += 2; }
+        continue;
+      }
+      if (c === '/' && (regexPrevTokens.has(prevTok) || regexPrevWords.has(prevWord))) {
+        res += readRegex(); prevTok = '/'; prevWord = ''; continue;
+      }
+      if (c === '{') { depth++; res += c; prevTok = c; prevWord = ''; i++; continue; }
+      if (c === '}') {
+        depth--;
+        if (depth === 0) { i++; break; }
+        res += c; prevTok = c; prevWord = ''; i++; continue;
+      }
+      if (isIdentChar(c)) {
+        let w = '';
+        while (i < len && isIdentChar(code[i])) { w += code[i]; i++; }
+        res += w; prevTok = 'w'; prevWord = w; continue;
+      }
+      if (!/\s/.test(c)) { prevTok = c; prevWord = ''; }
+      res += c; i++;
+    }
+    return res;
+  };
+
+  while (i < len) {
+    const c = code[i];
+    if (c === '"' || c === "'") { out += readQuote(c); lastNonWs = '"'; lastWord = ''; continue; }
+    if (c === '`') { i++; out += '`' + readTemplate() + '`'; lastNonWs = '`'; lastWord = ''; continue; }
+    if (c === '/' && code[i + 1] === '/') {
+      while (i < len && code[i] !== '\n') { out += code[i]; i++; }
+      continue;
+    }
+    if (c === '/' && code[i + 1] === '*') {
+      out += '/*'; i += 2;
+      while (i < len && !(code[i] === '*' && code[i + 1] === '/')) { out += code[i]; i++; }
+      if (i < len) { out += '*/'; i += 2; }
+      continue;
+    }
+    if (c === '/' && (regexPrevTokens.has(lastNonWs) || regexPrevWords.has(lastWord))) {
+      out += readRegex(); lastNonWs = '/'; lastWord = ''; continue;
+    }
+    if (isIdentChar(c)) {
+      let w = '';
+      while (i < len && isIdentChar(code[i])) { w += code[i]; i++; }
+      out += w; lastNonWs = 'w'; lastWord = w; continue;
+    }
+    if (!/\s/.test(c)) { lastNonWs = c; lastWord = ''; }
+    out += c; i++;
+  }
+  return out;
 }
 
 function buildHtml(src, { webMode = false } = {}) {
@@ -67,10 +226,11 @@ function buildHtml(src, { webMode = false } = {}) {
       '$1"";'
     );
   }
+  js = minifyHtmlTemplatesInJs(js);
   const cssMin = esbuild.transformSync(css, { loader: 'css', minify: true }).code.trim();
   // Classic script (no format): esbuild keeps top-level names, so inline onclick="window.engine..."
   // handlers and the test sandbox (which looks up GreekMythologyEngine) keep working.
-  const jsMin = esbuild.transformSync(js, { loader: 'js', minify: true, target: 'es2020', legalComments: 'none' }).code.trim();
+  const jsMin = esbuild.transformSync(js, { loader: 'js', minify: true, target: 'es2022', legalComments: 'none', pure: ['console.log'] }).code.trim();
   if (/<\/script/i.test(jsMin)) throw new Error('Minified script contains "</script": refusing to inline it.');
   return minifyMarkup(src.slice(0, styleOpen), { stripNoCacheMeta: webMode }) + '\n<style>' + cssMin + '</style>\n'
     + minifyMarkup(src.slice(styleClose + 8, scriptOpen)) + '\n<script>' + jsMin + '</script>\n'
@@ -84,6 +244,7 @@ function minifySvg(svgStr) {
     .replace(/>\s+</g, '><')
     .replace(/\s{2,}/g, ' ')
     .replace(/\s+\/>/g, '/>')
+    .replace(/(\d)\.0+(?=[\s,"'])/g, '$1')
     .trim();
 }
 
@@ -125,7 +286,7 @@ const CLOUDFLARE_HEADERS = `/*
   Cache-Control: public, max-age=0, must-revalidate
 
 /content/*
-  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
 `;
 
 function main() {
@@ -156,6 +317,7 @@ function main() {
       'tests/behaviour_tests.js',
       'tests/tutorial_campaign_tests.js',
       'tests/northern_realms_tests.js',
+      'tests/multi_enemy_combat_tests.js',
       'tests/phase2_systems_tests.js',
       'tests/global_magic_morality_tests.js',
       'tests/ashen_ledger_tests.js',

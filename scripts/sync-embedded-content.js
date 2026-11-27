@@ -56,7 +56,18 @@ function buildFiles() {
       if (!fs.existsSync(absMap)) throw new Error(`${manifestPath} references a mapImage that does not exist: ${mapSrc}`);
       const ext = path.extname(mapSrc).toLowerCase();
       const mime = MAP_IMAGE_MIMES[ext] || 'image/svg+xml';
-      const b64 = fs.readFileSync(absMap).toString('base64');
+      let rawBuf = fs.readFileSync(absMap);
+      if (ext === '.svg') {
+        const minSvg = rawBuf.toString('utf8')
+          .replace(/<!--[\s\S]*?-->/g, '')
+          .replace(/<metadata[\s\S]*?<\/metadata>/gi, '')
+          .replace(/>\s+</g, '><')
+          .replace(/\s{2,}/g, ' ')
+          .replace(/\s+\/>/g, '/>')
+          .trim();
+        rawBuf = Buffer.from(minSvg, 'utf8');
+      }
+      const b64 = rawBuf.toString('base64');
       files[mapSrc] = { dataUri: `data:${mime};base64,${b64}` };
     }
   }

@@ -2024,7 +2024,7 @@ runTest("Equipment Paper Doll: Full 14 slots supported, dual ring slot logic, an
 // -----------------------------------------------------------------------------
 // 43. Centralized Loot Engine & Probability Hard Caps
 // -----------------------------------------------------------------------------
-runTest("Centralized Loot Engine: Normal creature epic <= 0.02%, legendary/mythic 0.00%, boss mythic <= 0.02%, independent currency", () => {
+runTest("Centralized Loot Engine: Normal creature rare <= 65%, epic <= 2%, legendary/mythic 0%, boss mythic <= 2% (common..legendary <= 95% or 100% guaranteed), never bypassed by feats", () => {
   const engine = new GreekMythologyEngine();
   engine.loadEmbeddedFallbackContent();
 
@@ -2040,6 +2040,7 @@ runTest("Centralized Loot Engine: Normal creature epic <= 0.02%, legendary/mythi
     currency: { min: 10, max: 20 },
     entries: [
       { itemId: "item_trash_pebble", chance: 1.0 },
+      { itemId: "item_rare_brooch", chance: 1.0 },
       { itemId: "item_epic_helm", chance: 0.5 },
       { itemId: "item_legendary_blade", chance: 0.5 },
       { itemId: "item_mythic_relic", chance: 0.5 }
@@ -2048,16 +2049,39 @@ runTest("Centralized Loot Engine: Normal creature epic <= 0.02%, legendary/mythi
   engine.lootTables.push(testLootTable);
   engine._lootTableMap.set(testLootTable.id, testLootTable);
 
-  engine.world.items.push(
-    { id: "item_trash_pebble", name: "Pebble", rarity: "trash" },
-    { id: "item_epic_helm", name: "Epic Helm", rarity: "epic", mythologicalLore: { source: "Homer", note: "Epic" } },
-    { id: "item_legendary_blade", name: "Legendary Blade", rarity: "legendary", mythologicalLore: { source: "Homer", note: "Legendary" } },
-    { id: "item_mythic_relic", name: "Mythic Relic", rarity: "mythic", mythologicalLore: { source: "Homer", note: "Mythic" } }
-  );
+  const itemsByTier = {
+    common: { id: "item_trash_pebble", name: "Pebble", rarity: "common" },
+    uncommon: { id: "item_uncommon_ring", name: "Silver Band", rarity: "uncommon" },
+    rare: { id: "item_rare_brooch", name: "Rare Brooch", rarity: "rare" },
+    epic: { id: "item_epic_helm", name: "Epic Helm", rarity: "epic", mythologicalLore: { source: "Homer", note: "Epic" } },
+    legendary: { id: "item_legendary_blade", name: "Legendary Blade", rarity: "legendary", mythologicalLore: { source: "Homer", note: "Legendary" } },
+    mythic: { id: "item_mythic_relic", name: "Mythic Relic", rarity: "mythic", mythologicalLore: { source: "Homer", note: "Mythic" } }
+  };
+  engine.world.items.push(...Object.values(itemsByTier));
   engine.buildContentMaps();
 
-  // Test probability enforcement on normal creature:
-  // Legendary and Mythic MUST NEVER drop from normal creatures (chance clamped to 0)
+  // Direct hard rarity cap checks with Extreme difficulty + Fortune Seeker + Relic Hunter active
+  const maxOpts = { isBoss: false, isGuaranteed: false, mult: 1.35, featLootMult: 1.20, featRareWeight: 1.18 };
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.legendary, maxOpts), 0, "Non-boss legendary must be 0%");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.mythic, maxOpts), 0, "Non-boss mythic must be 0%");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.legendary, { ...maxOpts, isGuaranteed: true }), 0, "Non-boss guaranteed legendary stays blocked at 0%");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.epic, maxOpts), 0.02, "Non-boss epic must cap at <= 2% (0.02) even with feats");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.epic, { ...maxOpts, isGuaranteed: true }), 0.02, "Non-boss epic cannot exceed 2%");
+  assert.ok(engine.clampLootChance(0.01, itemsByTier.epic, maxOpts) > 0.01 && engine.clampLootChance(0.01, itemsByTier.epic, maxOpts) <= 0.02, "Sub-cap non-boss epic scales with feats/difficulty up to 2%");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.rare, maxOpts), 0.65, "Non-boss rare must cap at <= 65% (0.65) even with feats");
+
+  // Boss caps: mythic <= 2%, common..legendary follow table odds up to 95% (or 100% if guaranteed)
+  const bossOpts = { ...maxOpts, isBoss: true };
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.mythic, bossOpts), 0.02, "Boss mythic must cap at <= 2% (0.02) even with feats");
+  assert.strictEqual(engine.clampLootChance(1.0, itemsByTier.mythic, { ...bossOpts, isGuaranteed: true }), 0.02, "Boss mythic cannot exceed 2%");
+  for (const r of ["common", "uncommon", "rare", "epic", "legendary"]) {
+    assert.strictEqual(engine.clampLootChance(1.0, itemsByTier[r], bossOpts), 0.95, `Boss non-guaranteed ${r} caps at 95%`);
+    assert.strictEqual(engine.clampLootChance(0.4, itemsByTier[r], { ...bossOpts, isGuaranteed: true }), 1.0, `Boss guaranteed ${r} yields 100%`);
+  }
+  assert.ok(Math.abs(engine.clampLootChance(0.4, itemsByTier.legendary, { isBoss: true }) - 0.4) < 1e-9, "Boss legendary follows table odds");
+
+  // Test runtime enforcement on normal creature: legendary and mythic MUST NEVER drop
+  engine.state.player.feats = ["fortune_seeker", "relic_hunter"];
   for (let i = 0; i < 50; i++) {
     engine.resolveEntityLoot(normalCreature);
     assert.ok(!engine.hasItem("item_legendary_blade"), "Legendary items must NEVER drop from normal creatures");

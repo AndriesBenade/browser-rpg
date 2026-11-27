@@ -206,8 +206,8 @@ async function bootNR() {
   await test('12.4 & 12.6 Target Selection & Melee Obstruction: frontline blocks melee to backline, zero cost on blocked attempt, ranged bypasses, clearing frontline exposes backline', async () => {
     const { env, engine } = await bootNR();
     // Keep hero alive through multi-turn enemy counterattacks during targeting verification
-    engine.state.player.vitals.maxHp = 120;
-    engine.state.player.vitals.hp = 120;
+    engine.state.player.vitals.maxHealth = 120;
+    engine.state.player.vitals.health = 120;
 
     // Equip a melee weapon
     engine.addItem('item_nr_iron_longsword', 1);
@@ -300,7 +300,7 @@ async function bootNR() {
     f1.hp = f1.maxHp = 50;
     f2.hp = f2.maxHp = 50;
     b1.hp = b1.maxHp = 50;
-    b1.immune = ['bleeding']; // test independent status immunity per enemy!
+    b1.immune = ['burning']; // test independent status immunity per enemy!
 
     // 1. Line-of-Sight spell (`bolt`) targeting backline behind 2 frontline foes is BLOCKED without spending spell casts or stamina!
     engine.selectCombatTarget(b1.uid);
@@ -328,16 +328,16 @@ async function bootNR() {
     assert.ok(f1.hp < 50 && f2.hp < 50, 'Sweeping Cleave hits BOTH frontline enemies');
     assert.strictEqual(b1.hp, b1HpBeforeCleave, 'Sweeping Cleave does not reach backline while frontline stands');
 
-    // 4. Area-of-Effect spell (`nova`) + Fire Aspect hits ALL 3 enemies across frontline & backline independently, respecting b1's bleeding immunity!
+    // 4. Area-of-Effect spell (`nova`) + Fire Aspect hits ALL 3 enemies across frontline & backline independently, respecting b1's burning immunity!
     c.selectedSpellOption = 'elemental_shift';
     c.selectedSpellElement = 'fire';
     const hpBeforeNova = [f1.hp, f2.hp, b1.hp];
     const novaRes = engine.combatAction('spell:nova');
     assert.strictEqual(novaRes.success, true, 'AoE nova resolves cleanly');
     assert.ok(f1.hp < hpBeforeNova[0] && f2.hp < hpBeforeNova[1] && b1.hp < hpBeforeNova[2], 'AoE nova damages all 3 foes across frontline & backline');
-    assert.strictEqual(engine.hasCombatStatus('enemy', 'bleeding', f1), true, 'f1 ignited by Fire Aspect');
-    assert.strictEqual(engine.hasCombatStatus('enemy', 'bleeding', f2), true, 'f2 ignited independently by Fire Aspect');
-    assert.strictEqual(engine.hasCombatStatus('enemy', 'bleeding', b1), false, 'b1 bleeding immunity respected independently during AoE');
+    assert.strictEqual(engine.hasCombatStatus('enemy', 'burning', f1), true, 'f1 ignited by Fire Aspect');
+    assert.strictEqual(engine.hasCombatStatus('enemy', 'burning', f2), true, 'f2 ignited independently by Fire Aspect');
+    assert.strictEqual(engine.hasCombatStatus('enemy', 'burning', b1), false, 'b1 burning immunity respected independently during AoE');
     engine.combatSession = null;
   });
 

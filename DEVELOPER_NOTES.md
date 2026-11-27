@@ -8,6 +8,147 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 53 - 2026-11-27 (Full Engine & 4-Campaign Review, Equipment/Crafting Bug Fixes, Difficulty Calibration & Compression)
+* **Collaborator / Model**: User & Antigravity
+* **Real Engine & Campaign Bugs Fixed (`index.html`, `ashen_ledger/world/items.json`)**:
+  * **Ignored Equipment Bonuses Fixed**: Wired nested `stats.attributeBonuses` and `stats.skillBonuses` (used by 7 rare/legendary Ashen Ledger items including the Dawn-Tempered Fulgurite Sabre & Sovereign Crucible Aegis-Lantern) and direct attribute/skill keys + `acBonus` + `spellPower` (used by 8 Tutorial items including Runic Staff, Iron Helm, Warden Halberd & First Warden Signet) into `getEffectiveAttribute()`, `getEffectiveSkillBreakdown()`, `getPlayerArmorClass()`, `getEquippedMagicBonus()`, and `showItemTooltip()`.
+  * **Effective Attributes in AC & Enchanting**: Fixed `getPlayerArmorClass()` to use `getEffectiveAttribute("agility")` and `enchantItem()` to use `getEffectiveAttribute("intelligence")` / `getEffectiveAttribute("wisdom")` so equipped attribute gear properly benefits AC and Enchanting.
+  * **Crafting Governing Skill Wired**: Fixed `getCraftingSkillBreakdown()` (previously ignoring governing skill ranks completely) so `getCraftingGoverningSkill(prof)` actively applies `-2` Untrained penalty at Rank `0` and `+2` per invested rank, reflected transparently in `#crafting-fieldcraft-badge` and `evaluateCraftingDifficulty()`.
+  * **Skill Name Normalization**: Mapped `sleight_of_hand -> stealth` in `content/campaigns/ashen_ledger/world/items.json` (`item_al_masterwork_caliper`, `item_al_artificer_goggles`) plus legacy save aliasing inside `getEffectiveSkillBreakdown()`.
+* **Modest Difficulty Increase & Uninvested Task Penalty (`index.html`)**:
+  * **Untrained Skill Penalty (`-2`)**: Any named skill check rolled at Rank `0` now incurs `-2` (`untrainedPenalty`), creating a clear `+4` swing between untrained (`-2`) and trained Rank `1` (`+2`), displayed clearly in requirement pills, Difficulty Badges, and roll logs.
+  * **Calibrated Task & Combat DCs**: Raised baseline DCs by `+1` across Persuasion (`12 -> 13`), Deception (`12 -> 13`), Pickpocket (`11 -> 12`), Track Quarry (`12 -> 13`), Forage (`11 -> 12`), Trap Inspect/Disarm (`11 -> 12` / `12 -> 13`), Heave Obstacle (`13 -> 14`), Field Triage (`11 -> 12`), Assess Foe (`10 -> 11`), Sidestep & Flee (`10 -> 11`, with `-2` if untrained in Athletics), Crafting (`baseDC + 1`), and Enchanting Tiers I/II/III (`10/12/14 -> 12/14/16`, with `-2` untrained Lore/Crafting penalty and `+2/rank` scaling).
+  * **Subtle Combat Edge**: Non-starter enemies (`level >= 2` or `isBoss`) gain `+10%` Max HP, and `level >= 3` / Boss foes gain `+1` attack accuracy (keeping Level 1 Tutorial accessible while making mid/late fights punchier).
+* **Optimization, Cleanup & Compression**:
+  * Minified all 26 pretty-printed JSON files in `content/campaigns/vermin/` to single-line compact JSON (`-64.2 KB` saved in `content/`).
+  * Removed dead CSS (`.toast-close-btn`) and dead zero-caller engine methods (`selectCraftingTemplate`, `selectWorkbenchTemplate`), and upgraded `isMaterialForProfession()` to `O(1)` `_materialMap` lookup.
+* **Verification & Live Deploy**:
+  * Expanded `tests/behaviour_tests.js` (`118/118`) to verify untrained `-2` vs Rank 1 `+4` swing, crafting governing skill scaling, Ashen Ledger nested `attributeBonuses`/`skillBonuses`, and Tutorial `spellPower`/`acBonus` wiring.
+  * Regenerated embedded content (`109` files), passed uniform CRLF & `0` em-dash hygiene checks, all **9 test suites (`255/255`)**, and all **8 minified build suites** on `dist/index.html`.
+  * Hosted web `dist/index.html`: `935.7 KB` raw / `208.9 KB` brotli (`49%` smaller than source); `content/`: `781.1 KB` -> `780.2 KB`.
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: a9fc46d2-966f-493f-8fa6-defb94efd3ea`).
+
+### Session 52 - 2026-11-27 (Damage Types, Elemental Statuses, Resistances, Weaknesses & Combos Across Engine and All 4 Campaigns)
+* **Collaborator / Model**: User & Antigravity
+* **Data-Driven Damage Taxonomy, Statuses & Typed Resolution (`index.html`)**:
+  * Added compact shared helpers `normalizeDamageType()`, `getDamageTypeMeta()`, `inferWeaponElementType()`, `getPlayerResistance()`, `resolveTypedDamage()`, `triggerElementalCombo()`, and unified `getStatusStatSum()` (`attack`, `ac`, `dmgMod`).
+  * **9 Canonical Damage Types**: Physical (`slashing`, `piercing`, `bludgeoning`) + 6 Elemental/Esoteric (`fire`, `frost`, `storm`, `poison`, `radiant`, `void`) with full alias normalization (`cold/ice/rime -> frost`, `acid/venom -> poison`, `psychic/shadow -> void`, `silver/celestial/holy -> radiant`, etc.).
+  * **6 New Elemental Status Effects** (`getCombatStatusDefs()`): `burning` (fire DoT), `chilled` (`-2` attack, `-1` AC, dampens Heavy), `shocked` (`+2` conductive hit damage, dampens Heavy), `corroded` (`-2` AC + poison/acid DoT), `seared` (`-2` attack, blocks enemy `healAlly`), and `shaken` (`-2` damage dealt, morale drain). Field Triage now also cleanses `burning` and `corroded`.
+  * **Split Weapon Resolution, Procs & Combos (`resolvePlayerWeaponAttack`, `castCombatSpell`)**:
+    * Weapon attacks resolve physical and elemental portions independently against enemy `vulnerabilities` (`1.5x`), `resistances` (`0.5x`), and `immune` (`0x`).
+    * Elemental damage scales status proc chance (`14% * elementalDamage`, capped at `60%`, guaranteed on Crit/Arete).
+    * Added 3 cross-element combos (`Shatter`: Chilled + Bludgeoning/Fire `+4`, `Combustion`: Poisoned/Corroded + Fire `+4` & Burning, `Overload`: Chilled/Corroded + Storm `+3` & Shocked) shared across both weapons and spells.
+    * Upgraded `elemental_shift` Spell Shaping to support all 6 elements with their real statuses (replacing legacy Fire Aspect `bleeding` with real `burning`).
+  * **Real Player Elemental Resistances (`enemyAttack`, `salve`, `evaluateHeroCombatPower`)**:
+    * Equipped gear (`fireResist`, `frostResist`, `stormResist`, `poisonResist`, `radiantResist`, `voidResist`, `elementalResist`) and resistance consumables (`salve`, 4-round buff + `curesStatus` cleanse) now actively mitigate incoming elemental enemy hits and reduce elemental status infliction chance (`12%` per resist point, up to `75%`).
+  * **`Assess Foe`, Tooltips, Crafting & Enchanting (`index.html`)**:
+    * `Assess Foe` reveals enemy Weaknesses (`1.5x`), Resistances (`0.5x`), and Immunities in the log and as compact pills on enemy cards (`foe.assessed`).
+    * Item tooltips, brief stats, and crafting reveals show color-coded elemental damage + proc chance and all typed resistances.
+    * Crafting (`generateCraftedItem`) stamps `elementalType` on weapons and typed resists on armor/jewelry from catalyst `elementalAffinity`.
+    * Enchanting expanded with all 6 elemental weapon imbuements (`ember_temper`, `rime_edge`, `tempest_arc`, `venom_etch`, `resonant_bite`, `void_edge`) plus armor wards (`hearth_seal`, `storm_ward`, `astral_ward`) and balanced offering selection (top 2 core + top 2 catalyst-aligned elemental).
+* **Full 4-Campaign Content Rollout**:
+  * Populated thematic creature `resistances`, `vulnerabilities`, `immune`, typed enemy action `damageType`, typed weapon `elementalType`/`elementalDamage`, armor/jewelry elemental resists, consumable resists/cleanses, and catalyst `elementalAffinity` across `tutorial` (4 creatures, 9 items), `northern_realms` (10 creatures, 13 items), `ashen_ledger` (19 creatures, 25 items, 8 materials), and `vermin` (5 creatures, 8 items, 6 materials).
+* **Verification, Compression & Live Deploy**:
+  * Added end-to-end elemental combat, status, combo, player resist, Assess Foe, crafting, enchanting, and 4-campaign coverage in `tests/behaviour_tests.js` (`118/118`) and updated Fire Aspect burning assertion in `tests/multi_enemy_combat_tests.js` (`6/6`).
+  * Regenerated embedded content (`109` files), passed uniform CRLF & `0` em-dash hygiene checks, all **9 test suites (`255/255`)**, and all **8 minified build suites** on `dist/index.html`.
+  * Hosted web `dist/index.html`: `934.1 KB` raw / `208.6 KB` brotli (`49%` smaller than source; `+3.4 KB` brotli for the entire combat/gear expansion).
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: f2b154bc-86e0-44fd-9b39-dc25381d0f9d`).
+
+### Session 51 - 2026-11-26 (Hard Loot Rarity Caps Update & Surrounding Drop Chance Calibration)
+* **Collaborator / Model**: User & Antigravity
+* **Centralized Hard Rarity Caps (`clampLootChance` in `index.html`)**:
+  * Consolidated creature loot (`resolveEntityLoot`), NPC possession seeding (`getNpcPossessions`), and authored encounter bonus loot (`resolveEncounterCompletionLoot`) onto a single shared `clampLootChance(rawChance, item, opts)` helper, removing duplicated cap checks and preventing bypasses from feats (`Fortune Seeker`, `Relic Hunter`) or `guaranteed` overrides on blocked/2%-capped tiers.
+  * **Non-Boss Creatures**: `legendary` and `mythic` = `0%` (blocked); `epic` <= `2%` (`0.02`, lifted from `0.0002`); `rare` <= `65%` (`0.65`).
+  * **Boss Creatures**: `mythic` <= `2%` (`0.02`, lifted from `0.0002`); `common`/`uncommon`/`rare`/`epic`/`legendary` follow table odds up to `95%` (`0.95`), or `100%` (`1.0`) when `guaranteed`.
+* **Surrounding Loot Chances Calibrated to Match New Caps**:
+  * **Relic Hunter (`rareDropWeightMult: +18%`)**: Extended pre-cap `rareBoost` from `uncommon`/`rare` to all elevated tiers (`uncommon+`) so sub-cap chase rolls (such as `1.5%` epic or mythic entries) scale meaningfully up to (never past) the `2%` / `65%` / `95%` ceilings.
+  * **Hard/Extreme Bonus Identity Roll (`resolveEntityLoot`)**: Pre-filters `creaturePoolIds` to eligible non-unique tiers (excluding non-boss `epic`/`legendary`/`mythic` and boss `mythic`) before picking, preventing extra bonus rolls from inflating `2%` hard caps or wasting triggers on excluded items.
+  * **Dynamic Encounter Completion Rewards (`resolveEncounterCompletionLoot`)**: Replaced flat `100%` Rank 5 rare/epic picks with strict cap-aligned rarity tiers:
+    * Non-Boss: Rank 3 `60%` (`20%` rare / `80%` uncommon), Rank 4 `80%` (`1.25%` epic, `55%` rare), Rank 5 `95%` (`2%` epic `<= 2%`, `63%`-`65%` rare `<= 65%`, `0%` legendary/mythic).
+    * Boss: Rank 3 `65%` (`40%` rare), Rank 4 `85%` (`1%` mythic, `8%` legendary, `32%` epic), Rank 5 `95%` (`2%` mythic `<= 2%`, `15%` legendary, `45%` epic, `38%` rare).
+    * Rank 0-1 anti-swarm exploit (`0%`) preserved unchanged.
+  * **Campaign Loot Tables (`ashen_ledger`, `northern_realms`)**: Tuned non-boss `rare` entries previously pegged above `0.65` (`mat_al_wraith_silk` `0.75->0.58`, `mat_al_ash_quartz` `0.70->0.56`, `mat_nr_frost_troll_hide` extra roll `0.85->0.55`, `item_nr_silver_crest_shield` `0.70->0.55`, `item_nr_potent_restorative` `0.80->0.60`, `mat_nr_frost_quartz` `0.85->0.58`, `mat_nr_sky_iron_ore` `0.75->0.56`) so difficulty and loot feats scale smoothly up to `65%`, and added `1.5%` (`0.015`, scaling up to the `2%` cap) `mat_al_starlight_cinder` epic chase drops to late-game Ashen Ledger elites (`lt_al_unwritten_knight`, `lt_al_cantor_acolyte`).
+* **Tests, Documentation & Live Deploy**:
+  * Expanded `tests/engine_tests.js` (#43) and `tests/phase2_systems_tests.js` (3C) to verify every boss/non-boss hard cap directly with `fortune_seeker` + `relic_hunter` + Extreme multipliers; updated `documentation/ENGINE_ARCHITECTURE.md` and `documentation/ENGINE_CAPABILITIES_SUMMARY.md`.
+  * Regenerated embedded content (`109` files), passed uniform CRLF & `0` em-dash hygiene checks, all **9 test suites (`254/254`)**, and all **8 minified build suites** on `dist/index.html`.
+  * Hosted web `dist/index.html`: `920.8 KB` raw / `205.2 KB` brotli (`49%` smaller than source).
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: 188b8611-56e9-47c2-99ae-a573b5a5c5ae`).
+
+### Session 50 - 2026-11-26 (In-Window Skill Check Banners & Instant Forge Minigame Bonus Sync)
+* **Collaborator / Model**: User & Antigravity
+* **Clear In-Window Skill Check Outcome Banners (`index.html`)**:
+  * Added a shared lightweight `.modal-check-banner` (`.ok` / `.fail` / `.warn`) component and `renderCheckBanner(fb)` helper.
+  * **Trade Modal (`negotiateTradePrice` / `renderTrade`)**: Displays an unmistakable in-modal banner right below the purse bar for Persuasion (`Bargain`), Deception (`Bluff Terms`), and cooldown blocks (showing roll total vs DC, price change or standing penalty), paired with failure toasts so outcomes are never hidden behind the modal.
+  * **Dialogue Modal (`selectDialogueCheck` / `openDialogue`)**: Prepends the roll success/failure banner (with wariness & cooldown notes) at the top of the resulting dialogue node so failed Persuasion/Deception checks that loop back to root are immediately obvious.
+  * **NPC Inspect / Pickpocket Modal (`attemptPickpocket` / `openNpcInspectModal`)**: Renders in-modal pickpocket success/failure/cooldown banners (distinguishing noticed `-10 standing` vs close call) and warning/negative toasts.
+  * **Interactive Objects (`inspectObjectTrap`, `attemptLockpick`, `heaveObstacle`)**: Added consistent failure toasts alongside transcript entries.
+* **Immediate Forge Strike Minigame Bonus Refresh (`index.html`)**:
+  * Fixed `closeMinigame()` and `stepForgeStrike()` to immediately refresh `renderCraftingView()` and `renderWorkbench()` (plus `renderAll()` for `glyph_memory`/`pendulum_tune` and active-view crafting sync inside `renderAll()`).
+  * Updated `#crafting-fieldcraft-badge` in `renderCraftingView()` to use live `getCraftingSkillBreakdown(activeProf)` (displaying `+N Forge` immediately without leaving and re-entering the Craft & Forge tab).
+* **Verification, Compression & Live Deploy**:
+  * Expanded `tests/behaviour_tests.js` (`117/117`) to verify Trade Persuasion/Deception failure banners, NPC Inspect pickpocket failure banner, and immediate `+3` Forge Strike bonus display in both `#crafting-preview-panel` and `#crafting-fieldcraft-badge`.
+  * All **9 test suites (`254/254`)**, offline sync (`109` files), all **8 minified build suites** on `dist/index.html`, uniform CRLF, and `0` em dashes passed.
+  * Hosted web `dist/index.html` is `920.1 KB` raw / `205.0 KB` brotli (`49%` smaller than source, only `+0.7 KB` brotli added).
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: cd626d25-6624-4c4d-b07a-7557f1f929e8`).
+
+### Session 49 - 2026-11-26 (Organized Trade Inventories, Scroll Preservation & Multi-Quantity Buy/Sell)
+* **Collaborator / Model**: User & Antigravity
+* **Organized & Space-Optimized Trade Modal (`index.html`)**:
+  * Upgraded `#trade-modal` (`.trade-box` explicit responsive height `min(86dvh, 760px)` on desktop, `calc(100dvh - 0.8rem)` on mobile) with pinned column headers (`.trade-col-head`) and full-height independently scrollable item lists (`#trade-list-shop`, `#trade-list-bag`).
+  * Automatically grouped and alphabetically sorted both Merchant stock and Player goods by category (`⚔️ Gear`, `🧪 Consumables`, `⚒️ Materials & Tools`, `📦 Goods`, plus `🔒 Equipped & Quest` pushed to the bottom of Your goods) with dynamic per-column category filter chips (`.trade-fbtn`) and a **`Hide locked`** toggle so sellable loot stays front-and-center.
+* **Zero-Jump Scroll Preservation (`index.html`)**:
+  * `renderTrade()` captures and synchronously restores exact `scrollTop` on both `#trade-list-shop` and `#trade-list-bag` across every purchase, sale, and buy-back so long merchant/bag lists never jump back to the top (changing a category filter resets only that filtered column's scroll to `0`).
+* **Multi-Quantity Buying & Selling (`index.html`)**:
+  * Extended `buyItem(npcId, itemId, fromBuyback = false, qty = 1)` and `sellItem(npcId, itemId, qty = 1)` backwards-compatibly to support arbitrary quantities (preferring unequipped stacks when selling and crediting exact totals & buy-back stacks).
+  * Added sleek inline quantity pickers (`.trade-qty-ctrl`: `−`, numeric input, `+`, `Max`) on multi-unit rows (`qty > 1`) via `setTradeQty()` / `tradeExecute()` that live-update total price and `Buy ×N` / `Sell ×N` labels in-place without DOM teardown, focus loss, or scroll jumps.
+* **Compression, Verification & Live Deploy**:
+  * Added regression coverage in `tests/behaviour_tests.js` (`117/117` passed) verifying category grouping, filters, `Hide locked`, scroll preservation, multi-quantity buy/sell/buy-back, and explicit `.trade-box` height guard.
+  * All **9 test suites (`254/254`)**, offline sync (`109` files), all **8 minified build suites** on `dist/index.html`, uniform CRLF, and `0` em dashes passed.
+  * Hosted web `dist/index.html` stayed ultra-compact at `915.7 KB` raw / `204.3 KB` brotli (`49%` smaller than source, only `+1.9 KB` brotli for the full trade upgrade).
+  * Visually verified live in Chromium on `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: e455e0e5-3015-43e8-9609-267a0c48a321`) at `1280x720` (`0` console/page errors, `.trade-box` `1180x619px`, `#trade-list-shop` scroll preserved `237px -> 237px`, `#trade-list-bag` preserved `199px -> 199px`).
+
+### Session 48 - 2026-11-26 (Full Engine Review, Bug Fixes, Runtime O(1) Optimization & Release Compression Pass)
+* **Collaborator / Model**: User & Antigravity
+* **Full Engine & Campaign Audit**:
+  * Audited `index.html`, all 4 shipped campaigns (`tutorial`, `northern_realms`, `ashen_ledger`, `vermin`), all 99 world JSON files (`0` duplicate IDs, `0` em dashes), all 143 inline `window.engine.*()` handlers (`0` missing), and ran full static + functional validation across all 4 campaigns (`1,731 / 1,731` checks, `0` errors, `0` warnings).
+* **Bug Fixes & Runtime Optimizations (`index.html`, `tests/multi_enemy_combat_tests.js`)**:
+  * Fixed `collectValidationContent()` to fall back cleanly to `currentAdventure.dialogues` and `currentAdventure.puzzles` when `world.dialogues` / `world.puzzles` are empty on modular campaigns, and made `runComprehensiveCampaignValidation(campaignId, opts)` safely handle an options object passed as the first argument.
+  * Eliminated the sequential second network round-trip in `loadContent()` by starting `origins`/`traits`/`spells` catalog fetches in parallel with `fetchModularCampaignData()`, and cached HTTP `404` misses in `fetchJson()` so nonexistent optional modules never re-fetch.
+  * Extended `buildContentMaps()` with `O(1)` `_materialMap` and `_questMap` indices (accelerating `getItemData()` material lookups) and added `O(1)` `_glossaryByKey` lookup in `registerGlossaryTerms()` / `setupGlossaryTooltips()`.
+  * Replaced `19.4 KB` of stale Session 1-8 hardcoded HTML in `renderDevNotes()` with an accurate, concise Engine & AI Collaboration Hub (`~2 KB`) and removed 6 dead CSS selector blocks (`.campaign-card-genre`, `.validation-panel*`, `.validation-badge*`, `.module-accordion-content`, `.equip-slot-head`, `.tooltip-rarity`).
+  * Permanently fixed a latent RNG flake in `tests/multi_enemy_combat_tests.js` (test `12.4` was assigning `vitals.hp`/`maxHp` instead of canonical `vitals.health`/`maxHealth`).
+* **Lossless Build & Asset Compression (`scripts/build-release.js`, `scripts/sync-embedded-content.js`)**:
+  * Added a JS-lexer-safe `minifyHtmlTemplatesInJs()` pass in `scripts/build-release.js` that collapses redundant indentation, inter-tag whitespace, and inline `style="..."` spacing inside multi-line HTML template literals while preserving regex literals, strings, `${...}` expressions, and `<pre>`/`<textarea>` formatting (`-21.8 KB` raw JS).
+  * Upgraded `minifyMarkup()` (compacts inline `style="..."` declarations), `minifySvg()` (trims trailing `.0` decimals & whitespace), `scripts/sync-embedded-content.js` (minifies offline `.svg` maps before base64 embedding), and esbuild JS minifier (`target: 'es2022', pure: ['console.log']`).
+  * Upgraded Cloudflare `_headers` `/content/*` caching from `max-age=300, stale-while-revalidate=86400` to `max-age=3600, stale-while-revalidate=604800` for higher edge cache hit ratios while keeping `/` and `/index.html` at `max-age=0, must-revalidate`.
+  * Expanded `npm run build` (`--check`) to verify all **8** engine/campaign test suites (including `multi_enemy_combat_tests.js`) directly against compressed `dist/index.html`.
+* **Measured Compression & Verification**:
+  * Source `index.html`: `1,804.6 KB -> 1,788.2 KB` (`-16.4 KB`, uniform CRLF, `0` em dashes).
+  * Standalone offline `dist/index.html`: `1,216.3 KB -> 1,179.2 KB` (`-37.1 KB`; brotli `411.1 KB -> 406.0 KB`).
+  * Hosted web `dist/index.html`: `944.7 KB -> 908.2 KB` (`-36.5 KB`, `49%` smaller than source; gzip `260.9 KB -> 255.0 KB`; brotli `206.7 KB -> 202.4 KB`).
+  * All **9 test suites (`253/253`)**, offline sync (`109` files), all **8 minified build suites**, and live Chromium end-to-end verification on `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: 62b6e8ea-8bd3-4ff5-a1d8-d4495e724e90`) passed with `0` console errors, `0` page errors, and `0` HTTP 4xx/5xx errors.
+
+### Session 47 - 2026-11-26 (Collapsible Top Menu & Minimal Status Bar, Crafting/Inventory Space Optimization & Reading Ergonomics)
+* **Collaborator / Model**: User & Antigravity
+* **Collapsible Top Navigation Menu & Minimal Status Bar (`index.html`)**:
+  * Made the top navigation bar (`<header>`) collapsible via **`▲ Hide Menu`** (`#btn-collapse-nav`), shrinking header height to `0px` (`body.nav-collapsed`) and revealing a compact **`☰ Menu [Active View]`** button (`#btn-expand-nav` + `#collapsed-active-view-label`) inside `#top-status-bar` so players can reopen navigation from anywhere.
+  * Split `#top-status-bar` into collapsible secondary details (`.status-details-group`: Hero, Rank/Title, XP, Origin, Location, Time) and an always-visible essentials group (`.status-essentials-group`: **HP**, **STM**, and **Money/Drachmae**) controlled by **`▴/▾ Status`** (`#btn-toggle-status`) plus a 1-click **`⛶ Max` / `❐ Restore`** button (`#btn-toggle-compact-ui`) that collapses or restores both bars together.
+  * Added matching quick toggles in **Settings -> Display & Audio** (`#settings-toggle-nav-btn`, `#settings-toggle-status-btn`) and persisted all collapse states (`navCollapsed`, `statusCollapsed`, `invDollCollapsed`, `storySidebarCollapsed`, `wbExpanded`) in `localStorage` (`gm_ui_sizes`) via `applyChromeState()` / `setUiSize()`, cleanly reset by `resetUiSizes()`.
+  * Verified **+134px (+26.5%)** reclaimed vertical viewport height on a `1280x720` laptop (top chrome reduced from `167px` expanded to `32.7px` in Max Space mode) and a single `35.7px` zero-overflow bar on `390x844` mobile (fitting `☰ Menu`, `HP`, `STM`, `🪙`, `▾`, and `❐` inside `390px` with zero horizontal scrolling).
+* **Crafting, Inventory Workbench & Application-Wide Screen-Space Optimization (`index.html`)**:
+  * **Craft & Forge (`#view-crafting`)**: Streamlined `.crafting-header-row` into a sleek inline bar (title + `Forge New Item` / `Enchant & Imbue Gear` tabs + roll badge + `Forge Strike` button), lifted the `1260px` card width cap so Crafting uses 100% available viewport width, and gave desktop `.crafting-grid` full-height independently scrollable 3 columns (`533px+` tall on `1280x720`) while keeping clean non-overlapping vertical stacking on `<= 1080px` and mobile.
+  * **Inventory & Workbench (`#view-inventory`)**: Added **`🛡️ Hide Gear` / `🛡️ Show Gear`** (`#btn-toggle-equip-doll`, `body.inv-doll-collapsed`) to collapse the 14-slot Equipment Paper Doll for full-width bag & workbench crafting; wrapped `#workbench-panel` and `#inventory-items-container` inside `.inventory-workspace` so opening a Workbench on desktop (`>= 1020px`) displays the Workbench and Carried Possessions **side-by-side at full height**, plus a **`⤢ Expand` / `⤡ Split`** toggle (`#btn-wb-expand`) and full-height non-crushed stacking on mobile (`<= 900px`).
+  * **Story, World Map, Journal, All Card Views & Modals**: Added a desktop **`◫ Hide Info` / `◫ Show Info`** toggle (`#btn-toggle-story-sidebar`) in Story view; converted `.map-container` / `.map-canvas-wrapper` to true flex full-height (`min-height: 0`) so World Map fills the viewport without unwanted scrollbars; expanded `main.engine-container` (`max-width: 1920px`) and `.view-card-wrapper` (`max-width: min(1760px, 100%)`), tightened outer paddings across views, increased reading typography comfort (`1.02rem` / `1.72` line-height in narrative & dialogue), and widened/heightened reading modals (`max-height: 94dvh`).
+* **Craft & Forge / Enchanting Material Dropdown Refinement (`index.html`)**:
+  * Updated `renderCraftingView()`, `onCraftingMaterialChange()`, `updateCraftingPreview()`, `renderEnchantingView()`, and `renderWorkbench()` so `0`-quantity materials never appear in any crafting or enchanting dropdown (showing a clean empty placeholder when nothing is owned).
+  * Remaining counts in Primary Material 1, Primary Material 2, and Supplementary Catalyst dropdowns now dynamically subtract every unit already allocated across the other slots for the current craft (`X left`), automatically hiding exhausted materials (`0` remaining) from unselected dropdowns and re-syncing all dropdowns immediately on any change.
+  * Enchanting's catalyst dropdown similarly hides unowned materials and reflects remaining units after the selected tier's catalyst cost.
+* **Verification & Live Cloudflare Deployment**:
+  * Added regression test coverage in `tests/behaviour_tests.js` verifying always-visible HP/Stamina/Money structure, CSS rules, collapse/restore toggles, active-view pill updates, `resetUiSizes()` cleanup, and Craft & Forge / Enchanting `0`-quantity hiding & live remaining-count subtraction.
+  * All **9 test suites (`253/253`)** passed (`tests/behaviour_tests.js` `116/116`), `sync-embedded-content.js --check` (`109` files synced), standalone `npm run build` (`7/7` suites passing directly on minified `dist/index.html`), uniform CRLF, and `0` em dashes.
+  * Visually verified in live browser on both Desktop (`1280x720`) and Mobile (`390x844`) with `0` console/page errors and `0` horizontal overflow or vertical overlap.
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: 7d809034-e932-496c-ba1e-a29e8c3f75b2`, `index.html` `206.7 KB` brotli).
+
 ### Session 46 - 2026-11-26 (Item Enchanting System, 7 Optional Minigames Across Campaigns, Ashen Ledger 4 Professions + 5 New Materials & Story Descriptions)
 * **Collaborator / Model**: User & Antigravity
 * **Minecraft-Inspired Item Enchanting / Arcane Imbuement Engine (`index.html`)**:

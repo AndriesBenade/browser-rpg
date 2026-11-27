@@ -1477,11 +1477,11 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.openDialogue('dialogue_dev_lycus');
     assert.ok(/refuses to speak/.test(env.el('dialogue-text-body').innerHTML), 'hostile NPCs refuse to talk');
     engine.modifyFactionReputation('faction_dev_haven', 150);
-    // Persuasion DC follows standing; success raises it
-    assert.strictEqual(engine.getPersuadeDc('npc_dev_bandit_renegade'), 14);
+    // Persuasion DC follows standing (base 13 + standing modifier)
+    assert.strictEqual(engine.getPersuadeDc('npc_dev_bandit_renegade'), 15);
     engine.changeNpcStanding('npc_dev_guard_captain', 60);
     assert.strictEqual(st('npc_dev_guard_captain').tier, 'trusted');
-    assert.strictEqual(engine.getPersuadeDc('npc_dev_guard_captain'), 8);
+    assert.strictEqual(engine.getPersuadeDc('npc_dev_guard_captain'), 9);
     // Standing-gated dialogue choice is shown locked below the threshold and opens at it
     engine.changeNpcStanding('npc_dev_guard_captain', -60);
     engine.openDialogue('dialogue_dev_captain');
@@ -2243,8 +2243,13 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     const prof = { id: 'metalworking', governingAttribute: 'strength', secondaryAttribute: 'endurance' };
     p.attributes.strength = 12; // +1
     p.attributes.endurance = 14; // +2 -> +1
+    p.skills.athletics = 0; // untrained (-2)
+    const craftUntrained = engine.getCraftingSkillBreakdown(prof, 1);
+    assert.strictEqual(craftUntrained.untrainedPenalty, -2, 'untrained crafting incurs -2 penalty');
+    assert.strictEqual(craftUntrained.totalBonus, 1, 'untrained crafting bonus reflects STR+1, END+1, Untrained-2, MG+1');
+    p.skills.athletics = 2; // trained (+4)
     const craftBk = engine.getCraftingSkillBreakdown(prof, 1);
-    assert.strictEqual(craftBk.totalBonus, 3);
+    assert.strictEqual(craftBk.totalBonus, 7, 'invested governing skill raises crafting bonus meaningfully');
 
     const pill = engine.evaluateRequirementDisplay({ type: 'skill_check', skill: 'medicine', dc: 11 });
     assert.strictEqual(pill.currentText, '+9');
@@ -3190,6 +3195,343 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(env.el('eq-head').classList.contains('slot-empty') || env.el('slot-head').dataset.equippedItemId, 'unequipped slot carries slot-empty styling');
     assert.strictEqual(engine.getItemData('it_long_cloak').rarity, 'uncommon', 'item rarity data untouched');
     assert.strictEqual(engine.getItemQuantity('it_long_elixir'), 1, 'item stack quantity untouched');
+  });
+
+  await test('Collapsible top menu, minimal status bar (keeping HP/Stamina/Money), and workspace expansion toggles', async () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_tutorial');
+
+    // Structural guarantees: essentials group keeps HP, Stamina, and Drachmae OUTSIDE status-details-group
+    const essentialsMatch = html.match(/class="status-group status-essentials-group"[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/);
+    assert.ok(essentialsMatch, 'status-essentials-group exists in top-status-bar');
+    assert.ok(essentialsMatch[0].includes('id="txt-health"'), 'Health stays in always-visible essentials group');
+    assert.ok(essentialsMatch[0].includes('id="txt-stamina"'), 'Stamina stays in always-visible essentials group');
+    assert.ok(essentialsMatch[0].includes('id="hud-drachmae"'), 'Money (Drachmae) stays in always-visible essentials group');
+    const detailsMatch = html.match(/id="status-details-group"[\s\S]*?class="status-group status-essentials-group"/);
+    assert.ok(detailsMatch && !detailsMatch[0].includes('id="txt-health"') && !detailsMatch[0].includes('id="txt-stamina"') && !detailsMatch[0].includes('id="hud-drachmae"'), 'status-details-group hides only secondary info, never HP/Stamina/Money');
+
+    // CSS rules for collapsing menu & status details + full-height crafting & side-by-side workbench
+    assert.ok(/body\.nav-collapsed\s+header\s*\{\s*display:\s*none\s*!important;/.test(html), 'CSS collapses header completely when nav-collapsed');
+    assert.ok(/body\.status-collapsed\s+#top-status-bar\s+\.status-details-group\s*\{\s*display:\s*none\s*!important;/.test(html), 'CSS hides only status-details-group when status-collapsed');
+    assert.ok(/body\.inv-doll-collapsed\s+#equipment-paper-doll\s*\{\s*display:\s*none\s*!important;/.test(html), 'CSS allows collapsing equipment paper doll in inventory');
+    assert.ok(/\.inventory-workspace\.has-workbench/.test(html), 'CSS supports side-by-side workbench + inventory workspace');
+
+    const body = env.sandbox.document.body;
+    // Functional toggles + persistence
+    assert.strictEqual(engine.toggleNavCollapse(true), true, 'toggleNavCollapse collapses top menu');
+    assert.ok(body.classList.contains('nav-collapsed'), 'body gains nav-collapsed class');
+    assert.strictEqual(engine.toggleStatusCollapse(true), true, 'toggleStatusCollapse collapses status details');
+    assert.ok(body.classList.contains('status-collapsed'), 'body gains status-collapsed class');
+
+    // Compact chrome 1-click toggle restores both when both are collapsed, then collapses both again
+    assert.strictEqual(engine.toggleCompactChrome(), false, 'toggleCompactChrome restores both when both collapsed');
+    assert.ok(!body.classList.contains('nav-collapsed') && !body.classList.contains('status-collapsed'), 'both bars expanded');
+    assert.strictEqual(engine.toggleCompactChrome(), true, 'toggleCompactChrome collapses both together');
+    assert.ok(body.classList.contains('nav-collapsed') && body.classList.contains('status-collapsed'), 'both bars collapsed');
+
+    // Inventory gear doll, story sidebar, and workbench expansion toggles
+    assert.strictEqual(engine.toggleInventoryPaperDoll(true), true, 'toggleInventoryPaperDoll hides gear column');
+    assert.ok(body.classList.contains('inv-doll-collapsed'), 'body gains inv-doll-collapsed class');
+    assert.strictEqual(engine.toggleStorySidebar(true), true, 'toggleStorySidebar hides story sidebar');
+    assert.ok(body.classList.contains('story-sidebar-collapsed'), 'body gains story-sidebar-collapsed class');
+    assert.strictEqual(engine.toggleWorkbenchExpanded(true), true, 'toggleWorkbenchExpanded expands workbench');
+
+    // Active view pill updates on view switch
+    engine.switchView('view-crafting');
+    assert.strictEqual(env.el('collapsed-active-view-label').innerText, 'Craft & Forge', 'collapsed nav pill tracks active view');
+
+    // Reset panel sizes clears collapse preferences cleanly
+    engine.resetUiSizes();
+    assert.ok(!body.classList.contains('nav-collapsed'), 'resetUiSizes restores nav');
+    assert.ok(!body.classList.contains('status-collapsed'), 'resetUiSizes restores status bar');
+    assert.ok(!body.classList.contains('inv-doll-collapsed'), 'resetUiSizes restores equipment column');
+  });
+
+  await test('Craft & Forge dropdowns hide 0-quantity materials and reflect remaining counts excluding selected units', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_tutorial');
+
+    const prof = engine.getCampaignProfessions()[0];
+    const mats = engine.getCampaignMaterials().filter(m => engine.isMaterialForProfession(m.id, prof));
+    assert.ok(mats.length >= 2, 'tutorial profession has at least 2 materials');
+    const allMats = engine.getCampaignMaterials();
+    const unownedMat = allMats.find(m => m.id !== mats[0].id && m.id !== mats[1].id) || allMats[allMats.length - 1];
+
+    // Clear all crafting materials from inventory first
+    allMats.forEach(m => {
+      const q = engine.getItemQuantity(m.id, { excludeEquipped: true });
+      if (q > 0) engine.removeItem(m.id, q, { excludeEquipped: true });
+    });
+
+    // Give exactly 2x mats[0], 1x mats[1], and 0x unownedMat
+    engine.addItem(mats[0].id, 2);
+    engine.addItem(mats[1].id, 1);
+
+    engine.craftingMode = 'forge';
+    engine.currentCraftingProfession = prof.id;
+    engine.selectedCraftingMat1 = mats[0].id;
+    engine.selectedCraftingMat2 = mats[1].id;
+    engine.selectedCraftingSupps = [];
+    engine.renderCraftingView();
+
+    const cfgHtml = String(env.el('crafting-config-panel').innerHTML);
+    const m1Html = (cfgHtml.match(/id="craft-mat-1"[\s\S]*?<\/select>/) || [''])[0];
+    const m2Html = (cfgHtml.match(/id="craft-mat-2"[\s\S]*?<\/select>/) || [''])[0];
+    const suppHtml = (cfgHtml.match(/id="craft-mat-supp-0"[\s\S]*?<\/select>/) || [''])[0];
+
+    // 0-quantity materials never appear in any dropdown
+    assert.ok(!cfgHtml.includes(`value="${unownedMat.id}"`), '0-quantity material is hidden from all Forge dropdowns');
+
+    // mats[0] has 2 owned, 1 selected in Primary 1 -> shows 1 left across Primary 1, Primary 2, and Supp 1
+    assert.ok(m1Html.includes(`value="${mats[0].id}"`) && m1Html.includes('1 left'), 'Primary 1 shows mats[0] with 1 left after selecting 1 of 2');
+    assert.ok(m2Html.includes(`value="${mats[0].id}"`) && m2Html.includes('1 left'), 'Primary 2 still offers remaining mats[0] showing 1 left');
+    assert.ok(suppHtml.includes(`value="${mats[0].id}"`) && suppHtml.includes('1 left'), 'Supplementary 1 offers remaining mats[0] showing 1 left');
+
+    // mats[1] has 1 owned, 1 selected in Primary 2 -> shows 0 left in Primary 2, and is HIDDEN from Primary 1 and Supp 1
+    assert.ok(m2Html.includes(`value="${mats[1].id}"`) && m2Html.includes('0 left'), 'Primary 2 shows selected mats[1] with 0 left');
+    assert.ok(!m1Html.includes(`value="${mats[1].id}"`), 'Primary 1 hides mats[1] because 0 copies remain');
+    assert.ok(!suppHtml.includes(`value="${mats[1].id}"`), 'Supplementary 1 hides mats[1] because 0 copies remain');
+
+    // Selecting the 2nd unit of mats[0] in Supp 1 updates remaining to 0 and removes mats[0] from unselected Primary 2
+    engine.selectedCraftingSupps = [mats[0].id];
+    engine.renderCraftingView();
+    const cfgHtml2 = String(env.el('crafting-config-panel').innerHTML);
+    const m1Html2 = (cfgHtml2.match(/id="craft-mat-1"[\s\S]*?<\/select>/) || [''])[0];
+    const m2Html2 = (cfgHtml2.match(/id="craft-mat-2"[\s\S]*?<\/select>/) || [''])[0];
+    assert.ok(m1Html2.includes(`value="${mats[0].id}"`) && m1Html2.includes('0 left'), 'Primary 1 updates mats[0] to 0 left once 2nd copy is allocated to catalyst');
+    assert.ok(!m2Html2.includes(`value="${mats[0].id}"`), 'Primary 2 hides mats[0] once all 2 copies are allocated elsewhere');
+
+    // Enchanting dropdown also hides 0-quantity materials and shows remaining after catalyst cost
+    engine.craftingMode = 'enchant';
+    engine.selectedEnchantCatalystId = mats[0].id;
+    engine.selectedEnchantTier = 'minor';
+    engine.renderCraftingView();
+    const enchHtml = String(env.el('crafting-config-panel').innerHTML);
+    assert.ok(!enchHtml.includes(`value="${unownedMat.id}"`), '0-quantity material is hidden from Enchanting catalyst dropdown');
+    assert.ok(enchHtml.includes(`value="${mats[0].id}"`) && enchHtml.includes('1 left'), 'Enchanting shows 1 left for 2x catalyst on Tier I (costs 1)');
+
+    // When 0 materials are owned at all, dropdown shows empty message instead of 0-qty materials
+    engine.removeItem(mats[0].id, 2, { excludeEquipped: true });
+    engine.removeItem(mats[1].id, 1, { excludeEquipped: true });
+    engine.renderCraftingView();
+    const enchEmptyHtml = String(env.el('crafting-config-panel').innerHTML);
+    assert.ok(enchEmptyHtml.includes('No catalyst materials in bag') && !enchEmptyHtml.includes(`value="${mats[0].id}"`), 'Enchanting shows empty placeholder when 0 materials owned');
+    engine.craftingMode = 'forge';
+    engine.renderCraftingView();
+    const forgeEmptyHtml = String(env.el('crafting-config-panel').innerHTML);
+    assert.ok(forgeEmptyHtml.includes('No materials available') && !forgeEmptyHtml.includes(`value="${mats[0].id}"`), 'Forge shows empty placeholder when 0 materials owned');
+  });
+
+  await test('Trade modal organizes items by category, preserves scroll position on buy/sell, and supports multi-quantity trading', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_ashen_ledger');
+
+    const merchant = engine.world.characters.find(c => Array.isArray(c.merchantInventory) && c.merchantInventory.length >= 4);
+    assert.ok(merchant, 'Ashen Ledger has a stocked merchant');
+    engine.state.player.currencies.drachmae = 2000;
+
+    // Ensure multi-unit stock on merchant and multi-unit stack in player bag
+    const mState = engine.getMerchantState(merchant.id);
+    const multiEntry = merchant.merchantInventory.find(e => (mState.stock[e.itemId] || 0) >= 2) || merchant.merchantInventory[0];
+    mState.stock[multiEntry.itemId] = 6;
+    const mat = engine.getCampaignMaterials()[0];
+    engine.addItem(mat.id, 5);
+
+    engine.openTrade(merchant.id);
+    const tradeCss = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    assert.ok(/\.trade-box\s*\{[^}]*height:\s*min\(86dvh/.test(tradeCss), 'trade-box defines explicit height so flex trade columns never collapse');
+    const html1 = String(env.el('trade-body').innerHTML);
+    assert.ok(html1.includes('trade-group-hdr'), 'trade lists are organized under category headers');
+    assert.ok(html1.includes('trade-filters'), 'trade columns render category filter buttons');
+    assert.ok(html1.includes('trade-qty-ctrl') && html1.includes('Max'), 'multi-unit items render quantity picker with Max shortcut');
+
+    // Simulate scrolled shop and bag lists before buying/selling -> scrollTop must be preserved!
+    env.el('trade-list-shop').scrollTop = 240;
+    env.el('trade-list-bag').scrollTop = 185;
+    const unitBuy = engine.getBuyPrice(merchant.id, multiEntry.itemId);
+    const purseBeforeBuy = engine.state.player.currencies.drachmae;
+    const rkBuy = `buy_${multiEntry.itemId}`.replace(/[^a-zA-Z0-9_-]/g, '_');
+    assert.strictEqual(engine.setTradeQty(rkBuy, 3, 6, unitBuy, 'Buy', false), 3, 'setTradeQty updates selected quantity cleanly');
+    assert.strictEqual(engine.tradeExecute('buy', multiEntry.itemId, rkBuy), true, 'multi-quantity buy executes cleanly');
+    assert.strictEqual(engine.state.player.currencies.drachmae, purseBeforeBuy - unitBuy * 3, 'multi-quantity buy deducts exact total price');
+    assert.strictEqual(mState.stock[multiEntry.itemId], 3, 'multi-quantity buy decrements merchant stock by 3');
+    assert.strictEqual(env.el('trade-list-shop').scrollTop, 240, 'shop scrollTop preserved after purchase');
+    assert.strictEqual(env.el('trade-list-bag').scrollTop, 185, 'bag scrollTop preserved after purchase');
+
+    // Multi-quantity sell + buyback + scroll preservation
+    const unitSell = engine.getSellPrice(merchant.id, mat.id);
+    const purseBeforeSell = engine.state.player.currencies.drachmae;
+    const rkSell = `sell_${mat.id}`.replace(/[^a-zA-Z0-9_-]/g, '_');
+    engine.setTradeQty(rkSell, 4, 5, unitSell, 'Sell', false);
+    assert.strictEqual(engine.tradeExecute('sell', mat.id, rkSell), true, 'multi-quantity sell executes cleanly');
+    assert.strictEqual(engine.state.player.currencies.drachmae, purseBeforeSell + unitSell * 4, 'multi-quantity sell credits exact total price');
+    assert.strictEqual(engine.getItemQuantity(mat.id, { excludeEquipped: true }), 1, 'player keeps remaining 1 unit after selling 4 of 5');
+    assert.strictEqual(mState.buyback[mat.id], 4, 'merchant buyback receives all 4 sold units');
+    assert.strictEqual(env.el('trade-list-bag').scrollTop, 185, 'bag scrollTop preserved after selling');
+
+    // Multi-quantity buyback works too
+    assert.strictEqual(engine.buyItem(merchant.id, mat.id, true, 2), true, 'multi-quantity buyback succeeds');
+    assert.strictEqual(mState.buyback[mat.id], 2, 'buyback stock reduced by 2');
+    assert.strictEqual(engine.getItemQuantity(mat.id, { excludeEquipped: true }), 3, 'player regained 2 units from buyback');
+
+    // Category filter & hide locked toggle work cleanly and reset only filtered column scroll
+    engine.setTradeFilter('shop', 'material');
+    assert.strictEqual(env.el('trade-list-shop').scrollTop, 0, 'changing shop filter resets shop scroll to top');
+    assert.strictEqual(env.el('trade-list-bag').scrollTop, 185, 'changing shop filter leaves bag scroll untouched');
+    engine.setTradeFilter('hideLocked');
+    assert.strictEqual(engine.tradeSession.hideLocked, true, 'hideLocked toggles cleanly');
+
+    // Skill-check failure & success banners render directly inside Trade, Dialogue & Inspect windows
+    fixedRoll(engine, 2);
+    const failPers = engine.negotiateTradePrice(merchant.id, 'persuade');
+    assert.strictEqual(failPers.success, false, 'low persuasion roll fails');
+    const tradeFailHtml = String(env.el('trade-body').innerHTML);
+    assert.ok(tradeFailHtml.includes('modal-check-banner fail') && tradeFailHtml.includes('Persuasion Failed'), 'trade window displays clear failure banner on failed persuasion');
+
+    fixedRoll(engine, 2);
+    const failDec = engine.negotiateTradePrice(merchant.id, 'deceive');
+    assert.strictEqual(failDec.success, false, 'low deception roll fails');
+    const tradeDecFailHtml = String(env.el('trade-body').innerHTML);
+    assert.ok(tradeDecFailHtml.includes('modal-check-banner fail') && tradeDecFailHtml.includes('Deception Failed'), 'trade window displays clear failure banner on failed deception');
+    engine.closeTrade();
+
+    // NPC Inspect pickpocket failure banner
+    if (merchant.locationId) engine.state.worldState.currentLocationId = merchant.locationId;
+    engine.openNpcInspectModal(merchant.id);
+    fixedRoll(engine, 4);
+    const pickFail = engine.attemptPickpocket(merchant.id, { refreshInspect: true });
+    assert.strictEqual(pickFail.success, false, 'low stealth roll fails pickpocket');
+    const inspectHtml = String(env.el('npc-inspect-body').innerHTML);
+    assert.ok(inspectHtml.includes('modal-check-banner fail') && inspectHtml.includes('Pickpocket Failed'), 'NPC inspect window displays clear failure banner on failed pickpocket');
+
+    // Forge Strike minigame bonus immediately refreshes Craft & Forge UI without switching tabs
+    const prof = engine.getCampaignProfessions()[0];
+    engine.craftingMode = 'forge';
+    engine.currentCraftingProfession = prof.id;
+    engine.craftingMinigameBonus = 0;
+    engine.renderCraftingView();
+    const baseBonus = engine.getCraftingSkillBreakdown(prof, 0).totalBonus;
+    assert.ok(env.el('crafting-preview-panel').innerHTML.includes('+0'), 'initial forge strike bonus is +0');
+    engine.openMinigame('forge');
+    engine.craftingMinigameBonus = 3;
+    engine.closeMinigame(true, 3);
+    assert.ok(env.el('crafting-preview-panel').innerHTML.includes('+3'), 'Forge Strike bonus (+3) appears immediately in crafting preview on minigame close');
+    const badgeAfter = String(env.el('crafting-fieldcraft-badge').innerText);
+    assert.ok(badgeAfter.includes(`d20 + ${baseBonus + 3}`) && badgeAfter.includes('+3 Forge'), `crafting header roll badge immediately reflects +3 Forge Strike bonus (got: ${badgeAfter})`);
+  });
+
+  await test('Elemental Damage Types, Statuses, Resistances, Weaknesses, Combos, Crafting & Enchanting', async () => {
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await startCampaign(env, engine, 'campaign_northern_realms');
+
+    // 1. Typed damage resolution: vulnerability (1.5x), resistance (0.5x), immunity (0x), and player elemental resist
+    const frostTroll = engine.getCreature('creature_nr_frost_troll');
+    assert.ok(frostTroll.resistances.includes('frost') && frostTroll.vulnerabilities.includes('fire'), 'Frost Troll resists frost and is vulnerable to fire');
+    assert.strictEqual(engine.resolveTypedDamage(4, 'fire', frostTroll).dmg, 6, 'vulnerability multiplies fire damage by 1.5x');
+    assert.strictEqual(engine.resolveTypedDamage(4, 'frost', frostTroll).dmg, 2, 'resistance halves frost damage to 0.5x');
+    assert.strictEqual(engine.resolveTypedDamage(6, 'poison', { immune: ['poison'] }).dmg, 0, 'immunity blocks damage to 0');
+
+    // Player resistance from equipped gear mitigates incoming elemental damage
+    engine.addItem('item_nr_wolfskin_mantle', 1);
+    engine.equipItem('item_nr_wolfskin_mantle');
+    assert.ok(engine.getPlayerResistance('frost') >= 3, 'equipped frost-warded cloak grants player frost resistance');
+    const pMit = engine.resolveTypedDamage(6, 'frost', null, { isPlayerTarget: true });
+    assert.ok(pMit.dmg < 6 && pMit.mitigated >= 3, 'player frost resistance mitigates incoming frost damage');
+
+    // 2. Combat statuses (burning, chilled, shocked, corroded, seared, shaken) + Elemental Combos (Shatter, Combustion, Overload) + Assess Foe
+    engine.startCombat([{ creatureId: 'creature_nr_frost_troll', position: 'frontline' }]);
+    const foe = engine.combatSession.enemies[0];
+    foe.hp = 60; foe.maxHp = 60;
+    engine.applyCombatStatus('enemy', 'corroded', 2, 2, foe);
+    assert.strictEqual(engine.getStatusAcMod('enemy', foe), -2, 'Corroded reduces enemy AC by 2');
+    const hpBeforeCombo = foe.hp;
+    const comb = engine.triggerElementalCombo(foe, 'fire');
+    assert.strictEqual(comb && comb.name, 'Combustion', 'Fire on Corroded triggers Combustion reaction');
+    assert.strictEqual(foe.hp, hpBeforeCombo - 4, 'Combustion deals +4 bonus burst damage');
+    assert.ok(engine.hasCombatStatus('enemy', 'burning', foe), 'Combustion ignites Burning');
+
+    engine.applyCombatStatus('enemy', 'chilled', 2, 0, foe);
+    const shat = engine.triggerElementalCombo(foe, 'bludgeoning');
+    assert.strictEqual(shat && shat.name, 'Shatter', 'Bludgeoning on Chilled triggers Shatter reaction');
+    assert.ok(!engine.hasCombatStatus('enemy', 'chilled', foe), 'Shatter consumes Chilled');
+
+    // Assess Foe reveals weaknesses/resistances onto enemy state
+    fixedRoll(engine, 18);
+    engine.combatAction('assess_foe');
+    assert.strictEqual(foe.assessed, true, 'Assess Foe marks creature assessed');
+    assert.ok(String(env.el('combat-log-feed').innerHTML).includes('Weak (1.5x)'), 'Assess Foe logs exact weaknesses');
+
+    // End-to-end elemental weapon hit against vulnerable foe (Fire blade vs Frost Troll)
+    engine.addItem('item_nr_blackforge_hearthblade', 1);
+    engine.equipItem('item_nr_blackforge_hearthblade', { targetSlot: 'main_hand' });
+    fixedRoll(engine, 16);
+    engine.combatAction('thrust');
+    assert.ok(String(env.el('combat-log-feed').innerHTML).includes('Fire Vulnerable!'), 'weapon hit logs Fire vulnerability bonus on Frost Troll');
+    engine.combatSession = null;
+
+    // 3. Crafting stamps catalyst elementalType onto weapons & resist onto armor; Enchanting surfaces matching element
+    engine.addItem('mat_nr_bog_iron', 2);
+    engine.addItem('mat_nr_hardened_pine', 2);
+    engine.addItem('mat_nr_hearth_amber', 2);
+    const mat1 = engine.getCampaignMaterials().find(m => m.id === 'mat_nr_bog_iron');
+    const mat2 = engine.getCampaignMaterials().find(m => m.id === 'mat_nr_hardened_pine');
+    const fireCat = engine.getCampaignMaterials().find(m => m.id === 'mat_nr_hearth_amber');
+    const tpl = (engine.world.craftingTemplates || []).find(t => (t.category || 'weapon') === 'weapon');
+    assert.ok(tpl, 'Northern Realms exposes a weapon crafting template');
+    const forged = engine.generateCraftedItem(tpl, mat1, mat2, [fireCat], { name: 'Superior', bonus: 2, valueMult: 1.5, rarity: 'uncommon' });
+    assert.strictEqual(forged.stats.elementalType, 'fire', 'crafting with fire catalyst stamps elementalType=fire on weapon');
+    assert.ok(forged.stats.elementalDamage >= 1, 'crafting with magical catalyst grants elementalDamage');
+
+    const frostCat = engine.getCampaignMaterials().find(m => m.id === 'mat_nr_frost_quartz');
+    const offers = engine.getEnchantmentOfferings('item_nr_iron_broadsword', frostCat.id, 'minor');
+    assert.ok(offers.some(o => o.id === 'rime_edge'), 'frost catalyst surfaces Rime Bite frost enchantment');
+
+    // 4. All 4 shipped campaigns have typed weapons & creatures with resistances/vulnerabilities
+    for (const cid of ['tutorial', 'northern_realms', 'ashen_ledger', 'vermin']) {
+      const cr = JSON.parse(fs.readFileSync(path.join(ROOT, `content/campaigns/${cid}/world/creatures.json`), 'utf8')).creatures;
+      const it = JSON.parse(fs.readFileSync(path.join(ROOT, `content/campaigns/${cid}/world/items.json`), 'utf8')).items;
+      assert.ok(cr.some(c => Array.isArray(c.vulnerabilities) && c.vulnerabilities.length > 0), `${cid} creatures define vulnerabilities`);
+      assert.ok(cr.some(c => Array.isArray(c.resistances) && c.resistances.length > 0), `${cid} creatures define resistances`);
+      assert.ok(it.some(i => i.stats && i.stats.elementalType && i.stats.elementalDamage > 0), `${cid} weapons define typed elementalDamage`);
+    }
+
+    // 5. Untrained skill penalty (-2) vs trained reward, plus Tutorial/Ashen Ledger equipment bonus wiring
+    const p = engine.state.player;
+    p.skills.stealth = 0;
+    const unSt = engine.getEffectiveSkillBreakdown('stealth');
+    assert.strictEqual(unSt.untrainedPenalty, -2, 'untrained skill incurs -2 penalty');
+    p.skills.stealth = 1;
+    const trSt = engine.getEffectiveSkillBreakdown('stealth');
+    assert.strictEqual(trSt.untrainedPenalty, 0, 'investing Rank 1 removes untrained penalty');
+    assert.strictEqual(trSt.totalWithoutInspiration - unSt.totalWithoutInspiration, 4, 'investing Rank 1 yields a full +4 swing over untrained');
+
+    // Verify nested attributeBonuses / skillBonuses & spellPower / acBonus apply cleanly
+    const env2 = createSandbox();
+    const eng2 = await bootEngine(env2);
+    await startCampaign(env2, eng2, 'campaign_ashen_ledger');
+    const baseWis = eng2.getEffectiveAttribute('wisdom');
+    const baseInv = eng2.getEffectiveSkillBreakdown('investigation').totalWithoutInspiration;
+    eng2.addItem('item_al_prismatic_lantern', 1);
+    eng2.equipItem('item_al_prismatic_lantern');
+    assert.strictEqual(eng2.getEffectiveAttribute('wisdom'), baseWis + 1, 'nested attributeBonuses.wisdom applies');
+    assert.ok(eng2.getEffectiveSkillBreakdown('investigation').totalWithoutInspiration >= baseInv + 2, 'nested skillBonuses.investigation applies');
+
+    const env3 = createSandbox();
+    const eng3 = await bootEngine(env3);
+    await startCampaign(env3, eng3, 'campaign_tutorial');
+    const baseSp = eng3.getEquippedMagicBonus().spellPower;
+    eng3.addItem('item_tut_runic_staff', 1);
+    eng3.equipItem('item_tut_runic_staff');
+    assert.ok(eng3.getEquippedMagicBonus().spellPower >= baseSp + 2, 'Tutorial spellPower stat applies to magic bonus');
+    const baseAc = eng3.getPlayerArmorClass();
+    eng3.addItem('item_tut_iron_helm', 1);
+    eng3.equipItem('item_tut_iron_helm');
+    assert.ok(eng3.getPlayerArmorClass() >= baseAc + 2, 'Tutorial acBonus stat applies to Armor Class');
   });
 
   // ---------------------------------------------------------------------------

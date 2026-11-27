@@ -420,7 +420,7 @@ The static `GreekMythologyEngine.validateCampaign(manifest, content)` engine aud
 
 ### 7.5 Loot Engine & Probability Caps
 * `resolveEntityLoot()` is the single place drops are resolved (it is called once per victory). It applies loot-table `guaranteed` items, `entries` (with `minQuantity`/`maxQuantity`), `currency`, **and** a creature's inline `loot` array, plus level-scaled drachmae.
-* **Caps** (by rarity *name*): normal creatures (`epic` ≤ 0.02 %, `legendary`/`mythic` 0 %); bosses (`mythic` ≤ 0.02 %). The Greek content uses `exceptional` and `consecrated` tiers, which are **not** capped (see `getRarityRank()` for the full vocabulary: common, crafted, uncommon, rare, exceptional/epic, consecrated/legendary, mythic).
+* **Caps** (enforced centrally by `clampLootChance()`, never bypassed by feats): normal creatures (`rare` <= 65%, `epic` <= 2% (`0.02`), `legendary`/`mythic` 0% blocked); bosses (`mythic` <= 2% (`0.02`), `common`/`uncommon`/`rare`/`epic`/`legendary` follow table odds up to 95%, or 100% if guaranteed). The Greek content uses `exceptional` and `consecrated` tiers, which are **not** capped (see `getRarityRank()` for the full vocabulary: common, crafted, uncommon, rare, exceptional/epic, consecrated/legendary, mythic).
 * Unique items (`isUnique`) are granted once (`worldState.grantedUniqueItems`); repeat kills give replacement drachmae.
 * References to items that do not exist in the campaign are skipped (and reported by the validator).
 
