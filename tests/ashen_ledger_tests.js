@@ -80,7 +80,7 @@ async function bootAshenLedger(opts = {}) {
     assert.strictEqual(w.professions.length, 4, 'Must have 4 compressed professions');
     assert.strictEqual(w.combinations.length, 12, 'Must have 12 combinations');
     assert.strictEqual(w.interactiveObjects.length, 13, 'Must have 13 interactive objects');
-    assert.strictEqual(w.events.length, 43, 'Must have 43 events (incl. ITEM_ENCHANTED milestone)');
+    assert.strictEqual(w.events.length, 48, 'Must have 48 events (incl. ITEM_ENCHANTED milestone & QUEST_STARTED sync events)');
     assert.strictEqual(w.mythology.length, 19, 'Must have 19 codex lore entries');
     assert.strictEqual(w.spells.length, 10, 'Must have 10 campaign spells');
 

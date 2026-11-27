@@ -8,6 +8,42 @@
 
 ## 📜 Chronological AI & Developer Hand-Off Log
 
+### Session 55 - 2026-11-27 (Critical Cross-Campaign UI Wiring Fix: Multi-Enemy Encounters, Auto-Surfaced Puzzles, Action Schema Normalization & Quest Soft-Lock Safeguards)
+* **Collaborator / Model**: User & Antigravity (diagnosed from real player Edge save in Ashen Ledger)
+* **Critical Engine Bugs Fixed Across All 4 Campaigns (`index.html`)**:
+  * **Multi-Enemy Encounters Never Rendering in Action Deck**: `getContextualActionGroups()` previously checked `this.getCreature(enc.creatureId)` without falling back to `enc.enemies[0].creatureId`, silently hiding all **18 encounters in Ashen Ledger** and all **3 encounters in Tutorial**. Added shared `getEncounterLeadCreatureId(enc)` and wired it into `getContextualActionGroups()`, `isEncounterAvailable()`, and `getActionEntity()`. Also added `ownedEncounterIds` deduplication (fixing 7 duplicate/prematurely-leaked encounter cards in **Northern Realms**) and masked all member creatures of active multi-enemy encounters from redundant standalone `"Hunt"` cards.
+  * **World Puzzles Never Populated or Auto-Surfaced**: `applyCampaignContent()` previously stored `puzzles` and `dialogues` only on `this.currentAdventure` (leaving `this.world.puzzles` and `this.world.dialogues` empty), and `getContextualActionGroups()` never auto-surfaced unsolved location puzzles not duplicated in `locations.json` - hiding all **5 puzzles in Ashen Ledger** (blocking Fulgurite-Silver Ingot, Fragment of Passage, and Hidden Quest *The Thirteenth Chime*) and **`puzzle_nr_rime_stone` in Northern Realms**. Populated `this.world.puzzles` and `this.world.dialogues` at load, added `isPuzzleSolved(puzzle)` + `worldState.solvedPuzzles` persistence, auto-surfaced unsolved non-owned puzzles in `getContextualActionGroups()` and `getLocationQuestRefs()`, fixed exact-ID lookup and re-solve prevention in `openPuzzle()`/`resolveRiddleChoice()`, normalized `deductionDc`/`deductionDC` + attribute consistency, and wired Plain English vs. Tabletop check labels onto puzzles and Search.
+  * **Location Action Schema Normalization (`resolveActionHandlerType`, `executeGenericAction`, `applyActionOutcome`)**: Fixed 47 location actions across **Tutorial** (6), **Northern Realms** (38), and **Ashen Ledger** (3) that used `label`/`description`/`narrative`, `actionType: "combat"`, `puzzleId`/`skillCheck` without `handlerType`, `skillCheck.difficulty`, top-level `successOutcome`/`failureOutcome`, or `outcome.modifyVitals` - eliminating `undefined` button labels, dead skill-check buttons, and combat-skipping actions.
+  * **Retroactive Active-Quest Objective Sync on Save Load (`reconcileActiveQuestObjectives`)**: Existing saves now automatically evaluate `QUEST_STARTED` sync events for currently active quests whose conditions are already met.
+* **Campaign Sync & Soft-Lock Prevention (`events.json`, `dialogues.json`, compacted single-line JSON)**:
+  * Added missing `QUEST_STARTED` sync events in `tutorial/world/events.json` (`+3`), `northern_realms/world/events.json` (`+3`), and `ashen_ledger/world/events.json` (`+5`, including `evt_al_craft3_sync_enchant` + `al_got_muted_bell_shard` tracking).
+  * Added catalyst-recovery dialogue branches on `dlg_al_master_orla` (`reclaim_fulgurite`, `reclaim_muted_bronze`) in `ashen_ledger/world/dialogues.json` so players who already earned Fulgurite-Silver or Muted Bell-Alloy and accidentally consumed them in crafting/enchanting can never soft-lock Artisan Arc III.
+* **Verification & Live Deploy**:
+  * Verified directly against the player's real Edge save (`rpg_save_ashen_ledger_Rowan.json`): all 11 blocked encounters/puzzles and retroactive enchant sync immediately appeared and resolved cleanly.
+  * Added cross-campaign UI wiring regression test in `tests/behaviour_tests.js` (`120/120`) verifying every authored encounter, puzzle, normalized action title/handler, and Arc III recovery across all 4 campaigns; updated Ashen Ledger event count assertion (`43 -> 48`) in `tests/ashen_ledger_tests.js`.
+  * Regenerated embedded content (`109` files), passed uniform CRLF & `0` em-dash hygiene checks, all **9 test suites (`257/257`)**, and all **8 minified build suites** on `dist/index.html`.
+  * Hosted web `dist/index.html`: `949.2 KB` raw / `211.3 KB` brotli (`49%` smaller than source); `content/`: `785.6 KB` -> `784.7 KB`.
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: 960818fe-630e-4b87-801c-a5e63a083219`).
+
+### Session 54 - 2026-11-27 (Phase 1 Beginner-Friendly UI: Decluttered Top Bar, 1-Click Quick Start, Attribute Presets & Plain English / Tabletop Toggle)
+* **Collaborator / Model**: User & Antigravity
+* **Decluttered Top Navigation Bar + `More ▾` Dropdown (`index.html`)**:
+  * Reduced `#main-nav` from 14 buttons to the 6 core play tabs (`Story`, `World Map`, `Character`, `Inventory`, `Craft & Forge`, `Quests`) plus a fixed-position `#btn-nav-more` (`More ▾`) dropdown (`#nav-more-menu`) holding secondary links (`Journal`, `Codex & Lore`, `Pantheon`, `Campaigns`, `New Hero`, `Guide & Help`, `Settings`) and a 1-click display style toggle (`#btn-nav-display-mode`).
+  * Removed `📜 Dev Notes` from the top bar (remains accessible in Settings).
+  * Wired `toggleNavMoreMenu()`, outside-click and `Escape` dismissal (`dismissOpenPopups()` closes `#nav-more-menu` without bypassing critical modals), and active secondary-view feedback (`More (Codex) ▾`, etc.) in `switchView()`.
+* **1-Click `⚡ Quick Start` Hero & Step 3 Attribute Presets (`index.html`)**:
+  * Added `applyWizardAttributePreset(presetKey)` (`warrior`, `scout`, `mage`, `balanced`) with 4 preset buttons on Step 3 (`#wizard-pane-3`) that cleanly distribute all 5 creation attribute points.
+  * Added `quickStartHero()` and `quickStartCampaign(campId)` with prominent `⚡ Quick Start` buttons on Step 0 World Prologue (`#wizard-pane-0`) and Campaign Select cards (`renderCampaignSelectView()`) so newcomers can jump into play in a single click with valid defaults and all points spent.
+* **Plain English (`simple`) vs. Tabletop RPG (`tabletop`) Display Toggle (`index.html`)**:
+  * Added `getDisplayMode()`, `isSimpleUi()`, `setDisplayMode(mode)`, `toggleDisplayMode()`, and `formatCheckSuffix(skill, attr, dc, opts)` backed by `localStorage` (`gm_ui_sizes.displayMode`, preserved across `resetUiSizes()`, default `"simple"` for beginners, 1-click toggleable from both `More ▾` and Settings `#ui-display-mode`).
+  * In Plain English mode, translates raw tabletop notation (`DC 13`, `AC: 14`, `d20 + 3`, `[LoS]`, `[AoE 3]`, `STM`) into approachable labels (`55% Odds`, `Defense: 14`, `Crafting Bonus +3`, `Clear Shot`, `Hits 3 Foes`, `Stamina`) across action cards, requirement pills, dialogue checks, NPC inspect/trade/object modals, confrontations, combat arena, skill roll logs, and Craft & Forge while preserving full d20/DC math in hover tooltips.
+  * Flipping to Tabletop mode restores 100% of classic `d20 / DC / AC / LoS / AoE / STM` notation live across the UI.
+* **Verification & Live Deploy (`tests/behaviour_tests.js`)**:
+  * Updated 4 tabletop-notation assertions in `tests/behaviour_tests.js` to explicitly verify Tabletop mode and added a dedicated Phase 1 regression test covering `#main-nav`/`More ▾`, `quickStartCampaign()`, `applyWizardAttributePreset()`, Escape dismissal, and both `simple` (default) and `tabletop` modes.
+  * Passed uniform CRLF & `0` em-dash hygiene checks, all **9 test suites (`256/256`, `behaviour_tests.js` `119/119`)**, embedded sync check (`109` files), and all **8 minified release build suites** on `dist/index.html`.
+  * Hosted web `dist/index.html`: `944.5 KB` raw / `210.4 KB` brotli (`49%` smaller than source).
+  * Deployed live to `https://browser-rpg.forfriends-abrm.workers.dev` (`Version ID: d0384999-1a3e-4a55-aafb-73eaefab227f`).
+
 ### Session 53 - 2026-11-27 (Full Engine & 4-Campaign Review, Equipment/Crafting Bug Fixes, Difficulty Calibration & Compression)
 * **Collaborator / Model**: User & Antigravity
 * **Real Engine & Campaign Bugs Fixed (`index.html`, `ashen_ledger/world/items.json`)**:

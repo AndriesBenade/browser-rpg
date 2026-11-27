@@ -1102,10 +1102,11 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     await startCampaign(env, engine, 'campaign_tutorial');
     engine.state.player.attributes.strength = 16;
     engine.currentCraftingProfession = 'prof_tut_smithing';
+    engine.setDisplayMode('tabletop');
     engine.renderCraftingView();
     const prof = engine.getCampaignProfessions().find(p => p.id === 'prof_tut_smithing');
     const cb = engine.getCraftingSkillBreakdown(prof, 0);
-    assert.ok(env.el('crafting-fieldcraft-badge').innerText.includes(`d20 + ${cb.totalBonus}`), 'badge shows exact crafting bonus');
+    assert.ok(env.el('crafting-fieldcraft-badge').innerText.includes(`d20 + ${cb.totalBonus}`), 'badge shows exact crafting bonus in Tabletop mode');
   });
 
   // ---------------------------------------------------------------------------
@@ -1355,7 +1356,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.state.worldState.currentLocationId = 'loc_dev_whispering_woods';
     assert.deepStrictEqual(plain(engine.getNextStepActions(actions()).map(x => x.act.id)), ['act_enc_enc_dev_wild_boar']);
     engine.state.worldState.currentLocationId = 'loc_dev_haven';
-    // Short labels drop the entity's name
+    // Short labels drop the entity's name (verify Tabletop DC format)
+    engine.setDisplayMode('tabletop');
     const lycus = { kind: 'npc', id: 'npc_dev_merchant_lycus', name: 'Merchant Lycus' };
     const byId = (id) => actions().find(a => a.id === id);
     assert.strictEqual(engine.shortActionLabel(byId('act_talk_npc_dev_merchant_lycus'), lycus), 'Speak');
@@ -1489,7 +1491,8 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     engine.changeNpcStanding('npc_dev_guard_captain', 60);
     engine.openDialogue('dialogue_dev_captain', 'node_vault_trust');
     assert.ok(engine.hasItem('item_dev_treasury_key'), 'trusted Captain lends the vault key');
-    // Persuade / deceive / pickpocket cards show the real DC
+    // Persuade / deceive / pickpocket cards show the real DC in Tabletop mode
+    engine.setDisplayMode('tabletop');
     const cards = engine.getContextualActionGroups().flatMap(g => g.actions);
     assert.ok(cards.some(a => a.id === 'act_persuade_npc_dev_merchant_lycus' && a.title.includes(`DC ${engine.getPersuadeDc('npc_dev_merchant_lycus')}`)));
     assert.ok(cards.some(a => a.id === 'act_pickpocket_npc_dev_merchant_lycus' && a.title.includes(`DC ${engine.getPickpocketDc('npc_dev_merchant_lycus')}`)));
@@ -3409,6 +3412,7 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     assert.ok(inspectHtml.includes('modal-check-banner fail') && inspectHtml.includes('Pickpocket Failed'), 'NPC inspect window displays clear failure banner on failed pickpocket');
 
     // Forge Strike minigame bonus immediately refreshes Craft & Forge UI without switching tabs
+    engine.setDisplayMode('tabletop');
     const prof = engine.getCampaignProfessions()[0];
     engine.craftingMode = 'forge';
     engine.currentCraftingProfession = prof.id;
@@ -3532,6 +3536,160 @@ const plain = (v) => JSON.parse(JSON.stringify(v));
     eng3.addItem('item_tut_iron_helm', 1);
     eng3.equipItem('item_tut_iron_helm');
     assert.ok(eng3.getPlayerArmorClass() >= baseAc + 2, 'Tutorial acBonus stat applies to Armor Class');
+  });
+
+  await test('Phase 1 Beginner-Friendly UI: More menu, Quick Start, Attribute Presets & Plain English vs Tabletop toggle', async () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const navMatch = html.match(/<nav[^>]*id=["']?main-nav["']?[^>]*>([\s\S]*?)<\/nav>/);
+    assert.ok(navMatch, '#main-nav exists in HTML');
+    const navHtml = navMatch[1];
+    assert.ok(/id=["']?btn-nav-more["']?/.test(navHtml) && /id=["']?nav-more-menu["']?/.test(navHtml), 'More dropdown button and menu exist in #main-nav');
+    assert.ok(/id=["']?btn-nav-display-mode["']?/.test(navHtml), '1-click display mode toggle exists in More menu');
+    assert.ok(!navHtml.includes('openDevNotesModal'), 'Dev Notes button removed from top bar (lives in Settings)');
+    assert.ok(/id=["']?ui-display-mode["']?/.test(html), 'Settings exposes Display Style selector');
+
+    // 1. Attribute presets & 1-click Quick Start hero creation
+    const env = createSandbox();
+    const engine = await bootEngine(env);
+    await engine.selectCampaign('campaign_tutorial', { openWizard: true });
+    engine.applyWizardAttributePreset('mage', { silent: true });
+    assert.strictEqual(engine.creationState.pointsLeft, 0, 'Mage preset allocates all 5 creation points');
+    assert.ok(engine.creationState.attributes.intelligence >= 12 && engine.creationState.attributes.wisdom >= 11, 'Mage preset boosts INT/WIS');
+
+    const envQ = createSandbox();
+    const engQ = await bootEngine(envQ);
+    await engQ.quickStartCampaign('campaign_tutorial');
+    assert.strictEqual(engQ.state.hasCompletedCreation, true, 'quickStartCampaign completes hero creation in 1 click');
+    assert.strictEqual(engQ.creationState.pointsLeft, 0, 'quickStartHero spends all creation attribute points');
+    assert.ok(envQ.el('view-story').classList.contains('active-view'), 'quickStartHero lands directly in Story view');
+
+    // 2. More menu open/close, active label badge & Escape dismissal
+    const moreMenu = envQ.el('nav-more-menu');
+    moreMenu.hidden = true;
+    assert.strictEqual(engQ.toggleNavMoreMenu(true), true, 'toggleNavMoreMenu opens menu');
+    assert.strictEqual(moreMenu.hidden, false);
+    assert.strictEqual(engQ.dismissOpenPopups(), true, 'dismissOpenPopups closes More menu');
+    assert.strictEqual(moreMenu.hidden, true);
+    engQ.switchView('view-codex');
+    assert.strictEqual(envQ.el('btn-nav-more').innerText, 'More (Codex) ▾', 'More button highlights active secondary view');
+    engQ.switchView('view-story');
+    assert.strictEqual(envQ.el('btn-nav-more').innerText, 'More ▾', 'More button resets when returning to core view');
+
+    // 3. Default Plain English (simple) vs Tabletop (d20/DC/AC/LoS/AoE) toggle & persistence
+    assert.strictEqual(engQ.getDisplayMode(), 'simple', 'Plain English (simple) is the default display mode');
+    assert.strictEqual(engQ.isSimpleUi(), true);
+    const simpleActs = engQ.getContextualActionGroups().flatMap(g => g.actions);
+    const pActSimple = simpleActs.find(a => a.id.startsWith('act_persuade_'));
+    assert.ok(pActSimple && /% Odds\)/.test(pActSimple.title), `Simple mode action shows % Odds (got: ${pActSimple && pActSimple.title})`);
+    const pillSimple = engQ.renderRequirementPillsHtml([{ type: 'skill_check', skill: 'persuasion', attribute: 'charisma', dc: 13 }]);
+    assert.ok(pillSimple.includes('% Odds') && !pillSimple.includes('>Persuasion DC 13'), 'Simple mode requirement pill shows % Odds');
+
+    engQ.renderCraftingView();
+    assert.ok(envQ.el('crafting-fieldcraft-badge').innerText.includes('Crafting Bonus'), 'Simple mode crafting badge avoids raw d20 notation');
+
+    engQ.startCombat([{ creatureId: engQ.world.creatures[0].id, position: 'frontline' }]);
+    assert.ok(envQ.el('combat-player-archetype').innerText.includes('(Defense:'), 'Simple mode combat shows Defense instead of AC');
+    assert.ok(envQ.el('btn-combat-shield').innerText.includes('+4 Defense'), 'Simple mode shield stance shows +4 Defense');
+    const magicSimpleText = String(envQ.el('combat-magic-bar').innerHTML).replace(/<[^>]+>/g, '');
+    assert.ok(!magicSimpleText.includes('[LoS]') && !magicSimpleText.includes('[AoE 3]') && !magicSimpleText.includes('STM)'), `Simple mode spell buttons replace [LoS]/[AoE]/STM jargon (got: ${magicSimpleText})`);
+    assert.ok(magicSimpleText.includes('Clear Shot') || magicSimpleText.includes('Any Target') || magicSimpleText.includes('Hits 3 Foes'), 'Simple mode spell buttons display plain-English targeting labels');
+
+    // Flip to Tabletop mode in 1 click
+    assert.strictEqual(engQ.toggleDisplayMode(), 'tabletop', 'toggleDisplayMode switches to tabletop');
+    assert.strictEqual(engQ.isSimpleUi(), false);
+    assert.strictEqual(JSON.parse(envQ.storage.gm_ui_sizes).displayMode, 'tabletop', 'displayMode persists in localStorage');
+    engQ.resetUiSizes();
+    assert.strictEqual(engQ.getDisplayMode(), 'tabletop', 'displayMode survives resetUiSizes');
+
+    const ttActs = engQ.getContextualActionGroups().flatMap(g => g.actions);
+    const pActTt = ttActs.find(a => a.id.startsWith('act_persuade_'));
+    assert.ok(pActTt && /\(DC \d+\)/.test(pActTt.title), `Tabletop mode action restores (DC X) (got: ${pActTt && pActTt.title})`);
+    engQ.renderCraftingView();
+    assert.ok(envQ.el('crafting-fieldcraft-badge').innerText.includes('d20 '), 'Tabletop mode crafting badge restores d20 notation');
+    assert.ok(envQ.el('combat-player-archetype').innerText.includes('(AC:'), 'Tabletop mode combat restores (AC: X)');
+    assert.ok(envQ.el('btn-combat-shield').innerText.includes('+4 AC'), 'Tabletop mode shield stance restores +4 AC');
+    const magicTt = String(envQ.el('combat-magic-bar').innerHTML);
+    assert.ok(magicTt.includes('[LoS]') || magicTt.includes('[Any]') || magicTt.includes('[AoE 3]'), 'Tabletop mode spell buttons restore [LoS]/[Any]/[AoE 3] tags');
+    engQ.combatSession = null;
+  });
+
+  await test('All 4 Campaigns UI Wiring: multi-enemy encounters, auto-surfaced puzzles, normalized location actions & Arc III soft-lock recovery', async () => {
+    // 1. Every non-random authored encounter & puzzle across all 4 campaigns surfaces cleanly in the Action Deck without duplicates or undefined titles
+    for (const campId of ['campaign_tutorial', 'campaign_northern_realms', 'campaign_ashen_ledger', 'campaign_vermin_black']) {
+      const env = createSandbox();
+      const engine = await bootEngine(env);
+      await startCampaign(env, engine, campId);
+
+      // Every location action that renders has a real non-undefined title
+      for (const loc of (engine.world.locations || [])) {
+        engine.state.worldState.currentLocationId = loc.id;
+        const acts = engine.getContextualActionGroups().flatMap(g => g.actions);
+        for (const a of acts) {
+          assert.ok(a.title && !String(a.title).includes('undefined'), `${campId}@${loc.id} action ${a.id} has valid title (got: ${a.title})`);
+        }
+        // No duplicate encounter cards for the same encounterId at any location
+        const encIds = acts.filter(a => a.encounterId).map(a => a.encounterId);
+        assert.strictEqual(new Set(encIds).size, encIds.length, `${campId}@${loc.id} has no duplicate encounter cards: ${encIds.join(',')}`);
+      }
+
+      // Every authored non-random encounter not gated by loc.actions appears when its triggerCondition holds
+      for (const enc of (engine.world.encounters || []).filter(e => e && e.type !== 'random_travel' && e.locationId)) {
+        const loc = engine.getLocation(enc.locationId);
+        const locOwns = loc && [].concat(loc.actions || [], loc.contextActions || []).some(a => a.encounterId === enc.id);
+        if (locOwns) continue;
+        if (enc.triggerCondition && enc.triggerCondition.flag) {
+          engine.state.worldState.flags[enc.triggerCondition.flag] = enc.triggerCondition.expected !== undefined ? enc.triggerCondition.expected : true;
+        }
+        engine.state.worldState.currentLocationId = enc.locationId;
+        const acts = engine.getContextualActionGroups().flatMap(g => g.actions);
+        assert.ok(acts.some(a => a.encounterId === enc.id), `${campId}: encounter ${enc.id} appears in UI at ${enc.locationId}`);
+      }
+
+      // Every authored puzzle appears in UI at its location, opens, solves once, and disappears afterward
+      for (const pz of (engine.world.puzzles || []).filter(p => p && p.locationId)) {
+        engine.state.worldState.currentLocationId = pz.locationId;
+        const before = engine.getContextualActionGroups().flatMap(g => g.actions);
+        const card = before.find(a => a.puzzleId === pz.id);
+        assert.ok(card, `${campId}: puzzle ${pz.id} appears in UI at ${pz.locationId}`);
+        card.handler();
+        engine.resolveRiddleChoice('solved');
+        assert.strictEqual(engine.isPuzzleSolved(pz), true, `${campId}: puzzle ${pz.id} marked solved`);
+        const after = engine.getContextualActionGroups().flatMap(g => g.actions);
+        assert.ok(!after.some(a => a.puzzleId === pz.id), `${campId}: solved puzzle ${pz.id} removed from UI`);
+      }
+    }
+
+    // 2. Normalized Northern Realms skillCheck (difficulty + top-level successOutcome) & modifyVitals work end-to-end
+    const envNr = createSandbox();
+    const engNr = await bootEngine(envNr);
+    await startCampaign(envNr, engNr, 'campaign_northern_realms');
+    engNr.state.worldState.currentLocationId = 'loc_nr_abandoned_shaft_nine';
+    const mineAct = engNr.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_nr_search_miners_corpse');
+    assert.ok(mineAct && mineAct.title === 'Inspect Overturned Minecart', 'Northern Realms label normalizes to title');
+    fixedRoll(engNr, 20);
+    mineAct.handler();
+    assert.strictEqual(engNr.hasItem('item_nr_key_grimstone_vault'), true, 'Normalized Northern Realms skillCheck awards vault key');
+
+    engNr.state.worldState.currentLocationId = 'loc_nr_valenfrost_hall';
+    engNr.state.player.vitals.stamina = Math.max(1, engNr.state.player.vitals.maxStamina - 6);
+    const stmBefore = engNr.state.player.vitals.stamina;
+    const hearthAct = engNr.getContextualActionGroups().flatMap(g => g.actions).find(a => a.id === 'act_nr_warm_by_hearth');
+    assert.ok(hearthAct && hearthAct.title, 'Northern Realms hearth action renders cleanly');
+    hearthAct.handler();
+    assert.ok(engNr.state.player.vitals.stamina > stmBefore, 'outcome.modifyVitals restores stamina');
+
+    // 3. Ashen Ledger: Arc III retroactive enchant sync + Master Orla soft-lock recovery if catalysts were consumed
+    const envAl = createSandbox();
+    const engAl = await bootEngine(envAl);
+    await startCampaign(envAl, engAl, 'campaign_ashen_ledger');
+    engAl.state.worldState.flags.al_performed_enchant = true;
+    engAl.startQuest('quest_al_craft_03_masterwork_seal', { ignorePrerequisites: true, silent: true });
+    assert.strictEqual(engAl.state.worldState.quests.quest_al_craft_03_masterwork_seal.objectives.obj_imbue_masterwork_gear.completed, true, 'Arc III syncs prior enchant objective on quest start');
+    engAl.state.worldState.flags.al_observatory_orrery_solved = true;
+    engAl.state.worldState.flags.al_got_muted_bell_shard = true;
+    engAl.openDialogue('dlg_al_master_orla');
+    const orlaHtml = String(envAl.el('dialogue-choices-list').innerHTML);
+    assert.ok(orlaHtml.includes('reclaim_fulgurite') && orlaHtml.includes('reclaim_muted_bronze'), 'Master Orla offers catalyst recovery if player earned and accidentally spent Arc III materials');
   });
 
   // ---------------------------------------------------------------------------
